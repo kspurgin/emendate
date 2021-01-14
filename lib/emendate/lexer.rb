@@ -1,20 +1,37 @@
 module Emendate
   class Lexer
-    SPACE = ' '.freeze
+    # ambiguous things
+    # c - at beginning = circa, at end = century
+    # nd - if directly after number, ordinal indicator; otherwise unknown date. normalize_orig attempts
+    #      to clear this up for most cases.
+    CENTURY = %w[century cent].freeze
+    CIRCA = %w[ca circa].freeze
+    COMMA = ','
+    DAYS = (Date::DAYNAMES + Date::ABBR_DAYNAMES).compact.map(&:downcase).freeze
+    DOT = '.'
     HYPHEN = ["\u002D", "\u2010", "\u2011", "\u2012", "\u2013", "\u2014", "\u2015", "\u2043"].freeze
+    MONTHS = (Date::MONTHNAMES + Date::ABBR_MONTHNAMES).compact.map(&:downcase).freeze
+    QUESTION = '?'
+    OR_INDICATOR = %w[or].freeze
+    ORDINAL_INDICATOR = %w[st nd rd th d].freeze
     SLASH = '/'.freeze
-
-    attr_reader :orig, :tokens
+    SPACE = ' '.freeze
+    SQUARE_BRACKET_OPEN = '['
+    SQUARE_BRACKET_CLOSE = ']'
+    UNKNOWN_DATE = %w[nodate unknown].freeze
+    
+    attr_reader :orig, :norm, :tokens
     attr_accessor :next_p, :lexeme_start_p
     def initialize(orig)
       @orig = orig
+      @norm = normalize_orig
       @tokens = []
       @next_p = 0
       @lexeme_start_p = 0
     end
 
     def start_tokenization
-      while orig_uncompleted?
+      while norm_uncompleted?
         tokenize
       end
 
@@ -29,12 +46,26 @@ module Emendate
 
       c = consume
 
+      return if c == DOT
       return if c == SPACE
+      
       token =
-        if HYPHEN.include?(c)
+        if c == COMMA
+          token_of_type(c, :comma)
+        elsif HYPHEN.include?(c)
           token_of_type(c, :hyphen)
+        elsif c == QUESTION
+          token_of_type(c, :question)
         elsif c == SLASH
           token_of_type(c, :slash)
+        elsif c == SQUARE_BRACKET_OPEN
+          token_of_type(c, :square_bracket_open)
+        elsif c == SQUARE_BRACKET_CLOSE
+          token_of_type(c, :square_bracket_close)
+        elsif digit?(c)
+          number
+        elsif alpha?(c)
+          letter
         end
 
       token = Token.new(lexeme: c, type: :unknown, location: current_location) if token.nil?
@@ -52,20 +83,79 @@ module Emendate
       c
     end
 
+    def consume_digits
+      while digit?(lookahead)
+        consume
+      end
+    end
+
+    def consume_letters
+      while alpha?(lookahead)
+        consume
+      end
+    end
+
+    def letter
+      consume_letters
+      lexeme = norm[lexeme_start_p..(next_p - 1)]
+      Token.new(type: letter_type(lexeme), lexeme: lexeme, location: current_location)
+    end
+
+    def letter_type(lexeme)
+      if CENTURY.include?(lexeme)
+        :century
+      elsif CIRCA.include?(lexeme)
+        :approximate
+      elsif DAYS.include?(lexeme)
+        :day_of_week_alpha
+      elsif  MONTHS.include?(lexeme)
+        :month_alpha
+      elsif OR_INDICATOR.include?(lexeme)
+        :or
+      elsif ORDINAL_INDICATOR.include?(lexeme)
+        :ordinal_indicator
+      elsif UNKNOWN_DATE.include?(lexeme)
+        :unknown_date
+      elsif lexeme.match?(/^x+$/)
+        :uncertainty_digits
+      elsif lexeme.match?(/^u+$/)
+        :uncertainty_digits
+      elsif lexeme.match?(/^s$/)
+        :s
+      elsif lexeme.match?(/^c$/)
+        :c
+      elsif lexeme.match?(/^bce$/)
+        :bce
+      elsif lexeme.match?(/^ce$/)
+        :ce
+      elsif lexeme.match?(/^bp$/)
+        :bp
+      else
+        :unknown_letters
+      end
+    end
+
+    def number
+      consume_digits
+      lexeme = norm[lexeme_start_p..(next_p - 1)]
+      type = "number_#{lexeme.length}_digit".to_sym
+      Token.new(type: type, lexeme: lexeme, location: current_location)
+    end
+
     def lookahead(offset = 1)
       lookahead_p = (next_p - 1) + offset
-      return "\0" if lookahead_p >= orig.length
+      return "\0" if lookahead_p >= norm.length
 
-      orig[lookahead_p]
+      norm[lookahead_p]
     end
 
     
-    def orig_completed?
-      next_p >= orig.length # our pointer starts at 0, so the last char is length - 1.
+    def norm_completed?
+      next_p >= norm.length # our pointer starts at 0, so the last char is length - 1.
     end
 
-    def orig_uncompleted?
-      !orig_completed?
+    def norm_uncompleted?
+      !norm_completed?
     end
 
     def current_location
@@ -76,5 +166,27 @@ module Emendate
       Location.new(next_p, 1)
     end
 
+    def alpha_numeric?(c)
+      alpha?(c) || digit?(c)
+    end
+
+    def alpha?(c)
+      c >= 'a' && c <= 'z' ||
+        c >= 'A' && c <= 'Z' ||
+        c == '_'
+    end
+
+    def digit?(c)
+      c >= '0' && c <= '9'
+    end
+
+    def normalize_orig
+      orig.downcase.sub('[?]', '?')
+        .sub('(?)', '?')
+        .gsub(/b\.?c\.?(e\.?|)/, 'bce')
+        .gsub(/(a\.?d\.?|c\.?e\.?)/, 'ce')
+        .gsub(/b\.?p\.?/, 'bp')
+        .sub(/^n\.?d\.?$/, 'nodate')
+    end
   end
 end
