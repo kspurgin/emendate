@@ -2,6 +2,16 @@ require 'spec_helper'
 
 RSpec.describe Emendate::Lexer do
   describe '#start_tokenization' do
+    context 'unknown token' do
+      it 'raises error' do
+        orig = '%'
+        expected = [:unknown, :eof]
+        lexer = Emendate::Lexer.new(orig)
+        lexer.start_tokenization
+        expect(lexer.tokens.map(&:type)).to eq(expected)
+      end
+    end
+    
     context 'comma' do
       it 'produces expected tokens' do
         orig = ','
@@ -115,8 +125,8 @@ RSpec.describe Emendate::Lexer do
 
       context 's' do
         it 'produces expected tokens' do
-          orig = 's ss'
-          expected = [:s, :unknown_letters, :eof]
+          orig = 's'
+          expected = [:s, :eof]
           lexer = Emendate::Lexer.new(orig)
           lexer.start_tokenization
           expect(lexer.tokens.map(&:type)).to eq(expected)
@@ -156,18 +166,22 @@ RSpec.describe Emendate::Lexer do
       end
 
       context 'unknown date' do
-        it 'produces expected tokens' do
+        it 'unknown produces expected tokens' do
           orig = 'unknown'
           expected = [:unknown_date, :eof]
           lexer = Emendate::Lexer.new(orig)
           lexer.start_tokenization
           expect(lexer.tokens.map(&:type)).to eq(expected)
         end
-      end
-
-      context 'unknown date (n.d.)' do
-        it 'produces expected tokens' do
+        it 'n.d. produces expected tokens' do
           orig = 'n.d.'
+          expected = [:unknown_date, :eof]
+          lexer = Emendate::Lexer.new(orig)
+          lexer.start_tokenization
+          expect(lexer.tokens.map(&:type)).to eq(expected)
+        end
+        it 'n. d. produces expected tokens' do
+          orig = 'n. d.'
           expected = [:unknown_date, :eof]
           lexer = Emendate::Lexer.new(orig)
           lexer.start_tokenization
@@ -189,6 +203,56 @@ RSpec.describe Emendate::Lexer do
         it 'produces expected tokens' do
           orig = 'b.c.e  bp c.e.'
           expected = [:bce, :bp, :ce, :eof]
+          lexer = Emendate::Lexer.new(orig)
+          lexer.start_tokenization
+          expect(lexer.tokens.map(&:type)).to eq(expected)
+        end
+      end
+
+      context 'early/late/mid' do
+        it 'produces expected tokens' do
+          orig = 'early late middle mid'
+          expected = [:early, :late, :middle, :middle, :eof]
+          lexer = Emendate::Lexer.new(orig)
+          lexer.start_tokenization
+          expect(lexer.tokens.map(&:type)).to eq(expected)
+        end
+      end
+
+      context 'before/after' do
+        it 'produces expected tokens' do
+          orig = 'before pre after post'
+          expected = [:before, :before, :after, :after, :eof]
+          lexer = Emendate::Lexer.new(orig)
+          lexer.start_tokenization
+          expect(lexer.tokens.map(&:type)).to eq(expected)
+        end
+      end
+
+      context 'and' do
+        it 'produces expected tokens' do
+          orig = '& and'
+          expected = [:and, :and, :eof]
+          lexer = Emendate::Lexer.new(orig)
+          lexer.start_tokenization
+          expect(lexer.tokens.map(&:type)).to eq(expected)
+        end
+      end
+
+      context 'range indicator' do
+        it 'produces expected tokens' do
+          orig = 'to'
+          expected = [:range_indicator, :eof]
+          lexer = Emendate::Lexer.new(orig)
+          lexer.start_tokenization
+          expect(lexer.tokens.map(&:type)).to eq(expected)
+        end
+      end
+
+      context 'unknown alpha string' do
+        it 'produces expected tokens' do
+          orig = 'somethingweird'
+          expected = [:unknown, :eof]
           lexer = Emendate::Lexer.new(orig)
           lexer.start_tokenization
           expect(lexer.tokens.map(&:type)).to eq(expected)

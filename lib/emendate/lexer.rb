@@ -4,16 +4,21 @@ module Emendate
     # c - at beginning = circa, at end = century
     # nd - if directly after number, ordinal indicator; otherwise unknown date. normalize_orig attempts
     #      to clear this up for most cases.
+    AFTER = %w[after post].freeze
+    AND = ['&', 'and'].freeze
+    BEFORE = %w[before pre].freeze
     CENTURY = %w[century cent].freeze
     CIRCA = %w[ca circa].freeze
     COMMA = ','
     DAYS = (Date::DAYNAMES + Date::ABBR_DAYNAMES).compact.map(&:downcase).freeze
     DOT = '.'
     HYPHEN = ["\u002D", "\u2010", "\u2011", "\u2012", "\u2013", "\u2014", "\u2015", "\u2043"].freeze
+    MIDDLE = %w[middle mid].freeze
     MONTHS = (Date::MONTHNAMES + Date::ABBR_MONTHNAMES).compact.map(&:downcase).freeze
     QUESTION = '?'
     OR_INDICATOR = %w[or].freeze
     ORDINAL_INDICATOR = %w[st nd rd th d].freeze
+    RANGE_INDICATOR = %w[to]
     SLASH = '/'.freeze
     SPACE = ' '.freeze
     SQUARE_BRACKET_OPEN = '['
@@ -34,7 +39,6 @@ module Emendate
       while norm_uncompleted?
         tokenize
       end
-
       tokens << Token.new(type: :eof, lexeme: '', location: after_source_end_location)
     end
 
@@ -68,8 +72,9 @@ module Emendate
           letter
         end
 
-      token = Token.new(lexeme: c, type: :unknown, location: current_location) if token.nil?
-      
+        token = Token.new(lexeme: c, type: :unknown, location: current_location) if token.nil?
+
+        
       tokens << token
     end
 
@@ -98,40 +103,55 @@ module Emendate
     def letter
       consume_letters
       lexeme = norm[lexeme_start_p..(next_p - 1)]
-      Token.new(type: letter_type(lexeme), lexeme: lexeme, location: current_location)
+      type = letter_type(lexeme)
+      Token.new(type: type, lexeme: lexeme, location: current_location)
     end
 
     def letter_type(lexeme)
-      if CENTURY.include?(lexeme)
+      if AFTER.include?(lexeme)
+        :after
+      elsif AND.include?(lexeme)
+        :and
+      elsif BEFORE.include?(lexeme)
+        :before
+      elsif CENTURY.include?(lexeme)
         :century
       elsif CIRCA.include?(lexeme)
         :approximate
       elsif DAYS.include?(lexeme)
         :day_of_week_alpha
-      elsif  MONTHS.include?(lexeme)
+      elsif MIDDLE.include?(lexeme)
+        :middle
+      elsif MONTHS.include?(lexeme)
         :month_alpha
       elsif OR_INDICATOR.include?(lexeme)
         :or
       elsif ORDINAL_INDICATOR.include?(lexeme)
         :ordinal_indicator
+      elsif RANGE_INDICATOR.include?(lexeme)
+        :range_indicator
       elsif UNKNOWN_DATE.include?(lexeme)
         :unknown_date
       elsif lexeme.match?(/^x+$/)
         :uncertainty_digits
       elsif lexeme.match?(/^u+$/)
         :uncertainty_digits
-      elsif lexeme.match?(/^s$/)
+      elsif lexeme == 's'
         :s
-      elsif lexeme.match?(/^c$/)
+      elsif lexeme == 'c'
         :c
-      elsif lexeme.match?(/^bce$/)
+      elsif lexeme == 'bce'
         :bce
-      elsif lexeme.match?(/^ce$/)
+      elsif lexeme == 'ce'
         :ce
-      elsif lexeme.match?(/^bp$/)
+      elsif lexeme == 'bp'
         :bp
+      elsif lexeme == 'early'
+        :early
+      elsif lexeme == 'late'
+        :late
       else
-        :unknown_letters
+        :unknown
       end
     end
 
@@ -172,8 +192,7 @@ module Emendate
 
     def alpha?(c)
       c >= 'a' && c <= 'z' ||
-        c >= 'A' && c <= 'Z' ||
-        c == '_'
+        c == '&'
     end
 
     def digit?(c)
@@ -186,7 +205,8 @@ module Emendate
         .gsub(/b\.?c\.?(e\.?|)/, 'bce')
         .gsub(/(a\.?d\.?|c\.?e\.?)/, 'ce')
         .gsub(/b\.?p\.?/, 'bp')
-        .sub(/^n\.?d\.?$/, 'nodate')
+        .sub(/^n\.? ?d\.?$/, 'nodate')
+        .sub(/(st|nd|rd|th) c\.?$/, '\1 century')
     end
   end
 end
