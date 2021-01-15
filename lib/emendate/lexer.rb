@@ -23,7 +23,7 @@ module Emendate
     SPACE = ' '.freeze
     SQUARE_BRACKET_OPEN = '['
     SQUARE_BRACKET_CLOSE = ']'
-    UNKNOWN_DATE = %w[nodate unknown].freeze
+    UNKNOWN_DATE = %w[nodate undated unknown].freeze
     
     attr_reader :orig, :norm, :tokens
     attr_accessor :next_p, :lexeme_start_p
@@ -158,8 +158,7 @@ module Emendate
     def number
       consume_digits
       lexeme = norm[lexeme_start_p..(next_p - 1)]
-      type = "number_#{lexeme.length}_digit".to_sym
-      Token.new(type: type, lexeme: lexeme, location: current_location)
+      Token.new(type: :number, lexeme: lexeme, location: current_location)
     end
 
     def lookahead(offset = 1)

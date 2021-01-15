@@ -75,7 +75,7 @@ RSpec.describe Emendate::Lexer do
     context 'numbers' do
       it 'produces expected tokens' do
         orig = '1 22 333 4444'
-        expected = [:number_1_digit, :number_2_digit, :number_3_digit, :number_4_digit, :eof]
+        expected = [:number, :number, :number, :number, :eof]
         lexer = Emendate::Lexer.new(orig)
         lexer.start_tokenization
         expect(lexer.tokens.map(&:type)).to eq(expected)

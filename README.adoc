@@ -1,0 +1,157 @@
+= Emendate
+
+Lexer, parser, and manipulator for messy date metadata values
+
+== Installation
+
+Add this line to your application's Gemfile:
+
+--------------------------------------------------
+gem 'emendate'
+--------------------------------------------------
+
+And then execute:
+
+`$ bundle install`
+
+Or install it yourself as:
+
+`$ gem install emendate`
+
+== Notes
+
+Islandora has no built-in date functionality. It uses the pre-parsed values in MODS (I7) or Drupal fields (I8), so we can basically do whatever with the date parsing.
+
+=== 2/3/2020, 2-3-2020, etc
+Is this Feb 3 or March 2?
+
+Make option. Default to Feb 3.
+
+=== 2010-12, 2010/12
+
+Is this December 2010, or 2010 - 2012?
+
+Make option. Default to 2010 - 2012
+
+
+EDTF uses two digit values in the ambiguous position here to indicate seasons/quarters/semesters:
+
+ - 21     Spring (independent of location)
+ - 22     Summer (independent of location)
+ - 23     Autumn (independent of location)
+ - 24     Winter (independent of location)
+ - 25     Spring - Northern Hemisphere
+ - 26     Summer - Northern Hemisphere
+ - 27     Autumn - Northern Hemisphere
+ - 28     Winter - Northern Hemisphere
+ - 29     Spring - Southern Hemisphere
+ - 30     Summer - Southern Hemisphere
+ - 31     Autumn - Southern Hemisphere
+ - 32     Winter - Southern Hemisphere
+ - 33     Quarter 1 (3 months in duration)
+ - 34     Quarter 2 (3 months in duration)
+ - 35     Quarter 3 (3 months in duration)
+ - 36     Quarter 4 (3 months in duration)
+ - 37     Quadrimester 1 (4 months in duration)
+ - 38     Quadrimester 2 (4 months in duration)
+ - 39     Quadrimester 3 (4 months in duration)
+ - 40     Semestral 1 (6 months in duration)
+ - 41     Semestral 2 (6 months in duration)
+
+
+2010-20 - if 2-digit segment > 12  but <= 20, or > 41 it is no longer ambiguous and should be treated as year value
+
+2003-03 - if 2-digit segment <= to last 2 digits of first year, it is no longer ambiguous and should be treated as month.
+
+Need configurable options for:
+
+- 2-digit segment <= 12 (Default to year)
+- 2-digit segment 21-41 (options: season or year, default to year)
+
+=== Early/mid/late decade
+
+Examples: Early 1990s, mid-1990s, late 1990s
+
+There is no standard agreement anywhere about what years of the decade constitute early, mid, and late. Preferences for breaking this up include: 3-4-3 and 4-2-4.
+
+CollectionSpace's date parser handles this as follows:
+
+early 1990s = 1990-1993
+
+mid 1990s = 1994-1996
+
+late 1990s = 1997-1999
+
+
+This is different than what TimeTwister returns:
+
+early 1990s = 1990-1995
+
+mid 1990s = 1993-1998
+
+late 1990s = 1995-1999
+
+For a cohesive user experience between migration/batch import and use of CollectionSpace UI, we need to do what CS does.
+
+=== Early/mid/late year
+
+Examples: Early 2020, mid-2020, late 2020
+
+In Islandora we'll have to feed it pre-parsed values in MODS or Drupal fields.
+
+CollectionSpace parses these as follows, so we will go with that as the requirement:
+
+early 2020 = 2020-01-01 to 2020-04-30
+mid 2020 = 2020-05-01 to 2020-08-31
+late 2020 = 2020-09-01 to 2020-12-31
+
+=== Seasons (textual)
+Go with what CS does.
+
+*Winter 2020*
+
+CS = 2020-01-01 - 2020-03-31
+
+TT = 2020-01-01 - 2020-03-20
+
+*Spring 2020*
+
+CS = 2020-04-01 - 2020-06-30
+
+Timetwister = 2020-03-20 - 2002-06-21
+
+*Summer 2020*
+
+CS = 2020-07-01 - 2020-09-30
+
+TT = 2020-06-21 - 2020-09-23
+
+*Fall 2020*
+
+CS = 2020-10-01 - 2020-12-31
+
+TT = 2020-09-23 - 2020-12-22
+
+
+=== Before/after dates
+
+Example: before 1750
+
+Since CollectionSpace is museum oriented, it's possible we need to support *really* old dates.
+
+Cspace only parses a date like this into the latest date. Earliest/single date is nil. So, initially we will just return a single date value (not an inclusive range) (i.e. 1750-01-01), with "before" certainty value.
+
+Example: after 1750
+
+Since the latest date is TODAY, we have an end point and can return the inclusive range. Certainty "after" is assigned to the given date. Certainty "before" is assigned to the current date.
+
+=== Centuries
+
+example: 19th century
+
+CS = 1801-01-01 - 1900-12-31
+
+TT = 1800-01-01 - 1899-12-31
+
+Because of the difference in years used in setting ranges, I'm going to go with CS and not compare what early/mid/late values are set.
+
