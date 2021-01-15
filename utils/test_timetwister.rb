@@ -2,6 +2,16 @@
 
 require 'bundler/setup'
 require 'emendate'
+
+# it's weird to have bundler setup and inline together, but I don't want timetwister to be a
+#   development dependency
+require 'bundler/inline'
+
+gemfile do
+  source 'https://rubygems.org'
+  gem 'timetwister'
+end
+
 require 'timetwister'
 
 class TTTest
