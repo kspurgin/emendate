@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Lexer, parser, transformer for messy date metadata}
   spec.homepage      = "https://github.com/kspurgin/emendate"
   spec.license       = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.6.6")
 
   spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
