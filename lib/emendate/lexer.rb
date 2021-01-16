@@ -1,3 +1,5 @@
+#freeze
+
 module Emendate
   class Lexer
     # ambiguous things
@@ -158,7 +160,7 @@ module Emendate
     def number
       consume_digits
       lexeme = norm[lexeme_start_p..(next_p - 1)]
-      Token.new(type: :number, lexeme: lexeme, location: current_location)
+      NumberToken.new(type: :number, lexeme: lexeme, location: current_location)
     end
 
     def lookahead(offset = 1)
