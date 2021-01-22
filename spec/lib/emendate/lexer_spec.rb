@@ -75,7 +75,7 @@ RSpec.describe Emendate::Lexer do
     context 'numbers' do
       it 'produces expected tokens' do
         orig = '1 22 333 4444 55555'
-        expected = [:number, :number, :number, :number, :unknown, :eof]
+        expected = [:number1or2, :number1or2, :number3, :number4, :unknown, :eof]
         lexer = Emendate::Lexer.new(orig)
         lexer.start_tokenization
         expect(lexer.tokens.map(&:type)).to eq(expected)
@@ -96,7 +96,7 @@ RSpec.describe Emendate::Lexer do
       context 'alpha month' do
         it 'produces expected tokens' do
           orig = 'August Jan'
-          expected = [:month_alpha, :month_alpha, :eof]
+          expected = [:month_alpha, :month_abbr_alpha, :eof]
           lexer = Emendate::Lexer.new(orig)
           lexer.start_tokenization
           expect(lexer.tokens.map(&:type)).to eq(expected)
@@ -133,18 +133,6 @@ RSpec.describe Emendate::Lexer do
         end
       end
 
-      context 'c' do
-        # before date, indicates circa/approximate
-        # after, indicates century
-        it 'produces expected tokens' do
-          orig = 'c'
-          expected = [:c, :eof]
-          lexer = Emendate::Lexer.new(orig)
-          lexer.start_tokenization
-          expect(lexer.tokens.map(&:type)).to eq(expected)
-        end
-      end
-
       context 'century' do
         it 'produces expected tokens' do
           orig = 'cent century'
@@ -157,8 +145,8 @@ RSpec.describe Emendate::Lexer do
 
       context 'circa' do
         it 'produces expected tokens' do
-          orig = 'ca circa'
-          expected = [:approximate, :approximate, :eof]
+          orig = 'c ca circa'
+          expected = [:approximate, :approximate, :approximate, :eof]
           lexer = Emendate::Lexer.new(orig)
           lexer.start_tokenization
           expect(lexer.tokens.map(&:type)).to eq(expected)
