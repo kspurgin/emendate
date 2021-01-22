@@ -15,7 +15,7 @@ module Emendate
     DAYS = (Date::DAYNAMES + Date::ABBR_DAYNAMES).compact.map(&:downcase).freeze
     DOT = '.'
     HYPHEN = ["\u002D", "\u2010", "\u2011", "\u2012", "\u2013", "\u2014", "\u2015", "\u2043"].freeze
-    MIDDLE = %w[middle mid].freeze
+    PARTIAL = %w[early late middle mid].freeze
     MONTHS = Date::MONTHNAMES.compact.map(&:downcase).freeze
     MONTH_ABBREVS = Date::ABBR_MONTHNAMES.compact.map(&:downcase).freeze
     QUESTION = '?'
@@ -123,8 +123,8 @@ module Emendate
         :approximate
       elsif DAYS.include?(lexeme)
         :day_of_week_alpha
-      elsif MIDDLE.include?(lexeme)
-        :middle
+      elsif PARTIAL.include?(lexeme)
+        :partial
       elsif MONTHS.include?(lexeme)
         :month_alpha
       elsif MONTH_ABBREVS.include?(lexeme)
@@ -151,10 +151,6 @@ module Emendate
         :ce
       elsif lexeme == 'bp'
         :bp
-      elsif lexeme == 'early'
-        :early
-      elsif lexeme == 'late'
-        :late
       else
         :unknown
       end

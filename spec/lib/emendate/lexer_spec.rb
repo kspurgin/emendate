@@ -179,7 +179,7 @@ RSpec.describe Emendate::Lexer do
     context 'early/late/mid' do
       it 'produces expected tokens' do
         orig = 'early late middle mid'
-        expected = [:early, :late, :middle, :middle, :eof]
+        expected = [:partial, :partial, :partial, :partial, :eof]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
