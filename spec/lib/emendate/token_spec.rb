@@ -10,7 +10,7 @@ RSpec.describe Emendate::NumberToken do
       @t = Emendate::NumberToken.new(type: :number, lexeme: '12', location: @loc)
     end
     it 'sets type as expected' do
-      expect(@t.type).to eq(:number)
+      expect(@t.type).to eq(:number1or2)
     end
     it 'sets literal as expected' do
       expect(@t.literal).to eq(12)
@@ -50,5 +50,4 @@ RSpec.describe Emendate::NumberToken do
       }.to raise_error(Emendate::TokenLexemeError)
     end
   end
-
 end

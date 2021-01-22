@@ -22,13 +22,6 @@ module Emendate
     def to_s
       "#{type} #{lexeme} #{literal}"
     end
-
-    def ==(other)
-      type == other.type &&
-      lexeme == other.lexeme &&
-      literal == other.literal &&
-      location == other.location
-    end
   end
 
   class NumberToken < Token
@@ -44,17 +37,20 @@ module Emendate
         raise Emendate::TokenLexemeError.new('Number token must be created with lexeme containing only numeric digits')
       end
       
-      unless allowed_digits?
+      @digits = lexeme.length
+
+      if allowed_digits?
+        @type = digits <= 2 ? :number1or2 : "number#{digits}".to_sym
+      else
         @type = :unknown
       end
       @literal = lexeme.to_i
-      @digits = lexeme.length
     end
 
     private
 
     def allowed_digits?
-      [1, 2, 3, 4, 8].include?(lexeme.length) ? true : false
+      [1, 2, 3, 4, 8].include?(digits) ? true : false
     end
   end
 end

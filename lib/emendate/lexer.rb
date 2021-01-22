@@ -1,4 +1,4 @@
-#freeze
+# frozen_string_literal: true
 
 module Emendate
   class Lexer
@@ -16,7 +16,8 @@ module Emendate
     DOT = '.'
     HYPHEN = ["\u002D", "\u2010", "\u2011", "\u2012", "\u2013", "\u2014", "\u2015", "\u2043"].freeze
     MIDDLE = %w[middle mid].freeze
-    MONTHS = (Date::MONTHNAMES + Date::ABBR_MONTHNAMES).compact.map(&:downcase).freeze
+    MONTHS = Date::MONTHNAMES.compact.map(&:downcase).freeze
+    MONTH_ABBREVS = Date::ABBR_MONTHNAMES.compact.map(&:downcase).freeze
     QUESTION = '?'
     OR_INDICATOR = %w[or].freeze
     ORDINAL_INDICATOR = %w[st nd rd th d].freeze
@@ -126,6 +127,8 @@ module Emendate
         :middle
       elsif MONTHS.include?(lexeme)
         :month_alpha
+      elsif MONTH_ABBREVS.include?(lexeme)
+        :month_abbr_alpha
       elsif OR_INDICATOR.include?(lexeme)
         :or
       elsif ORDINAL_INDICATOR.include?(lexeme)
@@ -203,6 +206,7 @@ module Emendate
     def normalize_orig
       orig.downcase.sub('[?]', '?')
         .sub('(?)', '?')
+        .sub(/^c([^a-z])/, 'circa\1')
         .gsub(/b\.?c\.?(e\.?|)/, 'bce')
         .gsub(/(a\.?d\.?|c\.?e\.?)/, 'ce')
         .gsub(/b\.?p\.?/, 'bp')
