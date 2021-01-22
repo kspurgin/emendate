@@ -33,21 +33,21 @@ module Emendate
     def initialize(orig)
       @orig = orig
       @norm = normalize_orig
-      @tokens = []
+      @tokens = Emendate::TokenSet.new
       @next_p = 0
       @lexeme_start_p = 0
     end
 
-    def start_tokenization
+    def tokenize
       while norm_uncompleted?
-        tokenize
+        tokenization
       end
       tokens << Token.new(type: :eof, lexeme: '', location: after_source_end_location)
     end
 
     private
 
-    def tokenize
+    def tokenization
       self.lexeme_start_p = next_p
       token = nil
 

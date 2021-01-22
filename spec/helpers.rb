@@ -151,15 +151,26 @@ module Helpers
     'late 1800s' => [{ start: '1867-01-01', end: '1899-12-31', tags: %i[inclusive_range approximate centuries partial] }],
   }
 
-  def tokenize_example(str)
-    lexed = Emendate::Lexer.new(str).start_tokenization
-    tokens = lexed.map(&:type)
+  def lex(str)
+    lexed = Emendate::Lexer.new(str)
+    lexed.tokenize
+    lexed
+  end
+
+  def tokenize(str)
+    tokens = lex(str).map(&:type)
     puts "#{str}\t\t#{tokens.inspect}"
+  end
+
+  def parse(str)
+    p = Emendate::Parser.new(orig: str, tokens: l = lex(str).tokens)
+    p.parse
+    p
   end
 
   def tokenize_examples
     ex = EXAMPLES.keys
-    lexed = ex.map{ |str| Emendate::Lexer.new(str).start_tokenization }
+    lexed = ex.map{ |str| Emendate::Lexer.new(str).tokenize }
     tokens = lexed.map{ |t| t.map(&:type) }
     ex.zip(tokens)
   end
@@ -171,7 +182,7 @@ module Helpers
 
   def example_tokens_by_token
     results = tokenize_examples.sort_by{ |ex| ex[1] }
-    results.each{ |str, tokens| puts "#{tokens.join(' ')}  -- Sring: #{str}" }
+    results.each{ |str, tokens| puts "#{tokens.join(' ')}  -- String: #{str}" }
   end
 
   def example_length

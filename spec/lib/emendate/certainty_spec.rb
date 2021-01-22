@@ -3,8 +3,7 @@ require 'spec_helper'
 RSpec.describe Emendate::Certainty do
   describe '#eof' do
     before(:all) do
-      @l = Emendate::Lexer.new('1 2 3')
-      @l.start_tokenization
+      @l = Emendate.lex('1 2 3')
     end
     context 'tokens include eof' do
       before(:all){ @c = Emendate::Certainty.new(tokens: @l.tokens) }
@@ -27,8 +26,7 @@ RSpec.describe Emendate::Certainty do
   describe '#check' do
     context '[circa 2002?]' do
       before(:all) do
-        l = Emendate::Lexer.new('[circa 2002?]')
-        l.start_tokenization
+        l = Emendate.lex('[circa 2002?]')
         @c = Emendate::Certainty.new(tokens: l.tokens).check
       end
       it 'values include: supplied, approximate, and questionable' do
@@ -43,8 +41,7 @@ RSpec.describe Emendate::Certainty do
 
     context 'c. 2002' do
       before(:all) do
-        l = Emendate::Lexer.new('c. 2002')
-        l.start_tokenization
+        l = Emendate.lex('c. 2002')
         @c = Emendate::Certainty.new(tokens: l.tokens).check
       end
       it 'values include: approximate' do
@@ -59,8 +56,7 @@ RSpec.describe Emendate::Certainty do
 
     context '[1997]-[1998]' do
       before(:all) do
-        @l = Emendate::Lexer.new('[1997]-[1998]')
-        @l.start_tokenization
+        @l = Emendate.lex('[1997]-[1998]')
         @c = Emendate::Certainty.new(tokens: @l.tokens).check
       end
       it 'no values' do

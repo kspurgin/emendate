@@ -7,9 +7,8 @@ RSpec.describe Emendate::Parser do
         ex = Helpers::EXAMPLES.select do |ex, arr|
           arr.select{ |h| h[:tags].include?(:indicates_no_date) }.length > 0
         end
-        lex = ex.keys.map{ |str| Emendate::Lexer.new(str) }.each{ |l| l.start_tokenization}
-        parse = lex.map{ |l| Emendate::Parser.new(orig: l.orig, tokens: l.tokens)}.each{ |p| p.parse }
-        results = parse.map{ |p| p.result.dates }.uniq.flatten
+        parsed = ex.keys.map{ |str| Emendate.parse(str) }
+        results = parsed.map{ |p| p.result.dates }.uniq.flatten
         expect(results).to eq([])
       end
     end
@@ -19,7 +18,7 @@ RSpec.describe Emendate::Parser do
         ex = Helpers::EXAMPLES.select do |ex, arr|
           arr.select{ |h| h[:tags].include?(:unparseable) }.length > 0
         end
-        lex = ex.keys.map{ |str| Emendate::Lexer.new(str) }.each{ |l| l.start_tokenization}
+        lex = ex.keys.map{ |str| Emendate.lex(str) }
         results = []
         parse = lex.map{ |l| Emendate::Parser.new(orig: l.orig, tokens: l.tokens)}.each do |parser|
           begin
@@ -34,12 +33,8 @@ RSpec.describe Emendate::Parser do
       end
     end
 
-    it 'does test' do
-      lex = Emendate::Lexer.new('2020-Jan-31')
-      lex.start_tokenization
-      parser = Emendate::Parser.new(orig: lex.orig, tokens: lex.tokens)
-      parsed = parser.parse
-      binding.pry
+    xit 'does test' do
+      parsed = Emendate.parse('2020-Jan-31')
     end
   end
 end

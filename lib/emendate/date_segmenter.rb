@@ -29,7 +29,6 @@ module Emendate
         consume
 
         dateseg = recursive_parse
-        binding.pry
       end
     end
 
@@ -71,8 +70,6 @@ module Emendate
       consume if nxt_sep?
       consume
       next_function = determine_post_year_parsing_function
-      binding.pry
-      ds
     end
 
     def parse_yyyymm
