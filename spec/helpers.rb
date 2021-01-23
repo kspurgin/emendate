@@ -170,8 +170,28 @@ module Helpers
 
   def tokenize_examples
     ex = EXAMPLES.keys
-    lexed = ex.map{ |str| Emendate::Lexer.new(str).tokenize }
-    tokens = lexed.map{ |t| t.map(&:type) }
+    lexed = ex.map{ |str| Emendate.lex(str) }
+    tokens = lexed.map{ |t| t.tokens.types }
+    ex.zip(tokens)
+  end
+
+  def parsed_examples
+    ex = EXAMPLES.keys
+    parsed = []
+    errs = []
+    err_strs = []
+    ex.each do |str|
+      begin
+        r = Emendate.parse(str)
+      rescue StandardError => e
+        err_strs << str
+        errs << e
+      else
+        parsed << r
+      end
+    end
+    tokens = parsed.map{ |t| t.tokens.types }
+    ex = ex.reject{ |e| err_strs.include?(e) }
     ex.zip(tokens)
   end
 
@@ -182,6 +202,11 @@ module Helpers
 
   def example_tokens_by_token
     results = tokenize_examples.sort_by{ |ex| ex[1] }
+    results.each{ |str, tokens| puts "#{tokens.join(' ')}  -- String: #{str}" }
+  end
+
+  def parsed_tokens_by_token
+    results = parsed_examples.sort_by{ |ex| ex[1] }
     results.each{ |str, tokens| puts "#{tokens.join(' ')}  -- String: #{str}" }
   end
 
