@@ -35,9 +35,10 @@ module Emendate
         
       raise Emendate::UnparseableTokenError.new(orig: orig, tokens: tokens) if types.include?(:unknown)
 
-      do_initial_certainty_check
+      #do_initial_certainty_check
       convert_alphabetic_months
-      tag_date_parts
+      translate_ordinals
+      #tag_date_parts
       
       #finalize
       self

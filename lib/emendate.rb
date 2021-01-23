@@ -17,6 +17,7 @@ require 'emendate/alpha_month_converter'
 require 'emendate/parsed_date'
 require 'emendate/token'
 require 'emendate/token_set'
+require 'emendate/ordinal_translator'
 
 require_relative '../spec/helpers'
 
