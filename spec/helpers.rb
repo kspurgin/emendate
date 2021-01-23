@@ -175,7 +175,7 @@ module Helpers
     ex.zip(tokens)
   end
 
-  def parsed_examples
+  def parse_examples
     ex = EXAMPLES.keys
     parsed = []
     errs = []
@@ -190,8 +190,17 @@ module Helpers
         parsed << r
       end
     end
-    tokens = parsed.map{ |t| t.tokens.types }
-    ex = ex.reject{ |e| err_strs.include?(e) }
+    { results: parsed, errs: errs, err_strs: err_strs }
+  end
+
+  def parsed_example_tokens(type = 'all')
+    parsed = parse_examples
+    if type == 'date'
+      tokens = parsed[:results].map{ |t| t.tokens.date_part_types }
+    else
+      tokens = parsed[:results].map{ |t| t.tokens.types }
+    end
+    ex = EXAMPLES.keys.reject{ |e| parsed[:err_strs].include?(e) }
     ex.zip(tokens)
   end
 
@@ -205,10 +214,11 @@ module Helpers
     results.each{ |str, tokens| puts "#{tokens.join(' ')}  -- String: #{str}" }
   end
 
-  def parsed_tokens_by_token
-    results = parsed_examples.sort_by{ |ex| ex[1] }
+  def parsed_tokens_by_token(type = 'all')
+    results = parsed_example_tokens(type).sort_by{ |ex| ex[1] }
     results.each{ |str, tokens| puts "#{tokens.join(' ')}  -- String: #{str}" }
   end
+
 
   def example_length
     EXAMPLES.keys.sort_by{ |k| k.length }[-1].length
