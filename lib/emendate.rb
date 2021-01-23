@@ -40,4 +40,6 @@ module Emendate
   MONTH_LKUP = get_month_lookup.freeze
   MONTH_ABBR_LKUP = get_month_abbr_lookup.freeze
 
+  DATE_PART_TOKEN_TYPES = %i[number1or2 number3 number4 number6 number8 s century
+                             uncertainty_digits era number_month]
 end
