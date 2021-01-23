@@ -14,13 +14,14 @@ module Emendate
     COMMA = ','
     DAYS = (Date::DAYNAMES + Date::ABBR_DAYNAMES).compact.map(&:downcase).freeze
     DOT = '.'
+    ERA = %w[bce ce bp].freeze
     HYPHEN = ["\u002D", "\u2010", "\u2011", "\u2012", "\u2013", "\u2014", "\u2015", "\u2043"].freeze
-    PARTIAL = %w[early late middle mid].freeze
     MONTHS = Date::MONTHNAMES.compact.map(&:downcase).freeze
     MONTH_ABBREVS = Date::ABBR_MONTHNAMES.compact.map(&:downcase).freeze
     QUESTION = '?'
     OR_INDICATOR = %w[or].freeze
     ORDINAL_INDICATOR = %w[st nd rd th d].freeze
+    PARTIAL = %w[early late middle mid].freeze
     RANGE_INDICATOR = %w[to]
     SLASH = '/'.freeze
     SPACE = ' '.freeze
@@ -122,6 +123,8 @@ module Emendate
         :approximate
       elsif DAYS.include?(lexeme)
         :day_of_week_alpha
+      elsif ERA.include?(lexeme)
+        :era
       elsif PARTIAL.include?(lexeme)
         :partial
       elsif MONTHS.include?(lexeme)
@@ -142,14 +145,6 @@ module Emendate
         :uncertainty_digits
       elsif lexeme == 's'
         :s
-      elsif lexeme == 'c'
-        :c
-      elsif lexeme == 'bce'
-        :bce
-      elsif lexeme == 'ce'
-        :ce
-      elsif lexeme == 'bp'
-        :bp
       else
         :unknown
       end
