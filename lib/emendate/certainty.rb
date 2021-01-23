@@ -3,12 +3,11 @@
 module Emendate
   class Certainty
 
-    attr_reader :tokens, :eof, :types, :values
+    attr_reader :orig, :result, :values
 
     def initialize(tokens:)
-      @tokens = tokens
-      handle_eof
-      @types = set_types
+      @orig = tokens
+      @result = tokens.clone
       @values = []
     end
 
@@ -16,34 +15,13 @@ module Emendate
       until done? do
         process_certainty
       end
-      finalize
+      self
     end
 
     private
 
-    def finalize
-      unless eof.nil?
-        tokens << eof
-        set_types
-      end
-      self
-    end
-
-    def set_types
-      @types = tokens.map(&:type)
-    end
-    
-    def handle_eof
-      if tokens[-1].type == :eof
-        @eof = tokens[-1].clone
-        tokens.pop
-      else
-        @eof = nil
-      end
-    end
-
     def process_certainty
-      case set_types
+      case result.types
         in [:square_bracket_open, *remain, :square_bracket_close]
         process_supplied(remain)
         in [:approximate, *]
@@ -57,19 +35,19 @@ module Emendate
 
     def process_questionable
       values << :questionable
-      tokens.pop
+      result.pop
     end
     
     def process_approximate
       values << :approximate
-      tokens.shift
+      result.shift
     end
     
     def process_supplied(remain)
       unless remain.include?(:square_bracket_open) || remain.include?(:square_bracket_close)
         values << :supplied
-        tokens.shift
-        tokens.pop
+        result.shift
+        result.pop
       end
     end
     
@@ -78,7 +56,7 @@ module Emendate
     end
 
     def supplied_indicator?
-      case set_types
+      case result.types
         in [:square_bracket_open, *remain, :square_bracket_close]
         remain.include?(:square_bracket_open) || remain.include?(:square_bracket_close) ? false : true
       else
@@ -87,7 +65,7 @@ module Emendate
     end
 
     def approximate_indicator?
-      case set_types
+      case result.types
         in [:approximate, *]
         true
         in [:c, *]
@@ -98,7 +76,7 @@ module Emendate
     end
 
     def questionable_indicator?
-      case set_types
+      case result.types
       in [*, :question]
         true
       else

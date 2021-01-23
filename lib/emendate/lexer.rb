@@ -42,7 +42,6 @@ module Emendate
       while norm_uncompleted?
         tokenization
       end
-      tokens << Token.new(type: :eof, lexeme: '', location: after_source_end_location)
     end
 
     private

@@ -50,6 +50,11 @@ module Emendate
       converter = Emendate::AlphaMonthConverter.new(tokens: tokens)
       @tokens = converter.convert
     end
+
+    def translate_ordinals
+      translator = Emendate::OrdinalTranslator.new(tokens: tokens)
+      @tokens = translator.translate
+    end
     
     def tag_date_parts
       tagger = Emendate::DatePartTagger.new(tokens: tokens)

@@ -3,7 +3,7 @@
 module Emendate
   class TokenSet < Array
     def types
-      @tokens.map(&:type)
+      self.map(&:type)
     end
 
     def type_string

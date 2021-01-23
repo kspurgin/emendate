@@ -8,7 +8,7 @@ RSpec.describe Emendate::OrdinalTranslator do
         c = Emendate::OrdinalTranslator.new(tokens: l.tokens)
         c.translate
         result = c.result.map(&:type)
-        expect(result).to eq([:number1or2, :eof])
+        expect(result).to eq([:number1or2])
       end
     end
 
