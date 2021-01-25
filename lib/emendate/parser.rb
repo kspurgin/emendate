@@ -21,7 +21,7 @@ module Emendate
   class Parser
     attr_reader :orig, :tokens, :result, :errors
 
-    def initialize(orig:, tokens:)
+    def initialize(orig:, tokens:, options: {})
       @orig = orig
       @tokens = tokens
       @result = Emendate::Result.new(orig: orig)

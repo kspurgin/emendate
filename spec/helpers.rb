@@ -148,6 +148,7 @@ module Helpers
     '1800s' => [{ start: '1800-01-01', end: '1899-12-31', tags: %i[inclusive_range approximate centuries] }],
     '18XX' => [{ start: '1800-01-01', end: '1899-12-31', tags: %i[inclusive_range approximate centuries] }],
     '18uu' => [{ start: '1800-01-01', end: '1899-12-31', tags: %i[inclusive_range approximate centuries] }],
+    '1uuu' => [{ start: '1000-01-01', end: '1999-12-31', tags: %i[inclusive_range approximate millennia] }],
     'late 1800s' => [{ start: '1867-01-01', end: '1899-12-31', tags: %i[inclusive_range approximate centuries partial] }],
   }
 
@@ -203,7 +204,13 @@ module Helpers
   end
 
   def unique_token_patterns(type: :all)
-    parsed_example_tokens(type: type).map{ |parsed| parsed[1] }.uniq.sort
+    results = parsed_example_tokens(type: type)
+    patterns = results.map{ |parsed| parsed[1] }.uniq.sort.map{ |pattern| [pattern, []] }.to_h
+    results.each{ |r| patterns[r[1]] << r[0] }
+    patterns.each do |pattern, examples|
+      puts pattern.join(' ')
+      examples.each{ |e| puts '     ' + e }
+    end
   end
   
   def example_length

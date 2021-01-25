@@ -16,6 +16,7 @@ require 'emendate/date_utils'
 require 'emendate/alpha_month_converter'
 require 'emendate/parsed_date'
 require 'emendate/token'
+require 'emendate/options'
 require 'emendate/token_set'
 require 'emendate/ordinal_translator'
 
@@ -39,8 +40,8 @@ module Emendate
     puts "#{str}\t\t#{tokens.inspect}"
   end
 
-  def parse(str)
-    p = Emendate::Parser.new(orig: str, tokens: l = lex(str).tokens)
+  def parse(str, options = {})
+    p = Emendate::Parser.new(orig: str, tokens: l = lex(str).tokens, options: options)
     p.parse
     p
   end
