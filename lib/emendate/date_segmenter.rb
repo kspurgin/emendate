@@ -3,23 +3,24 @@
 module Emendate
 
   class DateSegment
-    attr_reader :tokens, :type, :parts
-    def initialize(tokens:, type: :unknown_specificity)
-      @tokens = tokens
-      @type = type
-      @parts = []
+    attr_accessor :tokens, :type, :year, :month, :daynumber, :era
+    def initialize()
+      @tokens = Emendate::TokenSet.new
+      @type = :unknown_type
     end
   end
   
   class DateSegmenter
-    attr_reader :orig, :tokens
+    include NumberUtils
+    
+    attr_reader :orig, :result
     attr_accessor :next_t, :start_t
 
-    DATESEP = [:hyphen, :slash].freeze
-    
+    DATESEP = %i[hyphen slash].freeze
+
     def initialize(tokens:)
       @orig = tokens
-      @tokens = []
+      @result = Emendate::TokenSet.new
       @next_t = 0
       @start_t = 0
     end
@@ -64,7 +65,13 @@ module Emendate
     end
 
     def parse_year
-      return Emendate::DateSegment.new(tokens: [current], type: :year) if nxt_terminator?
+      dateseg = Emendate::DateSegment.new
+      if nxt_terminator?
+        dateseg.tokens << current
+        dateseg.type = :year
+        dateseg.year = current.lexeme
+        return dateseg
+      end
       token_holder = []
       token_holder << current
       consume if nxt_sep?
@@ -75,7 +82,7 @@ module Emendate
     def parse_yyyymm
     end
 
-    def parse_compressed_iso8601
+    def parse_yyyymmdd
     end
 
     def passthrough
@@ -83,20 +90,20 @@ module Emendate
     end
 
     def determine_post_year_parsing_function
-      if current.type == :number1or2 && Emendate::NumberUtils.valid_month?(current.lexeme)
+      if current.type == :number1or2 && valid_month?(current.lexeme)
         :parse_year_month
-      elsif current.type == :number1or2 && Emendate::NumberUtils.valid_season?(current.lexeme)
+      elsif current.type == :number1or2 && valid_season?(current.lexeme)
         :parse_year_season
       end
     end
     
     def determine_parsing_function
-      if [:number4, :number3].include?(current.type) && Emendate::NumberUtils.valid_year?(current.lexeme)
+      if [:number4, :number3].include?(current.type) && valid_year?(current.lexeme)
         :parse_year
       elsif current.type == :number6
         :parse_yyyymm
       elsif current.type == :number8
-        :parse_compressed_iso8601
+        :parse_yyyymmdd
       else
         :passthrough
       end

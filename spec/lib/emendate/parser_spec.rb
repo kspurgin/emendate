@@ -33,8 +33,9 @@ RSpec.describe Emendate::Parser do
       end
     end
 
-    xit 'does test' do
+    it 'does test' do
       parsed = Emendate.parse('2020-Jan-31')
+#      binding.pry
     end
   end
 end

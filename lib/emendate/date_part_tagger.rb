@@ -2,6 +2,7 @@
 
 module Emendate
   class DatePartTagger
+    include NumberUtils
 
     attr_reader :orig, :tokens
 
@@ -28,13 +29,13 @@ module Emendate
 
     def analyze_1_or_2_digit_number(token)
       str = token.lexeme
-      if Emendate::NumberUtils.valid_day?(str) && Emendate::NumberUtils.valid_month?(str)
+      if valid_day?(str) && valid_month?(str)
         type = :month_or_day
-      elsif Emendate::NumberUtils.valid_day?(str)
+      elsif valid_day?(str)
         type = :day
-      elsif Emendate::NumberUtils.valid_month?(str)
+      elsif valid_month?(str)
         type = :month
-      elsif Emendate::NumberUtils.valid_season?(str)
+      elsif valid_season?(str)
         type = :season
       end
 

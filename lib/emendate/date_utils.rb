@@ -2,11 +2,12 @@
 
 module Emendate
   module DateUtils
+    include NumberUtils
     extend self
 
     # returns true if digits after a year could be interpreted as (month OR season) OR range
     def ambiguous_post_year_value?(year, digits)
-      possible_range?(year, digits) && Emendate::NumberUtils.valid_month_or_season?(digits) ? true : false
+      possible_range?(year, digits) && valid_month_or_season?(digits) ? true : false
     end
 
     # returns 2010 for 2020-10; returns 1999 for 1998-9
@@ -17,7 +18,7 @@ module Emendate
 
     # returns true if it's a possible range and it can't be month/season
     def is_range?(year, digits)
-      possible_range?(year, digits) && !Emendate::NumberUtils.valid_month_or_season?(digits) ? true : false
+      possible_range?(year, digits) && !valid_month_or_season?(digits) ? true : false
     end
 
     def month_number_lookup
@@ -37,7 +38,7 @@ module Emendate
     # 2020-21 -- true, the 21 could indicate 2021 as end of range, OR this could mean Spring 2020
     def possible_range?(year, digits)
       expanded = expand_shorter_digits(year, digits)
-      return false unless Emendate::NumberUtils.valid_year?(expanded)
+      return false unless valid_year?(expanded)
       expanded.to_i > year.to_i ? true : false
     end
   end
