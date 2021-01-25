@@ -4,6 +4,7 @@ module Emendate
   
   attr_reader :orig, :tokens
   class AlphaMonthConverter
+    include DateUtils
     def initialize(tokens:)
       @orig = tokens
       @tokens = []
@@ -13,9 +14,9 @@ module Emendate
       @orig.each do |t|
         case t.type
         when :month_alpha
-          @tokens << convert_month(t, Emendate::MONTH_LKUP)
+          @tokens << convert_month(t, month_number_lookup)
         when :month_abbr_alpha
-          @tokens << convert_month(t, Emendate::MONTH_ABBR_LKUP)
+          @tokens << convert_month(t, month_abbr_number_lookup)
         else
           @tokens << t
         end

@@ -151,23 +151,6 @@ module Helpers
     'late 1800s' => [{ start: '1867-01-01', end: '1899-12-31', tags: %i[inclusive_range approximate centuries partial] }],
   }
 
-  def lex(str)
-    lexed = Emendate::Lexer.new(str)
-    lexed.tokenize
-    lexed
-  end
-
-  def tokenize(str)
-    tokens = lex(str).map(&:type)
-    puts "#{str}\t\t#{tokens.inspect}"
-  end
-
-  def parse(str)
-    p = Emendate::Parser.new(orig: str, tokens: l = lex(str).tokens)
-    p.parse
-    p
-  end
-
   def tokenize_examples
     ex = EXAMPLES.keys
     lexed = ex.map{ |str| Emendate.lex(str) }

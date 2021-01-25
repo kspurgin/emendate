@@ -19,6 +19,18 @@ module Emendate
     def is_range?(year, digits)
       possible_range?(year, digits) && !Emendate::NumberUtils.valid_month_or_season?(digits) ? true : false
     end
+
+    def month_number_lookup
+      h = {}
+      Date::MONTHNAMES.compact.map(&:downcase).each_with_index{ |str, i| h[str] = i + 1 }
+      h
+    end
+
+    def month_abbr_number_lookup
+      h = {}
+      Date::ABBR_MONTHNAMES.compact.map(&:downcase).each_with_index{ |str, i| h[str] = i + 1 }
+      h
+    end
     
     # determines whether the number following a year could be the end of a range beginning with that year
     # 2020-10 -- false, the 10 has to be October

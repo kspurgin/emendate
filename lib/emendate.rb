@@ -25,21 +25,23 @@ module Emendate
   include Helpers
   extend self
 
-  def get_month_lookup
-    h = {}
-    Date::MONTHNAMES.compact.map(&:downcase).each_with_index{ |str, i| h[str] = i + 1 }
-    h
-  end
-
-  def get_month_abbr_lookup
-    h = {}
-    Date::ABBR_MONTHNAMES.compact.map(&:downcase).each_with_index{ |str, i| h[str] = i + 1 }
-    h
-  end
-  
-  MONTH_LKUP = get_month_lookup.freeze
-  MONTH_ABBR_LKUP = get_month_abbr_lookup.freeze
-
   DATE_PART_TOKEN_TYPES = %i[number1or2 number3 number4 number6 number8 s century
                              uncertainty_digits era number_month]
+
+  def lex(str)
+    lexed = Emendate::Lexer.new(str)
+    lexed.tokenize
+    lexed
+  end
+
+  def tokenize(str)
+    tokens = lex(str).map(&:type)
+    puts "#{str}\t\t#{tokens.inspect}"
+  end
+
+  def parse(str)
+    p = Emendate::Parser.new(orig: str, tokens: l = lex(str).tokens)
+    p.parse
+    p
+  end
 end
