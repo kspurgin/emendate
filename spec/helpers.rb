@@ -176,9 +176,9 @@ module Helpers
     { results: parsed, errs: errs, err_strs: err_strs }
   end
 
-  def parsed_example_tokens(type = 'all')
+  def parsed_example_tokens(type: :all)
     parsed = parse_examples
-    if type == 'date'
+    if type == :date
       tokens = parsed[:results].map{ |t| t.tokens.date_part_types }
     else
       tokens = parsed[:results].map{ |t| t.tokens.types }
@@ -202,7 +202,10 @@ module Helpers
     results.each{ |str, tokens| puts "#{tokens.join(' ')}  -- String: #{str}" }
   end
 
-
+  def unique_token_patterns(type: :all)
+    parsed_example_tokens(type: type).map{ |parsed| parsed[1] }.uniq.sort
+  end
+  
   def example_length
     EXAMPLES.keys.sort_by{ |k| k.length }[-1].length
   end
