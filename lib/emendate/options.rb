@@ -31,14 +31,21 @@ module Emendate
         # treats 2010-12 as 2010 - 2012
         # alternative: as_month would result in December 2010
         # this option is also applied to ambiguous season/year values
-        ambiguous_month_year: :as_year 
+        ambiguous_month_year: :as_year,
+        # treats 80 as 1980
+        # alternative: literal would treat it as literally the year 80
+        two_digit_year_handling: :coerce,
+        # numbers less than or equal to this treated as current century
+        # numbers greater than this are treated as the previous century
+        rollover_year: DateTime.now.year.to_s[-1, 2]
       }
     end
 
     def accepted_nondefaults
       {
         ambiguous_month_day: [:as_day_month],
-        ambiguous_month_year: [:as_month] 
+        ambiguous_month_year: [:as_month],
+        two_digit_year_handling: [:literal]
       }
     end
     
@@ -60,6 +67,7 @@ module Emendate
     end
 
     def verify_value(opt)
+      return unless accepted_nondefaults.key?(opt)
       value = options[opt]
       return true if value == default[opt]
       return true if accepted_nondefaults[opt].include?(value)

@@ -27,6 +27,7 @@ module Helpers
     '15 Feb 2020' => [{ start: '2020-02-15', end: '2020-02-15', tags: %i[] }],
     '15 Feb. 2020' => [{ start: '2020-02-15', end: '2020-02-15', tags: %i[] }],
     '02-15-20' => [{ start: '2020-02-15', end: '2020-02-15', tags: %i[two_digit_year option] }],
+    '02-10-20' => [{ start: '2020-02-10', end: '2020-02-10', tags: %i[two_digit_year option ambiguous_year_month] }],
     '1/2/2000 - 12/21/2001' => [{ start: '2000-01-02', end: '2001-12-21', tags: %i[inclusive_range] }],
     'VIII.XIV.MMXX' => [{ start: nil, end: nil, tags: %i[unparseable] }],
     'March 2020' => [{ start: '2020-03-01', end: '2020-03-31', tags: %i[month_year] }],
@@ -207,9 +208,9 @@ module Helpers
     results = parsed_example_tokens(type: type)
     patterns = results.map{ |parsed| parsed[1] }.uniq.sort.map{ |pattern| [pattern, []] }.to_h
     results.each{ |r| patterns[r[1]] << r[0] }
-    patterns.each do |pattern, examples|
+    patterns.keys.sort.each do |pattern|
       puts pattern.join(' ')
-      examples.each{ |e| puts '     ' + e }
+      patterns[pattern].each{ |e| puts '     ' + e }
     end
   end
   

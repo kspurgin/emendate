@@ -1,5 +1,5 @@
-require "bundler/setup"
-require "emendate"
+require 'bundler/setup'
+require 'emendate'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

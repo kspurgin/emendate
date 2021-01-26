@@ -38,7 +38,7 @@ module Emendate
       #do_initial_certainty_check
       convert_alphabetic_months
       translate_ordinals
-      #tag_date_parts
+#      tag_date_parts
       
       #finalize
       self

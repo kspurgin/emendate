@@ -50,7 +50,7 @@ module Emendate
     private
 
     def allowed_digits?
-      [1, 2, 3, 4, 8].include?(digits) ? true : false
+      [1, 2, 3, 4, 6, 8].include?(digits) ? true : false
     end
   end
 end

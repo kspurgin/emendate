@@ -2,7 +2,7 @@
 
 module Emendate
   module DateUtils
-    include NumberUtils
+    include Emendate::NumberUtils
     extend self
 
     # returns true if digits after a year could be interpreted as (month OR season) OR range
@@ -40,6 +40,13 @@ module Emendate
       expanded = expand_shorter_digits(year, digits)
       return false unless valid_year?(expanded)
       expanded.to_i > year.to_i ? true : false
+    end
+
+    def two_digit_year(yr)
+      year = yr.is_a?(String) ? yr : yr.to_s
+      max = year.length - 1
+      min = max - 1
+      year[min..max]
     end
   end
 end

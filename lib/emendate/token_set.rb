@@ -9,7 +9,11 @@ module Emendate
     def date_part_types
       date_parts.map(&:type)
     end
-    
+
+    def date_part_type_string
+      date_part_types.join(' ')
+    end
+
     def types
       self.map(&:type)
     end
