@@ -2,6 +2,9 @@
 require 'date'
 require 'fileutils'
 
+# external gems
+require 'aasm'
+
 # dev
 require 'pry-byebug'
 
