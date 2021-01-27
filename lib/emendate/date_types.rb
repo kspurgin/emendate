@@ -1,5 +1,6 @@
-require 'emendate/date_types/date_type'
-require 'emendate/date_types/year'
-require 'emendate/date_types/century'
-require 'emendate/date_types/year_month'
-require 'emendate/date_types/year_month_day'
+# frozen_string_literal: true
+
+module Emendate
+  module DateTypes
+  end
+end

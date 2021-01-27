@@ -1,31 +1,18 @@
 # std lib
 require 'date'
+require 'fileutils'
 
 # dev
 require 'pry-byebug'
 
-require 'emendate/version'
+require 'emendate/date_types/date_type'
 
-#mix ins
-require 'emendate/date_utils'
-require 'emendate/number_utils' #required before date_utils
-
-require 'emendate/date_types'
-
-require 'emendate/alpha_month_converter'
-require 'emendate/certainty'
-require 'emendate/date_segmenter'
-require 'emendate/format_standardizer'
-require 'emendate/lexer'
-require 'emendate/location'
-require 'emendate/options'
-require 'emendate/ordinal_translator'
-require 'emendate/parsed_date'
-require 'emendate/parser'
-require 'emendate/result'
-require 'emendate/token'
-require 'emendate/token_set'
-
+Dir[File.dirname(__FILE__) + '/../lib/emendate/*.rb'].each do |file| 
+  require "emendate/#{File.basename(file, File.extname(file))}"
+end
+Dir[File.dirname(__FILE__) + '/../lib/emendate/date_types/*.rb'].each do |file| 
+  require "emendate/date_types/#{File.basename(file, File.extname(file))}"
+end
 
 require_relative '../spec/helpers'
 

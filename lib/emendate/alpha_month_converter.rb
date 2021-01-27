@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'emendate/date_utils'
+
 module Emendate
   
   class AlphaMonthConverter
