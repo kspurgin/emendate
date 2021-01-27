@@ -7,8 +7,8 @@ require 'pry-byebug'
 require 'emendate/version'
 
 #mix ins
-require 'emendate/number_utils' #required before date_utils
 require 'emendate/date_utils'
+require 'emendate/number_utils' #required before date_utils
 
 require 'emendate/date_types'
 
