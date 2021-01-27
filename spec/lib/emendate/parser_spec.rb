@@ -4,11 +4,9 @@ RSpec.describe Emendate::Parser do
   describe '#parse' do
     context 'unknown dates' do
       it 'result with no parsed dates' do
-        ex = Helpers::EXAMPLES.select do |ex, arr|
-          arr.select{ |h| h[:tags].include?(:indicates_no_date) }.length > 0
-        end
-        parsed = ex.keys.map{ |str| Emendate.parse(str) }
-        results = parsed.map{ |p| p.result.dates }.uniq.flatten
+        ex = Helpers.examples_with_tag(:indicates_no_date)
+        parsers = ex.map{ |str| Emendate.parse(str) }
+        results = parsers.map{ |p| p.result.dates }.uniq.flatten
         expect(results).to eq([])
       end
     end

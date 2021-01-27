@@ -2,26 +2,26 @@
 
 module Emendate
   
-  attr_reader :orig, :tokens
   class AlphaMonthConverter
+  attr_reader :orig, :result
     include DateUtils
     def initialize(tokens:)
       @orig = tokens
-      @tokens = []
+      @result = Emendate::TokenSet.new
     end
 
     def convert
-      @orig.each do |t|
+      orig.each do |t|
         case t.type
         when :month_alpha
-          @tokens << convert_month(t, month_number_lookup)
+          result << convert_month(t, month_number_lookup)
         when :month_abbr_alpha
-          @tokens << convert_month(t, month_abbr_number_lookup)
+          result << convert_month(t, month_abbr_number_lookup)
         else
-          @tokens << t
+          result << t
         end
       end
-      @tokens
+      result
     end
 
     private

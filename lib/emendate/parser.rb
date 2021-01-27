@@ -19,25 +19,27 @@ module Emendate
   end
   
   class Parser
-    attr_reader :orig, :tokens, :result, :errors
+    attr_reader :orig_value, :orig_tokens, :tokens, :result, :errors
 
     def initialize(orig:, tokens:, options: {})
-      @orig = orig
-      @tokens = tokens
+      @orig_value = orig
+      @orig_tokens = tokens
+      @tokens = orig_tokens.clone
       @result = Emendate::Result.new(orig: orig)
       @meta = []
       @errors = []
     end
 
     def parse
-      types = tokens.map(&:type)
+      types = orig_tokens.map(&:type)
       return if types == [:unknown_date, :eof]
         
       raise Emendate::UnparseableTokenError.new(orig: orig, tokens: tokens) if types.include?(:unknown)
 
       #do_initial_certainty_check
-      convert_alphabetic_months
       translate_ordinals
+      standardize_formats
+      convert_alphabetic_months
 #      tag_date_parts
       
       #finalize
@@ -46,25 +48,30 @@ module Emendate
 
     private
 
+    def standardize_formats
+      standardizer = Emendate::FormatStandardizer.new(tokens: tokens)
+      tokens = standardizer.standardize
+    end
+
     def convert_alphabetic_months
       converter = Emendate::AlphaMonthConverter.new(tokens: tokens)
-      @tokens = converter.convert
+      tokens = converter.convert
     end
 
     def translate_ordinals
       translator = Emendate::OrdinalTranslator.new(tokens: tokens)
-      @tokens = translator.translate
+      tokens = translator.translate
     end
     
     def tag_date_parts
       tagger = Emendate::DatePartTagger.new(tokens: tokens)
-      @tokens = tagger.tag
+      tokens = tagger.tag
     end
     
     def do_initial_certainty_check
       certain = Emendate::Certainty.new(tokens: tokens).check
       certain.values.each{ |v| result.add_certainty(v) }
-      @tokens = certain.tokens
+      tokens = certain.tokens
     end
     
     def finalize

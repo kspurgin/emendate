@@ -22,6 +22,12 @@ Or install it yourself as:
 
 Islandora has no built-in date functionality. It uses the pre-parsed values in MODS (I7) or Drupal fields (I8), so we can basically do whatever with the date parsing.
 
+=== ISO8601 and BCE
+
+From https://en.wikipedia.org/wiki/ISO_8601#Years
+
+ISO 8601 prescribes, as a minimum, a four-digit year [YYYY] to avoid the year 2000 problem. It therefore represents years from 0000 to 9999, year 0000 being equal to 1 BC and all others AD. However, years prior to 1583 are not automatically allowed by the standard. Instead "values in the range [0000] through [1582] shall only be used by mutual agreement of the partners in information interchange."
+
 === 2/3/2020, 2-3-2020, etc
 Is this Feb 3 or March 2?
 

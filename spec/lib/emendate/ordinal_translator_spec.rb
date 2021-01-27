@@ -1,16 +1,21 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::OrdinalTranslator do
+  def translate(str)
+    l = Emendate.lex(str)
+    a = Helpers.convert_alpha_months(l.tokens)
+    t = Emendate::OrdinalTranslator.new(tokens: a)
+    t.translate
+  end
+  
   describe '#translate' do
     context 'when ordinal indicator appears after a 1 or 2 digit number' do
       it 'removes ordinal indicator' do
-        l = Emendate.lex('20th')
-        c = Emendate::OrdinalTranslator.new(tokens: l.tokens)
-        c.translate
-        result = c.result.map(&:type)
+        result = translate('20th').map(&:type)
         expect(result).to eq([:number1or2])
       end
     end
+    
 
     context 'when ordinal indicator is first element' do
       it 'raises error' do

@@ -3,9 +3,8 @@ require 'spec_helper'
 RSpec.describe Emendate::DateSegmenter do
   def segment(str, options = {})
     l = Emendate.lex(str)
-    c = Emendate::AlphaMonthConverter.new(tokens: l.tokens)
-    t = Emendate::OrdinalTranslator.new(tokens: c.convert)
-    s = Emendate::DateSegmenter.new(tokens: t.translate)
+    t = Helpers.translate_ordinals(l.tokens)
+    s = Emendate::DateSegmenter.new(tokens: t)
     s.segment
   end
   
