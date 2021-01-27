@@ -1,6 +1,17 @@
 # frozen_string_literal: true
 
 module Emendate
+  def normalize_orig(orig)
+    orig.downcase.sub('[?]', '?')
+      .sub('(?)', '?')
+      .sub(/^c([^a-z])/, 'circa\1') #initial c followed by non-letter
+      .gsub(/b\.?c\.?(e\.?|)/, 'bce') #cleanup bc, bce
+      .gsub(/(a\.?d\.?|c\.?e\.?)/, 'ce') #cleanup ad, ce
+      .gsub(/b\.?p\.?/, 'bp') #cleanup bp
+      .sub(/^n\.? ?d\.?$/, 'nodate') #cleanup nd
+      .sub(/(st|nd|rd|th) c\.?$/, '\1 century') #ending c after ordinal
+  end
+
   class UntokenizableError < StandardError
     attr_reader :segments
     def initialize(unknown_tokens:)
@@ -37,11 +48,10 @@ module Emendate
     SQUARE_BRACKET_CLOSE = ']'
     UNKNOWN_DATE = %w[nodate undated unknown].freeze
     
-    attr_reader :orig, :norm, :tokens
+    attr_reader :norm, :tokens
     attr_accessor :next_p, :lexeme_start_p
-    def initialize(orig)
-      @orig = orig
-      @norm = normalize_orig
+    def initialize(norm_string)
+      @norm = norm_string
       @tokens = Emendate::TokenSet.new
       @next_p = 0
       @lexeme_start_p = 0
@@ -210,15 +220,5 @@ module Emendate
       c >= '0' && c <= '9'
     end
 
-    def normalize_orig
-      orig.downcase.sub('[?]', '?')
-        .sub('(?)', '?')
-        .sub(/^c([^a-z])/, 'circa\1')
-        .gsub(/b\.?c\.?(e\.?|)/, 'bce')
-        .gsub(/(a\.?d\.?|c\.?e\.?)/, 'ce')
-        .gsub(/b\.?p\.?/, 'bp')
-        .sub(/^n\.? ?d\.?$/, 'nodate')
-        .sub(/(st|nd|rd|th) c\.?$/, '\1 century')
-    end
   end
 end

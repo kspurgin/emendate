@@ -30,7 +30,7 @@ module Emendate
   RQ = "\u201D"
   
   def lex(str)
-    lexed = Emendate::Lexer.new(str)
+    lexed = Emendate::Lexer.new(Emendate.normalize_orig(str))
     lexed.tokenize
     lexed
   end
