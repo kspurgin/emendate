@@ -5,8 +5,7 @@ RSpec.describe Emendate::Lexer do
     it 'raises error' do
       orig = '%'
       expected = [:unknown]
-      lexer = Emendate.lex(orig)
-      expect(lexer.tokens.map(&:type)).to eq(expected)
+      expect{ Emendate.lex(orig) }.to raise_error(Emendate::UntokenizableError)
     end
   end
   
@@ -66,8 +65,8 @@ RSpec.describe Emendate::Lexer do
 
   context 'numbers' do
     it 'produces expected tokens' do
-      orig = '1 22 333 4444 55555'
-      expected = [:number1or2, :number1or2, :number3, :number4, :unknown]
+      orig = '1 22 333 4444'
+      expected = [:number1or2, :number1or2, :number3, :number4]
       lexer = Emendate.lex(orig)
       expect(lexer.tokens.map(&:type)).to eq(expected)
     end
@@ -209,15 +208,6 @@ RSpec.describe Emendate::Lexer do
       it 'produces expected tokens' do
         orig = 'to'
         expected = [:range_indicator]
-        lexer = Emendate.lex(orig)
-        expect(lexer.tokens.map(&:type)).to eq(expected)
-      end
-    end
-
-    context 'unknown alpha string' do
-      it 'produces expected tokens' do
-        orig = 'somethingweird'
-        expected = [:unknown]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end

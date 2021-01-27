@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 module Emendate
+  class UntokenizableError < StandardError
+    attr_reader :segments
+    def initialize(unknown_tokens:)
+      @segments = unknown_tokens.map{ |t| "#{Emendate::LQ}#{t.lexeme}#{Emendate::RQ}" }
+      super(segments.join(', '))
+    end
+  end
+  
   class Lexer
     # ambiguous things
     # c - at beginning = circa, at end = century
@@ -43,9 +51,18 @@ module Emendate
       while norm_uncompleted?
         tokenization
       end
+      finalize
     end
 
     private
+
+    def finalize
+      if tokens.any_unknown?
+        raise Emendate::UntokenizableError.new(unknown_tokens: tokens.unknown)
+      else
+        self
+      end
+    end
 
     def tokenization
       self.lexeme_start_p = next_p
