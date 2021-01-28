@@ -8,6 +8,7 @@ module Emendate
     def initialize(string)
       @orig_string = string
       @norm_string = Emendate.normalize_orig(orig_string)
+      @tokens = Emendate::TokenSet.new
       @errors = []
     end
 
