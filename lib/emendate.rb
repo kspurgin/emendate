@@ -28,6 +28,12 @@ module Emendate
 
   LQ = "\u201C"
   RQ = "\u201D"
+
+  def process(str)
+    pm = Emendate::ProcessingManager.new(str)
+    pm.process
+    pm
+  end
   
   def lex(str)
     lexed = Emendate::Lexer.new(Emendate.normalize_orig(str))
