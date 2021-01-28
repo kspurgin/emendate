@@ -4,7 +4,7 @@ module Emendate
   class ProcessingManager
     include AASM
     attr_reader :orig_string, :norm_string, :tokens,
-      :orig_tokens, :errors
+      :orig_tokens, :converted_months, :errors
     def initialize(string)
       @orig_string = string
       @norm_string = Emendate.normalize_orig(orig_string)
@@ -60,6 +60,7 @@ module Emendate
       c = Emendate::AlphaMonthConverter.new(tokens: tokens)
       c.convert
       @tokens = c.result
+      @converted_months = tokens.dup
     end
 
     def state
