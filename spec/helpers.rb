@@ -304,30 +304,26 @@ module Helpers
 
   def parse_examples
     ex = EXAMPLES.keys
-    parsed = []
-    errs = []
-    err_strs = []
-    ex.each do |str|
-      begin
-        r = Emendate.parse(str)
-      rescue StandardError => e
-        err_strs << str
-        errs << e
-      else
-        parsed << r
-      end
-    end
-    { results: parsed, errs: errs, err_strs: err_strs }
+    # for regular use
+    ex.map{ |str| Emendate.process(str) }
+
+    # for debugging
+    # results = []
+    # ex.each do |str|
+    #   puts "Processing: #{str}"
+    #   results << Emendate.process(str)
+    # end
+    # results
   end
 
   def parsed_example_tokens(type: :all)
-    parsed = parse_examples
+    parsed = parse_examples.reject{ |pm| pm.state == :failed }
     if type == :date
-      tokens = parsed[:results].map{ |t| t.tokens.date_part_types }
+      tokens = parsed.map{ |t| t.tokens.date_part_types }
     else
-      tokens = parsed[:results].map{ |t| t.tokens.types }
+      tokens = parsed.map{ |t| t.tokens.types }
     end
-    ex = EXAMPLES.keys.reject{ |e| parsed[:err_strs].include?(e) }
+    ex = parsed.map{ |pm| pm.orig_string }
     ex.zip(tokens)
   end
 
