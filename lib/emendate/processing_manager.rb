@@ -4,7 +4,7 @@ module Emendate
   class ProcessingManager
     include AASM
     attr_reader :orig_string, :norm_string, :tokens,
-      :orig_tokens, :converted_months, :translated_ordinals, :errors
+      :orig_tokens, :converted_months, :translated_ordinals, :standardized_formats, :errors
     def initialize(string)
       @orig_string = string
       @norm_string = Emendate.normalize_orig(orig_string)
@@ -27,7 +27,7 @@ module Emendate
         transitions from: :months_converted, to: :ordinals_translated, after: :perform_translate_ordinals
       end
       event :standardize_formats do
-        transitions from: :ordinals_translated, to: :formats_standardized
+        transitions from: :ordinals_translated, to: :formats_standardized, after: :perform_standardize_formats
       end
       event :finalize do
         transitions from: :tokenized, to: :done, guard: :no_errors?
@@ -36,6 +36,8 @@ module Emendate
         transitions from: :months_converted, to: :failed, guard: :errors?
         transitions from: :ordinals_translated, to: :done, guard: :no_errors?
         transitions from: :ordinals_translated, to: :failed, guard: :errors?
+        transitions from: :formats_standardized, to: :done, guard: :no_errors?
+        transitions from: :formats_standardized, to: :failed, guard: :errors?
       end
     end
 
@@ -43,6 +45,7 @@ module Emendate
       lex
       convert_months if may_convert_months?
       translate_ordinals if may_translate_ordinals?
+      standardize_formats if may_standardize_formats?
       finalize
     end
 
@@ -81,6 +84,18 @@ module Emendate
       else
         @tokens = t.result
         @translated_ordinals = tokens.dup
+      end
+    end
+
+    def perform_standardize_formats
+      f = Emendate::FormatStandardizer.new(tokens: translated_ordinals)
+      begin
+        f.standardize
+      rescue StandardError => e
+        errors << e
+      else
+        @tokens = f.result
+        @standardized_formats = tokens.dup
       end
     end
     
