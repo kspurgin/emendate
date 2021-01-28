@@ -19,10 +19,9 @@ module Emendate
       
       event :lex do
         transitions from: :startup, to: :tokenized, after: :perform_lex
-        transitions from: :tokenized, to: :failed, guard: :errors?
       end
       event :convert_months do
-        transitions from: :tokenized, to: :months_converted, guard: :no_errors?
+        transitions from: :tokenized, to: :months_converted, after: :perform_convert_months
       end
       event :translate_ordinals do
         transitions from: :months_converted, to: :ordinals_translated
@@ -39,27 +38,28 @@ module Emendate
     end
 
     def process
-      
+      lex
+      convert_months if may_convert_months?
+      finalize
     end
 
-    def stupid
-    end
-    
     def perform_lex
       l = Emendate::Lexer.new(norm_string)
       begin
         l.tokenize
       rescue Emendate::UntokenizableError => e
         errors << e
-        true
       else
         @norm_string = l.norm
         @tokens = l.tokens
-        true
+        @orig_tokens = tokens.dup
       end
     end
 
-    def convert_months
+    def perform_convert_months
+      c = Emendate::AlphaMonthConverter.new(tokens: tokens)
+      c.convert
+      @tokens = c.result
     end
 
     def state
