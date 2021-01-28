@@ -7,7 +7,7 @@ RSpec.describe Emendate::AlphaMonthConverter do
         l = Emendate.lex('Jan 2021')
         c = Emendate::AlphaMonthConverter.new(tokens: l.tokens)
         result = "#{c.convert.first.type} #{c.convert.first.lexeme}"
-        expect(result).to eq('number_month 1')
+        expect(result).to eq('number_month jan')
       end
     end
 
@@ -16,7 +16,7 @@ RSpec.describe Emendate::AlphaMonthConverter do
         l = Emendate.lex('October 2021')
         c = Emendate::AlphaMonthConverter.new(tokens: l.tokens)
         result = "#{c.convert.first.type} #{c.convert.first.lexeme}"
-        expect(result).to eq('number_month 10')
+        expect(result).to eq('number_month october')
       end
     end
   end

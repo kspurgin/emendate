@@ -31,7 +31,7 @@ module Emendate
     def convert_month(token, lookup)
       str = token.lexeme
       ind = lookup[str]
-      Emendate::Token.new(lexeme: ind.to_s,
+      Emendate::Token.new(lexeme: str,
                           type: :number_month,
                           literal: ind,
                           location: token.location)
