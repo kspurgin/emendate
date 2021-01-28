@@ -29,9 +29,9 @@ RSpec.describe Emendate::FormatStandardizer do
     end
 
     context 'when Feb. 15, 999 - February 20, 2020' do
-      xit 'removes commas after dates' do
+      it 'removes commas after dates' do
         result = standardize('Feb. 15, 999 - February 20, 2020')
-        expect(result).to eq(%i[month_abbr_alpha number1or2 number3 hyphen month_alpha number1or2 number4])
+        expect(result).to eq(%i[number_month number1or2 number3 hyphen number_month number1or2 number4])
       end
     end
   end

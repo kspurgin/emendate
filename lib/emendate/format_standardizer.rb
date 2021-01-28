@@ -34,7 +34,7 @@ module Emendate
       case result.type_string
       when /.*partial hyphen.*/
         :remove_post_partial_hyphen
-      when /.*(month_abbr_alpha|month_alpha) number1or2 comma (number3|number4).*/
+      when /.*number_month number1or2 comma (number3|number4).*/
         :remove_post_month_comma
       end
     end
@@ -56,8 +56,7 @@ module Emendate
     def remove_post_month_comma
       commas = result.select do |t|
         t.type == :comma &&
-          ( result[result.find_index(t) - 2].type == :month_abbr_alpha ||
-           result[result.find_index(t) - 2].type == :month_alpha ) &&
+           result[result.find_index(t) - 2].type == :number_month &&
           result[result.find_index(t) - 1].type == :number1or2 &&
           ( result[result.find_index(t) + 1].type == :number3 ||
             result[result.find_index(t) + 1].type == :number4 )
