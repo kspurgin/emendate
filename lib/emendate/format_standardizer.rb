@@ -32,6 +32,8 @@ module Emendate
 
     def partial_match_standardizers
       case result.type_string
+      when/.*number3.*/
+        :pad_3_to_4_digits
       when /.*partial hyphen.*/
         :remove_post_partial_hyphen
       when /.*number_month number1or2 comma (number3|number4).*/
@@ -53,6 +55,15 @@ module Emendate
       result.insert(ins_pt, century)
     end
 
+    def pad_3_to_4_digits
+      t3 = result.select{ |t| t.type == :number3 }.first
+      t3i = result.find_index(t3)
+      lexeme4 = t3.lexeme.rjust(4, '0')
+      t4 = Emendate::NumberToken.new(type: :number, lexeme: lexeme4, literal: t3.literal, location: t3.location)
+      result.delete_at(t3i)
+      result.insert(t3i, t4)
+    end
+    
     def remove_post_month_comma
       commas = result.select do |t|
         t.type == :comma &&

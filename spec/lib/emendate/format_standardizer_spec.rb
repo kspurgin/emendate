@@ -8,9 +8,9 @@ RSpec.describe Emendate::FormatStandardizer do
   
   describe '#standardize' do
     context 'when c. 999-1-1' do
-      xit 'pads to 4-digit number' do
+      it 'pads to 4-digit number' do
         result = standardize('c. 999-1-1')
-        expect(result).to eq(%i[circa number4 hyphen number1or2 hyphen number1or2])
+        expect(result).to eq(%i[approximate number4 hyphen number1or2 hyphen number1or2])
       end
     end
 
@@ -31,7 +31,7 @@ RSpec.describe Emendate::FormatStandardizer do
     context 'when Feb. 15, 999 - February 20, 2020' do
       it 'removes commas after dates' do
         result = standardize('Feb. 15, 999 - February 20, 2020')
-        expect(result).to eq(%i[number_month number1or2 number3 hyphen number_month number1or2 number4])
+        expect(result).to eq(%i[number_month number1or2 number4 hyphen number_month number1or2 number4])
       end
     end
   end
