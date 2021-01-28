@@ -23,9 +23,6 @@ module Emendate
   include Helpers
   extend self
 
-  DATE_PART_TOKEN_TYPES = %i[number1or2 number3 number4 number6 number8 s century
-                             uncertainty_digits era number_month]
-
   LQ = "\u201C"
   RQ = "\u201D"
 

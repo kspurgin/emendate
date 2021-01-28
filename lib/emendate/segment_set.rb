@@ -3,7 +3,7 @@
 module Emendate
   class SegmentSet < Array
     def date_parts
-      self.select{ |t| Emendate::DATE_PART_TOKEN_TYPES.include?(t.type) }
+      self.select{ |t| t.date_part? }
     end
 
     def date_part_types
