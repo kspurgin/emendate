@@ -4,7 +4,8 @@ module Emendate
   class ProcessingManager
     include AASM
     attr_reader :orig_string, :norm_string, :tokens,
-      :orig_tokens, :converted_months, :translated_ordinals, :standardized_formats, :errors
+      :orig_tokens, :converted_months, :translated_ordinals, :standardized_formats,
+      :tagged_date_parts, :errors
     def initialize(string)
       @orig_string = string
       @norm_string = Emendate.normalize_orig(orig_string)
@@ -14,7 +15,8 @@ module Emendate
 
     aasm do
       state :startup, initial: true
-      state :tokenized, :months_converted, :ordinals_translated, :formats_standardized, :done, :failed
+      state :tokenized, :months_converted, :ordinals_translated, :formats_standardized,
+        :date_parts_tagged, :done, :failed
 
       after_all_transitions :log_status_change
       
@@ -30,6 +32,9 @@ module Emendate
       event :standardize_formats do
         transitions from: :ordinals_translated, to: :formats_standardized, after: :perform_standardize_formats
       end
+      event :tag_date_parts do
+        transitions from: :formats_standardized, to: :date_parts_tagged, after: :perform_tag_date_parts
+      end
       event :finalize do
         transitions from: :tokenized, to: :done, guard: :no_errors?
         transitions from: :tokenized, to: :failed, guard: :errors?
@@ -39,6 +44,8 @@ module Emendate
         transitions from: :ordinals_translated, to: :failed, guard: :errors?
         transitions from: :formats_standardized, to: :done, guard: :no_errors?
         transitions from: :formats_standardized, to: :failed, guard: :errors?
+        transitions from: :date_parts_tagged, to: :done, guard: :no_errors?
+        transitions from: :date_parts_tagged, to: :failed, guard: :errors?
       end
     end
 
@@ -47,6 +54,7 @@ module Emendate
       convert_months if may_convert_months?
       translate_ordinals if may_translate_ordinals?
       standardize_formats if may_standardize_formats?
+      tag_date_parts if may_tag_date_parts?
       finalize
     end
 
@@ -98,6 +106,13 @@ module Emendate
         @tokens = f.result
         @standardized_formats = tokens.dup
       end
+    end
+
+    def perform_tag_date_parts
+      t = Emendate::DatePartTagger.new(tokens: standardized_formats)
+      t.tag
+      @tokens = t.result
+      @tagged_date_parts = tokens.dup
     end
     
     def log_status_change
