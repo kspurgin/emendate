@@ -4,6 +4,16 @@ require 'emendate/date_utils'
 
 module Emendate
   class DatePartTagger
+    class UntaggableDatePartError < StandardError
+      attr_reader :date_part, :reason
+      def initialize(date_part, reason)
+        @date_part = date_part
+        @reason = reason
+        msg = "type: #{date_part.type}; value: #{date_part.lexeme}; reason: #{reason}"
+        super(msg)
+      end
+    end
+    
     attr_reader :orig
     attr_accessor :result, :taggable
     include DateUtils
@@ -89,17 +99,23 @@ module Emendate
                              source_tokens: source_set(sources))
     end
     
+    def source_set(arr)
+      s = Emendate::MixedSet.new
+      arr.each{ |t| s << t }
+    end
+
     def tag_century_num
       collapse_pair(%i[number1or2 century], 'century')
     end
 
     def tag_day_in_mdy
-      d = result.extract(:month, :number1or2, :year)[1]
+      m, d, y = result.extract(:month, :number1or2, :year)
+      raise UntaggableDatePartError.new(d, 'invalid day value') unless valid_mdy?(m, d, y)
       d_ind = result.find_index(d)
       result.insert(d_ind + 1, day_date_part([d]))
       result.delete_at(d_ind)
     end
-    
+
     def tag_decade_s
       collapse_pair(%i[year letter_s], 'decade')
     end
@@ -133,9 +149,14 @@ module Emendate
       @result = newresult
     end
 
-    def source_set(arr)
-      s = Emendate::MixedSet.new
-      arr.each{ |t| s << t }
+    def valid_mdy?(m, d, y)
+      begin
+        Date.new(y.literal, m.literal, d.literal)
+      rescue Date::Error
+        false
+      else
+        true
+      end
     end
   end
 end

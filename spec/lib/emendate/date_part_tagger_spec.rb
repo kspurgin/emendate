@@ -52,16 +52,23 @@ RSpec.describe Emendate::DatePartTagger do
     end
 
     context 'when February 30, 2020' do
-      xit 'returns error' do
+      it 'returns error' do
         pm = Emendate.prep_for('February 30, 2020', :tag_date_parts)
-        expect(result).to eq(%i[month day year])
+        tagger = Emendate::DatePartTagger.new(tokens: pm.tokens)
+        expect{ tagger.tag }.to raise_error(Emendate::DatePartTagger::UntaggableDatePartError)
       end
     end
 
     context 'when 02-03-2020' do
       context 'default' do
+        pm = Emendate.prep_for('February 30, 2020', :tag_date_parts)
         xit 'tags month day year' do
-          result = tag('02-03-2020')
+          expect(result).to eq(%i[month day year])
+        end
+      end
+      context 'default' do
+        pm = Emendate.prep_for('February 30, 2020', :tag_date_parts)
+        xit 'tags month day year' do
           expect(result).to eq(%i[month day year])
         end
       end
