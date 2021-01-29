@@ -42,24 +42,44 @@ module Emendate
       case result.type_string
       when /.*year letter_s.*/
         :tag_decade
+      when /.*number1or2 century.*/
+        :tag_century
       end
     end
 
     def full_match_tagger
     end
 
+    def collapse_pair(types, category)
+      pt1 = result.select{ |t| t.type == types[0] && result[result.find_index(t) + 1].type == types[1] }[0]
+      pt1_i = result.find_index(pt1)
+      pt2 = result[pt1_i + 1]
+      sources = [pt1, pt2]
+      date_part = send("#{category}_date_part".to_sym, sources)
+      result.insert(pt1_i, date_part)
+      sources.each{ |s| result.delete(s) }
+    end
+
+    def century_date_part(sources)
+      Emendate::DatePart.new(type: :century,
+                             lexeme: sources.map(&:lexeme).join,
+                             literal: sources[0].literal,
+                             source_tokens: sources)
+    end
+
+    def decade_date_part(sources)
+      Emendate::DatePart.new(type: :decade,
+                             lexeme: sources.map(&:lexeme).join,
+                             literal: sources[0].literal,
+                             source_tokens: sources)
+    end
+    
+    def tag_century
+      collapse_pair(%i[number1or2 century], 'century')
+    end
+    
     def tag_decade
-      yr = result.select{ |t| t.type == :year && result[result.find_index(t) + 1].type == :letter_s }[0]
-      yr_ind = result.find_index(yr)
-      s_ind = yr_ind + 1
-      s = result[s_ind]
-      sources = [yr, s]
-      decade = Emendate::DatePart.new(type: :decade,
-                                      lexeme: sources.map(&:lexeme).join,
-                                      literal: yr.literal,
-                                      source_tokens: sources)
-      result.insert(yr_ind, decade)
-      [yr, s].each{ |t| result.delete(t) }
+      collapse_pair(%i[year letter_s], 'decade')
     end
     
     def tag_month(token)

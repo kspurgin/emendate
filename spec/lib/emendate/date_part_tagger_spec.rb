@@ -31,5 +31,11 @@ RSpec.describe Emendate::DatePartTagger do
         expect(result).to eq(%i[decade])
       end
     end
+    context 'when 19th century' do
+      it 'tags century' do
+        result = tag('19th century')
+        expect(result).to eq(%i[century])
+      end
+    end
   end
 end
