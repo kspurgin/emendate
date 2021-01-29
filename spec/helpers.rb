@@ -318,10 +318,15 @@ module Helpers
 
   def parsed_example_tokens(type: :all)
     parsed = parse_examples.reject{ |pm| pm.state == :failed }
+    # if type == :date
+    #   tokens = parsed.map{ |t| t.translated_ordinals.date_part_types }
+    # else
+    #   tokens = parsed.map{ |t| t.translated_ordinals.types }
+    # end
     if type == :date
-      tokens = parsed.map{ |t| t.tokens.date_part_types }
+      tokens = parsed.map{ |t| t.standardized_formats.date_part_types }
     else
-      tokens = parsed.map{ |t| t.tokens.types }
+      tokens = parsed.map{ |t| t.standardized_formats.types }
     end
     ex = parsed.map{ |pm| pm.orig_string }
     ex.zip(tokens)

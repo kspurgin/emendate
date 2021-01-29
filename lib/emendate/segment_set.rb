@@ -21,5 +21,9 @@ module Emendate
     def type_string
       types.join(' ')
     end
+
+    def when_type(type)
+      self.select{ |t| t.type == type }
+    end
   end
 end
