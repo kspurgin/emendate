@@ -2,10 +2,6 @@
 
 require 'emendate/date_utils'
 
-# todo - get rid of hacky fix_result_type
-# This is the fastest way I can get this working initially. I think the problem is calling map on a SegmentSet
-#  returns an array instead of a SegmentSet.
-# Need to look into how to use forwardable or some other technique to make this work better
 module Emendate
   class DatePartTagger
     attr_reader :orig
@@ -20,18 +16,14 @@ module Emendate
 
     def tag
       tag_years if orig.types.include?(:number4)
-      fix_result_type
 
       tag_months if result.types.include?(:number_month)
-      fix_result_type
       
       while taggable
         t = determine_tagger
         break if t.nil?
         send(t)
-        fix_result_type
       end
-      fix_result_type
       result
     end
 
@@ -80,12 +72,6 @@ module Emendate
     def source_set(arr)
       s = Emendate::TokenSet.new
       arr.each{ |t| s << t }
-    end
-
-    def fix_result_type
-      final_result = Emendate::MixedSet.new
-      @result.each{ |t| final_result << t }
-      @result = final_result
     end
   end
 end
