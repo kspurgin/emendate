@@ -39,14 +39,34 @@ module Emendate
     end
 
     def partial_match_tagger
+      case result.type_string
+      when /.*year s( |).*/
+        :tag_decade
+      end
     end
 
     def full_match_tagger
     end
+
+    def tag_decade
+      yr = result.select{ |t| t.type == :year && result[result.find_index(t) + 1].type == :s }[0]
+      yr_ind = result.find_index(yr)
+      s_ind = yr_ind + 1
+      s = result[s_ind]
+      sources = [yr, s]
+      decade = Emendate::DatePart.new(type: :decade,
+                                      lexeme: sources.map(&:lexeme).join,
+                                      literal: yr.literal,
+                                      source_tokens: sources)
+      result.insert(yr_ind, decade)
+      [yr, s].each{ |t| result.delete(t) }
+    end
     
-    def tag_years
-      newresult = @result.map{ |t| t.type == :number4 ? tag_year(t) : t }
-      @result = newresult
+    def tag_month(token)
+      Emendate::DatePart.new(type: :month,
+                             lexeme: token.lexeme,
+                             literal: token.literal,
+                             source_tokens: source_set([token]))
     end
 
     def tag_months
@@ -62,11 +82,9 @@ module Emendate
                              source_tokens: source_set([token]))
     end
 
-    def tag_month(token)
-      Emendate::DatePart.new(type: :month,
-                             lexeme: token.lexeme,
-                             literal: token.literal,
-                             source_tokens: source_set([token]))
+    def tag_years
+      newresult = @result.map{ |t| t.type == :number4 ? tag_year(t) : t }
+      @result = newresult
     end
 
     def source_set(arr)
