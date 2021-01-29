@@ -14,6 +14,12 @@ module Emendate
       date_part_types.join(' ')
     end
 
+    def map
+      new = self.clone.clear
+      super.each{ |s| new << s }
+      new
+    end
+
     def types
       self.map(&:type)
     end
