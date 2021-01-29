@@ -24,16 +24,16 @@ module Emendate
         transitions from: :startup, to: :tokenized, after: :perform_lex
       end
       event :convert_months do
-        transitions from: :tokenized, to: :months_converted, after: :perform_convert_months
+        transitions from: :tokenized, to: :months_converted, after: :perform_convert_months, guard: :no_errors?
       end
       event :translate_ordinals do
-        transitions from: :months_converted, to: :ordinals_translated, after: :perform_translate_ordinals
+        transitions from: :months_converted, to: :ordinals_translated, after: :perform_translate_ordinals, guard: :no_errors?
       end
       event :standardize_formats do
-        transitions from: :ordinals_translated, to: :formats_standardized, after: :perform_standardize_formats
+        transitions from: :ordinals_translated, to: :formats_standardized, after: :perform_standardize_formats, guard: :no_errors?
       end
       event :tag_date_parts do
-        transitions from: :formats_standardized, to: :date_parts_tagged, after: :perform_tag_date_parts
+        transitions from: :formats_standardized, to: :date_parts_tagged, after: :perform_tag_date_parts, guard: :no_errors?
       end
       event :finalize do
         transitions from: :tokenized, to: :done, guard: :no_errors?
@@ -55,6 +55,19 @@ module Emendate
       translate_ordinals if may_translate_ordinals?
       standardize_formats if may_standardize_formats?
       tag_date_parts if may_tag_date_parts?
+      finalize
+    end
+
+    def prep_for(event)
+      ready = false
+      until ready
+        events = aasm.events.map(&:name)
+        if events.include?(event)
+          ready = true
+        else
+          send("may_#{events[0]}?".to_sym) ? send(events[0]) : ready = true
+        end
+      end
       finalize
     end
 
@@ -116,7 +129,7 @@ module Emendate
     end
     
     def log_status_change
-      #puts "changing from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
+      puts "changing from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
     end
 
     def errors?
