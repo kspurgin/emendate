@@ -15,9 +15,14 @@ module Emendate
     end
 
     def map
-      new = self.clone.clear
-      super.each{ |s| new << s }
-      new
+      arr = super
+      if arr.any?{ |s| s.kind_of?(Emendate::Segment) }
+        new = self.clone.clear
+        arr.each{ |e| new << e }
+        new
+      else
+        arr
+      end
     end
 
     def types
