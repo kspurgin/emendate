@@ -110,7 +110,7 @@ module Emendate
 
     def tag_day_in_mdy
       m, d, y = result.extract(:month, :number1or2, :year)
-      raise UntaggableDatePartError.new(d, 'invalid day value') unless valid_mdy?(m, d, y)
+      raise UntaggableDatePartError.new(d, 'invalid day value') unless valid_date?(y, m, d)
       d_ind = result.find_index(d)
       result.insert(d_ind + 1, day_date_part([d]))
       result.delete_at(d_ind)
@@ -149,7 +149,7 @@ module Emendate
       @result = newresult
     end
 
-    def valid_mdy?(m, d, y)
+    def valid_date?(y, m, d)
       begin
         Date.new(y.literal, m.literal, d.literal)
       rescue Date::Error
