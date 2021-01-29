@@ -41,9 +41,11 @@ module Emendate
     def partial_match_tagger
       case result.type_string
       when /.*year letter_s.*/
-        :tag_decade
+        :tag_decade_s
+      when /.*year uncertainty_digits.*/
+        :tag_decade_uncertainty_digits
       when /.*number1or2 century.*/
-        :tag_century
+        :tag_century_num
       end
     end
 
@@ -74,12 +76,16 @@ module Emendate
                              source_tokens: sources)
     end
     
-    def tag_century
+    def tag_century_num
       collapse_pair(%i[number1or2 century], 'century')
     end
     
-    def tag_decade
+    def tag_decade_s
       collapse_pair(%i[year letter_s], 'decade')
+    end
+
+    def tag_decade_uncertainty_digits
+      collapse_pair(%i[year uncertainty_digits], 'decade')
     end
     
     def tag_month(token)
