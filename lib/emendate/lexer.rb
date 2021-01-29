@@ -171,7 +171,7 @@ module Emendate
       elsif lexeme.match?(/^u+$/)
         :uncertainty_digits
       elsif lexeme == 's'
-        :s
+        :letter_s
       else
         :unknown
       end
