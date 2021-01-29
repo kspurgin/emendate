@@ -40,7 +40,7 @@ module Emendate
 
     def partial_match_tagger
       case result.type_string
-      when /.*year s( |).*/
+      when /.*year letter_s.*/
         :tag_decade
       end
     end
@@ -49,7 +49,7 @@ module Emendate
     end
 
     def tag_decade
-      yr = result.select{ |t| t.type == :year && result[result.find_index(t) + 1].type == :s }[0]
+      yr = result.select{ |t| t.type == :year && result[result.find_index(t) + 1].type == :letter_s }[0]
       yr_ind = result.find_index(yr)
       s_ind = yr_ind + 1
       s = result[s_ind]
