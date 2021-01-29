@@ -14,6 +14,28 @@ module Emendate
       date_part_types.join(' ')
     end
 
+    # returns the first sequence of segments matching the pattern of types passed in 
+    def extract(*args)
+      args.flatten!
+      segsize = args.length
+      return self.dup.clear if self.length < segsize
+      return self.dup if self.length == segsize
+      
+      tails = self.select{ |t| t.type == args[-1] }
+      return self.dup.clear if tails.empty?
+
+      segment = []
+      tails.each do |tail|
+        if segment.empty?
+          tail_i = self.find_index(tail)
+          head_i = tail_i - segsize + 1
+          seg = self[head_i..tail_i]
+          segment = seg if seg.types == args
+        end
+      end
+      segment.dup
+    end
+    
     def map
       arr = super
       if arr.any?{ |s| s.kind_of?(Emendate::Segment) }
