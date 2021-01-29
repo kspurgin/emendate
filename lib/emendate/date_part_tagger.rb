@@ -12,6 +12,7 @@ module Emendate
       @result = Emendate::MixedSet.new
       orig.each{ |t| result << t }
       @taggable = true
+      
     end
 
     def tag
@@ -26,6 +27,8 @@ module Emendate
       end
       result
     end
+
+
 
     private
 
@@ -46,38 +49,55 @@ module Emendate
         :tag_decade_uncertainty_digits
       when /.*number1or2 century.*/
         :tag_century_num
+      when /.*month number1or2 year.*/
+        :tag_day_in_mdy
       end
     end
 
     def full_match_tagger
     end
 
+
+    # types = Array with 2 Segment.type symbols
+    # category = String that gets prepended to "date_part" to call DatePart building method 
     def collapse_pair(types, category)
-      pt1 = result.select{ |t| t.type == types[0] && result[result.find_index(t) + 1].type == types[1] }[0]
-      pt1_i = result.find_index(pt1)
-      pt2 = result[pt1_i + 1]
-      sources = [pt1, pt2]
+      sources = result.extract(*types)
+      pt1_i = result.find_index(sources[0])
       date_part = send("#{category}_date_part".to_sym, sources)
       result.insert(pt1_i, date_part)
-      sources.each{ |s| result.delete(s) }
+      sources.each{ |s| result.delete_at(result.find_index(s)) }
     end
 
     def century_date_part(sources)
       Emendate::DatePart.new(type: :century,
                              lexeme: sources.map(&:lexeme).join,
                              literal: sources[0].literal,
-                             source_tokens: sources)
+                             source_tokens: source_set(sources))
     end
 
     def decade_date_part(sources)
       Emendate::DatePart.new(type: :decade,
                              lexeme: sources.map(&:lexeme).join,
                              literal: sources[0].literal,
-                             source_tokens: sources)
+                             source_tokens: source_set(sources))
+    end
+
+    def day_date_part(sources)
+      Emendate::DatePart.new(type: :day,
+                             lexeme: sources[0].lexeme,
+                             literal: sources[0].literal,
+                             source_tokens: source_set(sources))
     end
     
     def tag_century_num
       collapse_pair(%i[number1or2 century], 'century')
+    end
+
+    def tag_day_in_mdy
+      d = result.extract(:month, :number1or2, :year)[1]
+      d_ind = result.find_index(d)
+      result.insert(d_ind + 1, day_date_part([d]))
+      result.delete_at(d_ind)
     end
     
     def tag_decade_s
@@ -114,7 +134,7 @@ module Emendate
     end
 
     def source_set(arr)
-      s = Emendate::TokenSet.new
+      s = Emendate::MixedSet.new
       arr.each{ |t| s << t }
     end
   end
