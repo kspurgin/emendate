@@ -323,10 +323,15 @@ module Helpers
     # else
     #   tokens = parsed.map{ |t| t.translated_ordinals.types }
     # end
+    # if type == :date
+    #   tokens = parsed.map{ |t| t.standardized_formats.date_part_types }
+    # else
+    #   tokens = parsed.map{ |t| t.standardized_formats.types }
+    # end
     if type == :date
-      tokens = parsed.map{ |t| t.standardized_formats.date_part_types }
+      tokens = parsed.map{ |t| t.tagged_date_parts.date_part_types }
     else
-      tokens = parsed.map{ |t| t.standardized_formats.types }
+      tokens = parsed.map{ |t| t.tagged_date_parts.types }
     end
     ex = parsed.map{ |pm| pm.orig_string }
     ex.zip(tokens)
