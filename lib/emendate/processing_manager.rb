@@ -3,11 +3,12 @@
 module Emendate
   class ProcessingManager
     include AASM
-    attr_reader :orig_string, :norm_string, :tokens,
+    attr_reader :orig_string, :options, :norm_string, :tokens,
       :orig_tokens, :converted_months, :translated_ordinals, :standardized_formats,
       :tagged_date_parts, :errors
-    def initialize(string)
+    def initialize(string, options = {})
       @orig_string = string
+      @options = Emendate::Options.new(options)
       @norm_string = Emendate.normalize_orig(orig_string)
       @tokens = Emendate::TokenSet.new
       @errors = []
