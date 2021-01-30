@@ -62,7 +62,7 @@ RSpec.describe Emendate::DatePartTagger do
     context 'when 02-03-2020' do
       context 'default' do
         xit 'tags month day year' do
-          pm = Emendate.tag('02-03-2020')
+          result = tag('02-03-2020')
           expect(result).to eq(%i[month day year])
         end
       end

@@ -61,12 +61,20 @@ module Emendate
         :tag_century_num
       when /.*month number1or2 year.*/
         :tag_day_in_mdy
+        # handling number1or2 hyphen number1or2 hyphen number1or2 should go here
+        # just handle the year. the month/day will be handled below
+        # we are assuming the year is last in this format
+      when /.*number1or2 hyphen number1or2 hyphen year.*/
+        # :tag_numeric_month_day
       end
     end
 
     def full_match_tagger
     end
 
+    def tag_numeric_month_day
+      n1, h1, n2, h2, y = result.extract(%i[number1or2 hyphen number1or2 hyphen year])
+    end
 
     # types = Array with 2 Segment.type symbols
     # category = String that gets prepended to "date_part" to call DatePart building method 
