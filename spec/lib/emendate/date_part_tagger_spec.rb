@@ -61,14 +61,14 @@ RSpec.describe Emendate::DatePartTagger do
 
     context 'when 02-03-2020' do
       context 'default' do
-        pm = Emendate.prep_for('February 30, 2020', :tag_date_parts)
         xit 'tags month day year' do
+          pm = Emendate.tag('02-03-2020')
           expect(result).to eq(%i[month day year])
         end
       end
-      context 'default' do
-        pm = Emendate.prep_for('February 30, 2020', :tag_date_parts)
+      context 'ambiguous_month_day: :as_day_month' do
         xit 'tags month day year' do
+          pm = Emendate.process('02-03-2020', ambiguous_month_day: :as_day_month)
           expect(result).to eq(%i[month day year])
         end
       end

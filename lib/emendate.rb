@@ -36,8 +36,8 @@ module Emendate
     pm
   end
 
-  def process(str)
-    pm = Emendate::ProcessingManager.new(str)
+  def process(str, options = {})
+    pm = Emendate::ProcessingManager.new(str, options)
     pm.process
     pm
   end
