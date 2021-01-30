@@ -49,5 +49,19 @@ module Emendate
       min = max - 1
       year[min..max]
     end
+
+    # pass in segments. This pulls out literals
+    def valid_date?(y, m, d)
+      y = y.literal
+      m = m.literal
+      d = d.literal
+      begin
+        Date.new(y, m, d)
+      rescue Date::Error
+        false
+      else
+        true
+      end
+    end
   end
 end
