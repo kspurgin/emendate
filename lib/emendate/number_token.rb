@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 require 'emendate/token'
+require 'emendate/date_utils'
 
 module Emendate
   class NumberToken < Token
+    include DateUtils
+    
     attr_reader :digits
     def post_initialize(opts)
       unless type == :number
@@ -16,9 +19,12 @@ module Emendate
       
       @digits = opts[:digits] || default_digits
       reset_type
-
     end
 
+    def monthable?
+      valid_month?(lexeme) ? true : false  
+    end
+    
     private
 
     def reset_type
