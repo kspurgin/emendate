@@ -130,7 +130,7 @@ module Emendate
     end
     
     def log_status_change
-      puts "changing from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
+      #puts "changing from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
     end
 
     def errors?
