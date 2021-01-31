@@ -32,12 +32,15 @@ module Emendate
         # alternative: as_month would result in December 2010
         # this option is also applied to ambiguous season/year values
         ambiguous_month_year: :as_year,
-        # treats 80 as 1980
+        # whether or not to expand two digit numbers that appear to be years
+        # by default, will coerce 80 to 1980
         # alternative: literal would treat it as literally the year 80
         two_digit_year_handling: :coerce,
-        # numbers less than or equal to this treated as current century
-        # numbers greater than this are treated as the previous century
-        rollover_year: DateTime.now.year.to_s[-1, 2]
+        # numbers less than this 2-digit value are treated as current century
+        # numbers greater than or equal to this are treated as the previous century
+        # defaults to last two digits of current year, so in 2021...
+        #  by default, 21 = 1921 and 20 = 2020
+        ambiguous_year_rollback_threshold: DateTime.now.year.to_s[-1, 2]
       }
     end
 
