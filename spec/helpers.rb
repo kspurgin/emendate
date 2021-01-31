@@ -316,23 +316,12 @@ module Helpers
     # results
   end
 
-  def parsed_example_tokens(type: :all)
+  # stage should be a SegmentSet-holding instance variable of ProcessingManager
+  def parsed_example_tokens(type: :all, stage: :final)
+    method = stage == :final ? :tokens : stage
     parsed = parse_examples.reject{ |pm| pm.state == :failed }
-    # if type == :date
-    #   tokens = parsed.map{ |t| t.translated_ordinals.date_part_types }
-    # else
-    #   tokens = parsed.map{ |t| t.translated_ordinals.types }
-    # end
-    # if type == :date
-    #   tokens = parsed.map{ |t| t.standardized_formats.date_part_types }
-    # else
-    #   tokens = parsed.map{ |t| t.standardized_formats.types }
-    # end
-    if type == :date
-      tokens = parsed.map{ |t| t.tagged_date_parts.date_part_types }
-    else
-      tokens = parsed.map{ |t| t.tagged_date_parts.types }
-    end
+    processed = parsed.map(&method)
+    tokens = type == :date ? processed.map(&:date_part_types) : processed.map(&:types)
     ex = parsed.map{ |pm| pm.orig_string }
     ex.zip(tokens)
   end
@@ -347,13 +336,14 @@ module Helpers
     results.each{ |str, tokens| puts "#{tokens.join(' ')}  -- String: #{str}" }
   end
 
-  def parsed_tokens_by_token(type = 'all')
-    results = parsed_example_tokens(type).sort_by{ |ex| ex[1] }
+  def parsed_tokens_by_token(type: :all, stage: :final)
+    results = parsed_example_tokens(type: type, stage: stage).sort_by{ |ex| ex[1] }
     results.each{ |str, tokens| puts "#{tokens.join(' ')}  -- String: #{str}" }
   end
 
-  def unique_token_patterns(type: :all)
-    results = parsed_example_tokens(type: type)
+  # stage should be a SegmentSet-holding instance variable of ProcessingManager
+  def unique_token_patterns(type: :all, stage: :final)
+    results = parsed_example_tokens(type: type, stage: stage)
     patterns = results.map{ |parsed| parsed[1] }.uniq.sort.map{ |pattern| [pattern, []] }.to_h
     results.each{ |r| patterns[r[1]] << r[0] }
     patterns.keys.sort.each do |pattern|
