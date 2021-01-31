@@ -124,9 +124,14 @@ module Emendate
 
     def perform_tag_date_parts
       t = Emendate::DatePartTagger.new(tokens: standardized_formats, options: options)
-      t.tag
-      @tokens = t.result
-      @tagged_date_parts = tokens.dup
+      begin
+        t.tag
+      rescue StandardError => e
+        errors << e
+      else
+        @tokens = t.result
+        @tagged_date_parts = tokens.dup
+      end
     end
     
     def log_status_change
