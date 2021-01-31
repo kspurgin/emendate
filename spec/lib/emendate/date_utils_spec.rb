@@ -65,4 +65,31 @@ RSpec.describe Emendate::DateUtils do
       end
     end
   end
+
+  describe '#valid_date?' do
+    # a range of dates in October 1582 do not exist/are not valid using the default
+    #  (Italian) Gregorian date adoption assumptions.
+    context 'valid date - 2020-02-29' do
+      it 'returns true' do
+        pm = Emendate.prep_for('2020-02-29', :tag_date_parts)
+        t = pm.standardized_formats
+        expect(Emendate::DateUtils.valid_date?(t[0], t[2], t[4])).to be true
+      end
+    end
+    context 'invalid date - 2020-02-92' do
+      it 'returns false' do
+        pm = Emendate.prep_for('2020-02-92', :tag_date_parts)
+        t = pm.standardized_formats
+        expect(Emendate::DateUtils.valid_date?(t[0], t[2], t[4])).to be false
+      end
+    end
+    context 'invalid Italy, valid England - 1582-10-14' do
+      it 'returns true' do
+        pm = Emendate.prep_for('1582-10-14', :tag_date_parts)
+        t = pm.standardized_formats
+        expect(Emendate::DateUtils.valid_date?(t[0], t[2], t[4])).to be true
+      end
+    end
+  end
+  
 end
