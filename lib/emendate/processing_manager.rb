@@ -123,7 +123,7 @@ module Emendate
     end
 
     def perform_tag_date_parts
-      t = Emendate::DatePartTagger.new(tokens: standardized_formats)
+      t = Emendate::DatePartTagger.new(tokens: standardized_formats, options: options)
       t.tag
       @tokens = t.result
       @tagged_date_parts = tokens.dup

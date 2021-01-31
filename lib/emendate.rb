@@ -30,8 +30,8 @@ module Emendate
   # sym = Symbol of aasm event for which you would use the results as input.
   # For example, running :tag_date_parts requires successful format standardization
   #   To test date part tagging, you can use the results of prep_for(str, :tag_date_parts)
-  def prep_for(str, sym)
-    pm = Emendate::ProcessingManager.new(str)
+  def prep_for(str, sym, options = {})
+    pm = Emendate::ProcessingManager.new(str, options)
     pm.prep_for(sym)
     pm
   end

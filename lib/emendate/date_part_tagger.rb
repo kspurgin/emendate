@@ -14,15 +14,15 @@ module Emendate
       end
     end
     
-    attr_reader :orig
+    attr_reader :orig, :options
     attr_accessor :result, :taggable
     include DateUtils
-    def initialize(tokens:)
+    def initialize(tokens:, options: {})
       @orig = tokens
       @result = Emendate::MixedSet.new
       orig.each{ |t| result << t }
       @taggable = true
-      
+      @options = options
     end
 
     def tag
@@ -65,7 +65,7 @@ module Emendate
         # just handle the year. the month/day will be handled below
         # we are assuming the year is last in this format
       when /.*number1or2 hyphen number1or2 hyphen year.*/
-        # :tag_numeric_month_day
+        :tag_numeric_month_day
       end
     end
 
@@ -74,6 +74,23 @@ module Emendate
 
     def tag_numeric_month_day
       n1, h1, n2, h2, y = result.extract(%i[number1or2 hyphen number1or2 hyphen year])
+      begin
+        analyzer = Emendate::MonthDayAnalyzer.new(n1, n2, y, options.ambiguous_month_day)
+      rescue Emendate::MonthDayAnalyzer::MonthDayError => e
+        raise e
+      else
+        month, day = [analyzer.month, analyzer.day]
+        replace_x_with_date_part_type(x: month, date_part_type: 'month')
+        replace_x_with_date_part_type(x: day, date_part_type: 'day')
+      end
+      [h1, h2].each{ |h| result.delete(h) }
+    end
+
+    def replace_x_with_date_part_type(x:, date_part_type:)
+      new_date_part = send("#{date_part_type}_date_part".to_sym, source_set([x]))
+      x_ind = result.find_index(x)
+      result.insert(x_ind + 1, new_date_part)
+      result.delete(x)
     end
 
     # types = Array with 2 Segment.type symbols
@@ -102,6 +119,13 @@ module Emendate
 
     def day_date_part(sources)
       Emendate::DatePart.new(type: :day,
+                             lexeme: sources[0].lexeme,
+                             literal: sources[0].literal,
+                             source_tokens: source_set(sources))
+    end
+
+    def month_date_part(sources)
+      Emendate::DatePart.new(type: :month,
                              lexeme: sources[0].lexeme,
                              literal: sources[0].literal,
                              source_tokens: source_set(sources))
