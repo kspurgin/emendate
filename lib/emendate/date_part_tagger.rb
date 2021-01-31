@@ -72,6 +72,64 @@ module Emendate
     def full_match_tagger
     end
 
+    # types = Array with 2 Segment.type symbols
+    # category = String that gets prepended to "date_part" to call DatePart building method 
+    def collapse_pair(types_to_collapse, target_type)
+      sources = result.extract(*types_to_collapse)
+      replace_multi_with_date_part_type(sources: sources, date_part_type: target_type)
+    end
+
+    def new_date_part(type, sources)
+      Emendate::DatePart.new(type: type,
+                             lexeme: sources.map(&:lexeme).join,
+                             literal: sources[0].literal,
+                             source_tokens: source_set(sources))
+    end
+    
+    def replace_multi_with_date_part_type(sources:, date_part_type:)
+      new_date_part = new_date_part(date_part_type, sources)
+      x_ind = result.find_index(sources[0])
+      result.insert(x_ind + 1, new_date_part)
+      sources.each{ |x| result.delete(x) }
+    end
+
+    def replace_x_with_date_part_type(x:, date_part_type:)
+      new_date_part = new_date_part(date_part_type, [x])
+      x_ind = result.find_index(x)
+      result.insert(x_ind + 1, new_date_part)
+      result.delete(x)
+    end
+
+    def source_set(arr)
+      s = Emendate::MixedSet.new
+      arr.each{ |t| s << t }
+    end
+
+    def tag_century_num
+      collapse_pair(%i[number1or2 century], :century)
+    end
+
+    def tag_day_in_mdy
+      m, d, y = result.extract(:month, :number1or2, :year)
+      raise UntaggableDatePartError.new(d, 'invalid day value') unless valid_date?(y, m, d)
+      replace_x_with_date_part_type(x: d, date_part_type: :day)
+    end
+
+    def tag_decade_s
+      collapse_pair(%i[year letter_s], :decade)
+    end
+
+    def tag_decade_uncertainty_digits
+      collapse_pair(%i[year uncertainty_digits], :decade)
+    end
+    
+    def tag_months
+      result.each do |t|
+        next unless t.type == :number_month
+        replace_x_with_date_part_type(x: t, date_part_type: :month)
+      end
+    end
+
     def tag_numeric_month_day
       n1, h1, n2, h2, y = result.extract(%i[number1or2 hyphen number1or2 hyphen year])
       begin
@@ -80,114 +138,17 @@ module Emendate
         raise e
       else
         month, day = [analyzer.month, analyzer.day]
-        replace_x_with_date_part_type(x: month, date_part_type: 'month')
-        replace_x_with_date_part_type(x: day, date_part_type: 'day')
+        replace_x_with_date_part_type(x: month, date_part_type: :month)
+        replace_x_with_date_part_type(x: day, date_part_type: :day)
       end
       [h1, h2].each{ |h| result.delete(h) }
     end
 
-    def replace_x_with_date_part_type(x:, date_part_type:)
-      new_date_part = send("#{date_part_type}_date_part".to_sym, source_set([x]))
-      x_ind = result.find_index(x)
-      result.insert(x_ind + 1, new_date_part)
-      result.delete(x)
-    end
-
-    # types = Array with 2 Segment.type symbols
-    # category = String that gets prepended to "date_part" to call DatePart building method 
-    def collapse_pair(types, category)
-      sources = result.extract(*types)
-      pt1_i = result.find_index(sources[0])
-      date_part = send("#{category}_date_part".to_sym, sources)
-      result.insert(pt1_i, date_part)
-      sources.each{ |s| result.delete_at(result.find_index(s)) }
-    end
-
-    def century_date_part(sources)
-      Emendate::DatePart.new(type: :century,
-                             lexeme: sources.map(&:lexeme).join,
-                             literal: sources[0].literal,
-                             source_tokens: source_set(sources))
-    end
-
-    def decade_date_part(sources)
-      Emendate::DatePart.new(type: :decade,
-                             lexeme: sources.map(&:lexeme).join,
-                             literal: sources[0].literal,
-                             source_tokens: source_set(sources))
-    end
-
-    def day_date_part(sources)
-      Emendate::DatePart.new(type: :day,
-                             lexeme: sources[0].lexeme,
-                             literal: sources[0].literal,
-                             source_tokens: source_set(sources))
-    end
-
-    def month_date_part(sources)
-      Emendate::DatePart.new(type: :month,
-                             lexeme: sources[0].lexeme,
-                             literal: sources[0].literal,
-                             source_tokens: source_set(sources))
-    end
-    
-    def source_set(arr)
-      s = Emendate::MixedSet.new
-      arr.each{ |t| s << t }
-    end
-
-    def tag_century_num
-      collapse_pair(%i[number1or2 century], 'century')
-    end
-
-    def tag_day_in_mdy
-      m, d, y = result.extract(:month, :number1or2, :year)
-      raise UntaggableDatePartError.new(d, 'invalid day value') unless valid_date?(y, m, d)
-      d_ind = result.find_index(d)
-      result.insert(d_ind + 1, day_date_part([d]))
-      result.delete_at(d_ind)
-    end
-
-    def tag_decade_s
-      collapse_pair(%i[year letter_s], 'decade')
-    end
-
-    def tag_decade_uncertainty_digits
-      collapse_pair(%i[year uncertainty_digits], 'decade')
-    end
-    
-    def tag_month(token)
-      Emendate::DatePart.new(type: :month,
-                             lexeme: token.lexeme,
-                             literal: token.literal,
-                             source_tokens: source_set([token]))
-    end
-
-    def tag_months
-      newresult = @result.map{ |t| t.type == :number_month ? tag_month(t) : t }
-      @result = newresult
-    end
-
-    def tag_year(token)
-      return token unless valid_year?(token.lexeme)
-      Emendate::DatePart.new(type: :year,
-                             lexeme: token.lexeme,
-                             literal: token.literal,
-                             source_tokens: source_set([token]))
-    end
-
     def tag_years
-      newresult = @result.map{ |t| t.type == :number4 ? tag_year(t) : t }
-      @result = newresult
-    end
-
-    def valid_date?(y, m, d)
-      begin
-        Date.new(y.literal, m.literal, d.literal)
-      rescue Date::Error
-        false
-      else
-        true
+      result.each do |t|
+        next unless t.type == :number4
+        next unless valid_year?(t.lexeme)
+        replace_x_with_date_part_type(x: t, date_part_type: :year)
       end
     end
   end
