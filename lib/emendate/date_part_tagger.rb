@@ -61,13 +61,10 @@ module Emendate
         :tag_century_num
       when /.*month number1or2 year.*/
         :tag_day_in_mdy
-        # handling number1or2 hyphen number1or2 hyphen number1or2 should go here
-        # just handle the year. the month/day will be handled below
-        # we are assuming the year is last in this format
-      when /.*number1or2 hyphen number1or2 hyphen year.*/
-        :tag_numeric_month_day
       when /.*number1or2 hyphen number1or2 hyphen number1or2.*/
-        :tag_numeric_month_day_short_year
+        :tag_numeric_month_day_short_year # this needs to happen before...
+      when /.*number1or2 hyphen number1or2 hyphen year.*/
+        :tag_numeric_month_day # ...this
       end
     end
 
@@ -99,6 +96,12 @@ module Emendate
       new_date_part = new_date_part(date_part_type, [x])
       x_ind = result.find_index(x)
       result.insert(x_ind + 1, new_date_part)
+      result.delete(x)
+    end
+
+    def replace_x_with_given_segment(x:, segment:)
+      x_ind = result.find_index(x)
+      result.insert(x_ind + 1, segment)
       result.delete(x)
     end
 
@@ -142,6 +145,9 @@ module Emendate
     end
 
     def tag_numeric_month_day_short_year
+      n1, h1, n2, h2, n3 = result.extract(%i[number1or2 hyphen number1or2 hyphen number1or2])
+      year = Emendate::ShortYearHandler.new(n3, options).result
+      replace_x_with_given_segment(x: n3, segment: year)
     end
 
     def tag_years

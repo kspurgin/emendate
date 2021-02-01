@@ -59,6 +59,23 @@ RSpec.describe Emendate::DatePartTagger do
       end
     end
 
+    context 'when 02-10-20' do
+      context 'in the year 2020' do
+      before(:each) do
+        allow(Date).to receive(:today).and_return Date.new(2020,2,3)
+        pm = Emendate.prep_for('02-10-20', :tag_date_parts)
+        tagger = Emendate::DatePartTagger.new(tokens: pm.tokens, options: pm.options)
+        @result = tagger.tag.extract([:year])[0]
+      end
+      it 'expands/tags short year' do
+        expect(@result).not_to be_nil
+      end
+        it 'expands/tags short year to 1920' do
+          expect(@result.literal).to eq(1920)
+        end
+      end
+    end
+
     context 'when 02-03-2020' do
       context 'default' do
         it 'tags month day year' do
