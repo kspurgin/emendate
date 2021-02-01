@@ -16,12 +16,10 @@ module Emendate
     private
     
     def post_initialize(opts)
-      @source_token = opts[:source_tokens] || default_source_tokens
-    end
-
-
-    def default_source_tokens
-      Emendate::TokenSet.new
+      @source_tokens = Emendate::MixedSet.new
+      return if opts[:source_tokens].nil?
+      return if opts[:source_tokens].empty?
+      opts[:source_tokens].each{ |t| source_tokens << t }
     end
   end
 end

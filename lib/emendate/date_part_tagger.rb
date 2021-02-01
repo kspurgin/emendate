@@ -66,6 +66,8 @@ module Emendate
         # we are assuming the year is last in this format
       when /.*number1or2 hyphen number1or2 hyphen year.*/
         :tag_numeric_month_day
+      when /.*number1or2 hyphen number1or2 hyphen number1or2.*/
+        :tag_numeric_month_day_short_year
       end
     end
 
@@ -83,7 +85,7 @@ module Emendate
       Emendate::DatePart.new(type: type,
                              lexeme: sources.map(&:lexeme).join,
                              literal: sources[0].literal,
-                             source_tokens: source_set(sources))
+                             source_tokens: sources)
     end
     
     def replace_multi_with_date_part_type(sources:, date_part_type:)
@@ -98,11 +100,6 @@ module Emendate
       x_ind = result.find_index(x)
       result.insert(x_ind + 1, new_date_part)
       result.delete(x)
-    end
-
-    def source_set(arr)
-      s = Emendate::MixedSet.new
-      arr.each{ |t| s << t }
     end
 
     def tag_century_num
@@ -142,6 +139,9 @@ module Emendate
         replace_x_with_date_part_type(x: day, date_part_type: :day)
       end
       [h1, h2].each{ |h| result.delete(h) }
+    end
+
+    def tag_numeric_month_day_short_year
     end
 
     def tag_years
