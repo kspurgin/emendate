@@ -3,6 +3,20 @@
 module Helpers
   extend self
 
+  meta = %{
+CONVENTIONS USED IN EXAMPLE PATTERNS
+# = digit in an unambiguous (given assumptions made) number
+00 = literally two zeroes
+% = digit in an ambiguous number (i.e. it's not clear whether it's a month or day, etc.)
+MON = abbreviated alphabetical month name
+MONTH = alphabetical month name
+ERA = BCE, AD, CE, BC, etc.
+SEASON = alphabetical season term
+ORD = alphabetical ordinal indication, such at st, rd, etc.
+lowercase letters = themselves, literally
+.,/-&?()[] = themselves, literally (same for spaces)
+  }
+
   EXAMPLES = {
     'unknown' => { pattern: 'unknown',
                   results: [{ start: nil, end: nil, tags: %i[indicates_no_date] }] },
@@ -185,6 +199,8 @@ module Helpers
                     results: [{ start: '1990-09-01', end: '1990-12-31', tags: %i[inclusive_range approximate partial] }] },
     'Spring 2020' => { pattern: 'SEASON ####',
                       results: [{ start: '2020-04-01', end: '2020-06-30', tags: %i[inclusive_range season] }] },
+    '2020 Spring' => { pattern: '#### SEASON',
+                      results: [{ start: '2020-04-01', end: '2020-06-30', tags: %i[inclusive_range season] }] },
     '2020-21' => { pattern: '####-%%',
                   results: [{ start: '2020-01-01', end: '2021-12-31', tags: %i[inclusive_range season two_digit_year ambiguous_month_year option] }],
                   alt_results: [{ start: '2020-04-01', end: '2020-06-30', tags: %i[inclusive_range season two_digit_year ambiguous_month_year option] }]},
@@ -330,6 +346,11 @@ module Helpers
     ex.zip(tokens)
   end
 
+  def failed_to_parse
+    parsed = parse_examples.select{ |pm| pm.state == :failed }
+    parsed.map{ |f| "#{f.orig_string} - #{f.errors.join('; ')}" }
+  end
+
   def example_tokens_by_str
     results = tokenize_examples.sort
     results.each{ |str, tokens| puts "#{str.ljust(example_length)}\t#{tokens.inspect}" }
@@ -354,6 +375,9 @@ module Helpers
       puts pattern.join(' ')
       patterns[pattern].each{ |e| puts '     ' + e }
     end
+
+    puts "\n\n PARSING FAILURES"
+    puts failed_to_parse
   end
   
   def example_length
