@@ -135,7 +135,7 @@ module Helpers
     '[ca. 2002]' => { pattern: '[ca. ####]',
                      results: [{ start: '2002-01-01', end: '2002-12-31', tags: %i[approximate inferred] }] },
     '[ca. 2002-10]' => { pattern: '[ca. ####-%%]',
-                        results: [{ start: '2002-01-01', end: '2010-12-31', tags: %i[approximate inferred option] }] },
+                        results: [{ start: '2002-01-01', end: '2010-12-31', tags: %i[approximate inferred ambiguous_month_year option] }] },
     'ca. 1980s & 1990s' => { pattern: 'ca. ####s & ####s',
                             results: [
                               { start: '1980-01-01', end: '1989-12-31', tags: %i[inclusive_range approximate alternate_dates decades] },
@@ -153,10 +153,10 @@ module Helpers
     #  but we're representing default expectations here
     '2000-01, 2001-01, 2002-02, 2003-03' => { pattern: '####-%%, ####-##, ####-##, ####-##',
                                              results: [
-                                               { start: '2000-01-01', end: '2001-12-31', tags: %i[multi_date month_year option] },
-                                               { start: '2001-01-01', end: '2001-01-31', tags: %i[multi_date month_year] },
-                                               { start: '2002-02-01', end: '2002-02-28', tags: %i[multi_date month_year] },
-                                               { start: '2003-03-01', end: '2003-03-31', tags: %i[multi_date month_year] }] },
+                                               { start: '2000-01-01', end: '2001-12-31', tags: %i[ambiguous_month_yearmulti_date month_year option] },
+                                               { start: '2001-01-01', end: '2001-01-31', tags: %i[ambiguous_month_yearmulti_date month_year] },
+                                               { start: '2002-02-01', end: '2002-02-28', tags: %i[ambiguous_month_yearmulti_date month_year] },
+                                               { start: '2003-03-01', end: '2003-03-31', tags: %i[ambiguous_month_yearmulti_date month_year] }] },
     '1990s' => { pattern: '####s',
                 results: [{ start: '1990-01-01', end: '1999-12-31', tags: %i[inclusive_range approximate decades] }] },
     '199X' => { pattern: '###x',
