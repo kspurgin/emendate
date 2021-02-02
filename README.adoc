@@ -18,6 +18,15 @@ Or install it yourself as:
 
 `$ gem install emendate`
 
+
+== Purpose
+
+Turn highly varied and messy date metadata from various standard and semi-standard date-recording conventions in to structured data object that can be used by some other tool to supply consistently formatted date values in metadata or indexes.
+
+== Limitations
+
+- Does not attempt to deal with any unit of time more specific than day. If given a value such as 1985-04-12T23:20:30Z, it will extract 1985-04-12.
+
 == Notes
 
 Islandora has no built-in date functionality. It uses the pre-parsed values in MODS (I7) or Drupal fields (I8), so we can basically do whatever with the date parsing.
