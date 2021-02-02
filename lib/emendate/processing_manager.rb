@@ -5,19 +5,20 @@ module Emendate
     include AASM
     attr_reader :orig_string, :options, :norm_string, :tokens,
       :orig_tokens, :converted_months, :translated_ordinals, :standardized_formats,
-      :tagged_date_parts, :errors
+      :tagged_date_parts, :segmented_dates, :errors, :warnings
     def initialize(string, options = {})
       @orig_string = string
       @options = Emendate::Options.new(options)
       @norm_string = Emendate.normalize_orig(orig_string)
       @tokens = Emendate::TokenSet.new
       @errors = []
+      @warnings = []
     end
 
     aasm do
       state :startup, initial: true
       state :tokenized, :months_converted, :ordinals_translated, :formats_standardized,
-        :date_parts_tagged, :done, :failed
+        :date_parts_tagged, :dates_segmented, :done, :failed
 
       after_all_transitions :log_status_change
       
@@ -36,6 +37,10 @@ module Emendate
       event :tag_date_parts do
         transitions from: :formats_standardized, to: :date_parts_tagged, after: :perform_tag_date_parts, guard: :no_errors?
       end
+      event :segment_dates do
+        transitions from: :date_parts_tagged, to: :dates_segmented, after: :perform_segment_dates, guard: :no_errors?
+      end
+
       event :finalize do
         transitions from: :tokenized, to: :done, guard: :no_errors?
         transitions from: :tokenized, to: :failed, guard: :errors?
@@ -47,6 +52,8 @@ module Emendate
         transitions from: :formats_standardized, to: :failed, guard: :errors?
         transitions from: :date_parts_tagged, to: :done, guard: :no_errors?
         transitions from: :date_parts_tagged, to: :failed, guard: :errors?
+        transitions from: :dates_segmented, to: :done, guard: :no_errors?
+        transitions from: :dates_segmented, to: :failed, guard: :errors?
       end
     end
 
@@ -56,6 +63,7 @@ module Emendate
       translate_ordinals if may_translate_ordinals?
       standardize_formats if may_standardize_formats?
       tag_date_parts if may_tag_date_parts?
+      segment_dates if may_segment_dates?
       finalize
     end
 
@@ -131,6 +139,18 @@ module Emendate
       else
         @tokens = t.result
         @tagged_date_parts = tokens.dup
+      end
+    end
+
+    def perform_segment_dates
+      s = Emendate::DateSegmenter.new(tokens: tagged_date_parts, options: options)
+      begin
+        s.segment
+      rescue StandardError => e
+        errors << e
+      else
+        @tokens = s.result
+        @segmented_dates = tokens.dup
       end
     end
     

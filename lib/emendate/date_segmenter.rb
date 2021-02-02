@@ -11,7 +11,7 @@ module Emendate
     DATESEP = %i[hyphen slash].freeze
 
     def initialize(tokens:, options: {})
-      @options = Emendate::Options.new(options)
+      @options = options
       @orig = tokens
       @working = orig.clone
       @result = Emendate::TokenSet.new
