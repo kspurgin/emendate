@@ -8,7 +8,7 @@ module Emendate
 
     attr_reader :source_tokens
 
-    # allows any subclass of SementSet to return a list of segments representing date parts
+    # allows any subclass of SegmentSet to return a list of segments representing date parts
     def date_part?
       true
     end
