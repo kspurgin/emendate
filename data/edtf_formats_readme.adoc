@@ -1,0 +1,12 @@
+= About `edtf_formats.csv`
+
+Recorded 2021-02-02 from https://www.loc.gov/standards/datetime/
+
+[WARNING]
+====
+It is recommended that you NOT open this with Excel, which will wreak havoc upon the date examples.
+====
+
+If you must use Excel, open a blank Excel document and import this CSV into it making sure you import all the columns as text.
+
+The freely available OpenOffice Calc is less destructively "helpful" when working with data files, though it is still recommended that you specify to treat all columns as text when opening.
