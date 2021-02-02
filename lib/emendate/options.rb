@@ -28,14 +28,17 @@ module Emendate
         # treats 2/3 as February 3
         # alternative: as_day_month would result in March 2
         ambiguous_month_day: :as_month_day,
+        
         # treats 2010-12 as 2010 - 2012
         # alternative: as_month would result in December 2010
         # this option is also applied to ambiguous season/year values
         ambiguous_month_year: :as_year,
+
         # whether or not to expand two digit numbers that appear to be years
         # by default, will coerce 80 to 1980
         # alternative: literal would treat it as literally the year 80
         two_digit_year_handling: :coerce,
+
         # numbers less than this 2-digit value are treated as current century
         # numbers greater than or equal to this are treated as the previous century
         # defaults to last two digits of current year, so in 2021...
