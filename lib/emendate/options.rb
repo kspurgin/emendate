@@ -43,7 +43,9 @@ module Emendate
         # numbers greater than or equal to this are treated as the previous century
         # defaults to last two digits of current year, so in 2021...
         #  by default, 21 = 1921 and 20 = 2020
-        ambiguous_year_rollback_threshold: Date.today.year.to_s[-2..-1].to_i
+        ambiguous_year_rollback_threshold: Date.today.year.to_s[-2..-1].to_i,
+
+        earliest_date: Date.new(1,1,1)
       }
     end
 
