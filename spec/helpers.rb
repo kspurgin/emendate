@@ -232,22 +232,6 @@ lowercase letters = themselves, literally
     '2004-06-XX/2004-07-03' => { pattern: '####-##-xx/####-##-##', results: [{ start: '2004-06-01', end: '2004-07-03', tags: %i[edtf edtf2 inclusive_range] }] },        
   }
 
-  def translate_ordinals(tokens)
-    translator = Emendate::OrdinalTranslator.new(tokens: tokens)
-    translator.translate
-  end
-
-  def standardize_formats(tokens)
-    standardizer = Emendate::FormatStandardizer.new(tokens: translate_ordinals(tokens))
-    standardizer.standardize
-  end
-
-  def convert_alpha_months(tokens)
-    converter = Emendate::AlphaMonthConverter.new(tokens: standardize_formats(tokens))
-    converter.convert
-  end
-
-
   def example_tags
     EXAMPLES.map{ |str, exhash| [str, exhash[:results]] }
       .to_h

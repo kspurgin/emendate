@@ -5,12 +5,13 @@ module Emendate
   class UnexpectedOrdinalError < StandardError; end
   
   class OrdinalTranslator
-    attr_reader :orig, :result
+    attr_reader :orig, :result, :options
     attr_accessor :this_t
-    def initialize(tokens:)
+    def initialize(tokens:, options: {})
       @orig = tokens
       @result = Emendate::TokenSet.new
       @this_t = 0
+      @options = options
     end
 
     def translate

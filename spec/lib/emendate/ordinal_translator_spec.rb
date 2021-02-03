@@ -1,10 +1,9 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::OrdinalTranslator do
-  def translate(str)
-    l = Emendate.lex(str)
-    a = Helpers.convert_alpha_months(l.tokens)
-    t = Emendate::OrdinalTranslator.new(tokens: a)
+  def translate(str, options = {})
+    pm = Emendate.prep_for(str, :translate_ordinals, options)
+    t = Emendate::OrdinalTranslator.new(tokens: pm.tokens, options: pm.options)
     t.translate
   end
   
@@ -32,6 +31,5 @@ RSpec.describe Emendate::OrdinalTranslator do
         expect{ c.translate }.to raise_error(Emendate::UnexpectedOrdinalError)
       end
     end
-
   end
 end
