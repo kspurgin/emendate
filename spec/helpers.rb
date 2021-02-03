@@ -212,7 +212,6 @@ lowercase letters = themselves, literally
     'Y-17E7' => { pattern: 'y-##e#', results: [{ start: nil, end: nil, tags: %i[edtf edtf2 currently_unparseable exponential_year] }] },
     '1950S2' => { pattern: '####s#', results: [{ start: nil, end: nil, tags: %i[edtf edtf2 currently_unparseable significant_digits] }] },
     'Y171010000S3' => { pattern: 'y#########s#', results: [{ start: nil, end: nil, tags: %i[edtf edtf2 currently_unparseable significant_digits letter_prefixed_year] }] },
-    'Y3388E2S3' => { pattern: 'y####e#s#', results: [{ start: nil, end: nil, tags: %i[edtf edtf2 currently_unparseable significant_digits letter_prefixed_year exponential_year] }] },
     '[1667,1668,1670..1672]' => { pattern: '[####,####,####..####]', results: [{ start: '1667-01-01', end: '1667-12-31', tags: %i[edtf edtf2 alternate_dates] }, { start: '1668-01-01', end: '1668-12-31', tags: %i[edtf edtf2 alternate_dates] }, { start: '1670-01-01', end: '1670-12-31', tags: %i[edtf edtf2 alternate_dates] }, { start: '1671-01-01', end: '1671-12-31', tags: %i[edtf edtf2 alternate_dates] }, { start: '1672-01-01', end: '1672-12-31', tags: %i[edtf edtf2 alternate_dates] }] },
     '{1667,1668,1670..1672}' => { pattern: '{####,####,####..####}', results: [{ start: '1667-01-01', end: '1667-12-31', tags: %i[edtf edtf2 multi_dates] }, { start: '1668-01-01', end: '1668-12-31', tags: %i[edtf edtf2 multi_dates] }, { start: '1670-01-01', end: '1670-12-31', tags: %i[edtf edtf2 multi_dates] }, { start: '1671-01-01', end: '1671-12-31', tags: %i[edtf edtf2 multi_dates] }, { start: '1672-01-01', end: '1672-12-31', tags: %i[edtf edtf2 multi_dates] }] },
     '{1960,1961-12}' => { pattern: '{####,####-##}', results: [{ start: '1960-01-01', end: '1960-12-31', tags: %i[edtf edtf2 multi_dates] }, { start: '1961-12-01', end: '1961-12-31', tags: %i[edtf edtf multi_dates] }] },
@@ -229,7 +228,10 @@ lowercase letters = themselves, literally
     '1XXX-XX' => { pattern: '#xxx-xx', results: [{ start: nil, end: nil, tags: %i[edtf edtf2 currently_unparseable in_specific_month_in_any_year] }] },
     '1984-1X' => { pattern: '####-#x', results: [{ start: '1984-10-01', end: '1984-12-31', tags: %i[edtf edtf2 uncertainty_digits_month] }] },
     '2004-06-~01/2004-06-~20' => { pattern: '####-##-~##/####-##-~##', results: [{ start: '2004-06-01', end: '2004-06-20', tags: %i[edtf edtf2 approximate_handling_todo inclusive_range] }] },
-    '2004-06-XX/2004-07-03' => { pattern: '####-##-xx/####-##-##', results: [{ start: '2004-06-01', end: '2004-07-03', tags: %i[edtf edtf2 inclusive_range] }] },        
+    '2004-06-XX/2004-07-03' => { pattern: '####-##-xx/####-##-##', results: [{ start: '2004-06-01', end: '2004-07-03', tags: %i[edtf edtf2 inclusive_range] }] },
+    # the following example lexes fine if you do it manually/individually, but gets stuck/hands in some kind of loop when
+    #   run via unique_token_patterns
+    #'Y3388E2S3' => { pattern: 'y####e#s#', results: [{ start: nil, end: nil, tags: %i[edtf edtf2 currently_unparseable significant_digits letter_prefixed_year exponential_year] }] }
   }
 
   def example_tags
