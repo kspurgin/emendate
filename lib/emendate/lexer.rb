@@ -87,7 +87,6 @@ module Emendate
 
       c = consume
 
-      return if c == DOT
       return if c == SPACE
       
       token =
@@ -99,6 +98,8 @@ module Emendate
           token_of_type(c, :curly_bracket_open)
         elsif c == CURLY_BRACKET_CLOSE
           token_of_type(c, :curly_bracket_close)
+        elsif c == DOT
+          dots
         elsif HYPHEN.include?(c)
           token_of_type(c, :hyphen)
         elsif c == PERCENT
@@ -121,9 +122,11 @@ module Emendate
           letter
         end
 
-        token = Token.new(lexeme: c, type: :unknown, location: current_location) if token.nil?
+      return if token.nil? && c == DOT
 
-        
+      token = Token.new(lexeme: c, type: :unknown, location: current_location) if token.nil?
+
+      
       tokens << token
     end
 
@@ -149,6 +152,20 @@ module Emendate
       end
     end
 
+    def consume_dots
+      while dot?(lookahead)
+        consume
+      end
+    end
+
+    def dots
+      consume_dots
+      lexeme = norm[lexeme_start_p..(next_p - 1)]
+      return nil if lexeme.length == 1
+      type = lexeme.length == 2 ? :double_dot : :unknown
+      Token.new(type: type, lexeme: lexeme, location: current_location)
+    end
+    
     def letter
       consume_letters
       lexeme = norm[lexeme_start_p..(next_p - 1)]
@@ -247,6 +264,10 @@ module Emendate
 
     def digit?(c)
       c >= '0' && c <= '9'
+    end
+
+    def dot?(c)
+      c == DOT
     end
 
   end

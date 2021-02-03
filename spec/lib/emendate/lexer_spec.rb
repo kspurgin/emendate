@@ -19,11 +19,29 @@ RSpec.describe Emendate::Lexer do
   end
 
   context 'dot' do
-    it 'produces expected tokens' do
-      orig = '.'
-      expected = []
-      lexer = Emendate.lex(orig)
-      expect(lexer.tokens.map(&:type)).to eq(expected)
+    context 'single dot' do
+      it 'produces expected tokens' do
+        orig = 'Sep. 1'
+        expected = %i[month_abbr_alpha number1or2]
+        lexer = Emendate.lex(orig)
+        expect(lexer.tokens.map(&:type)).to eq(expected)
+      end
+    end
+    context 'double dot' do
+      it 'produces expected tokens' do
+        orig = '{..1984'
+        expected = %i[curly_bracket_open double_dot number4]
+        lexer = Emendate.lex(orig)
+        expect(lexer.tokens.map(&:type)).to eq(expected)
+      end
+    end
+    context 'multi dot' do
+      it 'produces expected tokens' do
+        orig = '{...1984'
+        expected = %i[curly_bracket_open unknown number4]
+        
+        expect{ Emendate.lex(orig) }.to raise_error(Emendate::UntokenizableError)
+      end
     end
   end
 
