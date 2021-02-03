@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe Emendate::Lexer do
   context 'unknown token' do
     it 'raises error' do
-      orig = '%'
+      orig = '@'
       expected = [:unknown]
       expect{ Emendate.lex(orig) }.to raise_error(Emendate::UntokenizableError)
     end
@@ -208,6 +208,15 @@ RSpec.describe Emendate::Lexer do
       it 'produces expected tokens' do
         orig = 'Spring Winter Fall'
         expected = [:season, :season, :season]
+        lexer = Emendate.lex(orig)
+        expect(lexer.tokens.map(&:type)).to eq(expected)
+      end
+    end
+
+    context 'edtf-specific punctuation' do
+      it 'produces expected tokens' do
+        orig = '+%~{}:'
+        expected = %i[plus percent tilde curly_bracket_open curly_bracket_close colon]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end

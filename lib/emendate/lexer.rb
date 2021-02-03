@@ -30,7 +30,10 @@ module Emendate
     BEFORE = %w[before pre].freeze
     CENTURY = %w[century cent].freeze
     CIRCA = %w[ca circa].freeze
+    COLON = ':'
     COMMA = ','
+    CURLY_BRACKET_OPEN = '{'
+    CURLY_BRACKET_CLOSE = '}'
     DAYS = (Date::DAYNAMES + Date::ABBR_DAYNAMES).compact.map(&:downcase).freeze
     DOT = '.'
     ERA = %w[bce ce bp].freeze
@@ -40,13 +43,16 @@ module Emendate
     QUESTION = '?'
     OR_INDICATOR = %w[or].freeze
     ORDINAL_INDICATOR = %w[st nd rd th d].freeze
+    PERCENT = '%'
     PARTIAL = %w[early late middle mid].freeze
+    PLUS = '+'
     RANGE_INDICATOR = %w[to]
     SEASONS = %w[winter spring summer fall autumn]
-    SLASH = '/'.freeze
-    SPACE = ' '.freeze
+    SLASH = '/'
+    SPACE = ' '
     SQUARE_BRACKET_OPEN = '['
     SQUARE_BRACKET_CLOSE = ']'
+    TILDE = '~'
     UNKNOWN_DATE = %w[nodate undated unknown].freeze
     
     attr_reader :norm, :tokens
@@ -85,10 +91,20 @@ module Emendate
       return if c == SPACE
       
       token =
-        if c == COMMA
+        if c == COLON
+          token_of_type(c, :colon)
+        elsif c == COMMA
           token_of_type(c, :comma)
+        elsif c == CURLY_BRACKET_OPEN
+          token_of_type(c, :curly_bracket_open)
+        elsif c == CURLY_BRACKET_CLOSE
+          token_of_type(c, :curly_bracket_close)
         elsif HYPHEN.include?(c)
           token_of_type(c, :hyphen)
+        elsif c == PERCENT
+          token_of_type(c, :percent)
+        elsif c == PLUS
+          token_of_type(c, :plus)
         elsif c == QUESTION
           token_of_type(c, :question)
         elsif c == SLASH
@@ -97,6 +113,8 @@ module Emendate
           token_of_type(c, :square_bracket_open)
         elsif c == SQUARE_BRACKET_CLOSE
           token_of_type(c, :square_bracket_close)
+        elsif c == TILDE
+          token_of_type(c, :tilde)
         elsif digit?(c)
           number
         elsif alpha?(c)
