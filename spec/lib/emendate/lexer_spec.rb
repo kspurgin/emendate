@@ -204,6 +204,15 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
+    context 'seasons' do
+      it 'produces expected tokens' do
+        orig = 'Spring Winter Fall'
+        expected = [:season, :season, :season]
+        lexer = Emendate.lex(orig)
+        expect(lexer.tokens.map(&:type)).to eq(expected)
+      end
+    end
+
     context 'range indicator' do
       it 'produces expected tokens' do
         orig = 'to'

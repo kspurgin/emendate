@@ -42,6 +42,7 @@ module Emendate
     ORDINAL_INDICATOR = %w[st nd rd th d].freeze
     PARTIAL = %w[early late middle mid].freeze
     RANGE_INDICATOR = %w[to]
+    SEASONS = %w[winter spring summer fall autumn]
     SLASH = '/'.freeze
     SPACE = ' '.freeze
     SQUARE_BRACKET_OPEN = '['
@@ -164,6 +165,8 @@ module Emendate
         :ordinal_indicator
       elsif RANGE_INDICATOR.include?(lexeme)
         :range_indicator
+      elsif SEASONS.include?(lexeme)
+        :season
       elsif UNKNOWN_DATE.include?(lexeme)
         :unknown_date
       elsif lexeme.match?(/^x+$/)
