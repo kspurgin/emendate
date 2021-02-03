@@ -109,10 +109,10 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 's' do
+    context 'special single letters' do
       it 'produces expected tokens' do
-        orig = 's'
-        expected = [:letter_s]
+        orig = 'e s t y z'
+        expected = %i[letter_e letter_s letter_t letter_y letter_z]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
