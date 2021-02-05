@@ -18,7 +18,7 @@ RSpec.describe Emendate::FormatStandardizer do
     context 'when c. 999-1-1' do
       it 'pads to 4-digit number' do
         result = standardize('c. 999-1-1')
-        expect(result).to eq(%i[approximate number4 hyphen number1or2 hyphen number1or2])
+        expect(result).to eq(%i[number4 hyphen number1or2 hyphen number1or2])
       end
     end
 

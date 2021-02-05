@@ -12,7 +12,7 @@ RSpec.describe Emendate::DateSegmenter do
     context 'circa 202127' do
       it 'returns expected' do
         s = segment('circa 202127')
-        e = %i[approximate number6]
+        e = %i[number6]
         expect(s.types).to eq(e)
       end
     end
@@ -20,7 +20,7 @@ RSpec.describe Emendate::DateSegmenter do
     context 'circa 202002' do
       it 'returns expected' do
         s = segment('circa 202002')
-        e = %i[approximate yearmonth_date_type]
+        e = %i[yearmonth_date_type]
         expect(s.types).to eq(e)
       end
     end

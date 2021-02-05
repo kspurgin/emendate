@@ -5,16 +5,21 @@ require 'forwardable'
 module Emendate
   class SegmentSet
     extend Forwardable
-    attr_reader :segments
+    attr_reader :segments, :certainty
     def_delegator :@segments, :[], :[]
     def_delegators :@segments, :delete, :delete_at, :empty?, :find_index, :insert, :pop, :shift
     
     def initialize(*args)
       @segments = Array.new(*args)
+      @certainty = []
     end
 
     def <<(segment)
       segments << segment
+    end
+
+    def add_certainty(val)
+      certainty << val
     end
     
     def date_parts

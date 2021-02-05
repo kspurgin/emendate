@@ -3,9 +3,14 @@
 module Emendate
   class ProcessingManager
     include AASM
-    attr_reader :orig_string, :options, :norm_string, :tokens,
-      :orig_tokens, :converted_months, :translated_ordinals, :standardized_formats,
-      :tagged_date_parts, :segmented_dates, :errors, :warnings
+    attr_reader :orig_string, :options, :norm_string, :tokens, :orig_tokens,
+      :converted_months,
+      :translated_ordinals,
+      :certainty_checked_whole_values,
+      :standardized_formats,
+      :tagged_date_parts,
+      :segmented_dates,
+      :errors, :warnings
     def initialize(string, options = {})
       @orig_string = string
       @options = Emendate::Options.new(options)
@@ -17,8 +22,14 @@ module Emendate
 
     aasm do
       state :startup, initial: true
-      state :tokenized, :months_converted, :ordinals_translated, :formats_standardized,
-        :date_parts_tagged, :dates_segmented, :done, :failed
+      state :tokenized,
+        :months_converted,
+        :ordinals_translated,
+        :whole_value_certainty_checked,
+        :formats_standardized,
+        :date_parts_tagged,
+        :dates_segmented,
+        :done, :failed
 
       after_all_transitions :log_status_change
       
@@ -31,8 +42,11 @@ module Emendate
       event :translate_ordinals do
         transitions from: :months_converted, to: :ordinals_translated, after: :perform_translate_ordinals, guard: :no_errors?
       end
+      event :certainty_check_whole_values do
+        transitions from: :ordinals_translated, to: :whole_value_certainty_checked, after: :perform_certainty_check_whole_values, guard: :no_errors?
+      end
       event :standardize_formats do
-        transitions from: :ordinals_translated, to: :formats_standardized, after: :perform_standardize_formats, guard: :no_errors?
+        transitions from: :whole_value_certainty_checked, to: :formats_standardized, after: :perform_standardize_formats, guard: :no_errors?
       end
       event :tag_date_parts do
         transitions from: :formats_standardized, to: :date_parts_tagged, after: :perform_tag_date_parts, guard: :no_errors?
@@ -48,6 +62,8 @@ module Emendate
         transitions from: :months_converted, to: :failed, guard: :errors?
         transitions from: :ordinals_translated, to: :done, guard: :no_errors?
         transitions from: :ordinals_translated, to: :failed, guard: :errors?
+        transitions from: :whole_value_certainty_checked, to: :done, guard: :no_errors?
+        transitions from: :whole_value_certainty_checked, to: :failed, guard: :errors?
         transitions from: :formats_standardized, to: :done, guard: :no_errors?
         transitions from: :formats_standardized, to: :failed, guard: :errors?
         transitions from: :date_parts_tagged, to: :done, guard: :no_errors?
@@ -61,6 +77,7 @@ module Emendate
       lex
       convert_months if may_convert_months?
       translate_ordinals if may_translate_ordinals?
+      certainty_check_whole_values if may_certainty_check_whole_values?
       standardize_formats if may_standardize_formats?
       tag_date_parts if may_tag_date_parts?
       segment_dates if may_segment_dates?
@@ -118,8 +135,20 @@ module Emendate
       end
     end
 
+    def perform_certainty_check_whole_values
+      c = Emendate::CertaintyChecker.new(tokens: translated_ordinals, options: options)
+      begin
+        c.check
+      rescue StandardError => e
+        errors << e
+      else
+        @tokens = c.result
+        @certainty_checked_whole_values = tokens.dup
+      end
+    end
+    
     def perform_standardize_formats
-      f = Emendate::FormatStandardizer.new(tokens: translated_ordinals)
+      f = Emendate::FormatStandardizer.new(tokens: certainty_checked_whole_values)
       begin
         f.standardize
       rescue StandardError => e
