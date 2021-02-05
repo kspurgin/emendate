@@ -1,9 +1,10 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::DatePartTagger do
-  def tag(str)
-    pm = Emendate.process(str)
-    pm.tagged_date_parts.types
+  def tag(str, options = {})
+    pm = Emendate.prep_for(str, :tag_date_parts, options)
+    fs = Emendate::DatePartTagger.new(tokens: pm.tokens, options: pm.options)
+    fs.tag.types
   end
   
   describe '#tag' do

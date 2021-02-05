@@ -2,8 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Emendate::SegmentSet do
     before(:all) do
-      @set = Emendate::SegmentSet.new
-      %i[a b c d].each{ |t| @set << Emendate::Token.new(type: t) }
+      @set = Emendate::SegmentSet.new(%i[a b c d].map{ |t| Emendate::Token.new(type: t) })
     end
 
     describe '#extract' do

@@ -13,6 +13,16 @@ module Emendate
         super(msg)
       end
     end
+
+    class UntaggableDatePatternError < StandardError
+      attr_reader :date_parts, :reason
+      def initialize(date_parts, reason)
+        @date_parts = date_parts
+        @reason = reason
+        msg = "value: #{date_parts.map(&:lexeme).join}; reason: #{reason}"
+        super(msg)
+      end
+    end
     
     attr_reader :orig, :options
     attr_accessor :result, :taggable
@@ -64,7 +74,11 @@ module Emendate
       when /.*number1or2 hyphen number1or2 hyphen number1or2.*/
         :tag_numeric_month_day_short_year # this needs to happen before...
       when /.*number1or2 hyphen number1or2 hyphen year.*/
-        :tag_numeric_month_day # ...this
+        :tag_numeric_month_day_year # ...this
+      when /.*year hyphen number1or2 hyphen number1or2.*/
+        :tag_year_numeric_month_day
+      when /.*year hyphen number1or2.*/
+        :tag_year_plus_numeric_month_or_season
       end
     end
 
@@ -74,7 +88,7 @@ module Emendate
     # types = Array with 2 Segment.type symbols
     # category = String that gets prepended to "date_part" to call DatePart building method 
     def collapse_pair(types_to_collapse, target_type)
-      sources = result.extract(*types_to_collapse)
+      sources = result.extract(*types_to_collapse).segments
       replace_multi_with_date_part_type(sources: sources, date_part_type: target_type)
     end
 
@@ -110,7 +124,7 @@ module Emendate
     end
 
     def tag_day_in_mdy
-      m, d, y = result.extract(:month, :number1or2, :year)
+      m, d, y = result.extract(:month, :number1or2, :year).segments
       raise UntaggableDatePartError.new(d, 'invalid day value') unless valid_date?(y, m, d)
       replace_x_with_date_part_type(x: d, date_part_type: :day)
     end
@@ -130,8 +144,8 @@ module Emendate
       end
     end
 
-    def tag_numeric_month_day
-      n1, h1, n2, h2, y = result.extract(%i[number1or2 hyphen number1or2 hyphen year])
+    def tag_numeric_month_day_year
+      n1, h1, n2, h2, y = result.extract(%i[number1or2 hyphen number1or2 hyphen year]).segments
       begin
         analyzer = Emendate::MonthDayAnalyzer.new(n1, n2, y, options.ambiguous_month_day)
       rescue Emendate::MonthDayAnalyzer::MonthDayError => e
@@ -145,11 +159,28 @@ module Emendate
     end
 
     def tag_numeric_month_day_short_year
-      n1, h1, n2, h2, n3 = result.extract(%i[number1or2 hyphen number1or2 hyphen number1or2])
+      n1, h1, n2, h2, n3 = result.extract(%i[number1or2 hyphen number1or2 hyphen number1or2]).segments
       year = Emendate::ShortYearHandler.new(n3, options).result
       replace_x_with_given_segment(x: n3, segment: year)
+      [h1, h2].each{ |h| result.delete(h) }
     end
 
+    def tag_year_numeric_month_day
+      y, h1, m, h2, d = result.extract(%i[year hyphen number1or2 hyphen number1or2]).segments
+      [h1, h2].each{ |h| result.delete(h) }
+      raise UntaggableDatePatternError.new([y, h1, m, h2, d], 'returns invalid date') unless valid_date?(y, m, d)
+
+      replace_x_with_date_part_type(x: m, date_part_type: :month)
+      replace_x_with_date_part_type(x: d, date_part_type: :day)
+    end
+    
+    def tag_year_plus_numeric_month_or_season
+      y, h, m = result.extract(%i[year hyphen number1or2]).segments
+      result.delete(h)
+      analyzed = Emendate::MonthSeasonYearAnalyzer.new(m, y, options).result
+      replace_x_with_given_segment(x: m, segment: analyzed)
+    end
+    
     def tag_years
       result.each do |t|
         next unless t.type == :number4

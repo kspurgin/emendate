@@ -44,7 +44,7 @@ RSpec.describe Emendate::Certainty do
         expect(@c.values).to be_empty
       end
       it 'returns all original tokens' do
-        expect(@c.result).to eq(@l.tokens)
+        expect(@c.result.types).to eq(@l.tokens.types)
       end
     end
   end

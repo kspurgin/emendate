@@ -4,7 +4,7 @@ module Emendate
   
   class FormatStandardizer
   attr_reader :orig, :result, :standardizable
-    def initialize(tokens:)
+  def initialize(tokens:, options: {})
       @orig = tokens
       @result = tokens.clone
       @standardizable = true
@@ -66,7 +66,7 @@ module Emendate
 
     def add_century_after_first_number
       century = result[-1].dup
-      centuryless = result.select{ |t| t.type == :number1or2 }.first
+      centuryless = result.select{ |t| t.type == :number1or2 }[0]
       ins_pt = result.find_index(centuryless) + 1
       result.insert(ins_pt, century)
     end
@@ -100,13 +100,14 @@ module Emendate
     end
 
     def move_month_to_beginning_of_segment
-      month = result.select{ |t| t.type == :number_month &&
-          result[result.find_index(t) - 1].type == :number1or2 &&
-          result[result.find_index(t) + 1].type == :number4 }[0]
-      m_ind = result.find_index(month) 
+      n1, m, n4 = result.extract(%i[number1or2 number_month number_4]).segments
+      # month = result.select{ |t| t.type == :number_month &&
+      #     result[result.find_index(t) - 1].type == :number1or2 &&
+      #     result[result.find_index(t) + 1].type == :number4 }[0]
+      m_ind = result.find_index(m)
       d_ind =  m_ind - 1
       result.delete_at(m_ind)
-      result.insert(d_ind, month)
+      result.insert(d_ind, m)
     end
     
     def move_year_after_first_month
@@ -128,7 +129,7 @@ module Emendate
     end
     
     def pad_3_to_4_digits
-      t3 = result.select{ |t| t.type == :number3 }.first
+      t3 = result.select{ |t| t.type == :number3 }[0]
       t3i = result.find_index(t3)
       lexeme4 = t3.lexeme.rjust(4, '0')
       t4 = Emendate::NumberToken.new(type: :number, lexeme: lexeme4, literal: t3.literal, location: t3.location)
@@ -160,9 +161,8 @@ module Emendate
     end
     
     def remove_post_partial_hyphen
-      partial = result.select{ |t| t.type == :partial && result[result.find_index(t) + 1].type == :hyphen }.first
-      hyphen_ind = result.find_index(partial) + 1
-      result.delete_at(hyphen_ind)
+      p, h = result.extract(%i[partial hyphen]).segments
+      result.delete(h)
     end
 
   end

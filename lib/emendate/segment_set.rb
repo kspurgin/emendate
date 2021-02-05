@@ -1,9 +1,24 @@
 # frozen_string_literal: true
 
+require 'forwardable'
+
 module Emendate
-  class SegmentSet < Array
+  class SegmentSet
+    extend Forwardable
+    attr_reader :segments
+    def_delegator :@segments, :[], :[]
+    def_delegators :@segments, :delete, :delete_at, :empty?, :find_index, :insert, :pop, :shift
+    
+    def initialize(*args)
+      @segments = Array.new(*args)
+    end
+
+    def <<(segment)
+      segments << segment
+    end
+    
     def date_parts
-      self.select{ |t| t.date_part? }
+      segments.select{ |t| t.date_part? }
     end
 
     def date_part_types
@@ -14,41 +29,52 @@ module Emendate
       date_part_types.join(' ')
     end
 
+    def each(*args, &block)
+      segments.each(*args, &block)
+    end
+
     # returns the first sequence of segments matching the pattern of types passed in 
     def extract(*args)
       args.flatten!
       segsize = args.length
-      return self.dup.clear if self.length < segsize
-      return self.dup if self.length == segsize
+      return self.class.new if segments.length < segsize
+      return self.class.new(segments.dup) if segments.length == segsize
       
-      tails = self.select{ |t| t.type == args[-1] }
-      return self.dup.clear if tails.empty?
+      tails = segments.select{ |t| t.type == args[-1] }
+      return segments.dup.clear if tails.empty?
 
       segment = []
       tails.each do |tail|
         if segment.empty?
-          tail_i = self.find_index(tail)
+          tail_i = segments.find_index(tail)
           head_i = tail_i - segsize + 1
-          seg = self[head_i..tail_i]
+          seg = self.class.new(segments[head_i..tail_i])
           segment = seg if seg.types == args
         end
       end
       segment.dup
     end
     
-    def map
-      arr = super
-      if arr.any?{ |s| s.kind_of?(Emendate::Segment) }
-        new = self.clone.clear
-        arr.each{ |e| new << e }
-        new
+    def map(*args, &block)
+      results = segments.map(*args, &block)
+      if results.any?{ |s| s.kind_of?(Emendate::Segment) }
+        self.class.new(results)
       else
-        arr
+        results
+      end
+    end
+
+    def select(*args, &block)
+      results = segments.select(*args, &block)
+      if results.any?{ |s| s.kind_of?(Emendate::Segment) }
+        self.class.new(results)
+      else
+        results
       end
     end
 
     def types
-      self.map(&:type)
+      segments.map(&:type)
     end
 
     def type_string
@@ -56,7 +82,7 @@ module Emendate
     end
 
     def when_type(type)
-      self.select{ |t| t.type == type }
+      segments.select{ |t| t.type == type }
     end
   end
 end

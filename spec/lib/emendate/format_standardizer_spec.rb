@@ -1,9 +1,10 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::FormatStandardizer do
-  def standardize(str)
-    pm = Emendate.process(str)
-    pm.standardized_formats.types
+  def standardize(str, options = {})
+    pm = Emendate.prep_for(str, :standardize_formats, options)
+    fs = Emendate::FormatStandardizer.new(tokens: pm.tokens, options: pm.options)
+    fs.standardize.types
   end
   
   describe '#standardize' do
