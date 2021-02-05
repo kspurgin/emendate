@@ -71,10 +71,12 @@ module Emendate
         :tag_century_num
       when /.*month number1or2 year.*/
         :tag_day_in_mdy
+      # this needs to happen before...
       when /.*number1or2 hyphen number1or2 hyphen number1or2.*/
-        :tag_numeric_month_day_short_year # this needs to happen before...
+        :tag_numeric_month_day_short_year
+      # ...this
       when /.*number1or2 hyphen number1or2 hyphen year.*/
-        :tag_numeric_month_day_year # ...this
+        :tag_numeric_month_day_year
       when /.*year hyphen number1or2 hyphen number1or2.*/
         :tag_year_numeric_month_day
       when /.*year hyphen number1or2.*/
@@ -83,6 +85,10 @@ module Emendate
     end
 
     def full_match_tagger
+      case result.type_string
+      when /^year hyphen year$/
+        :hyphen_to_range_indicator
+      end
     end
 
     # types = Array with 2 Segment.type symbols
@@ -90,6 +96,17 @@ module Emendate
     def collapse_pair(types_to_collapse, target_type)
       sources = result.extract(*types_to_collapse).segments
       replace_multi_with_date_part_type(sources: sources, date_part_type: target_type)
+    end
+
+    def hyphen_to_range_indicator
+      result.each do |s|
+        next unless s.type == :hyphen
+        ri = Emendate::Token.new(type: :range_indicator,
+                                 lexeme: s.lexeme,
+                                 literal: s.literal,
+                                 location: s.location)
+        replace_x_with_given_segment(x: s, segment: ri)
+      end
     end
 
     def new_date_part(type, sources)
@@ -176,9 +193,13 @@ module Emendate
     
     def tag_year_plus_numeric_month_or_season
       y, h, m = result.extract(%i[year hyphen number1or2]).segments
-      result.delete(h)
       analyzed = Emendate::MonthSeasonYearAnalyzer.new(m, y, options).result
       replace_x_with_given_segment(x: m, segment: analyzed)
+      if analyzed.type == :year
+        hyphen_to_range_indicator
+      else
+        result.delete(h)
+      end
     end
     
     def tag_years

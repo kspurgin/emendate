@@ -93,18 +93,20 @@ RSpec.describe Emendate::DatePartTagger do
       end
     end
 
-    xit 'test' do
-      pm = Emendate.process('c. 2001-02-20?')
-      # circa => 0
-      # 2001 => 1
-      # - => 2
-      # 02 => 3
-      # - => 4
-      # 20 => 5
-      # ? => 6
-      t = pm.standardized_formats
-      dpt = Emendate::DatePartTagger.new(tokens: t)
-      seg = dpt.extract_pattern(:number4, :hyphen, :number1or2)
+    context 'when 2003-04' do
+      context 'default (treat as year)' do
+        it 'converts hyphen into range_indicator' do
+          result = tag('2003-04')
+          expect(result).to eq(%i[year range_indicator year])
+        end
+      end
+      context 'ambiguous_month_year: as_month' do
+        it 'removes hyphen ' do
+          pm = Emendate.prep_for('2003-04', :tag_date_parts, ambiguous_month_year: :as_month)
+          tagger = Emendate::DatePartTagger.new(tokens: pm.tokens, options: pm.options)
+          expect(tagger.tag.type_string).to eq('year month')
+        end
+      end
     end
   end
 end
