@@ -109,8 +109,8 @@ lowercase letters = themselves, literally
     '[ca. 2000s]' => { pattern: '[ca. ####]', results: [{ start: '2000-01-01', end: '2009-12-31', tags: %i[approximate inferred inclusive_range ba] }] },
     '[c. 2002]' => { pattern: '[ca. ####]', results: [{ start: '2002-01-01', end: '2002-12-31', tags: %i[approximate inferred ba] }] },    '[ca. 2002-10]' => { pattern: '[ca. ####-@@]', results: [{ start: '2002-01-01', end: '2010-12-31', tags: %i[approximate inferred ambiguous_year_month_season option ba] }] },
     'ca. 1980s & 1990s' => { pattern: 'ca. ####s & ####s', results: [
-                              { start: '1980-01-01', end: '1989-12-31', tags: %i[inclusive_range approximate alternate_dates decades ba] },
-                              { start: '1990-01-01', end: '1999-12-31', tags: %i[inclusive_range approximate alternate_dates decades ba] }] },
+                              { start: '1980-01-01', end: '1989-12-31', tags: %i[inclusive_range approximate multi_date decades ba] },
+                              { start: '1990-01-01', end: '1999-12-31', tags: %i[inclusive_range approximate multi_date decades ba] }] },
     '2001-01-01, 2002-02-02, 2003-03-03' => { pattern: '####-##-##, ####-##-##, ####-##-##', results: [
                                                { start: '2001-01-01', end: '2001-01-01', tags: %i[multi_date] },
                                                { start: '2002-02-02', end: '2002-02-02', tags: %i[multi_date] },
