@@ -188,7 +188,7 @@ lowercase letters = themselves, literally
     'early 19th century' => { pattern: 'early ##ORD century', results: [{ start: '1801-01-01', end: '1834-12-31', tags: %i[inclusive_range century partial ba] }] },
     'mid-19th century' => { pattern: 'mid-##ORD century', results: [{ start: '1834-01-01', end: '1867-12-31', tags: %i[inclusive_range century partial] }] },
     'late 19th century' => { pattern: 'late ##ORD century', results: [{ start: '1867-01-01', end: '1900-12-31', tags: %i[inclusive_range century partial ba] }] },
-    'late 19th to early 20thcentury' => { pattern: 'late ##ORD to early ##ORD century', results: [{ start: '1867-01-01', end: '1934-12-31', tags: %i[inclusive_range century partial ba] }] },
+    'late 19th to early 20th century' => { pattern: 'late ##ORD to early ##ORD century', results: [{ start: '1867-01-01', end: '1934-12-31', tags: %i[inclusive_range century partial ba] }] },
     'late 19th c.' => { pattern: 'late ##ORD c.', results: [{ start: '1867-01-01', end: '1900-12-31', tags: %i[inclusive_range century partial ba] }] },
     'early to mid-19th century' => { pattern: 'early to mid-##ORD century', results: [{ start: nil, end: nil, tags: %i[unparseable ba] }] },
     '1800s' => { pattern: '####s', results: [{ start: '1800-01-01', end: '1899-12-31', tags: %i[inclusive_range approximate centuries ba] }] },
@@ -255,8 +255,8 @@ lowercase letters = themselves, literally
     ex.zip(tokens)
   end
 
-  def parse_examples
-    ex = EXAMPLES.keys
+  def parse_examples(tag: nil)
+    ex = tag.nil? ? EXAMPLES.keys : examples_with_tag(tag)
     # for regular use
     ex.map{ |str| Emendate.process(str) }
 
@@ -270,17 +270,17 @@ lowercase letters = themselves, literally
   end
 
   # stage should be a SegmentSet-holding instance variable of ProcessingManager
-  def parsed_example_tokens(type: :all, stage: :final)
+  def parsed_example_tokens(type: :all, stage: :final, tag: nil)
     method = stage == :final ? :tokens : stage
-    parsed = parse_examples.reject{ |pm| pm.state == :failed }
+    parsed = parse_examples(tag: tag).reject{ |pm| pm.state == :failed }
     processed = parsed.map(&method)
     tokens = type == :date ? processed.map(&:date_part_types) : processed.map(&:types)
     ex = parsed.map{ |pm| pm.orig_string }
     ex.zip(tokens)
   end
 
-  def failed_to_parse
-    parsed = parse_examples.select{ |pm| pm.state == :failed }
+  def failed_to_parse(tag: nil)
+    parsed = parse_examples(tag: tag).select{ |pm| pm.state == :failed }
     parsed.map{ |f| "#{f.orig_string} - #{f.errors.join('; ')}" }
   end
 
@@ -300,8 +300,8 @@ lowercase letters = themselves, literally
   end
 
   # stage should be a SegmentSet-holding instance variable of ProcessingManager
-  def unique_token_patterns(type: :all, stage: :final)
-    results = parsed_example_tokens(type: type, stage: stage)
+  def unique_token_patterns(type: :all, stage: :final, tag: nil)
+    results = parsed_example_tokens(type: type, stage: stage, tag: tag)
     patterns = results.map{ |parsed| parsed[1] }.uniq.sort.map{ |pattern| [pattern, []] }.to_h
     results.each{ |r| patterns[r[1]] << r[0] }
     patterns.keys.sort.each do |pattern|
@@ -310,7 +310,7 @@ lowercase letters = themselves, literally
     end
 
     puts "\n\n PARSING FAILURES"
-    puts failed_to_parse
+    puts failed_to_parse(tag: tag)
   end
   
   def example_length
