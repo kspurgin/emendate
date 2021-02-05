@@ -25,6 +25,9 @@ module Emendate
       s = partial_match_standardizers
       return s unless s.nil?
 
+      s = full_match_date_part_standardizers
+      return s unless s.nil?
+
       s = full_match_standardizers
       standardizable = false if s.nil?
       s
@@ -47,7 +50,7 @@ module Emendate
       end
     end
     
-    def full_match_standardizers
+    def full_match_date_part_standardizers
       case result.date_part_types
       when %i[number1or2 number1or2 century]
         %i[add_century_after_first_number]
@@ -61,6 +64,13 @@ module Emendate
       when %i[number4 number_month number_month]
         %i[move_year_after_first_month
            add_year_after_second_month]
+      end
+    end
+    
+    def full_match_standardizers
+      case result.types
+      when %i[partial range_indicator partial number1or2 century]
+        %i[copy_number_century_after_first_partial]
       end
     end
 
@@ -99,6 +109,16 @@ module Emendate
       result.insert(ins_pt, yr)
     end
 
+    def copy_number_century_after_first_partial
+      cent = result.extract(%i[number1or2 century]).segments
+      p = result.extract(%i[partial]).segments[0]
+      ins_pt = result.find_index(p) + 1
+      cent.each do |c|
+        result.insert(ins_pt, c.dup)
+        ins_pt += 1
+      end
+    end
+    
     def move_month_to_beginning_of_segment
       n1, m, n4 = result.extract(%i[number1or2 number_month number_4]).segments
       # month = result.select{ |t| t.type == :number_month &&

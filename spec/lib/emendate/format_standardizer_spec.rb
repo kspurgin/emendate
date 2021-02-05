@@ -36,6 +36,13 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
+    context 'when early to mid-19th century' do
+      it 'adds 19th century after early' do
+        result = standardize('early to mid-19th century')
+        expect(result).to eq(%i[partial number1or2 century range_indicator partial number1or2 century])
+      end
+    end
+
     context 'when Feb. 15, 999 - February 20, 2020' do
       it 'removes commas after dates' do
         result = standardize('Feb. 15, 999 - February 20, 2020')
