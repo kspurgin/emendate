@@ -208,6 +208,8 @@ module Emendate
         :uncertainty_digits
       elsif lexeme.match?(/^u+$/)
         :uncertainty_digits
+      elsif lexeme == 'c'
+        :letter_c
       elsif lexeme == 'e'
         :letter_e
       elsif lexeme == 's'

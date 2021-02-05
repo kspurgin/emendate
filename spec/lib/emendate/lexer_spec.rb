@@ -129,8 +129,9 @@ RSpec.describe Emendate::Lexer do
 
     context 'special single letters' do
       it 'produces expected tokens' do
-        orig = 'e s t y z'
-        expected = %i[letter_e letter_s letter_t letter_y letter_z]
+        # note: c isn't first in string or it'd get normalized to circa
+        orig = 'e c s t y z'
+        expected = %i[letter_e letter_c letter_s letter_t letter_y letter_z]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
