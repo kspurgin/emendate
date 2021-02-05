@@ -27,6 +27,40 @@ Turn highly varied and messy date metadata from various standard and semi-standa
 
 - Does not attempt to deal with any unit of time more specific than day. If given a value such as 1985-04-12T23:20:30Z, it will extract 1985-04-12.
 
+
+== To-do
+=== option for handling output of EDTF when only year or year/month are known
+
+==== one configurable option for month level
+Example: 2004
+
+If option is `none` (default), output `2004`
+
+If option is `unspecified_digits`, output `2004-XX`
+
+If option is a number (say 4), output `2004-04`
+
+==== one configurable option for day level
+Example: April 2004
+
+If option is `none` (default), output `2004-04`
+
+If option is `unspecified_digits`, output `2004-04-XX`
+
+If option is a number (say 7), output `2004-04-07`
+
+==== interactions
+
+If month is none, only none is valid for day. Any other value for day will be ignored.
+
+Otherwise, you can set them independently:
+
+Example: 2004
+
+month: unspecified_digits, day: 17 = 2004-XX-17
+
+month: 10, day: unspecified_digits = 2004-10-XX
+
 == Notes
 
 Islandora has no built-in date functionality. It uses the pre-parsed values in MODS (I7) or Drupal fields (I8), so we can basically do whatever with the date parsing.
