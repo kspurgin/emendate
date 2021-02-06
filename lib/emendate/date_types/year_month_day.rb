@@ -4,9 +4,10 @@ module Emendate
   module DateTypes
     
     class YearMonthDay < Emendate::DateTypes::DateType
-      attr_reader :month, :day
+      attr_reader :year, :month, :day
       def initialize(**opts)
         super
+        @year = opts[:year].is_a?(Integer) ? opts[:year] : opts[:year].to_i
         @month = opts[:month].is_a?(Integer) ? opts[:month] : opts[:month].to_i
         @day = opts[:day].is_a?(Integer) ? opts[:day] : opts[:day].to_i
       end

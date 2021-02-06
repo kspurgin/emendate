@@ -3,8 +3,10 @@
 module Emendate
   module DateTypes
     class Year < Emendate::DateTypes::DateType
+      attr_reader :year
       def initialize(**opts)
         super
+        @year = opts[:year].is_a?(Integer) ? opts[:year] : opts[:year].to_i
       end
 
       def earliest

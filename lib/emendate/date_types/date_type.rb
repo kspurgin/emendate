@@ -4,14 +4,12 @@ module Emendate
   module DateTypes
     
     class DateType
-      attr_reader :year, :pre, :post, :type
+      attr_reader :type, :partial_indicator, :certainty
       attr_accessor :parts
       def initialize(**opts)
-        @year = opts[:year].is_a?(Integer) ? opts[:year] : opts[:year].to_i
-        @pre = Emendate::TokenSet.new
-        @post = Emendate::TokenSet.new
-        @parts = Emendate::TokenSet.new
-        opts[:children].each{ |t| parts << t } unless opts[:children].nil?
+        @parts = opts[:children].nil? ? [] : Emendate::MixedSet.new(opts[:children])
+        @partial_indicator = opts[:partial_indicator]
+        @certainty = opts[:certainty].nil? ? [] : opts[:certainty]
       end
       
       def earliest
