@@ -1,40 +1,42 @@
 # frozen_string_literal: true
 
 module Emendate
-  class UnexpectedInitialOrdinalError < StandardError; end
-  class UnexpectedOrdinalError < StandardError; end
-  
   class OrdinalTranslator
-    attr_reader :orig, :result, :options
-    attr_accessor :this_t
+    attr_reader :result, :options
     def initialize(tokens:, options: {})
-      @orig = tokens
-      @result = Emendate::TokenSet.new
-      @this_t = 0
+      @result = Emendate::TokenSet.new.copy(tokens)
       @options = options
     end
 
     def translate
-      orig.each do |t|
-        if t.type == :ordinal_indicator
-          raise Emendate::UnexpectedInitialOrdinalError.new if this_t == 0
-          prev_type = previous.type
-          unless prev_type == :number1or2
-            raise Emendate::UnexpectedOrdinalError.new("Ordinal indicator expected after :number1or2. Found after :#{prev_type}")
-          end
-        else
-          result << t
-        end
-        @this_t += 1
+      ois = result.when_type(:ordinal_indicator)
+      return result if ois.empty?
+
+      if result[0].type == :ordinal_indicator
+        result.warnings << 'Ordinal indicator unexpectedly appears at beginning of date string'
+        result.shift
+        ois.shift
       end
+
+      return result if ois.empty?
+      
+      ois.each do |oi|
+        prev = previous(oi)
+        unless prev.type == :number1or2
+          result.warnings << "Ordinal indicator expected after :number1or2. Found after :#{prev.type}"
+        end
+        result.delete(oi)
+      end
+      
       result
     end
 
     private
 
-    def previous
-      orig[this_t - 1]
+    def previous(oi)
+      oi_ind = result.find_index(oi)
+        prev_ind = oi_ind - 1
+        result[prev_ind]
     end
-
   end
 end

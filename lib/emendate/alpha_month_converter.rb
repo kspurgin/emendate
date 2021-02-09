@@ -5,22 +5,22 @@ require 'emendate/date_utils'
 module Emendate
   
   class AlphaMonthConverter
-  attr_reader :orig, :result
+  attr_reader :result, :options
     include DateUtils
     def initialize(tokens:, options: {})
-      @orig = tokens
-      @result = Emendate::TokenSet.new
+      @result = Emendate::TokenSet.new.copy(tokens)
+      @options = options
     end
 
     def convert
-      orig.each do |t|
+      result.each do |t|
         case t.type
         when :month_alpha
-          result << convert_month(t, month_number_lookup)
+          replace_x_with_new(x: t, new: convert_month(t, month_number_lookup))
         when :month_abbr_alpha
-          result << convert_month(t, month_abbr_number_lookup)
+          replace_x_with_new(x: t, new: convert_month(t, month_abbr_number_lookup))
         else
-          result << t
+          next
         end
       end
       result
@@ -28,12 +28,18 @@ module Emendate
 
     private
 
+    def replace_x_with_new(x:, new:)
+      ins_pt = result.find_index(x) + 1
+      result.insert(ins_pt, new)
+      result.delete(x)
+    end
+    
     def convert_month(token, lookup)
       str = token.lexeme
-      ind = lookup[str]
+      number = lookup[str]
       Emendate::Token.new(lexeme: str,
                           type: :number_month,
-                          literal: ind,
+                          literal: number,
                           location: token.location)
     end
   end

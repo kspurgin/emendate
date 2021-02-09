@@ -4,7 +4,7 @@ RSpec.describe Emendate::CertaintyChecker do
   def check(str, options = {})
     pm = Emendate.prep_for(str, :certainty_check_whole_values, options)
     cc = Emendate::CertaintyChecker.new(tokens: pm.tokens, options: pm.options)
-    cc.check.result
+    cc.check
   end
 
   describe '#check' do

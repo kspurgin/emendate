@@ -7,6 +7,7 @@ module Emendate
       :converted_months,
       :translated_ordinals,
       :certainty_checked_whole_values,
+      :exploded_uncertainty_digits,
       :standardized_formats,
       :tagged_date_parts,
       :segmented_dates,
@@ -26,12 +27,13 @@ module Emendate
         :months_converted,
         :ordinals_translated,
         :whole_value_certainty_checked,
+        :uncertainty_digits_exploded,
         :formats_standardized,
         :date_parts_tagged,
         :dates_segmented,
         :done, :failed
 
-      after_all_transitions :log_status_change
+      after_all_transitions :log_status_change, :gather_warnings
       
       event :lex do
         transitions from: :startup, to: :tokenized, after: :perform_lex
@@ -45,8 +47,11 @@ module Emendate
       event :certainty_check_whole_values do
         transitions from: :ordinals_translated, to: :whole_value_certainty_checked, after: :perform_certainty_check_whole_values, guard: :no_errors?
       end
+      event :explode_uncertainty_digits do
+        transitions from: :whole_value_certainty_checked, to: :uncertainty_digits_exploded, after: :perform_explode_uncertainty_digits, guard: :no_errors?
+      end
       event :standardize_formats do
-        transitions from: :whole_value_certainty_checked, to: :formats_standardized, after: :perform_standardize_formats, guard: :no_errors?
+        transitions from: :uncertainty_digits_exploded, to: :formats_standardized, after: :perform_standardize_formats, guard: :no_errors?
       end
       event :tag_date_parts do
         transitions from: :formats_standardized, to: :date_parts_tagged, after: :perform_tag_date_parts, guard: :no_errors?
@@ -64,6 +69,8 @@ module Emendate
         transitions from: :ordinals_translated, to: :failed, guard: :errors?
         transitions from: :whole_value_certainty_checked, to: :done, guard: :no_errors?
         transitions from: :whole_value_certainty_checked, to: :failed, guard: :errors?
+        transitions from: :uncertainty_digits_exploded, to: :done, guard: :no_errors?
+        transitions from: :uncertainty_digits_exploded, to: :failed, guard: :errors?
         transitions from: :formats_standardized, to: :done, guard: :no_errors?
         transitions from: :formats_standardized, to: :failed, guard: :errors?
         transitions from: :date_parts_tagged, to: :done, guard: :no_errors?
@@ -78,6 +85,7 @@ module Emendate
       convert_months if may_convert_months?
       translate_ordinals if may_translate_ordinals?
       certainty_check_whole_values if may_certainty_check_whole_values?
+      explode_uncertainty_digits if may_explode_uncertainty_digits?
       standardize_formats if may_standardize_formats?
       tag_date_parts if may_tag_date_parts?
       segment_dates if may_segment_dates?
@@ -112,26 +120,26 @@ module Emendate
       else
         @norm_string = l.norm
         @tokens = l.tokens
-        @orig_tokens = tokens.dup
+        @orig_tokens = tokens.class.new.copy(tokens)
       end
     end
 
     def perform_convert_months
-      c = Emendate::AlphaMonthConverter.new(tokens: tokens)
+      c = Emendate::AlphaMonthConverter.new(tokens: tokens, options: options)
       c.convert
       @tokens = c.result
-      @converted_months = tokens.dup
+      @converted_months = tokens.class.new.copy(tokens)
     end
 
     def perform_translate_ordinals
-      t = Emendate::OrdinalTranslator.new(tokens: converted_months)
+      t = Emendate::OrdinalTranslator.new(tokens: converted_months, options: options)
       begin
         t.translate
       rescue StandardError => e
         errors << e
       else
         @tokens = t.result
-        @translated_ordinals = tokens.dup
+        @translated_ordinals = tokens.class.new.copy(tokens)
       end
     end
 
@@ -143,19 +151,31 @@ module Emendate
         errors << e
       else
         @tokens = c.result
-        @certainty_checked_whole_values = tokens.dup
+        @certainty_checked_whole_values = tokens.class.new.copy(tokens)
       end
     end
-    
+
+    def perform_explode_uncertainty_digits
+      e = Emendate::UncertaintyDigitExploder.new(tokens: certainty_checked_whole_values, options: options)
+      begin
+        e.explode
+      rescue StandardError => e
+        errors << e
+      else
+        @tokens = e.result
+        @exploded_uncertainty_digits = tokens.class.new.copy(tokens)
+      end
+    end
+
     def perform_standardize_formats
-      f = Emendate::FormatStandardizer.new(tokens: certainty_checked_whole_values)
+      f = Emendate::FormatStandardizer.new(tokens: tokens, options: options)
       begin
         f.standardize
       rescue StandardError => e
         errors << e
       else
         @tokens = f.result
-        @standardized_formats = tokens.dup
+        @standardized_formats = tokens.class.new.copy(tokens)
       end
     end
 
@@ -167,7 +187,7 @@ module Emendate
         errors << e
       else
         @tokens = t.result
-        @tagged_date_parts = tokens.dup
+        @tagged_date_parts = tokens.class.new.copy(tokens)
       end
     end
 
@@ -179,12 +199,16 @@ module Emendate
         errors << e
       else
         @tokens = s.result
-        @segmented_dates = tokens.dup
+        @segmented_dates = tokens.class.new.copy(tokens)
       end
     end
     
     def log_status_change
       #puts "changing from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
+    end
+
+    def gather_warnings
+      warnings << tokens.warnings unless tokens.warnings.empty?
     end
 
     def errors?

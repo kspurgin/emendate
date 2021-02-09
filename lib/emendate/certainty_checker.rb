@@ -3,11 +3,10 @@
 module Emendate
   class CertaintyChecker
 
-    attr_reader :orig, :result, :options
+    attr_reader :result, :options
 
     def initialize(tokens:, options: {})
-      @orig = tokens
-      @result = tokens.clone
+      @result = tokens.class.new.copy(tokens)
       @options = options
     end
 
@@ -15,7 +14,7 @@ module Emendate
       until done? do
         process_certainty
       end
-      self
+      result
     end
 
     private

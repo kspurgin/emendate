@@ -5,13 +5,14 @@ require 'forwardable'
 module Emendate
   class SegmentSet
     extend Forwardable
-    attr_reader :segments, :certainty
+    attr_reader :segments, :certainty, :warnings
     def_delegator :@segments, :[], :[]
-    def_delegators :@segments, :delete, :delete_at, :empty?, :find_index, :insert, :pop, :shift
+    def_delegators :@segments, :clear, :delete, :delete_at, :empty?, :find_index, :insert, :pop, :shift
     
     def initialize(*args)
       @segments = Array.new(*args)
       @certainty = []
+      @warnings = []
     end
 
     def <<(segment)
@@ -20,6 +21,13 @@ module Emendate
 
     def add_certainty(val)
       certainty << val
+    end
+
+    def copy(other_set)
+      other_set.segments.each{ |s| segments << s.dup }
+      other_set.certainty.each{ |c| certainty << c.dup }
+      other_set.warnings.each{ |w| warnings << w.dup }
+      self
     end
     
     def date_parts
@@ -38,7 +46,7 @@ module Emendate
       segments.each(*args, &block)
     end
 
-    # returns the first sequence of segments matching the pattern of types passed in 
+    # returns the first sequence of segments matching the pattern of types passed in as an Array
     def extract(*args)
       args.flatten!
       segsize = args.length

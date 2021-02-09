@@ -26,6 +26,10 @@ module Emendate
   LQ = "\u201C"
   RQ = "\u201D"
 
+  # these tokens should only appear in EDTF dates, and will switch some of the options
+  #  to support assumptions about processing EDTF
+  EDTF_TYPES = %i[double_dot percent tilde curly_bracket_open letter_y letter_t letter_z letter_e]
+
   # str = String to process
   # sym = Symbol of aasm event for which you would use the results as input.
   # For example, running :tag_date_parts requires successful format standardization

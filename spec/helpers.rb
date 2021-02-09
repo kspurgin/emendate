@@ -112,28 +112,28 @@ lowercase letters = themselves, literally
                               { start: '1980-01-01', end: '1989-12-31', tags: %i[inclusive_range approximate multi_date decades ba] },
                               { start: '1990-01-01', end: '1999-12-31', tags: %i[inclusive_range approximate multi_date decades ba] }] },
     '2001-01-01, 2002-02-02, 2003-03-03' => { pattern: '####-##-##, ####-##-##, ####-##-##', results: [
-                                               { start: '2001-01-01', end: '2001-01-01', tags: %i[multi_date] },
-                                               { start: '2002-02-02', end: '2002-02-02', tags: %i[multi_date] },
-                                               { start: '2003-03-03', end: '2003-03-03', tags: %i[multi_date] }] },
+      { start: '2001-01-01', end: '2001-01-01', tags: %i[multi_date] },
+      { start: '2002-02-02', end: '2002-02-02', tags: %i[multi_date] },
+      { start: '2003-03-03', end: '2003-03-03', tags: %i[multi_date] }] },
     '2000-01-01 or 2000-01-12' => { pattern: '####-##-## or ####-##-##', results: [
-                                     { start: '2000-01-01', end: '2000-01-01', tags: %i[alternate_dates] },
-                                     { start: '2000-01-12', end: '2000-01-12', tags: %i[alternate_dates] }] },
+      { start: '2000-01-01', end: '2000-01-01', tags: %i[alternate_dates] },
+      { start: '2000-01-12', end: '2000-01-12', tags: %i[alternate_dates] }] },
     # this example makes no sense without the option set to non-default on the first value,
     #  but we're representing default expectations here
     '2000-01, 2001-01, 2002-02, 2003-03' => { pattern: '####-@@, ####-##, ####-##, ####-##', results: [
-                                               { start: '2000-01-01', end: '2001-12-31', tags: %i[ambiguous_multi_date  option] },
-                                               { start: '2001-01-01', end: '2001-01-31', tags: %i[ambiguous_multi_date ] },
-                                               { start: '2002-02-01', end: '2002-02-28', tags: %i[ambiguous_multi_date ] },
-                                               { start: '2003-03-01', end: '2003-03-31', tags: %i[ambiguous_multi_date ] }] },
+      { start: '2000-01-01', end: '2001-12-31', tags: %i[ambiguous_multi_date  option] },
+      { start: '2001-01-01', end: '2001-01-31', tags: %i[ambiguous_multi_date ] },
+      { start: '2002-02-01', end: '2002-02-28', tags: %i[ambiguous_multi_date ] },
+      { start: '2003-03-01', end: '2003-03-31', tags: %i[ambiguous_multi_date ] }] },
     '1990s' => { pattern: '####s', results: [{ start: '1990-01-01', end: '1999-12-31', tags: %i[inclusive_range approximate decades ba] }] },
     '199X' => { pattern: '###x', results: [{ start: '1990-01-01', end: '1999-12-31', tags: %i[inclusive_range approximate decades edtf edtf1] }] },
     '199u' => { pattern: '###u', results: [{ start: '1990-01-01', end: '1999-12-31', tags: %i[inclusive_range approximate decades] }] },
     '1980s or 1990s' => { pattern: '####s or ####s', results: [
-                           { start: '1980-01-01', end: '1989-12-31', tags: %i[inclusive_range approximate alternate_dates decades] },
-                           { start: '1990-01-01', end: '1999-12-31', tags: %i[inclusive_range approximate alternate_dates decades] }] },
+      { start: '1980-01-01', end: '1989-12-31', tags: %i[inclusive_range approximate alternate_dates decades] },
+      { start: '1990-01-01', end: '1999-12-31', tags: %i[inclusive_range approximate alternate_dates decades] }] },
     '1980s & 1990s' => { pattern: '####s & ####s', results: [
-                          { start: '1980-01-01', end: '1989-12-31', tags: %i[inclusive_range approximate alternate_dates decades] },
-                          { start: '1990-01-01', end: '1999-12-31', tags: %i[inclusive_range approximate alternate_dates decades] }] },
+      { start: '1980-01-01', end: '1989-12-31', tags: %i[inclusive_range approximate alternate_dates decades] },
+      { start: '1990-01-01', end: '1999-12-31', tags: %i[inclusive_range approximate alternate_dates decades] }] },
     'Early 1990s' => { pattern: 'early ####s', results: [{ start: '1990-01-01', end: '1995-12-31', tags: %i[inclusive_range approximate partial decades] }] },
     'Mid 1990s' => { pattern: 'mid ####s', results: [{ start: '1993-01-01', end: '1998-12-31', tags: %i[inclusive_range approximate partial decades] }] },    
     'Late 1990s' => { pattern: 'late ####s', results: [{ start: '1995-01-01', end: '1999-12-31', tags: %i[inclusive_range approximate partial decades] }] },
@@ -152,29 +152,29 @@ lowercase letters = themselves, literally
     'June 3-15, 2000' => { pattern: 'MONTH #-##, ####', results: [{ start: '2020-06-03', end: '2020-06-15', tags: %i[inclusive_range] }] },    
     'June 3 -15, 2000' => { pattern: 'MONTH # -##, ####', results: [{ start: '2020-06-03', end: '2020-06-15', tags: %i[inclusive_range] }] },
     '2000 June 3, 15' => { pattern: '#### MONTH #, #', results: [
-                            { start: '2000-06-03', end: '2000-06-03', tags: %i[multi_date] },
-                            { start: '2000-06-15', end: '2000-06-15', tags: %i[multi_date] }] },
+      { start: '2000-06-03', end: '2000-06-03', tags: %i[multi_date] },
+      { start: '2000-06-15', end: '2000-06-15', tags: %i[multi_date] }] },
     '2000 June 1-July 4' => { pattern: '#### MONTH #-MONTH #', results: [{ start: '2000-06-01', end: '2000-07-04', tags: %i[inclusive_range] }] },
     'June 1- July 4, 2000' => { pattern: 'MONTH #- MONTH #, ####', results: [{ start: '2000-06-01', end: '2000-07-04', tags: %i[inclusive_range] }] },
     '2000 May 5, June 2, 9-23' => { pattern: '#### MONTH #, MONTH #, #-##', results: [
-                                     { start: '2000-05-05', end: '2000-05-05', tags: %i[multi_date] },
-                                     { start: '2000-06-02', end: '2000-06-02', tags: %i[multi_date] },
-                                     { start: '2000-06-09', end: '2000-06-23', tags: %i[inclusive_range multi_date] }] },
+      { start: '2000-05-05', end: '2000-05-05', tags: %i[multi_date] },
+      { start: '2000-06-02', end: '2000-06-02', tags: %i[multi_date] },
+      { start: '2000-06-09', end: '2000-06-23', tags: %i[inclusive_range multi_date] }] },
     '2000 May -June' => { pattern: '#### MONTH -MONTH', results: [{ start: '2000-05-01', end: '2000-06-30', tags: %i[inclusive_range ] }] },
     'May - June 2000' => { pattern: 'MONTH - MONTH ####', results: [{ start: '2000-05-01', end: '2000-06-30', tags: %i[inclusive_range ] }] },
     '2000 June 3 - 2001 Jan 20' => { pattern: '#### MONTH # - #### MON ##', results: [{ start: '2000-06-03', end: '2001-01-20', tags: %i[inclusive_range] }] },
     '2000 June 3-2001 Jan 20' => { pattern: '#### MONTH #-#### MON ##', results: [{ start: '2000-06-03', end: '2001-01-20', tags: %i[inclusive_range] }] },
     '2000 June 3- 2001 Jan 20' => { pattern: '#### MONTH #- #### MON ##', results: [{ start: '2000-06-03', end: '2001-01-20', tags: %i[inclusive_range] }] },
     '2000 June 1, 2-5, 8, 9' => { pattern: '#### MONTH #, #-#, #, #', results: [
-                                   { start: '2000-06-01', end: '2000-06-01', tags: %i[multi_date] },
-                                   { start: '2000-06-02', end: '2000-06-05', tags: %i[inclusive_range multi_date] },
-                                   { start: '2000-06-08', end: '2000-06-08', tags: %i[multi_date] },
-                                   { start: '2000-06-09', end: '2000-06-09', tags: %i[multi_date] }] },
+      { start: '2000-06-01', end: '2000-06-01', tags: %i[multi_date] },
+      { start: '2000-06-02', end: '2000-06-05', tags: %i[inclusive_range multi_date] },
+      { start: '2000-06-08', end: '2000-06-08', tags: %i[multi_date] },
+      { start: '2000-06-09', end: '2000-06-09', tags: %i[multi_date] }] },
     '2000 June 1, 2-5, 8, and 9' => { pattern: '#### MONTH #, #-#, #, and #', results: [
-                                       { start: '2000-06-01', end: '2000-06-01', tags: %i[multi_date] },
-                                       { start: '2000-06-02', end: '2000-06-05', tags: %i[inclusive_range multi_date] },
-                                       { start: '2000-06-08', end: '2000-06-08', tags: %i[multi_date] },
-                                       { start: '2000-06-09', end: '2000-06-09', tags: %i[multi_date] }] },
+      { start: '2000-06-01', end: '2000-06-01', tags: %i[multi_date] },
+      { start: '2000-06-02', end: '2000-06-05', tags: %i[inclusive_range multi_date] },
+      { start: '2000-06-08', end: '2000-06-08', tags: %i[multi_date] },
+      { start: '2000-06-09', end: '2000-06-09', tags: %i[multi_date] }] },
     '2000-01-00-2001-03-00' => { pattern: '####-##-00-####-##-00', results: [{ start: '2000-01-01', end: '2000-03-31', tags: %i[inclusive_range ] }] },
     '2000-01-00 - 2001-03-00' => { pattern: '####-##-00 - ####-##-00', results: [{ start: '2000-01-01', end: '2000-03-31', tags: %i[inclusive_range ] }] },
     '19th century' => { pattern: '##ORD century', results: [{ start: '1801-01-01', end: '1900-12-31', tags: %i[inclusive_range century] }] },
@@ -183,8 +183,8 @@ lowercase letters = themselves, literally
     '19th century [?]' => { pattern: '##ORD century [?]', results: [{ start: '1801-01-01', end: '1900-12-31', tags: %i[inclusive_range century uncertain] }] },
     '[19th century]' => { pattern: '[##ORD century]', results: [{ start: '1801-01-01', end: '1900-12-31', tags: %i[inclusive_range century inferred ba] }] },
     '17th or 18th century' => { pattern: '##ORD or ##ORD century', results: [
-                                 { start: '1601-01-01', end: '1700-12-31', tags: %i[inclusive_range century alternate_dates] },
-                                 { start: '1701-01-01', end: '1800-12-31', tags: %i[inclusive_range century alternate_dates] }] },
+      { start: '1601-01-01', end: '1700-12-31', tags: %i[inclusive_range century alternate_dates] },
+      { start: '1701-01-01', end: '1800-12-31', tags: %i[inclusive_range century alternate_dates] }] },
     'early 19th century' => { pattern: 'early ##ORD century', results: [{ start: '1801-01-01', end: '1834-12-31', tags: %i[inclusive_range century partial ba] }] },
     'mid-19th century' => { pattern: 'mid-##ORD century', results: [{ start: '1834-01-01', end: '1867-12-31', tags: %i[inclusive_range century partial] }] },
     'late 19th century' => { pattern: 'late ##ORD century', results: [{ start: '1867-01-01', end: '1900-12-31', tags: %i[inclusive_range century partial ba] }] },
@@ -255,25 +255,20 @@ lowercase letters = themselves, literally
     ex.zip(tokens)
   end
 
-  def parse_examples(tag: nil)
+  def parse_examples(tag: nil, stage: nil)
     ex = tag.nil? ? EXAMPLES.keys : examples_with_tag(tag)
     # for regular use
-    ex.map{ |str| Emendate.process(str) }
-
-    # for debugging
-    # results = []
-    # ex.each do |str|
-    #   puts "Processing: #{str}"
-    #   results << Emendate.process(str)
-    # end
-    # results
+    if stage.nil?
+      ex.map{ |str| Emendate.process(str) }
+    else
+      ex.map{ |str| Emendate.prep_for(str, stage) }
+    end
   end
 
   # stage should be a SegmentSet-holding instance variable of ProcessingManager
-  def parsed_example_tokens(type: :all, stage: :final, tag: nil)
-    method = stage == :final ? :tokens : stage
-    parsed = parse_examples(tag: tag).reject{ |pm| pm.state == :failed }
-    processed = parsed.map(&method)
+  def parsed_example_tokens(type: :all, stage: nil, tag: nil)
+    parsed = parse_examples(tag: tag, stage: stage).reject{ |pm| pm.state == :failed }
+    processed = parsed.map(&:tokens)
     tokens = type == :date ? processed.map(&:date_part_types) : processed.map(&:types)
     ex = parsed.map{ |pm| pm.orig_string }
     ex.zip(tokens)
@@ -300,7 +295,7 @@ lowercase letters = themselves, literally
   end
 
   # stage should be a SegmentSet-holding instance variable of ProcessingManager
-  def unique_token_patterns(type: :all, stage: :final, tag: nil)
+  def unique_token_patterns(type: :all, stage: nil, tag: nil)
     results = parsed_example_tokens(type: type, stage: stage, tag: tag)
     patterns = results.map{ |parsed| parsed[1] }.uniq.sort.map{ |pattern| [pattern, []] }.to_h
     results.each{ |r| patterns[r[1]] << r[0] }

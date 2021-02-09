@@ -24,19 +24,16 @@ module Emendate
       end
     end
     
-    attr_reader :orig, :options
-    attr_accessor :result, :taggable
+    attr_reader :options, :result, :taggable
     include DateUtils
     def initialize(tokens:, options: {})
-      @orig = tokens
-      @result = Emendate::MixedSet.new
-      orig.each{ |t| result << t }
-      @taggable = true
+      @result = Emendate::MixedSet.new.copy(tokens)
       @options = options
+      @taggable = true
     end
 
     def tag
-      tag_years if orig.types.include?(:number4)
+      tag_years if result.types.include?(:number4)
 
       tag_months if result.types.include?(:number_month)
       
@@ -48,8 +45,6 @@ module Emendate
       result
     end
 
-
-
     private
 
     def determine_tagger
@@ -57,7 +52,7 @@ module Emendate
       return t unless t.nil?
 
       t = full_match_tagger
-      taggable = false if t.nil?
+      @taggable = false if t.nil?
       t
     end
 

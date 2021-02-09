@@ -10,25 +10,41 @@ RSpec.describe Emendate::OrdinalTranslator do
   describe '#translate' do
     context 'when ordinal indicator appears after a 1 or 2 digit number' do
       it 'removes ordinal indicator' do
-        result = translate('20th').map(&:type)
-        expect(result).to eq([:number1or2])
+        result = translate('20th').type_string
+        expect(result).to eq('number1or2')
       end
     end
-    
+
+    context 'when no ordinal indicator' do
+      it 'returns original token set' do
+        result = translate('2000').type_string
+        expect(result).to eq('number4')
+      end
+    end
 
     context 'when ordinal indicator is first element' do
-      it 'raises error' do
-        l = Emendate.lex('th20')
-        c = Emendate::OrdinalTranslator.new(tokens: l.tokens)
-        expect{ c.translate }.to raise_error(Emendate::UnexpectedInitialOrdinalError)
+      before(:all) do
+        @t = translate('th20')
+      end
+      it 'warns' do
+        ex = 'Ordinal indicator unexpectedly appears at beginning of date string'
+        expect(@t.warnings).to include(ex)
+      end
+      it 'removes ordinal indicator' do
+        expect(@t.type_string).to eq('number1or2')
       end
     end
 
     context 'when ordinal indicator appears after NOT a 1 or 2 digit number' do
-      it 'raises error' do
-        l = Emendate.lex('9999th')
-        c = Emendate::OrdinalTranslator.new(tokens: l.tokens)
-        expect{ c.translate }.to raise_error(Emendate::UnexpectedOrdinalError)
+      before(:all) do
+        @t = translate('22nd to 9999th')
+      end
+      it 'warns' do
+        ex = 'Ordinal indicator expected after :number1or2. Found after :number4'
+        expect(@t.warnings).to include(ex)
+      end
+      it 'removes ordinal indicator' do
+        expect(@t.type_string).to eq('number1or2 range_indicator number4')
       end
     end
   end

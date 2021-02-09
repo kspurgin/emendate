@@ -3,10 +3,9 @@
 module Emendate
   
   class FormatStandardizer
-  attr_reader :orig, :result, :standardizable
+  attr_reader :result, :standardizable
   def initialize(tokens:, options: {})
-      @orig = tokens
-      @result = tokens.clone
+      @result = tokens.class.new.copy(tokens)
       @standardizable = true
     end
 
@@ -158,15 +157,8 @@ module Emendate
     end
     
     def remove_post_month_comma
-      commas = result.select do |t|
-        t.type == :comma &&
-          result[result.find_index(t) - 2].type == :number_month &&
-          result[result.find_index(t) - 1].type == :number1or2 &&
-          result[result.find_index(t) + 1].type == :number4
-      end
-      commas.map{ |c| result.find_index(c) }
-        .sort.reverse
-        .each{ |i| result.delete_at(i) }
+      comma = result.extract(%i[number_month number1or2 comma]).segments[-1]
+      result.delete(comma)
     end
 
     def replace_slash_with_hyphen

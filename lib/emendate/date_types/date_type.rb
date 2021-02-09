@@ -11,6 +11,10 @@ module Emendate
         @partial_indicator = opts[:partial_indicator]
         @certainty = opts[:certainty].nil? ? [] : opts[:certainty]
       end
+
+      def date_part?
+        true
+      end
       
       def earliest
         raise NotImplementedError
