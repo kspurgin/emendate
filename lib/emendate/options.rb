@@ -51,7 +51,14 @@ module Emendate
 
         # how to interpret square brackets around a string: as a supplied date, or EDTF
         #  "one of" set
-        square_bracket_interpretation: :supplied_date
+        square_bracket_interpretation: :supplied_date,
+
+        # 1990s will always be interpreted as 1990-1999, but...
+        # Should 1900s be interpreted as 1900-1909, or 1900-1999?
+        # Should 2000s be interpreted as 2000-2009, or 2000-2999?
+        # The default is to restrict to interpreting this as a decade
+        # Changing to :broad will allow it to be interpreted as century or millennium
+        pluralized_date_interpretation: :decade
       }
     end
 
@@ -60,7 +67,8 @@ module Emendate
         ambiguous_month_day: %i[as_day_month],
         ambiguous_month_year: %i[as_month],
         two_digit_year_handling: %i[literal],
-        square_bracket_interpretation: %i[edtf_set]
+        square_bracket_interpretation: %i[edtf_set],
+        pluralized_date_interpretation: %i[broad]
       }
     end
     

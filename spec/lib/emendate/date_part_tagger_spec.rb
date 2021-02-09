@@ -27,15 +27,31 @@ RSpec.describe Emendate::DatePartTagger do
       end
     end
     context '0000s 1000s' do
-      it 'tags millennium' do
-        result = tag('0000s 1000s')
-        expect(result).to eq(%i[millennium millennium])
+      context 'default' do
+        it 'tags decade' do
+          result = tag('0000s 1000s')
+          expect(result).to eq(%i[decade decade])
+        end
+      end
+      context 'pluralized_date_interpretation: :broad' do
+        it 'tags millennium' do
+          result = tag('0000s 1000s', pluralized_date_interpretation: :broad)
+          expect(result).to eq(%i[millennium millennium])
+        end
       end
     end
     context '1900s' do
-      it 'tags century' do
+      context 'default' do
+      it 'tags decade' do
         result = tag('1900s')
-        expect(result).to eq(%i[century])
+        expect(result).to eq(%i[decade])
+      end
+      end
+      context 'pluralized_date_interpretation: :broad' do
+        it 'tags century' do
+          result = tag('1900s', pluralized_date_interpretation: :broad)
+          expect(result).to eq(%i[century])
+        end
       end
     end
     context '1990s' do
