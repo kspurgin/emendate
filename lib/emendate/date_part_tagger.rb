@@ -156,7 +156,8 @@ module Emendate
       when 4
         collapse_pair(%i[year letter_s], :millennium)
       else
-        raise UntaggableDatePatternError.new([year, s], 'Unsure how to interpret this pluralized number')
+        # there should be no other variations, as only 4-digit years are tagged as years at this point
+        #  (and 3-digit years that have been padded out to 4 digits to simplify the processing)
       end
     end
 

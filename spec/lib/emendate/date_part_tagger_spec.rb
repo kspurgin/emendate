@@ -26,10 +26,10 @@ RSpec.describe Emendate::DatePartTagger do
         expect(result).to eq(%i[month])
       end
     end
-    context '1000s' do
-      xit 'tags millennium' do
-        result = tag('1000s')
-        expect(result).to eq(%i[millennium])
+    context '0000s 1000s' do
+      it 'tags millennium' do
+        result = tag('0000s 1000s')
+        expect(result).to eq(%i[millennium millennium])
       end
     end
     context '1900s' do
