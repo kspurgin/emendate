@@ -7,7 +7,6 @@ module Emendate
       :converted_months,
       :translated_ordinals,
       :certainty_checked_whole_values,
-      :exploded_uncertainty_digits,
       :standardized_formats,
       :tagged_date_parts,
       :segmented_dates,
@@ -27,7 +26,6 @@ module Emendate
         :months_converted,
         :ordinals_translated,
         :whole_value_certainty_checked,
-        :uncertainty_digits_exploded,
         :formats_standardized,
         :date_parts_tagged,
         :dates_segmented,
@@ -47,11 +45,8 @@ module Emendate
       event :certainty_check_whole_values do
         transitions from: :ordinals_translated, to: :whole_value_certainty_checked, after: :perform_certainty_check_whole_values, guard: :no_errors?
       end
-      event :explode_uncertainty_digits do
-        transitions from: :whole_value_certainty_checked, to: :uncertainty_digits_exploded, after: :perform_explode_uncertainty_digits, guard: :no_errors?
-      end
       event :standardize_formats do
-        transitions from: :uncertainty_digits_exploded, to: :formats_standardized, after: :perform_standardize_formats, guard: :no_errors?
+        transitions from: :whole_value_certainty_checked, to: :formats_standardized, after: :perform_standardize_formats, guard: :no_errors?
       end
       event :tag_date_parts do
         transitions from: :formats_standardized, to: :date_parts_tagged, after: :perform_tag_date_parts, guard: :no_errors?
@@ -69,8 +64,6 @@ module Emendate
         transitions from: :ordinals_translated, to: :failed, guard: :errors?
         transitions from: :whole_value_certainty_checked, to: :done, guard: :no_errors?
         transitions from: :whole_value_certainty_checked, to: :failed, guard: :errors?
-        transitions from: :uncertainty_digits_exploded, to: :done, guard: :no_errors?
-        transitions from: :uncertainty_digits_exploded, to: :failed, guard: :errors?
         transitions from: :formats_standardized, to: :done, guard: :no_errors?
         transitions from: :formats_standardized, to: :failed, guard: :errors?
         transitions from: :date_parts_tagged, to: :done, guard: :no_errors?
@@ -85,7 +78,6 @@ module Emendate
       convert_months if may_convert_months?
       translate_ordinals if may_translate_ordinals?
       certainty_check_whole_values if may_certainty_check_whole_values?
-      explode_uncertainty_digits if may_explode_uncertainty_digits?
       standardize_formats if may_standardize_formats?
       tag_date_parts if may_tag_date_parts?
       segment_dates if may_segment_dates?
@@ -155,28 +147,16 @@ module Emendate
       end
     end
 
-    def perform_explode_uncertainty_digits
-      e = Emendate::UncertaintyDigitExploder.new(tokens: certainty_checked_whole_values, options: options)
+    def perform_standardize_formats
+      f = Emendate::FormatStandardizer.new(tokens: tokens, options: options)
       begin
-        e.explode
+        f.standardize
       rescue StandardError => e
         errors << e
       else
-        @tokens = e.result
-        @exploded_uncertainty_digits = tokens.class.new.copy(tokens)
-      end
-    end
-
-    def perform_standardize_formats
-      f = Emendate::FormatStandardizer.new(tokens: tokens, options: options)
-#      begin
-        f.standardize
- #     rescue StandardError => e
-  #      errors << e
-   #   else
         @tokens = f.result
         @standardized_formats = tokens.class.new.copy(tokens)
-#      end
+      end
     end
 
     def perform_tag_date_parts
