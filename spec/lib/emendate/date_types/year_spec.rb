@@ -10,14 +10,54 @@ RSpec.describe Emendate::DateTypes::Year do
   end
   
   describe '#earliest' do
-    it 'returns Jan 1 of year' do
-      expect(@yr.earliest).to eq(Date.new(2021, 1, 1))
+    context 'no partial_indicator' do
+      it 'returns Jan 1 of year' do
+        expect(@yr.earliest).to eq(Date.new(2021, 1, 1))
+      end
+    end
+    context 'early' do
+      it 'returns Jan 1 of year' do
+        yr = Emendate::DateTypes::Year.new(year: '2021', partial_indicator: 'early')
+        expect(yr.earliest).to eq(Date.new(2021, 1, 1))
+      end
+    end
+    context 'mid' do
+      it 'returns May 1 of year' do
+        yr = Emendate::DateTypes::Year.new(year: '2021', partial_indicator: 'mid')
+        expect(yr.earliest).to eq(Date.new(2021, 5, 1))
+      end
+    end
+    context 'late' do
+      it 'returns Sep 1 of year' do
+        yr = Emendate::DateTypes::Year.new(year: '2021', partial_indicator: 'late')
+        expect(yr.earliest).to eq(Date.new(2021, 9, 1))
+      end
     end
   end
 
   describe '#latest' do
-    it 'returns December 31 of year' do
-      expect(@yr.latest).to eq(Date.new(2021, 12, 31))
+    context 'no partial indicator' do
+      it 'returns December 31 of year' do
+        expect(@yr.latest).to eq(Date.new(2021, 12, 31))
+      end
+    end
+    context 'early' do
+      it 'returns Apr 30 of year' do
+        yr = Emendate::DateTypes::Year.new(year: '2021', partial_indicator: 'early')
+        expect(yr.latest).to eq(Date.new(2021, 4, 30))
+      end
+    end
+    context 'mid' do
+      it 'returns Aug 31 of year' do
+        yr = Emendate::DateTypes::Year.new(year: '2021', partial_indicator: 'mid')
+        expect(yr.latest).to eq(Date.new(2021, 8, 31))
+      end
+    end
+    context 'late' do
+      it 'returns Dec 31 of year' do
+        yr = Emendate::DateTypes::Year.new(year: '2021', partial_indicator: 'late')
+        expect(yr.latest).to eq(Date.new(2021, 12, 31))
+      end
     end
   end
 
