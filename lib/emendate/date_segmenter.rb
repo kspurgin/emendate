@@ -18,44 +18,95 @@ module Emendate
     end
 
     def segment
-#      byebug
       until working.empty?
         recursive_parse
+      end
+      
+      working.copy(result)
+      result.clear
+      until working.empty?
+        apply_modifiers
       end
       result
     end
 
     private
 
+    def apply_modifiers
+      return if working.empty?
+      mod = mod_function
+      return if mod.nil?
+      send(mod)
+    end
+
+    def mod_function
+      return nil if working.empty?
+      case working.types.first
+      when :partial
+        :mod_partial
+      when :after
+        :mod_switch
+      when :before
+        :mod_switch
+      else
+        :passthrough_mod
+      end
+    end
+
+    def mod_switch
+      switch = working.shift
+      if current.kind_of?(Emendate::DateTypes::DateType)
+        current.range_switch = switch.lexeme
+        result << current
+        working.shift
+      else
+        result << switch
+      end
+      apply_modifiers
+    end
+
+    def mod_partial
+      partial = working.shift
+      if current.kind_of?(Emendate::DateTypes::DateType)
+        current.partial_indicator = partial.lexeme
+        result << current
+        working.shift
+      else
+        result << partial
+      end
+      apply_modifiers
+    end
+
+    def passthrough_mod
+      transfer_token
+      apply_modifiers
+    end
+    
     def recursive_parse
       return if working.empty?
       parser = parse_function
-      if parser.nil?
-        #unrecognized_token_error
-        return
-      end
+      return if parser.nil?
 
       send(parser)
     end
 
     def parse_function
       return nil if working.empty?
-      return :parse_uncertainty_digits if working.date_part_types[1] == :parse_uncertainty_digits
       
       case working.types.first
       when :century
         :parse_century_date_part
+      when :day
+        :parse_date_parts
       when :decade
         :parse_decade_date_part
-      when :year
+      when :month
         :parse_date_parts
       when :number6
         :parse_yyyymm
       when :number8
         :parse_yyyymmdd
-      when :month
-        :parse_date_parts
-      when :day
+      when :year
         :parse_date_parts
       else
         :parse_non_date_part

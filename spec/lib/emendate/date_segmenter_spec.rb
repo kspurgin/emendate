@@ -60,18 +60,19 @@ RSpec.describe Emendate::DateSegmenter do
     end
 
     context 'after 1815' do
+      before(:all){ @s = segment('after 1815') }
       it 'returns expected' do
-        s = segment('after 1815')
-        e = %i[after year_date_type]
-        expect(s.types).to eq(e)
+        expect(@s.type_string).to eq('year_date_type')
       end
     end
 
     context 'early 19th c.' do
-      it 'returns expected' do
-        s = segment('early 19th c.')
-        e = %i[partial century_date_type]
-        expect(s.types).to eq(e)
+      before(:all){ @s = segment('early 19th c.') }
+      it 'returns century_date_type' do
+        expect(@s.type_string).to eq('century_date_type')
+      end
+      it 'partial_indicator = early' do
+        expect(@s[0].partial_indicator).to eq('early')
       end
     end
 
@@ -84,10 +85,13 @@ RSpec.describe Emendate::DateSegmenter do
     end
 
     context 'late 19th to early 20th century' do
+      before(:all){ @s = segment('late 19th to early 20th century') }
       it 'returns expected' do
-        s = segment('late 19th to early 20th century')
-        e = %i[partial century_date_type range_indicator partial century_date_type]
-        expect(s.types).to eq(e)
+        expect(@s.type_string).to eq('century_date_type range_indicator century_date_type')
+      end
+      it 'applies partial_indicators' do
+        e = "#{@s[0].partial_indicator} #{@s[2].partial_indicator}"
+        expect(e).to eq('late early')
       end
     end
 
