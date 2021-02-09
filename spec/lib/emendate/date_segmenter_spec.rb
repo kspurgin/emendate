@@ -23,10 +23,13 @@ RSpec.describe Emendate::DateSegmenter do
     end
 
     context 'circa 202002' do
+      before(:all){ @s = segment('circa 202002') }
       it 'returns expected' do
-        s = segment('circa 202002')
         e = %i[yearmonth_date_type]
-        expect(s.types).to eq(e)
+        expect(@s.types).to eq(e)
+      end
+      it 'retains certainty' do
+        expect(@s.certainty).to eq([:approximate])
       end
     end
 
@@ -49,10 +52,18 @@ RSpec.describe Emendate::DateSegmenter do
     end
 
     context '20200229-20200304' do
-      it 'returns ymd' do
+      it 'returns yearmonthday - yearmonthday' do
         s = segment('20200229-20200304')
         e = 'yearmonthday_date_type hyphen yearmonthday_date_type'
         expect(s.type_string).to eq(e)
+      end
+    end
+
+    context 'after 1815' do
+      it 'returns expected' do
+        s = segment('after 1815')
+        e = %i[after year_date_type]
+        expect(s.types).to eq(e)
       end
     end
 
@@ -65,18 +76,54 @@ RSpec.describe Emendate::DateSegmenter do
     end
 
     context '17th or 18th century' do
-      xit 'returns expected' do
+      it 'returns expected' do
         s = segment('17th or 18th century')
-        e = %i[century_date_type century_date_type]
+        e = %i[century_date_type or century_date_type]
+        expect(s.types).to eq(e)
+      end
+    end
+
+    context 'late 19th to early 20th century' do
+      it 'returns expected' do
+        s = segment('late 19th to early 20th century')
+        e = %i[partial century_date_type range_indicator partial century_date_type]
         expect(s.types).to eq(e)
       end
     end
 
     context '2-15-20' do
-      xit 'returns expected' do
+      it 'returns yearmonthday_date_type' do
         s = segment('2-15-20')
-        e = %i[century_date_type century_date_type]
+        e = %i[yearmonthday_date_type]
         expect(s.types).to eq(e)
+      end
+    end
+
+    context '2 December 2020, 2020/02/15' do
+      it 'returns yearmonthday_date_type comma yearmonthday_datetype' do
+        s = segment('2 December 2020, 2020/02/15')
+        e = %i[yearmonthday_date_type comma yearmonthday_date_type]
+        expect(s.types).to eq(e)
+      end
+    end
+
+    context 'Mar 20' do
+      it 'returns yearmonth_date_type' do
+        s = segment('Mar 20')
+        e = %i[yearmonth_date_type]
+        expect(s.types).to eq(e)
+      end
+    end
+
+    context '1990s 200X' do
+      before(:all){ @s = segment('1990s 199X') }
+      it 'returns decade_date_types' do
+        e = %i[decade_date_type decade_date_type]
+        expect(@s.types).to eq(e)
+      end
+      it 'returns decade_types: plural, uncertainty_digits' do
+        e = 'plural uncertainty_digits'
+        expect(@s.map(&:decade_type).join(' ')).to eq(e)
       end
     end
   end

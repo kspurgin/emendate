@@ -169,14 +169,14 @@ module Emendate
 
     def perform_standardize_formats
       f = Emendate::FormatStandardizer.new(tokens: tokens, options: options)
-      begin
+#      begin
         f.standardize
-      rescue StandardError => e
-        errors << e
-      else
+ #     rescue StandardError => e
+  #      errors << e
+   #   else
         @tokens = f.result
         @standardized_formats = tokens.class.new.copy(tokens)
-      end
+#      end
     end
 
     def perform_tag_date_parts

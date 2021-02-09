@@ -119,10 +119,7 @@ module Emendate
     end
     
     def move_month_to_beginning_of_segment
-      n1, m, n4 = result.extract(%i[number1or2 number_month number_4]).segments
-      # month = result.select{ |t| t.type == :number_month &&
-      #     result[result.find_index(t) - 1].type == :number1or2 &&
-      #     result[result.find_index(t) + 1].type == :number4 }[0]
+      n1, m, n4 = result.extract(%i[number1or2 number_month number4]).segments
       m_ind = result.find_index(m)
       d_ind =  m_ind - 1
       result.delete_at(m_ind)

@@ -7,7 +7,7 @@ module Emendate
     extend Forwardable
     attr_reader :segments, :certainty, :warnings
     def_delegator :@segments, :[], :[]
-    def_delegators :@segments, :clear, :delete, :delete_at, :empty?, :find_index, :insert, :pop, :shift
+    def_delegators :@segments, :clear, :delete, :delete_at, :empty?, :find_index, :insert, :length, :pop, :shift
     
     def initialize(*args)
       @segments = Array.new(*args)
@@ -50,11 +50,15 @@ module Emendate
     def extract(*args)
       args.flatten!
       segsize = args.length
+
       return self.class.new if segments.length < segsize
-      return self.class.new(segments.dup) if segments.length == segsize
+      if segments.length == segsize
+        result = self.class.new(segments)
+        return result
+      end
       
       tails = segments.select{ |t| t.type == args[-1] }
-      return segments.dup.clear if tails.empty?
+      return self.class.new if tails.empty?
 
       segment = []
       tails.each do |tail|
@@ -62,10 +66,12 @@ module Emendate
           tail_i = segments.find_index(tail)
           head_i = tail_i - segsize + 1
           seg = self.class.new(segments[head_i..tail_i])
-          segment = seg if seg.types == args
+          segment = seg.types == args ? seg : []
         end
       end
-      segment.dup
+      result = self.class.new
+      segment.each{ |s| result << s }
+      result
     end
     
     def map(*args, &block)

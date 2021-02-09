@@ -10,9 +10,9 @@ module Emendate
     end
 
     def explode
-      while explodable?
-        handle_explosion
-      end
+      # while explodable?
+      #   handle_explosion
+      # end
       result
     end
 

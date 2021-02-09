@@ -18,6 +18,7 @@ module Emendate
     end
 
     def segment
+#      byebug
       until working.empty?
         recursive_parse
       end
@@ -27,6 +28,7 @@ module Emendate
     private
 
     def recursive_parse
+      return if working.empty?
       parser = parse_function
       if parser.nil?
         #unrecognized_token_error
@@ -42,82 +44,95 @@ module Emendate
       
       case working.types.first
       when :century
-        :parse_century
-      when :number1or2
-        :parse_starting_one_or_two_digit
-      when :number4
-        :parse_starting_year
+        :parse_century_date_part
+      when :decade
+        :parse_decade_date_part
+      when :year
+        :parse_date_parts
       when :number6
         :parse_yyyymm
       when :number8
         :parse_yyyymmdd
-      when :number_month
-        :parse_starting_month
+      when :month
+        :parse_date_parts
+      when :day
+        :parse_date_parts
       else
         :parse_non_date_part
       end
     end
 
-    def parse_function_for_one_or_two_digit_start
-      return nil if working.empty?
-      case working.date_part_types
-        in [:number1or2, :century, *]
-        :parse_named_century
-        in [:number1or2, :number1or2, :century, *]
-        :parse_named_centuries
-        in [:number1or2, :number1or2, :number1or2, *]
-        :parse_mdy_all_two_digits
-      else
-        :passthrough
+    def parse_decade_date_part
+      decade = working[0]
+      if s_decade?(decade)
+        result << Emendate::DateTypes::Decade.new(decade: decade.literal, decade_type: :plural, children: [decade])
+      elsif uncertainty_decade?(decade)
+        result << Emendate::DateTypes::Decade.new(decade: decade.literal, decade_type: :uncertainty_digits, children: [decade])
       end
+      working.shift
+      recursive_parse
     end
 
-    def parse_century
-      passthrough
+    def s_decade?(decade)
+      decade.source_tokens.types.include?(:letter_s) ? true : false
+    end
+
+    def uncertainty_decade?(decade)
+      decade.source_tokens.types.include?(:uncertainty_digits) ? true : false
     end
     
-    def parse_mdy_all_two_digits
-      pieces = []
-      pieces << consume_non_date_parts
-      part1 = current
-      pieces << part1
-      working.delete(part1)
-      pieces << consume_non_date_parts
-      part2 = current
-      pieces << part2
-      working.delete(part2)
-      pieces << consume_non_date_parts
-      year = current
-      pieces << year
-      working.delete(year)
-    end
-   
-    def parse_named_century
+    def parse_century_date_part
       cent = working[0]
-      indicator = working[1]
-      pieces = [cent, indicator]
-      result << Emendate::DateTypes::Century.new(century: cent.literal, century_type: :name, children: pieces)
-      working.delete(cent)
-      working.delete(indicator)
+      result << Emendate::DateTypes::Century.new(century: cent.literal, century_type: :name, children: [cent])
+      working.shift
+      recursive_parse
     end
 
-    def parse_named_centuries
-      pieces = []
-      cent1 = working[0]
-      pieces << cent1
-      working.delete(cent1)
-      pieces << consume_non_date_parts
-      result << Emendate::DateTypes::Century.new(century: cent1.literal, century_type: :name, children: pieces.flatten)
+    def parse_date_parts
+      pieces = consume_date_parts
+        if pieces.types.sort == %i[day month year]
+          result << create_year_month_day_datetype(pieces)
+        elsif pieces.types.sort == %i[month year]
+          result << create_year_month_datetype(pieces)
+        elsif pieces.types.sort == %i[year]
+          result << create_year_datetype(pieces)
+        end
 
-      pieces = []
-      cent2 = working[0]
-      indicator = working[1]
-      result << Emendate::DateTypes::Century.new(century: cent2.literal, century_type: :name, children: [cent2, indicator])
-      working.delete(cent2)
-      working.delete(indicator)
+        recursive_parse
     end
 
-    
+    def create_year_month_day_datetype(pieces)
+      day = pieces.when_type(:day)[0]
+      month = pieces.when_type(:month)[0]
+      year = pieces.when_type(:year)[0]
+      Emendate::DateTypes::YearMonthDay.new(year: year.literal,
+                                            month: month.literal,
+                                            day: day.literal,
+                                            children: pieces.segments)
+    end
+
+    def create_year_month_datetype(pieces)
+      month = pieces.when_type(:month)[0]
+      year = pieces.when_type(:year)[0]
+      Emendate::DateTypes::YearMonth.new(year: year.literal,
+                                            month: month.literal,
+                                            children: pieces.segments)
+    end
+
+    def create_year_datetype(pieces)
+      year = pieces.when_type(:year)[0]
+      Emendate::DateTypes::Year.new(year: year.literal,
+                                    children: pieces.segments)
+    end
+
+    def consume_date_parts
+      pieces = Emendate::MixedSet.new
+      until working.empty? || current.date_part? == false
+        pieces << current
+        working.delete(current)
+      end
+      pieces
+    end
 
     def consume_non_date_parts
       pieces = []
@@ -134,22 +149,9 @@ module Emendate
     
     def parse_non_date_part
       transfer_token
-      return if working.empty?
       recursive_parse
     end
-    
-    def parse_starting_year
-    end
-
-    def parse_starting_one_or_two_digit
-      parser = parse_function_for_one_or_two_digit_start
-      if parser.nil?
-        #unrecognized_token_error
-        return
-      end
-      send(parser)
-    end
-    
+        
     def parse_yyyymm
       pieces = []
       year = current.lexeme[0..3]
@@ -212,14 +214,6 @@ module Emendate
       result << token
       working.delete(token)
     end
-
-    def determine_post_year_parsing_function
-      if current.type == :number1or2 && valid_month?(current.lexeme)
-        :parse_year_month
-      elsif current.type == :number1or2 && valid_season?(current.lexeme)
-        :parse_year_season
-      end
-    end
     
     def previous
       result[-1]
@@ -236,22 +230,5 @@ module Emendate
     def nxt_sep?
       DATESEP.include?(nxt.type)
     end
-        
-    # def consume(offset = 1)
-    #   t = lookahead(offset)
-    #   self.next_t += offset
-    #   t
-    # end
-
-    # def lookahead(offset = 1)
-    #   lookahead_t = (next_t - 1) + offset
-    #   return nil if lookahead_t < 0 || lookahead_t >= orig.length
-
-    #   orig[lookahead_t]
-    # end
-
-    # def pending_tokens?
-    #   next_t < orig.length
-    # end
   end
 end

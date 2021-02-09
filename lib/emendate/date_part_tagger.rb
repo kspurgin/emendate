@@ -59,17 +59,19 @@ module Emendate
     def partial_match_tagger
       case result.type_string
       when /.*year letter_s.*/
-        :tag_decade_s
+        :tag_pluralized_year
       when /.*year uncertainty_digits.*/
         :tag_decade_uncertainty_digits
       when /.*number1or2 century.*/
         :tag_century_num
       when /.*month number1or2 year.*/
         :tag_day_in_mdy
-      # this needs to happen before...
+      when /.*month number1or2.*/
+        :tag_year_in_month_short_year
+        # this needs to happen before...
       when /.*number1or2 hyphen number1or2 hyphen number1or2.*/
         :tag_numeric_month_day_short_year
-      # ...this
+        # ...this
       when /.*number1or2 hyphen number1or2 hyphen year.*/
         :tag_numeric_month_day_year
       when /.*year hyphen number1or2 hyphen number1or2.*/
@@ -141,8 +143,21 @@ module Emendate
       replace_x_with_date_part_type(x: d, date_part_type: :day)
     end
 
-    def tag_decade_s
-      collapse_pair(%i[year letter_s], :decade)
+    def tag_pluralized_year
+      year, s = result.extract(%i[year letter_s]).segments
+      zeros = year.lexeme.match(/(0+)/)[1]
+      case zeros.length
+      when 1
+        collapse_pair(%i[year letter_s], :decade)
+      when 2
+        collapse_pair(%i[year letter_s], :century)
+      when 3
+        collapse_pair(%i[year letter_s], :millennium)
+      when 4
+        collapse_pair(%i[year letter_s], :millennium)
+      else
+        raise UntaggableDatePatternError.new([year, s], 'Unsure how to interpret this pluralized number')
+      end
     end
 
     def tag_decade_uncertainty_digits
@@ -170,11 +185,16 @@ module Emendate
       [h1, h2].each{ |h| result.delete(h) }
     end
 
+    def tag_year_in_month_short_year
+      m, y = result.extract(%i[month number1or2]).segments
+      year = Emendate::ShortYearHandler.new(y, options).result
+      replace_x_with_given_segment(x: y, segment: year)
+    end
+
     def tag_numeric_month_day_short_year
       n1, h1, n2, h2, n3 = result.extract(%i[number1or2 hyphen number1or2 hyphen number1or2]).segments
       year = Emendate::ShortYearHandler.new(n3, options).result
       replace_x_with_given_segment(x: n3, segment: year)
-      [h1, h2].each{ |h| result.delete(h) }
     end
 
     def tag_year_numeric_month_day
