@@ -8,8 +8,6 @@ module Emendate
     attr_reader :options, :result
     attr_accessor :working
 
-    DATESEP = %i[hyphen slash].freeze
-
     def initialize(tokens:, options: {})
       @options = options
       @working = Emendate::MixedSet.new.copy(tokens)
@@ -195,7 +193,8 @@ module Emendate
     end
     
     def passthrough
-      continue_parse
+      transfer_token
+      recursive_parse
     end
     
     def parse_non_date_part
@@ -227,7 +226,6 @@ module Emendate
       recursive_parse
     end
 
-
     def parse_yyyymmdd
       pieces = []
       year = current.lexeme[0..3]
@@ -253,33 +251,14 @@ module Emendate
         working.delete(current)
         recursive_parse
     end
-
-
-    def continue_parse
-      transfer_token
-      recursive_parse
-    end
    
-
     def transfer_token(token = current)
       result << token
       working.delete(token)
     end
     
-    def previous
-      result[-1]
-    end
-
     def current
       working[0]
-    end
-
-    def nxt
-      working[1]
-    end
-
-    def nxt_sep?
-      DATESEP.include?(nxt.type)
     end
   end
 end
