@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'emendate/segment'
+require 'emendate/segment/segment'
 
 module Emendate
   class DatePart < Emendate::Segment

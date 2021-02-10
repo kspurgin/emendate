@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'emendate/token'
+require 'emendate/segment/token'
 require 'emendate/date_utils'
 
 module Emendate

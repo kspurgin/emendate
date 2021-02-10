@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'emendate/segment_set'
+require 'emendate/segment_set/segment_set'
 
 module Emendate
   class TokenSet < Emendate::SegmentSet

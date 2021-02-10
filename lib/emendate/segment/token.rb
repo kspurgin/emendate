@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'forwardable'
-require 'emendate/segment'
+require 'emendate/segment/segment'
 
 module Emendate
   class TokenTypeError < StandardError; end
