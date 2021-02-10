@@ -10,6 +10,7 @@ module Emendate
       :standardized_formats,
       :tagged_date_parts,
       :segmented_dates,
+      :ranges_indicated,
       :errors, :warnings
     def initialize(string, options = {})
       @orig_string = string
@@ -29,6 +30,7 @@ module Emendate
         :formats_standardized,
         :date_parts_tagged,
         :dates_segmented,
+        :indicated_ranges,
         :done, :failed
 
       after_all_transitions :log_status_change, :gather_warnings
@@ -54,6 +56,9 @@ module Emendate
       event :segment_dates do
         transitions from: :date_parts_tagged, to: :dates_segmented, after: :perform_segment_dates, guard: :no_errors?
       end
+      event :indicate_ranges do
+        transitions from: :dates_segmented, after: :perform_indicate_ranges, guard: :no_errors?
+      end
 
       event :finalize do
         transitions from: :tokenized, to: :done, guard: :no_errors?
@@ -70,6 +75,8 @@ module Emendate
         transitions from: :date_parts_tagged, to: :failed, guard: :errors?
         transitions from: :dates_segmented, to: :done, guard: :no_errors?
         transitions from: :dates_segmented, to: :failed, guard: :errors?
+        transitions from: :indicate_ranges, to: :done, guard: :no_errors?
+        transitions from: :indicate_ranges, to: :failed, guard: :errors?
       end
     end
 
@@ -81,6 +88,7 @@ module Emendate
       standardize_formats if may_standardize_formats?
       tag_date_parts if may_tag_date_parts?
       segment_dates if may_segment_dates?
+      indicate_ranges if may_indicate_ranges?
       finalize
     end
 
@@ -180,6 +188,18 @@ module Emendate
       else
         @tokens = s.result
         @segmented_dates = tokens.class.new.copy(tokens)
+      end
+    end
+
+    def perform_indicate_ranges
+      i = Emendate::RangeIndicator.new(tokens: segmented_dates, options: options)
+      begin
+        i.indicate
+      rescue StandardError => e
+        errors << e
+      else
+        @tokens = i.result
+        @ranges_indicated = tokens.class.new.copy(tokens)
       end
     end
     
