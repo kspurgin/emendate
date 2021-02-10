@@ -56,10 +56,4 @@ module Emendate
     tokens = lex(str).map(&:type)
     puts "#{str}\t\t#{tokens.inspect}"
   end
-
-  def parse(str, options = {})
-    p = Emendate::Parser.new(orig: str, tokens: l = lex(str).tokens, options: options)
-    p.parse
-    p
-  end
 end
