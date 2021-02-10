@@ -208,3 +208,18 @@ TT = 1800-01-01 - 1899-12-31
 
 Because of the difference in years used in setting ranges, I'm going to go with CS and not compare what early/mid/late values are set.
 
+`early/mid/late 18th century`
+
+named, early = 1701-01-01 - 1734-12-31
+
+named, mid = 1734-01-01 - 1767-12-31
+
+named, late = 1767-01-01 - 1800-12-31
+
+`early/mid/late 1900s or 19XX`
+
+other, early = 1900-01-01 - 1933-12-31
+
+other, mid = 1933-01-01 - 1966-12-31
+
+other, late = 1966-01-01 - 1999-12-31
