@@ -51,6 +51,10 @@ module Emendate
         end
       end
 
+      def range?
+        true
+      end
+
       private
 
       def adjust_decade_value

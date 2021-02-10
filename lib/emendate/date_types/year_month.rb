@@ -22,6 +22,10 @@ module Emendate
       def lexeme
         "#{year}-#{month.to_s.rjust(2, '0')}"
       end
+
+      def range?
+        partial_indicator.nil? && range_switch.nil? ? false : true
+      end
     end
   end
 end

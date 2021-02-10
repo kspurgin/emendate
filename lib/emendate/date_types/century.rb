@@ -49,6 +49,10 @@ module Emendate
         end
       end
 
+      def range?
+        true
+      end
+      
       private
 
       def adjusted_century

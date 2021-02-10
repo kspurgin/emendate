@@ -23,6 +23,10 @@ module Emendate
       def lexeme
         "#{year}-#{month.to_s.rjust(2, '0')}-#{day.to_s.rjust(2, '0')}"
       end
+
+      def range?
+        false
+      end
     end
   end
 end
