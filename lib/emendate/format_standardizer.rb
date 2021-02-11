@@ -36,6 +36,8 @@ module Emendate
       case result.type_string
       when /.*slash.*/
         %i[replace_slash_with_hyphen]
+      when /.*letter_t number1or2 colon.*/
+        %i[remove_time_parts]
       when/.*number3.*/
         %i[pad_3_to_4_digits]
       when /.*partial hyphen.*/
@@ -157,6 +159,25 @@ module Emendate
       comma = result.extract(%i[number_month number1or2 comma]).segments[-1]
       result.delete(comma)
     end
+
+    def remove_time_parts
+      time_parts.each{ |s| result.delete(s) }
+    end
+
+    def time_parts
+      case result.type_string
+      when /.*letter_t number1or2 colon number1or2 colon number1or2 hyphen number1or2.*/
+        result.extract(%i[letter_t number1or2 colon number1or2 colon number1or2 hyphen number1or2]).segments
+      when /.*letter_t number1or2 colon number1or2 colon number1or2 letter_z.*/
+        result.extract(%i[letter_t number1or2 colon number1or2 colon number1or2 letter_z]).segments
+      when /.*letter_t number1or2 colon number1or2 colon number1or2 plus number1or2 colon number1or2.*/
+        result.extract(%i[letter_t number1or2 colon number1or2 colon number1or2 plus number1or2 colon number1or2]).segments
+      # the following must come last as it is a substring of the previous
+      when /.*letter_t number1or2 colon number1or2 colon number1or2.*/
+        result.extract(%i[letter_t number1or2 colon number1or2 colon number1or2]).segments
+      end
+    end
+    
 
     def replace_slash_with_hyphen
       slash = result.when_type(:slash)[0]

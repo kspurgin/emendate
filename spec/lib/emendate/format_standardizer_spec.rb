@@ -91,5 +91,19 @@ RSpec.describe Emendate::FormatStandardizer do
         expect(result).to eq(%i[number_month number1or2 number4])
       end
     end
+
+    context '1985-04-12T23:20:30' do
+      it 'remove time segments' do
+        result = standardize('1985-04-12T23:20:30')
+        expect(result).to eq(%i[number4 hyphen number1or2 hyphen number1or2])
+      end
+    end
+
+    context '1985-04-12T23:20:30Z' do
+      it 'remove time segments' do
+        result = standardize('1985-04-12T23:20:30Z')
+        expect(result).to eq(%i[number4 hyphen number1or2 hyphen number1or2])
+      end
+    end
   end
 end
