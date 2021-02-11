@@ -62,11 +62,26 @@ RSpec.describe Emendate::CertaintyChecker do
       before(:all) do
         @c = check('2004-06~-11')
       end
-      it 'values include: approximate, uncertain' do
-        expect(@c.certainty.sort).to eq([:approximate, :uncertain])
-      end
       it 'returns tokens with tilde removed' do
-        expect(@c.type_string).to eq('number4 hyphen number1or2')
+        expect(@c.type_string).to eq('number4 hyphen number1or2 hyphen number1or2')
+      end
+      it 'sets uncertainty on year token to leftward_approximate' do
+        expect(@c[2].certainty).to eq([:leftward_approximate])
+      end      
+    end
+
+    context '~2004-06-%11' do
+      before(:all) do
+        @c = check('~2004-06-%11')
+      end
+      it 'returns tokens with uncertainty indicators removed' do
+        expect(@c.type_string).to eq('number4 hyphen number1or2 hyphen number1or2')
+      end
+      it 'sets uncertainty on year token to approximate' do
+        expect(@c[0].certainty).to eq([:approximate])
+      end
+      it 'sets uncertainty on day token to approximate and uncertain' do
+        expect(@c[4].certainty.sort).to eq([:approximate, :uncertain])
       end
     end
     

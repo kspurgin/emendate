@@ -3,7 +3,7 @@
 module Emendate
   class CertaintyChecker
 
-    attr_reader :result, :options
+    attr_reader :result, :working, :options
 
     def initialize(tokens:, options: {})
       @result = tokens.class.new.copy(tokens)
@@ -14,26 +14,106 @@ module Emendate
       until whole_done? do
         process_whole_certainty
       end
+
+      @working = result.class.new.copy(result)
+      result.clear
+      until working.empty? do
+        process_part_certainty
+      end
+      
       result
     end
 
     private
 
+    def process_part_certainty
+      return if working.empty?
+      processor = processing_function
+      return if processor.nil?
+      send(processor)
+    end
+
+    def processing_function
+      return nil if working.empty?
+
+      if working[0].is_a?(Emendate::NumberToken)
+        :check_after_number
+      elsif uncertainty_indicator? 
+        :set_number_certainty
+      else
+        :passthrough
+      end
+    end
+
+    def uncertainty_indicator?(n = 0)
+      %i[question percent tilde].include?(working[n].type)
+    end
+    
+    def passthrough
+      current = working.shift
+      result << current
+    end
+
+    def certainty_val(token)
+      case token.type
+      when :question
+        %i[uncertain]
+      when :tilde
+        %i[approximate]
+      when :percent
+        %i[approximate uncertain]
+      end
+    end
+
+    def check_after_number
+      number = working[0]
+      if nxt.nil?
+        passthrough
+      elsif uncertainty_indicator?(1)
+        certainty = certainty_val(nxt).map{ |v| "leftward_#{v}".to_sym }
+        number.add_certainty(certainty)
+        passthrough
+        working.shift
+      else
+        passthrough
+      end
+    end
+    
+    def set_number_certainty
+      certainty = certainty_val(working[0])
+      if nxt.nil?
+        result.warnings << "#{working[0].lexeme} appears at end of string and was not handled by whole-value processor"
+        passthrough
+      elsif nxt.is_a?(Emendate::NumberToken)
+        nxt.add_certainty(certainty)
+        working.shift
+        passthrough
+      else
+        result.warnings << "#{working[0].lexeme} followed by non-number"
+        passthrough
+      end
+      process_part_certainty
+    end
+
+    def nxt(n = 1)
+      working[n]
+    end
+    
     def process_whole_certainty
       case result.types
-        in [:square_bracket_open, *remain, :square_bracket_close]
+      in [:square_bracket_open, *remain, :square_bracket_close]
         process_square_brackets(remain)
-        in [:curly_bracket_open, *remain, :curly_bracket_close]
+      in [:curly_bracket_open, *remain, :curly_bracket_close]
         process_curly_brackets(remain)
-        in [:approximate, *]
+      in [:approximate, *]
         process_approximate
-        in [:letter_c, *]
+      in [:letter_c, *]
         process_approximate
-        in [*, :question]
+      in [*, :question]
         process_uncertain
-        in [*, :tilde]
+      in [*, :tilde]
         process_edtf_approximate
-        in [*, :percent]
+      in [*, :percent]
         process_edtf_approximate_and_uncertain
       end
     end
@@ -67,8 +147,8 @@ module Emendate
       else
         result.add_certainty(:supplied)
       end
-        result.shift
-        result.pop
+      result.shift
+      result.pop
     end
 
     def process_curly_brackets(remain)
@@ -78,7 +158,7 @@ module Emendate
       result.shift
       result.pop
     end
-    
+
     def whole_done?
       supplied_indicator? || curly? || approximate_indicator? || uncertain_indicator? ? false : true
     end
