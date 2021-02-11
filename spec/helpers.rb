@@ -255,19 +255,19 @@ lowercase letters = themselves, literally
     ex.zip(tokens)
   end
 
-  def parse_examples(tag: nil, stage: nil)
+  def parse_examples(tag: nil, stage: nil, options: {})
     ex = tag.nil? ? EXAMPLES.keys : examples_with_tag(tag)
     # for regular use
     if stage.nil?
-      ex.map{ |str| Emendate.process(str) }
+      ex.map{ |str| Emendate.process(str, options) }
     else
-      ex.map{ |str| Emendate.prep_for(str, stage) }
+      ex.map{ |str| Emendate.prep_for(str, stage, options) }
     end
   end
 
   # stage should be a SegmentSet-holding instance variable of ProcessingManager
-  def parsed_example_tokens(type: :all, stage: nil, tag: nil)
-    parsed = parse_examples(tag: tag, stage: stage).reject{ |pm| pm.state == :failed }
+  def parsed_example_tokens(type: :all, stage: nil, tag: nil, options: {})
+    parsed = parse_examples(tag: tag, stage: stage, options: options).reject{ |pm| pm.state == :failed }
     processed = parsed.map(&:tokens)
     tokens = type == :date ? processed.map(&:date_part_types) : processed.map(&:types)
     ex = parsed.map{ |pm| pm.orig_string }
@@ -295,8 +295,8 @@ lowercase letters = themselves, literally
   end
 
   # stage should be a SegmentSet-holding instance variable of ProcessingManager
-  def unique_token_patterns(type: :all, stage: nil, tag: nil)
-    results = parsed_example_tokens(type: type, stage: stage, tag: tag)
+  def unique_token_patterns(type: :all, stage: nil, tag: nil, options: {} )
+    results = parsed_example_tokens(type: type, stage: stage, tag: tag, options: options)
     patterns = results.map{ |parsed| parsed[1] }.uniq.sort.map{ |pattern| [pattern, []] }.to_h
     results.each{ |r| patterns[r[1]] << r[0] }
     patterns.keys.sort.each do |pattern|
