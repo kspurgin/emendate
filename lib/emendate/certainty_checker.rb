@@ -11,15 +11,15 @@ module Emendate
     end
 
     def check
-      until done? do
-        process_certainty
+      until whole_done? do
+        process_whole_certainty
       end
       result
     end
 
     private
 
-    def process_certainty
+    def process_whole_certainty
       case result.types
         in [:square_bracket_open, *remain, :square_bracket_close]
         process_square_brackets(remain)
@@ -31,6 +31,10 @@ module Emendate
         process_approximate
         in [*, :question]
         process_uncertain
+        in [*, :tilde]
+        process_edtf_approximate
+        in [*, :percent]
+        process_edtf_approximate_and_uncertain
       end
     end
 
@@ -43,7 +47,18 @@ module Emendate
       result.add_certainty(:approximate)
       result.shift
     end
-    
+
+    def process_edtf_approximate
+      result.add_certainty(:approximate)
+      result.pop
+    end
+
+    def process_edtf_approximate_and_uncertain
+      result.add_certainty(:approximate)
+      result.add_certainty(:uncertain)
+      result.pop
+    end
+
     def process_square_brackets(remain)
       return if remain.include?(:square_bracket_open) || remain.include?(:square_bracket_close)
 
@@ -64,13 +79,13 @@ module Emendate
       result.pop
     end
     
-    def done?
+    def whole_done?
       supplied_indicator? || curly? || approximate_indicator? || uncertain_indicator? ? false : true
     end
 
     def supplied_indicator?
       case result.types
-        in [:square_bracket_open, *remain, :square_bracket_close]
+      in [:square_bracket_open, *remain, :square_bracket_close]
         remain.include?(:square_bracket_open) || remain.include?(:square_bracket_close) ? false : true
       else
         false
@@ -79,7 +94,7 @@ module Emendate
 
     def curly?
       case result.types
-        in [:curly_bracket_open, *remain, :curly_bracket_close]
+      in [:curly_bracket_open, *remain, :curly_bracket_close]
         remain.include?(:curly_bracket_open) || remain.include?(:curly_bracket_close) ? false : true
       else
         false
@@ -88,9 +103,13 @@ module Emendate
 
     def approximate_indicator?
       case result.types
-        in [:approximate, *]
+      in [:approximate, *]
         true
-        in [:letter_c, *]
+      in [:letter_c, *]
+        true
+      in [*, :tilde]
+        true
+      in [*, :percent]
         true
       else
         false
@@ -100,6 +119,8 @@ module Emendate
     def uncertain_indicator?
       case result.types
       in [*, :question]
+        true
+      in [*, :percent]
         true
       else
         false

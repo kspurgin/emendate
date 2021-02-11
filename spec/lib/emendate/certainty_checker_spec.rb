@@ -34,6 +34,42 @@ RSpec.describe Emendate::CertaintyChecker do
       end
     end
 
+    context '2004-06~' do
+      before(:all) do
+        @c = check('2004-06~')
+      end
+      it 'values include: approximate' do
+        expect(@c.certainty).to eq([:approximate])
+      end
+      it 'returns tokens with tilde removed' do
+        expect(@c.type_string).to eq('number4 hyphen number1or2')
+      end
+    end
+
+    context '2004-06%' do
+      before(:all) do
+        @c = check('2004-06%')
+      end
+      it 'values include: approximate, uncertain' do
+        expect(@c.certainty.sort).to eq([:approximate, :uncertain])
+      end
+      it 'returns tokens with tilde removed' do
+        expect(@c.type_string).to eq('number4 hyphen number1or2')
+      end
+    end
+
+    context '2004-06~-11' do
+      before(:all) do
+        @c = check('2004-06~-11')
+      end
+      it 'values include: approximate, uncertain' do
+        expect(@c.certainty.sort).to eq([:approximate, :uncertain])
+      end
+      it 'returns tokens with tilde removed' do
+        expect(@c.type_string).to eq('number4 hyphen number1or2')
+      end
+    end
+    
     context '[1997]-[1998]' do
       before(:all) do
         @c = check('[1997]-[1998]')
