@@ -105,5 +105,12 @@ RSpec.describe Emendate::FormatStandardizer do
         expect(result).to eq(%i[number4 hyphen number1or2 hyphen number1or2])
       end
     end
+
+    context '1997-1998 A.D.' do
+      it 'remove CE and equivalent era' do
+        result = standardize('1997-1998 A.D.')
+        expect(result).to eq(%i[number4 hyphen number4])
+      end
+    end
   end
 end

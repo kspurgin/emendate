@@ -3,8 +3,8 @@
 module Emendate
   
   class FormatStandardizer
-  attr_reader :result, :standardizable
-  def initialize(tokens:, options: {})
+    attr_reader :result, :standardizable
+    def initialize(tokens:, options: {})
       @result = tokens.class.new.copy(tokens)
       @standardizable = true
     end
@@ -36,6 +36,8 @@ module Emendate
       case result.type_string
       when /.*slash.*/
         %i[replace_slash_with_hyphen]
+      when /.*era.*/
+        %i[remove_ce_eras]
       when /.*letter_t number1or2 colon.*/
         %i[remove_time_parts]
       when/.*number3.*/
@@ -172,7 +174,7 @@ module Emendate
         result.extract(%i[letter_t number1or2 colon number1or2 colon number1or2 letter_z]).segments
       when /.*letter_t number1or2 colon number1or2 colon number1or2 plus number1or2 colon number1or2.*/
         result.extract(%i[letter_t number1or2 colon number1or2 colon number1or2 plus number1or2 colon number1or2]).segments
-      # the following must come last as it is a substring of the previous
+        # the following must come last as it is a substring of the previous
       when /.*letter_t number1or2 colon number1or2 colon number1or2.*/
         result.extract(%i[letter_t number1or2 colon number1or2 colon number1or2]).segments
       end
@@ -195,5 +197,19 @@ module Emendate
       result.delete(h)
     end
 
+    def remove_ce_eras
+      e = result.extract(%i[era]).segments[0]
+      if e.lexeme == 'ce'
+        result.delete(e)
+      else
+        ins_pt = result.find_index(e) + 1
+        bce = Emendate::Token.new(type: :bce,
+                                  lexeme: e.lexeme,
+                                  literal: e.literal,
+                                  location: e.location)
+        result.insert(ins_pt, bce)
+        result.delete(e)
+      end
+    end
   end
 end
