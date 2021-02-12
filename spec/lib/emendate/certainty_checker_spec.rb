@@ -117,10 +117,10 @@ RSpec.describe Emendate::CertaintyChecker do
       before(:all) do
         @c = check('{1667,1668,1670..1672}')
       end
-      it 'certainty is one_of_set' do
+      it 'certainty is all_of_set' do
         expect(@c.certainty).to eq([:all_of_set])
       end
-      it 'removes square brackets from result' do
+      it 'removes curly brackets from result' do
         expected = 'number4 comma number4 comma number4 double_dot number4'
         expect(@c.type_string).to eq(expected)
       end
