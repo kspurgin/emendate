@@ -132,7 +132,11 @@ module Emendate
     
     def parse_century_date_part
       cent = working[0]
-      result << Emendate::DateTypes::Century.new(century: century_literal(cent), century_type: :name, children: [cent])
+      result << Emendate::DateTypes::Century.new(
+        century: century_literal(cent),
+        century_type: century_type(cent),
+        children: [cent]
+      )
       working.shift
       recursive_parse
     end
@@ -142,6 +146,16 @@ module Emendate
         datepart.literal.to_s[0..-3].to_i
       else
         datepart.literal
+      end
+    end
+
+    def century_type(datepart)
+      if datepart.lexeme[-1] == 's'
+        :plural
+      elsif datepart.lexeme[-1].match?(/[ux]/)
+        :uncertainty_digits
+      else
+        :name
       end
     end
     
