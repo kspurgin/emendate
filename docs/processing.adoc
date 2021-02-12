@@ -1,0 +1,190 @@
+= How Emendate processes date strings
+
+== Basic conceptual overview
+
+The overarching idea is to run the string through a succession of transformational processes, each of which simplifies/standardizes some of the complexity.
+
+The result of each of these stages is a `SegmentSet` (or subclass thereof), which is an ordered list of ``Segment``s (or subclasses thereof).
+
+A `Token` is the simplest type of `Segment`, being derived directly from the original string by the `Lexer`.
+
+Subsequent processes distill the ``Token``s (4 digit number, hyphen, 1-or-2 digit number) into ``DatePart``s (year, month), which are then distilled into ``DateType``s (year-month level date).
+
+Each more complex type of `Segment` has its own logic and functionality. For example a `DatePart` with `type` = `day` can carry with it `certainty` = `[:uncertain, :approximate]`. Every `DateType` can output an `earliest` and `latest` value and say whether it represents an inclusive range.
+
+Once we are down to just ``DateType``s and separators, a final `ParsedDate` object can be derived from them.
+
+The `ParsedDate` object is modeled on the response returned by Timetwister. 
+
+== Processing stages
+
+Calling `Emendate.process('date string')` invokes an instance of the `ProcessingManager` class, which handles the workflow of processing the input.
+
+Each input value goes through a number of processing stages. If processing fails at one stage, that causes the overall processing to fail.
+
+The order and basic function of each stage is outlined below, with examples.
+
+== orig_tokens
+
+Original date string is normalized, then run through `Lexer`, resulting in a `TokenSet`.
+
+----
+ex1 = Emendate.process('[Jan. 1st - February 9, 2013]')
+ex1.orig_tokens.types
+=> [:square_bracket_open,
+ :month_abbr_alpha,
+ :number1or2,
+ :ordinal_indicator,
+ :hyphen,
+ :month_alpha,
+ :number1or2,
+ :comma,
+ :number4,
+ :square_bracket_close]
+----
+
+== converted_months
+
+Takes `orig_tokens` and converts any ``Token``s with type `:month_alpha` or `:month_abbr_alpha` to ``DatePart``s with type `:month`.
+
+----
+ex1.converted_months.types
+=> [:square_bracket_open,
+ :month,
+ :number1or2,
+ :ordinal_indicator,
+ :hyphen,
+ :month,
+ :number1or2,
+ :comma,
+ :number4,
+ :square_bracket_close]
+----
+
+== translated_ordinals
+
+Removes ordinal indicators appearing as expected after numbers.
+
+----
+[34] pry(main)> ex1.translated_ordinals.types
+=> [:square_bracket_open,
+ :month,
+ :number1or2,
+ :hyphen,
+ :month,
+ :number1or2,
+ :comma,
+ :number4,
+ :square_bracket_close]
+----
+
+== certainty_checked
+
+Encodes the following `certainty` attributes on the `SegmentSet` as appropriate when it applies to the entire date string:
+
+- `:supplied` (when whole string enclosed in [] and EDTF options are not applied)
+- `:approximate` (when preceded by circa or if ~ or % is at end of date string)
+- `:uncertain` (when ? or % is at end of date string)
+- `:one_of_set` (when whole string enclosed in [] and EDTF options are applied)
+- `:all_of_set` (when whole string enclosed in {})
+
+Encodes EDTF group and individual element certainty values to ``Segment``s as appropriate:
+
+- `:approximate` (applies to individual segment)
+- `:uncertain` (applies to individual segment)
+- `:leftward_approximate` (applies to individual segment and all previous segments in the same date -- the final handling of this must happen after date segmenting)
+- `:leftward_uncertain` (applies to individual segment and all previous segments in the same date -- the final handling of this must happen after date segmenting)
+
+----
+ex1.certainty_checked.types
+=> [:month, :number1or2, :hyphen, :month, :number1or2, :comma, :number4]
+ex1.certainty_checked.certainty
+=> [:supplied]
+----
+
+----
+ex2 = Emendate.process('~2004-06-%11')
+ex2.certainty_checked.types
+=> [:number4, :hyphen, :number1or2, :hyphen, :number1or2]
+ex2.certainty_checked[0].type
+=> :number4
+ ex2.certainty_checked[0].certainty
+=> [:approximate]
+ex2.certainty_checked[4].type
+=> :number1or2
+ex2.certainty_checked[4].certainty
+=> [:approximate, :uncertain]
+----
+
+For full documentation, run the following from the base `emendate` directory:
+
+`rspec spec/lib/emendate/certainty_checker_spec.rb`
+
+== standardized_formats
+
+Carries out a number of manipulations on the `SegmentSet` to standardize it in preparation for ``Token``s to be tagged as ``DatePart``s.
+
+For full documentation, run the following from the base `emendate` directory:
+
+`rspec spec/lib/emendate/format_standardizer_spec.rb`
+
+[Fills in missing date elements]
+----
+ex1.standardized_formats.types
+=> [:month, :number1or2, :number4, :hyphen, :month, :number1or2, :number4]
+----
+
+[Pads 3-digit numbers to 4]
+----
+ex3 = Emendate.process('999-1-1')
+ex3.certainty_checked.types
+=> [:number3, :hyphen, :number1or2, :hyphen, :number1or2]
+ex3.standardized_formats.types
+=> [:number4, :hyphen, :number1or2, :hyphen, :number1or2]
+----
+
+== tagged_date_parts
+
+Turns remaining eligible ``Token``s into ``DatePart``s.
+
+----
+ex1.tagged_date_parts.types
+=> [:month, :day, :year, :hyphen, :month, :day, :year]
+----
+
+In the following example, ``Token``s with types `:number1or2` (18) and `:century` (cent.) are collapsed into one `DatePart`` with type `:century` and literal value `18`.
+
+----
+ex4 = Emendate.process('early 18th cent.')
+ex4.standardized_formats.types
+=> [:partial, :number1or2, :century]
+ex4.tagged_date_parts.types
+=> [:partial, :century]
+ex4.tagged_date_parts[1].class
+=> Emendate::DatePart
+ex4.tagged_date_parts[1].literal
+=> 18
+ex4.tagged_date_parts[1].lexeme
+=> "18cent"
+----
+== segmented_dates
+
+Collapses the ``DatePart``s that make up a given date into one `DateType`.
+
+----
+ex1.segmented_dates.types
+=> [:yearmonthday_date_type, :hyphen, :yearmonthday_date_type]
+----
+
+Also includes `:partial`, `:before`, and `:after` tokens in the construction of the `DateType`.
+
+----
+ex4.segmented_dates.types
+=> [:century_date_type]
+ex4.segmented_dates[0].partial_indicator
+=> "early"
+ex4.segmented_dates[0].earliest
+=> #<Date: 1701-01-01 ((2342338j,0s,0n),+0s,2299161j)>
+ex4.segmented_dates[0].latest
+=> #<Date: 1734-12-31 ((2354755j,0s,0n),+0s,2299161j)>
+----

@@ -1,0 +1,157 @@
+= Development notes
+
+Notes on things still to be implemented, things to fix, etc.
+
+== To-do
+=== option for handling output of EDTF when only year or year/month are known
+
+==== one configurable option for month level
+Example: 2004
+
+If option is `none` (default), output `2004`
+
+If option is `unspecified_digits`, output `2004-XX`
+
+If option is a number (say 4), output `2004-04`
+
+==== one configurable option for day level
+Example: April 2004
+
+If option is `none` (default), output `2004-04`
+
+If option is `unspecified_digits`, output `2004-04-XX`
+
+If option is a number (say 7), output `2004-04-07`
+
+==== interactions
+
+If month is none, only none is valid for day. Any other value for day will be ignored.
+
+Otherwise, you can set them independently:
+
+Example: 2004
+
+month: unspecified_digits, day: 17 = 2004-XX-17
+
+month: 10, day: unspecified_digits = 2004-10-XX
+
+== Notes
+
+Islandora has no built-in date functionality. It uses the pre-parsed values in MODS (I7) or Drupal fields (I8), so we can basically do whatever with the date parsing.
+
+=== ISO8601 and BCE
+
+From https://en.wikipedia.org/wiki/ISO_8601#Years
+
+ISO 8601 prescribes, as a minimum, a four-digit year [YYYY] to avoid the year 2000 problem. It therefore represents years from 0000 to 9999, year 0000 being equal to 1 BC and all others AD. However, years prior to 1583 are not automatically allowed by the standard. Instead "values in the range [0000] through [1582] shall only be used by mutual agreement of the partners in information interchange."
+
+=== Early/mid/late season
+
+to do
+
+=== Early/mid/late month
+
+to do
+
+=== Early/mid/late decade
+
+Examples: Early 1990s, mid-1990s, late 1990s
+
+bThere is no standard agreement anywhere about what years of the decade constitute early, mid, and late. Preferences for breaking this up include: 3-4-3 and 4-2-4.
+
+CollectionSpace's date parser handles this as follows:
+
+early 1990s = 1990-1993
+
+mid 1990s = 1994-1996
+
+late 1990s = 1997-1999
+
+
+This is different than what TimeTwister returns:
+
+early 1990s = 1990-1995
+
+mid 1990s = 1993-1998
+
+late 1990s = 1995-1999
+
+For a cohesive user experience between migration/batch import and use of CollectionSpace UI, we need to do what CS does.
+
+=== Early/mid/late year
+
+Examples: Early 2020, mid-2020, late 2020
+
+In Islandora we'll have to feed it pre-parsed values in MODS or Drupal fields.
+
+CollectionSpace parses these as follows, so we will go with that as the requirement:
+
+early 2020 = 2020-01-01 to 2020-04-30
+mid 2020 = 2020-05-01 to 2020-08-31
+late 2020 = 2020-09-01 to 2020-12-31
+
+=== Seasons (textual)
+Go with what CS does.
+
+*Winter 2020*
+
+CS = 2020-01-01 - 2020-03-31
+
+TT = 2020-01-01 - 2020-03-20
+
+*Spring 2020*
+
+CS = 2020-04-01 - 2020-06-30
+
+Timetwister = 2020-03-20 - 2002-06-21
+
+*Summer 2020*
+
+CS = 2020-07-01 - 2020-09-30
+
+TT = 2020-06-21 - 2020-09-23
+
+*Fall 2020*
+
+CS = 2020-10-01 - 2020-12-31
+
+TT = 2020-09-23 - 2020-12-22
+
+
+=== Before/after dates
+
+Example: before 1750
+
+Since CollectionSpace is museum oriented, it's possible we need to support *really* old dates.
+
+Cspace only parses a date like this into the latest date. Earliest/single date is nil. So, initially we will just return a single date value (not an inclusive range) (i.e. 1750-01-01), with "before" certainty value.
+
+Example: after 1750
+
+Since the latest date is TODAY, we have an end point and can return the inclusive range. Certainty "after" is assigned to the given date. Certainty "before" is assigned to the current date.
+
+=== Centuries
+
+example: 19th century
+
+CS = 1801-01-01 - 1900-12-31
+
+TT = 1800-01-01 - 1899-12-31
+
+Because of the difference in years used in setting ranges, I'm going to go with CS and not compare what early/mid/late values are set.
+
+`early/mid/late 18th century`
+
+named, early = 1701-01-01 - 1734-12-31
+
+named, mid = 1734-01-01 - 1767-12-31
+
+named, late = 1767-01-01 - 1800-12-31
+
+`early/mid/late 1900s or 19XX`
+
+other, early = 1900-01-01 - 1933-12-31
+
+other, mid = 1933-01-01 - 1966-12-31
+
+other, late = 1966-01-01 - 1999-12-31

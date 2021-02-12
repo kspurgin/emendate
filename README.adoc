@@ -18,208 +18,129 @@ Or install it yourself as:
 
 `$ gem install emendate`
 
+== Use
+
+You can play with Emendate after installation by doing the following (assuming you cloned the repo into a folder called `emendate`):
+
+----
+cd emendate
+bin/console
+----
+
+The basic command is:
+
+`Emendate.process('early 19th c.')`
+
+As Emendate is still under development, this currently returns a big ProcessingManager object, that is difficult to visually parse.
+
+Assign it to a variable...
+
+`pm = Emendate.process('Early 19th c.')`
+
+...and then look at what specific parts of it you can request:
+
+`pm.instance_variables`
+
+This returns a list of things you can put after `pm.` (remove the `:@`). For example, the normalized version of your original input string:
+
+`pm.norm_string`
+
+You can ignore `:@aasm`, which is internally used for processing.
+
+`:@errors` and `:@warnings` will show any messages in those categories. Errors are problems/issues that can't be handled by Emendate. Warnings are things Emendate handled, but which you might want to review because the input was in some way ambiguous or odd.
+
+The rest contain a representation of the original string at each stage of processing. `:@tokens` always shows the latest stage in processing. For more details on the processing stages and what the data will look like at each stage, see (addlink)
+
+
+This is not in the list of instance_variables you can call, but will show you if processing finished successfully (`done`) or not (`failed`):
+
+`pm.state`
+
 
 == Purpose
 
-Turn highly varied and messy date metadata from various standard and semi-standard date-recording conventions in to structured data object that can be used by some other tool to supply consistently formatted date values in metadata or indexes.
+Legacy metadata contains date data encoded using various standard and semi-standard date-recording conventions, or without any consistent conventions.
+
+Emendate's goal is to parse such date strings and return structured data objects that can be used by other applications to supply consistently formatted date values in metadata or indexes.
+
+The test set of date formats Emendate intends to support can be viewed https://github.com/kspurgin/emendate/blob/main/spec/helpers.rb[here]. Note that formats with an `unparseable` tag are not expected to be supported in any realistic timeframe.
+
+=== My use cases
+
+I am responsible for migrating client data to new systems. The target systems vary in the way date data must be prepared:
+
+- Islandora 7 wants dates encoded in MODS XML
+- Islandora 8 wants EDTF strings
+- CollectionSpace wants XML like:
+
+[CollectionSpace structuredDate elements, xml]
+----
+<fieldCollectionDateGroup>
+  <scalarValuesComputed>true</scalarValuesComputed>
+  <dateEarliestSingleCertainty/>
+  <dateEarliestSingleQualifierUnit/>
+  <dateDisplayDate>8-11-09</dateDisplayDate>
+  <dateLatestScalarValue>2009-08-12T00:00:00.000Z</dateLatestScalarValue>
+  <dateEarliestSingleQualifierValue/>
+  <datePeriod/>
+  <dateLatestEra/>
+  <dateEarliestSingleDay>11</dateEarliestSingleDay>
+  <dateEarliestSingleQualifier/>
+  <dateEarliestSingleYear>2009</dateEarliestSingleYear>
+  <dateLatestCertainty/>
+  <dateAssociation/>
+  <dateLatestDay/>
+  <dateEarliestSingleMonth>8</dateEarliestSingleMonth>
+  <dateEarliestSingleEra>urn:cspace:core.collectionspace.org:vocabularies:name(dateera):item:name(ce)'CE'</dateEarliestSingleEra>
+  <dateLatestYear/>
+  <dateLatestQualifierUnit/>
+  <dateNote/>
+  <dateLatestQualifierValue/>
+  <dateLatestQualifier/>
+  <dateEarliestScalarValue>2009-08-11T00:00:00.000Z</dateEarliestScalarValue>
+  <dateLatestMonth/>
+</fieldCollectionDateGroup>
+----
+
+I kept running into the same patterns of messy date metadata in the data to be migrated, and found myself re-writing (or seeing that I would need to re-write) the same logic in the migration tooling for each tool I support. So I decided to encapsulate this in Emendate.
+
+=== Relationship with/comparison to other tools
+
+==== Chronic
+
+I was initially using https://github.com/mojombo/chronic[Chronic] in preparation of some date metadata, but it is not at all oriented to the kind of date formats typically found in cutural heritage institution data. Further, it returns just a Ruby `Time` object, which does not support the complex structured information I needed such as: certainty (approximate, uncertain, supplied/inferred date), inclusive ranges/intervals, and dealing with values like "early 19th century" or "before 1672."
+
+==== Timetwister
+
+When I discussed the issues I was facing with my colleague https://github.com/lorawoodford[Lora Woodford], she pointed me to https://github.com/alexduryee/timetwister[Timetwister], developed by New York Public Library. This looked very promising, as it has been developed specifically for cultural heritage institution date data, and it returns a structured data object with the types of data we typically need to represent complex date data in our systems.
+
+At that time, I had gathered 99 test examples of different date formats from client data. (At the time, the set did not include EDTF date patterns or some of the date conventions used in MARC records.
+
+When I ran my examples through Timetwister, 45 of the 99 examples weren't handled as expected (or at all).
+
+At this point, I began to examine the Timetwister codebase, to see if I could contribute back to make it work for a wider range of date formats.
+
+I was discouraged from this approach by finding that much of the parsing is handled by long, complex regular expressions. I immediately saw how some of the stuff in my example set couldn't reasonably be handled that way. I saw there is https://github.com/alexduryee/timetwister/issues/9[an issue from 2016] to add EDTF support, which was still open as of 2021-02-12. There are many reasons why this could still be open, but if you have built up your regexp matching based on some set of initial assumptions, something like EDTF or some of my examples could make it nearly impossible to include them without adding byzantine logical loops and more complexity to already complex and opaque regexes ( really hard to maintain and debug over time), or starting from scratch.
+
+Though the regex approach is common in tools trying to do things like this (I examined several), most of them seem to be attempting to handle a somewhat more standard universe of things than Emendate is.
+
+Faced with trying to contribute back to Timetwister and possibly ending up rewriting much of it, I opted to continue work on Emendate.
+
+==== Others
+
+I also have looked into the following libraries, none of which seemed to cover the entire problem I am trying to solve with Emendate, but all of which have informed the development of Emendate and helped me understand this problem space more fully.
+
+- https://github.com/sul-dlss/parse_date[parse_date from Stanford Digital Library Systems and Services]
+- https://github.com/inukshuk/edtf-ruby[edtf-ruby]
+- https://github.com/duke-libraries/edtf-humanize[edtf-humanize from Duke University Libraries]
+- https://github.com/collectionspace/services/tree/master/services/structureddate/structureddate/src[the structuredDate code and tests for CollectionSpace]
 
 == Limitations
 
 - Does not attempt to deal with any unit of time more specific than day. If given a value such as 1985-04-12T23:20:30Z, it will extract 1985-04-12.
 
-== Decisions
 
 
 
 
-== To-do
-=== option for handling output of EDTF when only year or year/month are known
 
-==== one configurable option for month level
-Example: 2004
-
-If option is `none` (default), output `2004`
-
-If option is `unspecified_digits`, output `2004-XX`
-
-If option is a number (say 4), output `2004-04`
-
-==== one configurable option for day level
-Example: April 2004
-
-If option is `none` (default), output `2004-04`
-
-If option is `unspecified_digits`, output `2004-04-XX`
-
-If option is a number (say 7), output `2004-04-07`
-
-==== interactions
-
-If month is none, only none is valid for day. Any other value for day will be ignored.
-
-Otherwise, you can set them independently:
-
-Example: 2004
-
-month: unspecified_digits, day: 17 = 2004-XX-17
-
-month: 10, day: unspecified_digits = 2004-10-XX
-
-== Notes
-
-Islandora has no built-in date functionality. It uses the pre-parsed values in MODS (I7) or Drupal fields (I8), so we can basically do whatever with the date parsing.
-
-=== ISO8601 and BCE
-
-From https://en.wikipedia.org/wiki/ISO_8601#Years
-
-ISO 8601 prescribes, as a minimum, a four-digit year [YYYY] to avoid the year 2000 problem. It therefore represents years from 0000 to 9999, year 0000 being equal to 1 BC and all others AD. However, years prior to 1583 are not automatically allowed by the standard. Instead "values in the range [0000] through [1582] shall only be used by mutual agreement of the partners in information interchange."
-
-=== 2/3/2020, 2-3-2020, etc
-Is this Feb 3 or March 2?
-
-Make option. Default to Feb 3.
-
-=== 2010-12, 2010/12
-
-Is this December 2010, or 2010 - 2012?
-
-Make option. Default to 2010 - 2012
-
-
-EDTF uses two digit values in the ambiguous position here to indicate seasons/quarters/semesters:
-
- - 21     Spring (independent of location)
- - 22     Summer (independent of location)
- - 23     Autumn (independent of location)
- - 24     Winter (independent of location)
- - 25     Spring - Northern Hemisphere
- - 26     Summer - Northern Hemisphere
- - 27     Autumn - Northern Hemisphere
- - 28     Winter - Northern Hemisphere
- - 29     Spring - Southern Hemisphere
- - 30     Summer - Southern Hemisphere
- - 31     Autumn - Southern Hemisphere
- - 32     Winter - Southern Hemisphere
- - 33     Quarter 1 (3 months in duration)
- - 34     Quarter 2 (3 months in duration)
- - 35     Quarter 3 (3 months in duration)
- - 36     Quarter 4 (3 months in duration)
- - 37     Quadrimester 1 (4 months in duration)
- - 38     Quadrimester 2 (4 months in duration)
- - 39     Quadrimester 3 (4 months in duration)
- - 40     Semestral 1 (6 months in duration)
- - 41     Semestral 2 (6 months in duration)
-
-
-2010-20 - if 2-digit segment > 12  but <= 20, or > 41 it is no longer ambiguous and should be treated as year value
-
-2003-03 - if 2-digit segment <= to last 2 digits of first year, it is no longer ambiguous and should be treated as month.
-
-Need configurable options for:
-
-- 2-digit segment <= 12 (Default to year)
-- 2-digit segment 21-41 (options: season or year, default to year)
-
-=== Early/mid/late decade
-
-Examples: Early 1990s, mid-1990s, late 1990s
-
-There is no standard agreement anywhere about what years of the decade constitute early, mid, and late. Preferences for breaking this up include: 3-4-3 and 4-2-4.
-
-CollectionSpace's date parser handles this as follows:
-
-early 1990s = 1990-1993
-
-mid 1990s = 1994-1996
-
-late 1990s = 1997-1999
-
-
-This is different than what TimeTwister returns:
-
-early 1990s = 1990-1995
-
-mid 1990s = 1993-1998
-
-late 1990s = 1995-1999
-
-For a cohesive user experience between migration/batch import and use of CollectionSpace UI, we need to do what CS does.
-
-=== Early/mid/late year
-
-Examples: Early 2020, mid-2020, late 2020
-
-In Islandora we'll have to feed it pre-parsed values in MODS or Drupal fields.
-
-CollectionSpace parses these as follows, so we will go with that as the requirement:
-
-early 2020 = 2020-01-01 to 2020-04-30
-mid 2020 = 2020-05-01 to 2020-08-31
-late 2020 = 2020-09-01 to 2020-12-31
-
-=== Seasons (textual)
-Go with what CS does.
-
-*Winter 2020*
-
-CS = 2020-01-01 - 2020-03-31
-
-TT = 2020-01-01 - 2020-03-20
-
-*Spring 2020*
-
-CS = 2020-04-01 - 2020-06-30
-
-Timetwister = 2020-03-20 - 2002-06-21
-
-*Summer 2020*
-
-CS = 2020-07-01 - 2020-09-30
-
-TT = 2020-06-21 - 2020-09-23
-
-*Fall 2020*
-
-CS = 2020-10-01 - 2020-12-31
-
-TT = 2020-09-23 - 2020-12-22
-
-
-=== Before/after dates
-
-Example: before 1750
-
-Since CollectionSpace is museum oriented, it's possible we need to support *really* old dates.
-
-Cspace only parses a date like this into the latest date. Earliest/single date is nil. So, initially we will just return a single date value (not an inclusive range) (i.e. 1750-01-01), with "before" certainty value.
-
-Example: after 1750
-
-Since the latest date is TODAY, we have an end point and can return the inclusive range. Certainty "after" is assigned to the given date. Certainty "before" is assigned to the current date.
-
-=== Centuries
-
-example: 19th century
-
-CS = 1801-01-01 - 1900-12-31
-
-TT = 1800-01-01 - 1899-12-31
-
-Because of the difference in years used in setting ranges, I'm going to go with CS and not compare what early/mid/late values are set.
-
-`early/mid/late 18th century`
-
-named, early = 1701-01-01 - 1734-12-31
-
-named, mid = 1734-01-01 - 1767-12-31
-
-named, late = 1767-01-01 - 1800-12-31
-
-`early/mid/late 1900s or 19XX`
-
-other, early = 1900-01-01 - 1933-12-31
-
-other, mid = 1933-01-01 - 1966-12-31
-
-other, late = 1966-01-01 - 1999-12-31
