@@ -12,7 +12,7 @@ RSpec.describe Emendate::AlphaMonthConverter do
       it 'tags as expected' do
         c = convert('Jan 2021')
         result = "#{c.first.type} #{c.first.lexeme}"
-        expect(result).to eq('number_month jan')
+        expect(result).to eq('month jan')
       end
     end
 
@@ -20,7 +20,7 @@ RSpec.describe Emendate::AlphaMonthConverter do
       it 'tags as expected' do
         c = convert('October 2021')
         result = "#{c.first.type} #{c.first.lexeme}"
-        expect(result).to eq('number_month october')
+        expect(result).to eq('month october')
       end
     end
   end

@@ -35,8 +35,6 @@ module Emendate
     def tag
       tag_years if result.types.include?(:number4)
 
-      tag_months if result.types.include?(:number_month)
-      
       while taggable
         t = determine_tagger
         break if t.nil?
@@ -170,13 +168,6 @@ module Emendate
       collapse_pair(%i[year uncertainty_digits], :decade)
     end
     
-    def tag_months
-      result.each do |t|
-        next unless t.type == :number_month
-        replace_x_with_date_part_type(x: t, date_part_type: :month)
-      end
-    end
-
     def tag_numeric_month_day_year
       n1, h1, n2, h2, y = result.extract(%i[number1or2 hyphen number1or2 hyphen year]).segments
       begin

@@ -44,11 +44,11 @@ module Emendate
         %i[pad_3_to_4_digits]
       when /.*partial hyphen.*/
         %i[remove_post_partial_hyphen]
-      when /.*number_month number1or2 comma number4.*/
+      when /.*month number1or2 comma number4.*/
         %i[remove_post_month_comma]
-      when /.*number4 number_month number1or2.*/
+      when /.*number4 month number1or2.*/
         %i[move_year_to_end_of_segment]
-      when /.*number1or2 number_month number4.*/
+      when /.*number1or2 month number4.*/
         %i[move_month_to_beginning_of_segment]
       end
     end
@@ -57,14 +57,14 @@ module Emendate
       case result.date_part_types
       when %i[number1or2 number1or2 century]
         %i[add_century_after_first_number]
-      when %i[number_month number_month number4]
+      when %i[month month number4]
         %i[add_year_after_first_month]
-      when %i[number_month number1or2 number_month number1or2 number4]
+      when %i[month number1or2 month number1or2 number4]
         %i[add_year_after_first_number1or2]
-      when %i[number_month number1or2 number1or2 number4]
+      when %i[month number1or2 number1or2 number4]
         %i[add_year_after_first_number1or2
            add_month_before_second_number1or2]
-      when %i[number4 number_month number_month]
+      when %i[number4 month month]
         %i[move_year_after_first_month
            add_year_after_second_month]
       end
@@ -85,7 +85,7 @@ module Emendate
     end
 
     def add_month_before_second_number1or2
-      month = result.when_type(:number_month)[0].dup
+      month = result.when_type(:month)[0].dup
       day2 = result.when_type(:number1or2)[1]
       ins_pt = result.find_index(day2)
       result.insert(ins_pt, month)
@@ -93,14 +93,14 @@ module Emendate
 
     def add_year_after_first_month
       yr = result.when_type(:number4)[0].dup
-      month1 = result.when_type(:number_month)[0]
+      month1 = result.when_type(:month)[0]
       ins_pt = result.find_index(month1) + 1
       result.insert(ins_pt, yr)
     end
     
     def add_year_after_second_month
       yr = result.when_type(:number4)[0].dup
-      month2 = result.when_type(:number_month)[1]
+      month2 = result.when_type(:month)[1]
       ins_pt = result.find_index(month2) + 1
       result.insert(ins_pt, yr)
     end
@@ -123,7 +123,7 @@ module Emendate
     end
     
     def move_month_to_beginning_of_segment
-      n1, m, n4 = result.extract(%i[number1or2 number_month number4]).segments
+      n1, m, n4 = result.extract(%i[number1or2 month number4]).segments
       m_ind = result.find_index(m)
       d_ind =  m_ind - 1
       result.delete_at(m_ind)
@@ -133,14 +133,14 @@ module Emendate
     def move_year_after_first_month
       yr = result.when_type(:number4)[0]
       result.delete(yr)
-      month1 = result.when_type(:number_month)[0]
+      month1 = result.when_type(:month)[0]
       ins_pt = result.find_index(month1) + 1
       result.insert(ins_pt, yr)
     end
 
     def move_year_to_end_of_segment
       yr = result.select{ |t| t.type == :number4 &&
-          result[result.find_index(t) + 1].type == :number_month &&
+          result[result.find_index(t) + 1].type == :month &&
           result[result.find_index(t) + 2].type == :number1or2 }[0]
       y_ind = result.find_index(yr)
       ins_pt = y_ind + 3
@@ -158,7 +158,7 @@ module Emendate
     end
     
     def remove_post_month_comma
-      comma = result.extract(%i[number_month number1or2 comma]).segments[-1]
+      comma = result.extract(%i[month number1or2 comma]).segments[-1]
       result.delete(comma)
     end
 

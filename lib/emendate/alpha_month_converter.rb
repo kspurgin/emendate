@@ -5,7 +5,7 @@ require 'emendate/date_utils'
 module Emendate
   
   class AlphaMonthConverter
-  attr_reader :result, :options
+    attr_reader :result, :options
     include DateUtils
     def initialize(tokens:, options: {})
       @result = Emendate::TokenSet.new.copy(tokens)
@@ -37,10 +37,10 @@ module Emendate
     def convert_month(token, lookup)
       str = token.lexeme
       number = lookup[str]
-      Emendate::Token.new(lexeme: str,
-                          type: :number_month,
-                          literal: number,
-                          location: token.location)
+      Emendate::DatePart.new(type: :month,
+                             lexeme: str,
+                             literal: number,
+                             source_tokens: [token])
     end
   end
 end
