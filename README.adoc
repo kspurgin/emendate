@@ -49,7 +49,7 @@ You can ignore `:@aasm`, which is internally used for processing.
 
 `:@errors` and `:@warnings` will show any messages in those categories. Errors are problems/issues that can't be handled by Emendate. Warnings are things Emendate handled, but which you might want to review because the input was in some way ambiguous or odd.
 
-The rest contain a representation of the original string at each stage of processing. `:@tokens` always shows the latest stage in processing. For more details on the processing stages and what the data will look like at each stage, see (addlink)
+The rest contain a representation of the original string at each stage of processing. `:@tokens` always shows the latest stage in processing. For more details on the processing stages and what the data will look like at each stage, see https://github.com/kspurgin/emendate/blob/main/docs/processing.adoc[How Emendate processes date strings].
 
 
 This is not in the list of instance_variables you can call, but will show you if processing finished successfully (`done`) or not (`failed`):

@@ -66,7 +66,7 @@ ex1.converted_months.types
 Removes ordinal indicators appearing as expected after numbers.
 
 ----
-[34] pry(main)> ex1.translated_ordinals.types
+[34] ex1.translated_ordinals.types
 => [:square_bracket_open,
  :month,
  :number1or2,
@@ -99,7 +99,7 @@ Encodes EDTF group and individual element certainty values to ``Segment``s as ap
 ex1.certainty_checked.types
 => [:month, :number1or2, :hyphen, :month, :number1or2, :comma, :number4]
 ex1.certainty_checked.certainty
-=> [:supplied]
+	=> [:supplied]
 ----
 
 ----
@@ -128,13 +128,13 @@ For full documentation, run the following from the base `emendate` directory:
 
 `rspec spec/lib/emendate/format_standardizer_spec.rb`
 
-[Fills in missing date elements]
+.Fills in missing date elements
 ----
 ex1.standardized_formats.types
 => [:month, :number1or2, :number4, :hyphen, :month, :number1or2, :number4]
 ----
 
-[Pads 3-digit numbers to 4]
+.Pads 3-digit numbers to 4
 ----
 ex3 = Emendate.process('999-1-1')
 ex3.certainty_checked.types
@@ -152,7 +152,7 @@ ex1.tagged_date_parts.types
 => [:month, :day, :year, :hyphen, :month, :day, :year]
 ----
 
-In the following example, ``Token``s with types `:number1or2` (18) and `:century` (cent.) are collapsed into one `DatePart`` with type `:century` and literal value `18`.
+In the following example, ``Token``s with types `:number1or2` (18) and `:century` (cent.) are collapsed into one `DatePart` with type `:century` and literal value `18`.
 
 ----
 ex4 = Emendate.process('early 18th cent.')
