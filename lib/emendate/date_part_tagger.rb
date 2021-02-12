@@ -58,8 +58,8 @@ module Emendate
       case result.type_string
       when /.*year letter_s.*/
         :tag_pluralized_year
-      when /.*year uncertainty_digits.*/
-        :tag_decade_uncertainty_digits
+      when /.*uncertainty_digits.*/
+        :tag_with_uncertainty_digits
       when /.*number1or2 century.*/
         :tag_century_num
       when /.*month number1or2 year.*/
@@ -164,8 +164,17 @@ module Emendate
       end
     end
 
-    def tag_decade_uncertainty_digits
-      collapse_pair(%i[year uncertainty_digits], :decade)
+    def tag_with_uncertainty_digits
+      ud = result.extract(%i[uncertainty_digits]).segments[0]
+      prev = result[result.find_index(ud) - 1]
+      case ud.lexeme.length
+      when 1
+        collapse_pair([prev.type, :uncertainty_digits], :decade)
+      when 2
+        collapse_pair([prev.type, :uncertainty_digits], :century)
+      when 3
+        collapse_pair([prev.type, :uncertainty_digits], :millennium)
+      end
     end
     
     def tag_numeric_month_day_year

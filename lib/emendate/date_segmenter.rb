@@ -132,11 +132,19 @@ module Emendate
     
     def parse_century_date_part
       cent = working[0]
-      result << Emendate::DateTypes::Century.new(century: cent.literal, century_type: :name, children: [cent])
+      result << Emendate::DateTypes::Century.new(century: century_literal(cent), century_type: :name, children: [cent])
       working.shift
       recursive_parse
     end
 
+    def century_literal(datepart)
+      if datepart.lexeme[-1] == 's'
+        datepart.literal.to_s[0..-3].to_i
+      else
+        datepart.literal
+      end
+    end
+    
     def parse_date_parts
       pieces = consume_date_parts
         if pieces.types.sort == %i[day month year]

@@ -119,7 +119,7 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
-    context '1990s 200X' do
+    context '1990s 199X' do
       before(:all){ @s = segment('1990s 199X') }
       it 'returns decade_date_types' do
         e = %i[decade_date_type decade_date_type]
@@ -128,6 +128,23 @@ RSpec.describe Emendate::DateSegmenter do
       it 'returns decade_types: plural, uncertainty_digits' do
         e = 'plural uncertainty_digits'
         expect(@s.map(&:decade_type).join(' ')).to eq(e)
+      end
+    end
+
+    context '1900s (as century), 19th century, 19uu' do
+      before(:all) do
+        @s = segment('1900s 19th century 19uu', pluralized_date_interpretation: :broad)
+      end
+      it 'returns century_date_types' do
+        e = %i[century_date_type century_date_type century_date_type]
+        expect(@s.types).to eq(e)
+      end
+      it 'returns century_types: plural, name, uncertainty_digits' do
+        e = 'plural name uncertainty_digits'
+        expect(@s.map(&:century_type).join(' ')).to eq(e)
+      end
+      it 'returns century literals: 19 19 19' do
+        expect(@s.map(&:literal).join(' ')).to eq('19 19 19')
       end
     end
   end

@@ -4,79 +4,90 @@ RSpec.describe Emendate::DatePartTagger do
   def tag(str, options = {})
     pm = Emendate.prep_for(str, :tag_date_parts, options)
     fs = Emendate::DatePartTagger.new(tokens: pm.tokens, options: pm.options)
-    fs.tag.types
+    fs.tag
   end
   
   describe '#tag' do
     context '999' do
       it 'tags year' do
         result = tag('999')
-        expect(result).to eq(%i[year])
+        expect(result.types).to eq(%i[year])
       end
     end
     context '2020' do
       it 'tags year' do
         result = tag('2020')
-        expect(result).to eq(%i[year])
+        expect(result.types).to eq(%i[year])
       end
     end
     context 'March' do
       it 'tags month' do
         result = tag('March')
-        expect(result).to eq(%i[month])
+        expect(result.types).to eq(%i[month])
       end
     end
     context '0000s 1000s' do
       context 'default' do
         it 'tags decade' do
           result = tag('0000s 1000s')
-          expect(result).to eq(%i[decade decade])
+          expect(result.types).to eq(%i[decade decade])
         end
       end
       context 'pluralized_date_interpretation: :broad' do
         it 'tags millennium' do
           result = tag('0000s 1000s', pluralized_date_interpretation: :broad)
-          expect(result).to eq(%i[millennium millennium])
+          expect(result.types).to eq(%i[millennium millennium])
         end
       end
     end
     context '1900s' do
       context 'default' do
-      it 'tags decade' do
-        result = tag('1900s')
-        expect(result).to eq(%i[decade])
-      end
+        before(:all){ @result = tag('1900s') }
+        it 'tags decade' do
+          expect(@result.types).to eq(%i[decade])
+        end
+        it 'literal is whole number' do
+          expect(@result[0].literal).to eq(1900)
+        end
       end
       context 'pluralized_date_interpretation: :broad' do
+        before(:all){ @result = tag('1900s', pluralized_date_interpretation: :broad)}
         it 'tags century' do
-          result = tag('1900s', pluralized_date_interpretation: :broad)
-          expect(result).to eq(%i[century])
+          expect(@result.types).to eq(%i[century])
+        end
+        it 'literal is whole number' do
+          expect(@result[0].literal).to eq(1900)
         end
       end
     end
     context '1990s' do
       it 'tags decade' do
         result = tag('1990s')
-        expect(result).to eq(%i[decade])
+        expect(result.types).to eq(%i[decade])
       end
     end
     context '199X' do
       it 'tags decade' do
         result = tag('199X')
-        expect(result).to eq(%i[decade])
+        expect(result.types).to eq(%i[decade])
       end
     end
     context '19th century' do
       it 'tags century' do
         result = tag('19th century')
-        expect(result).to eq(%i[century])
+        expect(result.types).to eq(%i[century])
       end
     end
-
+    context '19uu' do
+      it 'tags century' do
+        result = tag('19uu')
+        expect(result.types).to eq(%i[century])
+      end
+    end
     context 'February 15, 2020' do
       it 'tags day (month and year are already done at this point)' do
         result = tag('February 15, 2020')
-        expect(result).to eq(%i[month day year])
+        expect(result.types).to eq(%i[month day year])
       end
     end
 
@@ -109,7 +120,7 @@ RSpec.describe Emendate::DatePartTagger do
       context 'default' do
         it 'tags month day year' do
           result = tag('02-03-2020')
-          expect(result).to eq(%i[month day year])
+          expect(result.types).to eq(%i[month day year])
         end
       end
       context 'ambiguous_month_day: :as_day_month' do
@@ -125,7 +136,7 @@ RSpec.describe Emendate::DatePartTagger do
       context 'default (treat as year)' do
         it 'converts hyphen into range_indicator' do
           result = tag('2003-04')
-          expect(result).to eq(%i[year range_indicator year])
+          expect(result.types).to eq(%i[year range_indicator year])
         end
       end
       context 'ambiguous_month_year: as_month' do
@@ -140,7 +151,7 @@ RSpec.describe Emendate::DatePartTagger do
     context '2 December 2020, 2020/02/15' do
       it 'tags' do
         result = tag('2 December 2020, 2020/02/15')
-        expect(result).to eq(%i[month day year comma year month day])
+        expect(result.types).to eq(%i[month day year comma year month day])
       end
     end
     
