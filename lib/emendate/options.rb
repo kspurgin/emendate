@@ -45,10 +45,6 @@ module Emendate
         #  by default, 21 = 1921 and 20 = 2020
         ambiguous_year_rollback_threshold: Date.today.year.to_s[-2..-1].to_i,
 
-        # todo: get rid of this -- just return nil when there is no opening date to a range
-        # the application using Emendate results will need to figure out how to handle those
-        earliest_date: Date.new(1,1,1),
-
         # how to interpret square brackets around a string: as a supplied date, or EDTF
         #  "one of" set
         square_bracket_interpretation: :supplied_date,
