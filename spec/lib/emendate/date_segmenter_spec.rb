@@ -144,7 +144,7 @@ RSpec.describe Emendate::DateSegmenter do
         expect(@s.map(&:century_type).join(' ')).to eq(e)
       end
       it 'returns century literals: 19 19 19' do
-        expect(@s.map(&:literal).join(' ')).to eq('19 19 19')
+        expect(@s.map(&:century).join(' ')).to eq('19 19 19')
       end
     end
   end

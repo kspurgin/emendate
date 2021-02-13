@@ -174,6 +174,9 @@ module Emendate
         collapse_pair([prev.type, :uncertainty_digits], :century)
       when 3
         collapse_pair([prev.type, :uncertainty_digits], :millennium)
+      else
+        new = new_date_part(:uncertain_date_part, [ud])
+        replace_x_with_given_segment(x: y, segment: new)
       end
     end
     
