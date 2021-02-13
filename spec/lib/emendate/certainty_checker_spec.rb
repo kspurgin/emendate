@@ -13,11 +13,14 @@ RSpec.describe Emendate::CertaintyChecker do
         before(:all) do
           @c = check('[circa 2002?]')
         end
-        it 'values include: supplied, approximate, and uncertain' do
-          expect(@c.certainty.sort).to eq([:approximate, :supplied, :uncertain])
+        it 'values include: approximate and uncertain' do
+          expect(@c.certainty.sort).to eq([:approximate, :uncertain])
         end
         it 'returns 1 token for 2002' do
           expect(@c.type_string).to eq('number4')
+        end
+        it 'tags result as inferred' do
+          expect(@c.inferred_date).to be true
         end
       end
     end

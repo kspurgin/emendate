@@ -5,13 +5,14 @@ require 'forwardable'
 module Emendate
   class SegmentSet
     extend Forwardable
-    attr_reader :segments, :certainty, :warnings
+    attr_reader :segments, :certainty, :inferred_date, :warnings
     def_delegator :@segments, :[], :[]
     def_delegators :@segments, :clear, :delete, :delete_at, :empty?, :find_index, :insert, :length, :pop, :shift
     
     def initialize(*args)
       @segments = Array.new(*args)
       @certainty = []
+      @inferred_date = false
       @warnings = []
     end
 
@@ -45,6 +46,11 @@ module Emendate
     def each(*args, &block)
       segments.each(*args, &block)
     end
+
+    def is_inferred
+      @inferred_date = true
+    end
+    
 
     # returns the first sequence of segments matching the pattern of types passed in as an Array
     def extract(*args)

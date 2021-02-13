@@ -145,7 +145,7 @@ module Emendate
       if options.square_bracket_interpretation == :edtf_set
         result.add_certainty(:one_of_set)
       else
-        result.add_certainty(:supplied)
+        result.is_inferred
       end
       result.shift
       result.pop
@@ -160,10 +160,10 @@ module Emendate
     end
 
     def whole_done?
-      supplied_indicator? || curly? || approximate_indicator? || uncertain_indicator? ? false : true
+      inferred_indicator? || curly? || approximate_indicator? || uncertain_indicator? ? false : true
     end
 
-    def supplied_indicator?
+    def inferred_indicator?
       case result.types
       in [:square_bracket_open, *remain, :square_bracket_close]
         remain.include?(:square_bracket_open) || remain.include?(:square_bracket_close) ? false : true
