@@ -27,6 +27,8 @@ cd emendate
 bin/console
 ----
 
+=== One string at a time
+
 The basic command is:
 
 `Emendate.process('early 19th c.')`
@@ -55,6 +57,70 @@ The rest contain a representation of the original string at each stage of proces
 This is not in the list of instance_variables you can call, but will show you if processing finished successfully (`done`) or not (`failed`):
 
 `pm.state`
+
+=== Passing in options
+
+See https://github.com/kspurgin/emendate/blob/main/docs/options.adoc[Emendate options] for details on the available options and what they do. The following is just to illustrate the use of options and their effect. 
+
+.Using default settings
+----
+default = Emendate.process('2005-06')
+default.tagged_date_parts.types
+=> [:year, :range_indicator, :year]
+default.segmented_dates.types
+=> [:year_date_type, :range_indicator, :year_date_type]
+----
+
+.Using an alternative option
+----
+asmonth = Emendate.process('2005-06', ambiguous_month_year: :as_month)
+asmonth.tagged_date_parts.types
+=> [:year, :month]
+asmonth.segmented_dates.types
+=> [:yearmonth_date_type]
+----
+
+.Setting multiple options at once
+----
+range = Emendate.process('early 1900s to 2/23/21', ambiguous_year_rollback_threshold: 0, pluralized_date_interpretation: :broad)
+range.segmented_dates[0].latest
+=> #<Date: 1834-12-31 ((2391279j,0s,0n),+0s,2299161j)>
+range.segmented_dates[2].earliest
+=> #<Date: 1921-02-23 ((2422744j,0s,0n),+0s,2299161j)>
+----
+
+=== Working with the test set
+
+To see a list of all the date string values in the test set:
+
+`Emendate::EXAMPLES.keys`
+
+To see the list of all strings in the test set, with the tags assigned to each:
+
+`Emendate.example_tags`
+
+[NOTE]
+====
+The following will make more sense if you have read https://github.com/kspurgin/emendate/blob/main/docs/processing.adoc[How Emendate processes date strings].
+====
+
+This will output all unique type patterns being generated from the example strings:
+
+`Emendate.unique_type_patterns`
+
+Beneath each type pattern is a list of the original strings that have ended up with this pattern.
+
+Running the command as shown above shows you all segment types, for all strings, and shows you the final result of the `SegmentSet` processing, with default configuration.
+
+Of course, there are other options!
+
+To see only the ``Segment``s that are/can be parts of actual dates, from just after date part tagging, only for examples with the inferred tag:
+
+`Emendate.unique_type_patterns(type: :date, stage: :segment_dates, tag: :inferred, options: {ambiguous_month_day: :as_day_month})`
+
+Note that the options need to be wrapped in curly braces here.
+
+Also note that `stage` indicates the processing step that your desired input feeds into. Processing moves from `tag_date_parts` to `segment_dates`, so if you want see the results of date part tagging, the stage the data is ready for is `segment_dates`. 
 
 
 == Purpose

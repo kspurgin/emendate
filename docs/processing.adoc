@@ -26,6 +26,8 @@ The order and basic function of each stage is outlined below, with examples.
 
 == orig_tokens
 
+*Produced by processing step: `:lex`*
+
 Original date string is normalized, then run through `Lexer`, resulting in a `TokenSet`.
 
 ----
@@ -45,6 +47,8 @@ ex1.orig_tokens.types
 
 == converted_months
 
+*Produced by processing step: `:convert_months`*
+
 Takes `orig_tokens` and converts any ``Token``s with type `:month_alpha` or `:month_abbr_alpha` to ``DatePart``s with type `:month`.
 
 ----
@@ -63,6 +67,8 @@ ex1.converted_months.types
 
 == translated_ordinals
 
+*Produced by processing step: `:translate_ordinals`*
+
 Removes ordinal indicators appearing as expected after numbers.
 
 ----
@@ -79,6 +85,8 @@ Removes ordinal indicators appearing as expected after numbers.
 ----
 
 == certainty_checked
+
+*Produced by processing step: `:certainty_check`*
 
 Encodes the following `certainty` attributes on the `SegmentSet` as appropriate when it applies to the entire date string:
 
@@ -122,6 +130,8 @@ For full documentation, run the following from the base `emendate` directory:
 
 == standardized_formats
 
+*Produced by processing step: `:standardize_formats`*
+
 Carries out a number of manipulations on the `SegmentSet` to standardize it in preparation for ``Token``s to be tagged as ``DatePart``s.
 
 For full documentation, run the following from the base `emendate` directory:
@@ -145,6 +155,8 @@ ex3.standardized_formats.types
 
 == tagged_date_parts
 
+*Produced by processing step: `:tag_date_parts`*
+
 Turns remaining eligible ``Token``s into ``DatePart``s.
 
 ----
@@ -167,7 +179,10 @@ ex4.tagged_date_parts[1].literal
 ex4.tagged_date_parts[1].lexeme
 => "18cent"
 ----
+
 == segmented_dates
+
+*Produced by processing step: `:segment_dates`*
 
 Collapses the ``DatePart``s that make up a given date into one `DateType`.
 

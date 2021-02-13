@@ -295,7 +295,7 @@ lowercase letters = themselves, literally
   end
 
   # stage should be a SegmentSet-holding instance variable of ProcessingManager
-  def unique_token_patterns(type: :all, stage: nil, tag: nil, options: {} )
+  def unique_type_patterns(type: :all, stage: nil, tag: nil, options: {} )
     results = parsed_example_tokens(type: type, stage: stage, tag: tag, options: options)
     patterns = results.map{ |parsed| parsed[1] }.uniq.sort.map{ |pattern| [pattern, []] }.to_h
     results.each{ |r| patterns[r[1]] << r[0] }
