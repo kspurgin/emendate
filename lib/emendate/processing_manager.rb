@@ -11,6 +11,7 @@ module Emendate
       :tagged_date_parts,
       :segmented_dates,
       :ranges_indicated,
+      :result,
       :errors, :warnings
     def initialize(string, options = {})
       @orig_string = string
@@ -31,6 +32,7 @@ module Emendate
         :date_parts_tagged,
         :dates_segmented,
         :indicated_ranges,
+        :final_segments_checked,
         :done, :failed
 
       after_all_transitions :log_status_change, :gather_warnings
@@ -59,8 +61,11 @@ module Emendate
       event :indicate_ranges do
         transitions from: :dates_segmented, to: :indicated_ranges, after: :perform_indicate_ranges, guard: :no_errors?
       end
+      event :check_final_segments do
+        transitions from: :indicated_ranges, to: :final_segments_checked, after: :perform_check_final_segments, guard: :no_errors?
+      end
 
-      event :finalize do
+      event :finalize do        
         transitions from: :tokenized, to: :done, guard: :no_errors?
         transitions from: :tokenized, to: :failed, guard: :errors?
         transitions from: :months_converted, to: :done, guard: :no_errors?
@@ -77,6 +82,8 @@ module Emendate
         transitions from: :dates_segmented, to: :failed, guard: :errors?
         transitions from: :indicated_ranges, to: :done, guard: :no_errors?
         transitions from: :indicated_ranges, to: :failed, guard: :errors?
+        transitions from: :final_segments_checked, to: :done, guard: :no_errors?
+        transitions from: :final_segments_checked, to: :failed, guard: :errors?
       end
     end
 
@@ -90,6 +97,8 @@ module Emendate
       segment_dates if may_segment_dates?
       indicate_ranges if may_indicate_ranges?
       finalize
+
+      prepare_result
     end
 
     def prep_for(event)
@@ -110,6 +119,33 @@ module Emendate
     end
 
     private
+
+    def perform_check_final_segments
+      return unless errors.empty?
+
+      tokens.each do |t|
+        next if t.date_type?
+        next if t.type -- :or
+        next if t.type == :and
+        errors << 'Unhandled segment still present'
+      end
+    end
+
+    def prepare_result
+      r = {original_string: orig_string,
+           errors: errors,
+           warnings: warnings,
+           result: []
+          }
+
+      if state == :failed
+        @result = r
+        return
+      end
+
+      tokens.each{ |t| r[:result] << t.parsed(whole_certainty: tokens.certainty) if t.date_type? }
+      @result = r
+    end
 
     def perform_lex
       l = Emendate::Lexer.new(norm_string)

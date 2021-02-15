@@ -20,6 +20,10 @@ module Emendate
       certainty << val
       certainty.flatten!
     end
+
+    def date_type?
+      false
+    end
     
     def to_s
       "#{type} #{lexeme} #{literal}"
