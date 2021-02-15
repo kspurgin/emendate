@@ -17,10 +17,10 @@ module Emendate
     end
     
     class Decade < Emendate::DateTypes::DateType
-      attr_reader :decade, :decade_type
+      attr_reader :literal, :decade_type
       def initialize(**opts)
         super
-        @decade = opts[:decade].is_a?(Integer) ? opts[:decade] : opts[:decade].to_i
+        @literal = opts[:literal].is_a?(Integer) ? opts[:literal] : opts[:literal].to_i
         if opts[:decade_type].nil?
           raise Emendate::DateTypes::MissingDecadeTypeError.new(allowed_decade_types)
         elsif !allowed_decade_types.include?(opts[:decade_type])
@@ -29,16 +29,16 @@ module Emendate
           @decade_type = opts[:decade_type]
         end
 
-        adjust_decade_value if decade_type == :plural
+        adjust_literal_value if decade_type == :plural
       end
 
       def earliest
-        yr = "#{decade}0".to_i
+        yr = "#{literal}0".to_i
         Date.new(yr, 1, 1)
       end
 
       def latest
-        yr = "#{decade}9".to_i
+        yr = "#{literal}9".to_i
         Date.new(yr, 12, 31)
       end
 
@@ -47,7 +47,7 @@ module Emendate
         when :plural
           "#{earliest.year}s"
         when :uncertainty_digits
-          "#{decade}X"
+          "#{literal}X"
         end
       end
 
@@ -57,9 +57,9 @@ module Emendate
 
       private
 
-      def adjust_decade_value
-        str = decade.to_s[0..-2]
-        @decade = str.to_i
+      def adjust_literal_value
+        str = literal.to_s[0..-2]
+        @literal = str.to_i
       end
       
       def allowed_decade_types

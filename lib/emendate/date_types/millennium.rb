@@ -17,10 +17,10 @@ module Emendate
     end
     
     class Millennium < Emendate::DateTypes::DateType
-      attr_reader :millennium, :millennium_type
+      attr_reader :literal, :millennium_type
       def initialize(**opts)
         super
-        @millennium = opts[:millennium].is_a?(Integer) ? opts[:millennium] : opts[:millennium].to_i
+        @literal = opts[:literal].is_a?(Integer) ? opts[:literal] : opts[:literal].to_i
         if opts[:millennium_type].nil?
           raise Emendate::DateTypes::MissingMillenniumTypeError.new(allowed_millennium_types)
         elsif !allowed_millennium_types.include?(opts[:millennium_type])
@@ -29,16 +29,16 @@ module Emendate
           @millennium_type = opts[:millennium_type]
         end
 
-        adjust_millennium_value if millennium_type == :plural
+        adjust_literal_value if millennium_type == :plural
       end
 
       def earliest
-        yr = "#{millennium}000".to_i
+        yr = "#{literal}000".to_i
         Date.new(yr, 1, 1)
       end
 
       def latest
-        yr = "#{millennium}999".to_i
+        yr = "#{literal}999".to_i
         Date.new(yr, 12, 31)
       end
 
@@ -47,7 +47,7 @@ module Emendate
         when :plural
           "#{earliest.year}s"
         when :uncertainty_digits
-          "#{millennium}XXX"
+          "#{literal}XXX"
         end
       end
 
@@ -57,9 +57,9 @@ module Emendate
 
       private
 
-      def adjust_millennium_value
-        str = millennium.to_s[0..-4]
-        @millennium = str.to_i
+      def adjust_literal_value
+        str = literal.to_s[0..-4]
+        @literal = str.to_i
       end
       
       def allowed_millennium_types

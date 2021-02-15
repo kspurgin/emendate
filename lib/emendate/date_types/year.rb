@@ -3,10 +3,10 @@
 module Emendate
   module DateTypes
     class Year < Emendate::DateTypes::DateType
-      attr_reader :year
+      attr_reader :literal
       def initialize(**opts)
         super
-        @year = opts[:year].is_a?(Integer) ? opts[:year] : opts[:year].to_i
+        @literal = opts[:literal].is_a?(Integer) ? opts[:literal] : opts[:literal].to_i
       end
 
       def earliest
@@ -23,13 +23,13 @@ module Emendate
       def earliest_by_partial
         case partial_indicator
         when nil
-          Date.new(year, 1, 1)
+          Date.new(literal, 1, 1)
         when 'early'
-          Date.new(year, 1, 1)
+          Date.new(literal, 1, 1)
         when 'mid'
-          Date.new(year, 5, 1)
+          Date.new(literal, 5, 1)
         when 'late'
-          Date.new(year, 9, 1)
+          Date.new(literal, 9, 1)
         end
       end
       
@@ -47,22 +47,26 @@ module Emendate
       def latest_by_partial
         case partial_indicator
         when nil
-          Date.new(year, 12, -1)
+          Date.new(literal, 12, -1)
         when 'early'
-          Date.new(year, 4, 30)
+          Date.new(literal, 4, 30)
         when 'mid'
-          Date.new(year, 8, 31)
+          Date.new(literal, 8, 31)
         when 'late'
-          Date.new(year, 12, 31)
+          Date.new(literal, 12, 31)
         end
       end
 
       def lexeme
-        year.to_s
+        literal.to_s
       end
 
       def range?
         partial_indicator.nil? && range_switch.nil? ? false : true
+      end
+
+      def year
+        literal
       end
     end
   end

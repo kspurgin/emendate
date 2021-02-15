@@ -20,6 +20,9 @@ RSpec.describe Emendate::DateSegmenter do
       it 'returns long year warning' do
         expect(@s.warnings.length).to eq(1)
       end
+      it 'creates datetype with expected literal' do
+        expect(@s[0].literal).to eq(202127)
+      end
     end
 
     context 'circa 202002' do
@@ -31,13 +34,28 @@ RSpec.describe Emendate::DateSegmenter do
       it 'retains certainty' do
         expect(@s.certainty).to eq([:approximate])
       end
+      it 'creates datetype with expected year' do
+        expect(@s[0].year).to eq(2020)
+      end
+      it 'creates datetype with expected month' do
+        expect(@s[0].month).to eq(2)
+      end
     end
 
     context '20200229' do
+      before(:all){ @s = segment('20200229') }
       it 'returns ymd' do
-        s = segment('20200229')
-        e = %i[yearmonthday_date_type]
-        expect(s.types).to eq(e)
+        e = 'yearmonthday_date_type'
+        expect(@s.type_string).to eq(e)
+      end
+      it 'creates datetype with expected year' do
+        expect(@s[0].year).to eq(2020)
+      end
+      it 'creates datetype with expected month' do
+        expect(@s[0].month).to eq(2)
+      end
+      it 'creates datetype with expected day' do
+        expect(@s[0].day).to eq(29)
       end
     end
 
@@ -48,6 +66,9 @@ RSpec.describe Emendate::DateSegmenter do
       end
       it 'includes a warning' do
         expect(@s.warnings).to include('10000007 treated as a long year')
+      end
+      it 'creates datetype with expected literal' do
+        expect(@s[0].literal).to eq(10000007)
       end
     end
 
@@ -144,7 +165,7 @@ RSpec.describe Emendate::DateSegmenter do
         expect(@s.map(&:century_type).join(' ')).to eq(e)
       end
       it 'returns century literals: 19 19 19' do
-        expect(@s.map(&:century).join(' ')).to eq('19 19 19')
+        expect(@s.map(&:literal).join(' ')).to eq('19 19 19')
       end
     end
   end

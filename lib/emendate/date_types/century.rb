@@ -17,10 +17,10 @@ module Emendate
     end
     
     class Century < Emendate::DateTypes::DateType
-      attr_reader :century, :century_type
+      attr_reader :literal, :century_type
       def initialize(**opts)
         super
-        @century = opts[:century].is_a?(Integer) ? opts[:century] : opts[:century].to_i
+        @literal = opts[:literal].is_a?(Integer) ? opts[:literal] : opts[:literal].to_i
         if opts[:century_type].nil?
           raise Emendate::DateTypes::MissingCenturyTypeError.new(allowed_century_types)
         elsif !allowed_century_types.include?(opts[:century_type])
@@ -41,11 +41,11 @@ module Emendate
       def lexeme
         case century_type
         when :name
-          "#{century} century"
+          "#{literal} century"
         when :plural
-          "#{century}00s"
+          "#{literal}00s"
         when :uncertainty_digits
-          "#{century}uu"
+          "#{literal}uu"
         end
       end
 
@@ -56,7 +56,7 @@ module Emendate
       private
 
       def adjusted_century
-        century_type == :name ? century - 1 : century
+        century_type == :name ? literal - 1 : literal
       end
 
       def allowed_century_types
@@ -72,11 +72,11 @@ module Emendate
       end
 
       def named_century_latest_year
-        ( century.to_s + '00' ).to_i
+        ( literal.to_s + '00' ).to_i
       end
 
       def other_century_latest_year
-        ( century.to_s + '99' ).to_i
+        ( literal.to_s + '99' ).to_i
       end
 
       def earliest_year

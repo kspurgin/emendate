@@ -12,9 +12,9 @@ module Emendate
     #   particular date
     class DateType
       attr_reader :type, :certainty
-      attr_accessor :partial_indicator, :range_switch, :parts
+      attr_accessor :partial_indicator, :range_switch, :source_tokens
       def initialize(**opts)
-        @parts = opts[:children].nil? ? [] : Emendate::MixedSet.new(opts[:children])
+        @source_tokens = opts[:children].nil? ? [] : Emendate::MixedSet.new(opts[:children])
         @partial_indicator = opts[:partial_indicator]
         @range_switch = opts[:range_switch]
         @certainty = opts[:certainty].nil? ? [] : opts[:certainty]
@@ -23,7 +23,7 @@ module Emendate
       def date_part?
         true
       end
-      
+
       def earliest
         raise NotImplementedError
       end
@@ -35,7 +35,7 @@ module Emendate
       def lexeme
         raise NotImplementedError
       end
-
+      
       def range?
         raise NotImplementedError
       end
