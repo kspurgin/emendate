@@ -2,6 +2,55 @@
 
 Notes on things still to be implemented, things to fix, etc.
 
+== Output - differences from Timetwister
+
+`Timetwister.parse` returns an `Array` of ``Hash``es, with one `Hash` per date or date range identified in the parsed date `String`:
+
+----
+r = Timetwister.parse('[1997, 1999]')
+ => [{:original_string=>"[1997", :index_dates=>[1997], :date_start=>"1997", :date_end=>"1997", :date_start_full=>"1997-01-01", :date_end_full=>"1997-12-31", :inclusive_range=>nil, :certainty=>"inferred", :test_data=>"70"}, {:original_string=>" 1999]", :index_dates=>[1999], :date_start=>"1999", :date_end=>"1999", :date_start_full=>"1999-01-01", :date_end_full=>"1999-12-31", :inclusive_range=>nil, :certainty=>"inferred", :test_data=>"70"}]
+----
+
+The original string is split among the date hashes if there are multiple dates.
+
+Each date hash has:
+
+- `:certainty` - a string
+- `:inclusive_range` - true or nil
+- `:date_start` and `:date_end`, which are at the granularity level of the date given (no assumed values)
+- `:date_start_full` and `:date_end_full`, which are ISO8601 representations in YYYY-MM-DD format, assuming values where needed
+- `:index_dates` - an Array of each year encompassed by the provided date range
+- `:test_data` - not documented, used to tie result to a test example
+
+If multiple certainty values could apply, Timetwister only returns one:
+
+----
+r = Timetwister.parse('[circa 1920?]')
+ => [{:original_string=>"[circa 1920?]", :index_dates=>[1920], :date_start=>"1920", :date_end=>"1920", :date_start_full=>"1920-01-01", :date_end_full=>"1920-12-31", :inclusive_range=>nil, :certainty=>"questionable", :test_data=>"70"}]
+----
+
+Emendate will return a `Hash` with the following keys:
+
+- `:original_string` - the full original string passed in for parsing
+- `:errors` - will only be present if `:result` is empty. Will give some indication why parsing failed.
+- `:warnings` - may be present if `:result` is populated.  
+- `:result`, an `Array` the same as TimeTwister's result except for the following differences:
+
+- Individual date `Hash` does not contain an `:original_string` value, at least initially, given that the original string was not split up into discrete date values.
+- Only `:date_start_full` and `date_end_full` are initially provided.
+- `:index_dates` is not initially provided, given I don't currently have a direct use case for it
+- `:test_data` is not included
+- `:certainty` is an array of applicable certainty values: approximate, inferred, uncertain
+
+If the date cannot be parsed, Timetwister returns a date hash with all values empty or nil except `:original_string`:
+
+----
+r = Timetwister.parse('before 1920')
+ => [{:original_string=>"before 1920", :index_dates=>[], :date_start=>nil, :date_end=>nil, :date_start_full=>nil, :date_end_full=>nil, :inclusive_range=>nil, :certainty=>nil}]
+----
+
+In this case Emendate will return an empty `Array` for `:result`.
+
 == To-do
 === option for handling output of EDTF when only year or year/month are known
 
