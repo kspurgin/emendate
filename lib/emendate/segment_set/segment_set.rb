@@ -28,6 +28,7 @@ module Emendate
       other_set.segments.each{ |s| segments << s.dup }
       other_set.certainty.each{ |c| certainty << c.dup }
       other_set.warnings.each{ |w| warnings << w.dup }
+      @inferred_date = other_set.inferred_date
       self
     end
     
