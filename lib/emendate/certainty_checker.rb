@@ -145,6 +145,7 @@ module Emendate
       if options.square_bracket_interpretation == :edtf_set
         result.add_certainty(:one_of_set)
       else
+        result.add_certainty(:inferred)
         result.is_inferred
       end
       result.shift

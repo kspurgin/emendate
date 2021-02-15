@@ -14,7 +14,7 @@ RSpec.describe Emendate::CertaintyChecker do
           @c = check('[circa 2002?]')
         end
         it 'values include: approximate and uncertain' do
-          expect(@c.certainty.sort).to eq([:approximate, :uncertain])
+          expect(@c.certainty.sort).to eq([:approximate, :inferred, :uncertain])
         end
         it 'returns 1 token for 2002' do
           expect(@c.type_string).to eq('number4')
