@@ -24,6 +24,10 @@ module Emendate
         true
       end
 
+      def date_type?
+        true
+      end
+
       def earliest
         raise NotImplementedError
       end

@@ -206,7 +206,7 @@ module Emendate
 
     def create_year_datetype(pieces)
       year = pieces.when_type(:year)[0]
-      Emendate::DateTypes::Year.new(year: year.literal,
+      Emendate::DateTypes::Year.new(literal: year.literal,
                                     children: pieces.segments)
     end
 

@@ -3,9 +3,6 @@
 module Emendate
 
   class RangeIndicator
-
-    RANGE_INDICATOR_TYPES = %i[hyphen slash]
-    
     attr_reader :options, :result
     attr_accessor :working
 
@@ -33,11 +30,25 @@ module Emendate
     private
 
     def collapse_range
-      
+      unless current.date_type?
+        passthrough
+        return
+      end
+
+      unless before_range_indicator?
+        passthrough
+        return
+      end
+
+      result << Emendate::DateTypes::Range.new(startdate: current,
+                                         range_indicator: nxt,
+                                         enddate: nxt(2))
+
+      [current, nxt, nxt(2)].each{ |s| working.delete(s) }
     end
 
     def range_indicator_present?
-      working.types.any?{ |t| RANGE_INDICATOR_TYPES.include?(t) }
+      working.types.include?(:range_indicator)
     end
     
     def current
@@ -46,6 +57,14 @@ module Emendate
 
     def nxt(n = 1)
       working[n]
+    end
+
+    def before_range_indicator?
+      nxt.type == :range_indicator ? true : false
+    end
+  
+    def passthrough
+      result << working.shift
     end
   end
 end

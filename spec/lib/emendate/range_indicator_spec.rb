@@ -17,5 +17,13 @@ RSpec.describe Emendate::RangeIndicator do
         end
       end
     end
+    context 'range present' do
+      context '1972 - 1999' do
+        before(:all){ @i = indicate('1972 - 1999') }
+        it 'returns range_date_type' do
+          expect(@i.type_string).to eq('range_date_type')
+        end
+      end
+    end
   end
 end
