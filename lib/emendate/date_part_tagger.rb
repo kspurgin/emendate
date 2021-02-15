@@ -76,14 +76,15 @@ module Emendate
         :tag_year_numeric_month_day
       when /.*year hyphen number1or2.*/
         :tag_year_plus_numeric_month_or_season
+      when /.* hyphen .*/
+        :hyphen_to_range_indicator
       end
     end
 
     def full_match_tagger
-      case result.type_string
-      when /^year hyphen year$/
-        :hyphen_to_range_indicator
-      end
+      # case result.type_string
+      # when /^year hyphen year$/
+      # end
     end
 
     # types = Array with 2 Segment.type symbols

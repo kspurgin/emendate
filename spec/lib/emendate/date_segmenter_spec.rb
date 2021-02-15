@@ -75,7 +75,7 @@ RSpec.describe Emendate::DateSegmenter do
     context '20200229-20200304' do
       it 'returns yearmonthday - yearmonthday' do
         s = segment('20200229-20200304')
-        e = 'yearmonthday_date_type hyphen yearmonthday_date_type'
+        e = 'yearmonthday_date_type range_indicator yearmonthday_date_type'
         expect(s.type_string).to eq(e)
       end
     end
