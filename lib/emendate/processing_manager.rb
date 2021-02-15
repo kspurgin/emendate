@@ -57,7 +57,7 @@ module Emendate
         transitions from: :date_parts_tagged, to: :dates_segmented, after: :perform_segment_dates, guard: :no_errors?
       end
       event :indicate_ranges do
-        transitions from: :dates_segmented, after: :perform_indicate_ranges, guard: :no_errors?
+        transitions from: :dates_segmented, to: :indicated_ranges, after: :perform_indicate_ranges, guard: :no_errors?
       end
 
       event :finalize do
@@ -75,8 +75,8 @@ module Emendate
         transitions from: :date_parts_tagged, to: :failed, guard: :errors?
         transitions from: :dates_segmented, to: :done, guard: :no_errors?
         transitions from: :dates_segmented, to: :failed, guard: :errors?
-        transitions from: :indicate_ranges, to: :done, guard: :no_errors?
-        transitions from: :indicate_ranges, to: :failed, guard: :errors?
+        transitions from: :indicated_ranges, to: :done, guard: :no_errors?
+        transitions from: :indicated_ranges, to: :failed, guard: :errors?
       end
     end
 
@@ -88,7 +88,7 @@ module Emendate
       standardize_formats if may_standardize_formats?
       tag_date_parts if may_tag_date_parts?
       segment_dates if may_segment_dates?
-#      indicate_ranges if may_indicate_ranges?
+      indicate_ranges if may_indicate_ranges?
       finalize
     end
 
