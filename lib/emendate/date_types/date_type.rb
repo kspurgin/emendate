@@ -11,7 +11,7 @@ module Emendate
     # range_switch (before, after) forces `earliest`/`latest` to reflect the range before or after this
     #   particular date
     class DateType
-      attr_reader :type, :certainty
+      attr_reader :certainty
       attr_accessor :partial_indicator, :range_switch, :source_tokens
       def initialize(**opts)
         @source_tokens = opts[:children].nil? ? [] : Emendate::MixedSet.new(opts[:children])
@@ -38,6 +38,20 @@ module Emendate
 
       def lexeme
         raise NotImplementedError
+      end
+
+      def parsed(whole_certainty:)
+        h = {}
+        h[:index_dates] = nil
+        h[:date_start] = nil
+        h[:date_end] = nil
+        h[:date_start_full] = earliest.nil? ? nil : earliest.iso8601
+        h[:date_end_full] = latest.nil? ? nil : latest.iso8601
+        h[:inclusive_range] = range? ? true : nil
+        h[:certainty] = whole_certainty
+        certainty.each{ |c| h[:certainty] << c }
+        h[:certainty].uniq!
+        h
       end
       
       def range?
