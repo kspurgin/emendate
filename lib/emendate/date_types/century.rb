@@ -71,14 +71,6 @@ module Emendate
         ( adjusted_century.to_s + '00' ).to_i
       end
 
-      def named_century_latest_year
-        ( literal.to_s + '00' ).to_i
-      end
-
-      def other_century_latest_year
-        ( literal.to_s + '99' ).to_i
-      end
-
       def earliest_year
         year = century_type == :name ? named_century_earliest_year : other_century_earliest_year
         case partial_indicator
