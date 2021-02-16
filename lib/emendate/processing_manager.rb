@@ -245,6 +245,7 @@ module Emendate
 
     def gather_warnings
       warnings << tokens.warnings unless tokens.warnings.empty?
+      warnings.flatten!
       warnings.uniq!
     end
 
