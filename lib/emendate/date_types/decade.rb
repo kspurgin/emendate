@@ -33,22 +33,23 @@ module Emendate
       end
 
       def earliest
-        yr = "#{literal}0".to_i
-        Date.new(yr, 1, 1)
+        Date.new(earliest_year, 1, 1)
       end
 
       def latest
-        yr = "#{literal}9".to_i
-        Date.new(yr, 12, 31)
+        Date.new(latest_year, 12, 31)
       end
 
       def lexeme
         case decade_type
         when :plural
-          "#{earliest.year}s"
+          val = "#{decade_earliest_year}s"
         when :uncertainty_digits
-          "#{literal}X"
+          val = "#{literal}X"
         end
+
+        val = "#{partial_indicator} #{val}" unless partial_indicator.nil?
+        val
       end
 
       def range?
@@ -56,6 +57,38 @@ module Emendate
       end
 
       private
+
+      def decade_earliest_year
+        ( literal.to_s + '0' ).to_i
+      end
+
+      def earliest_year
+        year = decade_earliest_year
+        case partial_indicator
+        when nil
+          year
+        when 'early'
+          year
+        when 'mid'
+          year + 4
+        when 'late'
+          year + 7
+        end
+      end
+
+      def latest_year
+        year = decade_earliest_year
+        case partial_indicator
+        when nil
+          year + 9
+        when 'early'
+          year + 3
+        when 'mid'
+          year + 6
+        when 'late'
+          year + 9
+        end
+      end
 
       def adjust_literal_value
         str = literal.to_s[0..-2]

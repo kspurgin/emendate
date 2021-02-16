@@ -132,4 +132,76 @@ RSpec.describe Emendate::DateTypes::Decade do
       end
     end
   end
+
+  context 'early 1990s' do
+    before(:all) do
+      @dt = Emendate::DateTypes::Decade.new(literal: 1990, decade_type: :plural, partial_indicator: 'early')
+    end
+    
+    describe '#earliest' do
+      it 'returns 1990-01-01' do
+        expect(@dt.earliest).to eq(Date.new(1990, 1, 1))
+      end
+    end
+
+    describe '#latest' do
+      it 'returns 1993-12-31' do
+        expect(@dt.latest).to eq(Date.new(1993, 12, 31))
+      end
+    end
+
+    describe '#lexeme' do
+      it 'returns early 1990s' do
+        expect(@dt.lexeme).to eq('early 1990s')
+      end
+    end
+  end
+
+  context 'mid-1990s' do
+    before(:all) do
+      @dt = Emendate::DateTypes::Decade.new(literal: 1990, decade_type: :plural, partial_indicator: 'mid')
+    end
+    
+    describe '#earliest' do
+      it 'returns 1994-01-01' do
+        expect(@dt.earliest).to eq(Date.new(1994, 1, 1))
+      end
+    end
+
+    describe '#latest' do
+      it 'returns 1996-12-31' do
+        expect(@dt.latest).to eq(Date.new(1996, 12, 31))
+      end
+    end
+
+    describe '#lexeme' do
+      it 'returns mid 1990s' do
+        expect(@dt.lexeme).to eq('mid 1990s')
+      end
+    end
+  end
+
+  context 'late 1990s' do
+    before(:all) do
+      @dt = Emendate::DateTypes::Decade.new(literal: 1990, decade_type: :plural, partial_indicator: 'late')
+    end
+    
+    describe '#earliest' do
+      it 'returns 1997-01-01' do
+        expect(@dt.earliest).to eq(Date.new(1997, 1, 1))
+      end
+    end
+
+    describe '#latest' do
+      it 'returns 1999-12-31' do
+        expect(@dt.latest).to eq(Date.new(1999, 12, 31))
+      end
+    end
+
+    describe '#lexeme' do
+      it 'returns late 1990s' do
+        expect(@dt.lexeme).to eq('late 1990s')
+      end
+    end
+  end
 end
