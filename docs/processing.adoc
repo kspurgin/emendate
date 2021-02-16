@@ -203,3 +203,21 @@ ex4.segmented_dates[0].earliest
 ex4.segmented_dates[0].latest
 => #<Date: 1734-12-31 ((2354755j,0s,0n),+0s,2299161j)>
 ----
+
+== ranges_indicated
+
+*Produced by processing step: `:indicate_ranges`*
+
+Collapses ``DateType``s separated by a `range_indicator` into a single `Range` `DateType`.
+
+----
+ex5 = Emendate.process('1995 - 2004')
+ex5.segmented_dates.types
+=> [:year_date_type, :range_indicator, :year_date_type]
+ex5.ranges_indicated.types
+=> [:range_date_type]
+ex5.ranges_indicated[0].earliest
+=> #<Date: 1995-01-01 ((2449719j,0s,0n),+0s,2299161j)>
+ex5.ranges_indicated[0].latest
+=> #<Date: 2004-12-31 ((2453371j,0s,0n),+0s,2299161j)>
+----
