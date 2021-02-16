@@ -1,0 +1,103 @@
+= Emendate's output
+
+The `Emendate.parse` command's output is based on https://github.com/alexduryee/timetwister[Timetwister]'s output, with some important differences.
+
+`Timetwister.parse` returns an `Array` of ``Hash``es, with one `Hash` per date or date range identified in the parsed date `String`:
+
+----
+r = Timetwister.parse('[1997, 1999]')
+ => [{:original_string=>"[1997", :index_dates=>[1997], :date_start=>"1997", :date_end=>"1997", :date_start_full=>"1997-01-01", :date_end_full=>"1997-12-31", :inclusive_range=>nil, :certainty=>"inferred", :test_data=>"70"}, {:original_string=>" 1999]", :index_dates=>[1999], :date_start=>"1999", :date_end=>"1999", :date_start_full=>"1999-01-01", :date_end_full=>"1999-12-31", :inclusive_range=>nil, :certainty=>"inferred", :test_data=>"70"}]
+----
+
+`Emendate.parse` returns a `Hash`.
+
+----
+d = Emendate.parse('[1997, 1999]')
+=> {:original_string=>"[1997, 1999]",
+ :errors=>[],
+ :warnings=>[],
+ :result=>
+  [{:index_dates=>nil,
+    :date_start=>nil,
+    :date_end=>nil,
+    :date_start_full=>"1997-01-01",
+    :date_end_full=>"1997-12-31",
+    :inclusive_range=>nil,
+    :certainty=>[:inferred]},
+   {:index_dates=>nil,
+    :date_start=>nil,
+    :date_end=>nil,
+    :date_start_full=>"1999-01-01",
+    :date_end_full=>"1999-12-31",
+    :inclusive_range=>nil,
+    :certainty=>[:inferred]}]}
+----
+
+
+The Emendate result `Hash` has the following keys:
+
+`:original_string`:: the full original string passed in for parsing
+`:errors`:: will only be present if `:result` is empty. Will give some indication why parsing failed.
+`:warnings`:: may be present if `:result` is populated.  
+`:result`:: an `Array` the same as TimeTwister's result except for the following differences:
+
+- Individual date `Hash` does not contain an `:original_string` value, at least initially, given that the original string was not split up into discrete date values.
+- Only `:date_start_full` and `date_end_full` are initially provided.
+- `:index_dates` is not initially provided, given I don't currently have a direct use case for it at present
+- `:test_data` is not included
+- `:certainty` is an array of applicable certainty values: approximate, inferred, uncertain, instead of Timetwister's one string value
+
+
+----
+r = Timetwister.parse('[circa 1920?]')
+ => [{:original_string=>"[circa 1920?]", :index_dates=>[1920], :date_start=>"1920", :date_end=>"1920", :date_start_full=>"1920-01-01", :date_end_full=>"1920-12-31", :inclusive_range=>nil, :certainty=>"questionable", :test_data=>"70"}]
+
+Emendate.parse('[circa 1920?]')
+=> {:original_string=>"[circa 1920?]",
+ :errors=>[],
+ :warnings=>[],
+ :result=>
+  [{:index_dates=>nil,
+    :date_start=>nil,
+    :date_end=>nil,
+    :date_start_full=>"1920-01-01",
+    :date_end_full=>"1920-12-31",
+    :inclusive_range=>nil,
+    :certainty=>[:inferred, :approximate, :uncertain]}]}
+----
+
+
+If the date cannot be parsed, Timetwister returns a date hash with all values empty or nil except `:original_string`. In this case Emendate will return an empty `Array` for `:result`, making it clearer whether a usable parsed date is returned. 
+
+----
+Timetwister.parse('n.d.')
+ => [{:original_string=>"n.d.", :index_dates=>[], :date_start=>nil, :date_end=>nil, :date_start_full=>nil, :date_end_full=>nil, :inclusive_range=>nil, :certainty=>nil}]
+
+Emendate.parse('n.d.')
+=> {:original_string=>"n.d.", :errors=>[], :warnings=>[], :result=>[]}
+----
+
+Examples of Emendate errors and warnings:
+
+----
+Emendate.parse('not a date')
+=> {:original_string=>"not a date",
+ :errors=>[#<Emendate::UntokenizableError: “not”, “a”, “date”>],
+ :warnings=>[],
+ :result=>[]}
+
+Emendate.parse('2/3/2021')
+=> {:original_string=>"2/3/2021",
+ :errors=>[],
+ :warnings=>["Ambiguous month/day treated as_month_day"],
+ :result=>
+  [{:index_dates=>nil,
+    :date_start=>nil,
+    :date_end=>nil,
+    :date_start_full=>"2021-02-03",
+    :date_end_full=>"2021-02-03",
+    :inclusive_range=>nil,
+    :certainty=>[]}]}
+----
+
+
