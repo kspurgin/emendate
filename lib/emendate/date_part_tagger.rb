@@ -74,10 +74,12 @@ module Emendate
         :tag_numeric_month_day_year
       when /.*year hyphen number1or2 hyphen number1or2.*/
         :tag_year_numeric_month_day
-      when /.*year hyphen number1or2.*/
+      when /.*year hyphen number1or2 hyphen year hyphen number1or2.*/
         :tag_year_plus_numeric_month_or_season
+      when /.*year hyphen number1or2.*/
+        :tag_year_plus_numeric_month_season_or_year
       when /.* hyphen .*/
-        :hyphen_to_range_indicator
+        :tag_hyphen_as_range_indicator
       end
     end
 
@@ -94,15 +96,10 @@ module Emendate
       replace_multi_with_date_part_type(sources: sources, date_part_type: target_type)
     end
 
-    def hyphen_to_range_indicator
-      result.each do |s|
-        next unless s.type == :hyphen
-        ri = Emendate::Token.new(type: :range_indicator,
-                                 lexeme: s.lexeme,
-                                 literal: s.literal,
-                                 location: s.location)
-        replace_x_with_given_segment(x: s, segment: ri)
-      end
+    def hyphen_to_range_indicator(source:)
+        ri = Emendate::DerivedToken.new(type: :range_indicator,
+                                        sources: [source])
+        replace_x_with_given_segment(x: source, segment: ri)
     end
 
     def new_date_part(type, sources)
@@ -217,14 +214,31 @@ module Emendate
     end
     
     def tag_year_plus_numeric_month_or_season
+      y1, h1, m1, h2, y2, h3, m2 = result.extract(%i[year hyphen number1or2 hyphen year hyphen number1or2]).segments
+      opt = options.dup
+      opt.merge({ambiguous_month_year: :as_month})
+      [[y1, m1, h1], [y2, m2, h3]].each do |pair|
+        analyzed = Emendate::MonthSeasonYearAnalyzer.new(pair[1], pair[0], opt).result
+        replace_x_with_given_segment(x: pair[1], segment: analyzed)
+        result.delete(pair[2])
+      end
+      hyphen_to_range_indicator(source: h2)
+    end
+    
+    def tag_year_plus_numeric_month_season_or_year
       y, h, m = result.extract(%i[year hyphen number1or2]).segments
       analyzed = Emendate::MonthSeasonYearAnalyzer.new(m, y, options).result
       replace_x_with_given_segment(x: m, segment: analyzed)
       if analyzed.type == :year
-        hyphen_to_range_indicator
+        hyphen_to_range_indicator(source: h)
       else
         result.delete(h)
       end
+    end
+
+    def tag_hyphen_as_range_indicator
+      h = result.extract(%i[hyphen]).segments[0]
+      hyphen_to_range_indicator(source: h)
     end
     
     def tag_years

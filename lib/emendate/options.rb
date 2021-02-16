@@ -21,6 +21,11 @@ module Emendate
       options.each{ |opt, val| puts "#{opt}: #{val}" }
     end
 
+    def merge(opthash)
+      @options = options.merge(opthash)
+      verify
+    end
+    
     private
 
     def default

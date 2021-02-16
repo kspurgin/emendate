@@ -125,11 +125,11 @@ module Emendate
     end
 
     def s_date?(segment)
-      segment.source_tokens.types.include?(:letter_s) ? true : false
+      segment.sources.types.include?(:letter_s) ? true : false
     end
 
     def uncertainty_date?(segment)
-      segment.source_tokens.types.include?(:uncertainty_digits) ? true : false
+      segment.sources.types.include?(:uncertainty_digits) ? true : false
     end
 
     def parse_millennium_date_part

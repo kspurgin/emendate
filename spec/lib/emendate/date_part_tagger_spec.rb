@@ -154,7 +154,16 @@ RSpec.describe Emendate::DatePartTagger do
         expect(result.types).to eq(%i[month day year comma year month day])
       end
     end
-    
+
+    context '2004-06/2006-08' do
+      context 'default' do
+        it 'tags' do
+          result = tag('2004-06/2006-08')
+          expect(result.type_string).to eq('year month range_indicator year month')
+        end
+      end
+    end
+
     context 'Mar 19' do
         it 'tags as month year' do
           pm = Emendate.prep_for('Mar 19', :tag_date_parts)

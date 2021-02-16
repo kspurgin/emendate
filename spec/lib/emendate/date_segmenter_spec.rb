@@ -4,6 +4,7 @@ RSpec.describe Emendate::DateSegmenter do
 
   def segment(str, options = {})
     pm = Emendate.prep_for(str, :segment_dates, options)
+#    binding.pry
     ds = Emendate::DateSegmenter.new(tokens: pm.tokens, options: pm.options)
     ds.segment
   end
@@ -166,6 +167,13 @@ RSpec.describe Emendate::DateSegmenter do
       end
       it 'returns century literals: 19 19 19' do
         expect(@s.map(&:literal).join(' ')).to eq('19 19 19')
+      end
+    end
+
+    context '1972 - 1999' do
+      before(:all){ @s = segment('1972 - 1999') }
+      it 'returns: year_date_type range_indicator year_date_type' do
+        expect(@s.type_string).to eq('year_date_type range_indicator year_date_type')
       end
     end
   end
