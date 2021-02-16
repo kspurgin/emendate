@@ -47,6 +47,12 @@ module Emendate
     pm
   end
 
+  def parse(str, options = {})
+    pm = Emendate::ProcessingManager.new(str, options)
+    pm.process
+    pm.result
+  end
+  
   def process(str, options = {})
     pm = Emendate::ProcessingManager.new(str, options)
     pm.process
