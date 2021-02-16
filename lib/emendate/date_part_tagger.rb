@@ -190,6 +190,7 @@ module Emendate
         replace_x_with_date_part_type(x: day, date_part_type: :day)
       end
       [h1, h2].each{ |h| result.delete(h) }
+      result.warnings << "Ambiguous month/day treated #{options.ambiguous_month_day}" if analyzer.ambiguous
     end
 
     def tag_year_in_month_short_year
@@ -227,13 +228,15 @@ module Emendate
     
     def tag_year_plus_numeric_month_season_or_year
       y, h, m = result.extract(%i[year hyphen number1or2]).segments
-      analyzed = Emendate::MonthSeasonYearAnalyzer.new(m, y, options).result
+      analyzer = Emendate::MonthSeasonYearAnalyzer.new(m, y, options)
+        analyzed = analyzer.result
       replace_x_with_given_segment(x: m, segment: analyzed)
       if analyzed.type == :year
         hyphen_to_range_indicator(source: h)
       else
         result.delete(h)
       end
+      result.warnings << "Ambiguous year + month/season/year treated #{options.ambiguous_month_year}" if analyzer.ambiguous
     end
 
     def tag_hyphen_as_range_indicator

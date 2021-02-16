@@ -12,12 +12,13 @@ module Emendate
     # end
     
     include DateUtils
-    attr_reader :n, :year, :options, :result
+    attr_reader :n, :year, :options, :result, :ambiguous
 
     def initialize(n, y, options)
       @n = n
       @year = y
       @options = options
+      @ambiguous = false
       analyze
     end
 
@@ -32,10 +33,13 @@ module Emendate
         @result = new_date_part(type: :season, lexeme: n.lexeme)
       elsif assume_year?
         @result = new_date_part(type: :year, lexeme: expand_year)
+        @ambiguous = true
       elsif valid_month?(n.lexeme)
         @result = new_date_part(type: :month, lexeme: n.lexeme)
+        @ambiguous = true
       elsif valid_season?(n.lexeme)
         @result = new_date_part(type: :season, lexeme: n.lexeme)
+        @ambiguous = true
       end
     end
 

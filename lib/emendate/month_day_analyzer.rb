@@ -12,13 +12,14 @@ module Emendate
     end
     
     include DateUtils
-    attr_reader :month, :day
+    attr_reader :month, :day, :ambiguous
 
     def initialize(n1, n2, y, opt)
       @n1 = n1
       @n2 = n2
       @y = y
       @opt = opt
+      @ambiguous = false
       analyze
     end
 
@@ -30,8 +31,10 @@ module Emendate
       elsif @n1.monthable? && !@n2.monthable?
         month_day = [@n1, @n2]
       elsif @opt == :as_month_day
+        @ambiguous = true
         month_day = [@n1, @n2]
       elsif @opt == :as_day_month
+        @ambiguous = true
         month_day = [@n2, @n1]
       end
 
