@@ -39,20 +39,6 @@ module Emendate
       def lexeme
         raise NotImplementedError
       end
-
-      def parsed(whole_certainty:)
-        h = {}
-        h[:index_dates] = nil
-        h[:date_start] = nil
-        h[:date_end] = nil
-        h[:date_start_full] = earliest.nil? ? nil : earliest.iso8601
-        h[:date_end_full] = latest.nil? ? nil : latest.iso8601
-        h[:inclusive_range] = range? ? true : nil
-        h[:certainty] = whole_certainty
-        certainty.each{ |c| h[:certainty] << c }
-        h[:certainty].uniq!
-        h
-      end
       
       def range?
         raise NotImplementedError

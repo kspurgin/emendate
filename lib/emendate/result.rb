@@ -3,17 +3,13 @@
 module Emendate
   class Result
 
-    attr_reader :orig, :dates, :certainty
+    attr_reader :original_string, :errors, :warnings, :dates
 
-    def initialize(orig:)
-      @orig = orig
-      @dates = []
-      @certainty = []
-    end
-
-    def add_certainty(value)
-      certainty << value
-    end
-    
+    def initialize(resulthash)
+      @original_string = resulthash[:original_string]
+      @errors = resulthash[:errors]
+      @warnings = resulthash[:warnings]
+      @dates = resulthash[:result]
+    end    
   end
 end

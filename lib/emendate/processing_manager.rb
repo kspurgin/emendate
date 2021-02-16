@@ -139,12 +139,12 @@ module Emendate
           }
 
       if state == :failed
-        @result = r
+        @result = Emendate::Result.new(r)
         return
       end
 
-      tokens.each{ |t| r[:result] << t.parsed(whole_certainty: tokens.certainty) if t.date_type? }
-      @result = r
+      tokens.each{ |t| r[:result] << Emendate::ParsedDate.new(t, tokens.certainty) if t.date_type? }
+      @result = Emendate::Result.new(r)
     end
 
     def perform_lex
