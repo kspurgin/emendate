@@ -144,17 +144,22 @@ module Emendate
 
       if options.pluralized_date_interpretation == :decade
         collapse_pair(%i[year letter_s], :decade)
+        result.warnings << "Interpreting #{year.lexeme}s as decade"
       else
         zeros = year.lexeme.match(/(0+)/)[1]
         case zeros.length
         when 1
           collapse_pair(%i[year letter_s], :decade)
+          result.warnings << "Interpreting #{year.lexeme}s as decade"
         when 2
           collapse_pair(%i[year letter_s], :century)
+          result.warnings << "Interpreting #{year.lexeme}s as century"
         when 3
           collapse_pair(%i[year letter_s], :millennium)
+        result.warnings << "Interpreting #{year.lexeme}s as millennium"          
         when 4
           collapse_pair(%i[year letter_s], :millennium)
+          result.warnings << "Interpreting #{year.lexeme}s as millennium"
         else
           # there should be no other variations, as only 4-digit years are tagged as years at this point
           #  (and 3-digit years that have been padded out to 4 digits to simplify the processing)

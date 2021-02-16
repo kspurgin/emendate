@@ -28,15 +28,23 @@ RSpec.describe Emendate::DatePartTagger do
     end
     context '0000s 1000s' do
       context 'default' do
+        before(:all){ @result = tag('0000s 1000s') }
         it 'tags decade' do
-          result = tag('0000s 1000s')
-          expect(result.types).to eq(%i[decade decade])
+          expect(@result.types).to eq(%i[decade decade])
+        end
+        it 'generates warnings' do
+          w = ["Interpreting 0000s as decade", "Interpreting 1000s as decade"]
+          expect(w - @result.warnings).to be_empty
         end
       end
       context 'pluralized_date_interpretation: :broad' do
+        before(:all){ @result = tag('0000s 1000s', pluralized_date_interpretation: :broad) }
         it 'tags millennium' do
-          result = tag('0000s 1000s', pluralized_date_interpretation: :broad)
-          expect(result.types).to eq(%i[millennium millennium])
+          expect(@result.types).to eq(%i[millennium millennium])
+        end
+        it 'generates warnings' do
+          w = ["Interpreting 0000s as millennium", "Interpreting 1000s as millennium"]
+          expect(w - @result.warnings).to be_empty
         end
       end
     end
@@ -101,15 +109,15 @@ RSpec.describe Emendate::DatePartTagger do
 
     context '02-10-20' do
       context 'in the year 2020' do
-      before(:each) do
-        allow(Date).to receive(:today).and_return Date.new(2020,2,3)
-        pm = Emendate.prep_for('02-10-20', :tag_date_parts)
-        tagger = Emendate::DatePartTagger.new(tokens: pm.tokens, options: pm.options)
-        @result = tagger.tag
-      end
-      it 'tags month, day, and short year' do
-        expect(@result.type_string).to eq('month day year')
-      end
+        before(:each) do
+          allow(Date).to receive(:today).and_return Date.new(2020,2,3)
+          pm = Emendate.prep_for('02-10-20', :tag_date_parts)
+          tagger = Emendate::DatePartTagger.new(tokens: pm.tokens, options: pm.options)
+          @result = tagger.tag
+        end
+        it 'tags month, day, and short year' do
+          expect(@result.type_string).to eq('month day year')
+        end
         it 'expands/tags short year to 1920' do
           expect(@result.map(&:literal).join(' ')).to eq('2 10 1920')
         end
