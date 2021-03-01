@@ -37,7 +37,7 @@ RSpec.describe Emendate::DatePartTagger do
         end
 
         it 'generates warnings' do
-          w = ["Interpreting pluralized year as decade", "Interpreting pluralized year as decade"]
+          w = ['Interpreting pluralized year as decade', 'Interpreting pluralized year as decade']
           expect(w - @result.warnings).to be_empty
         end
       end
@@ -49,7 +49,7 @@ RSpec.describe Emendate::DatePartTagger do
         end
 
         it 'generates warnings' do
-          w = ["Interpreting pluralized year as millennium", "Interpreting pluralized year as millennium"]
+          w = ['Interpreting pluralized year as millennium', 'Interpreting pluralized year as millennium']
           expect(w - @result.warnings).to be_empty
         end
       end
