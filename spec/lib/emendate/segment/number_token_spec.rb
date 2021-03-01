@@ -9,6 +9,7 @@ RSpec.describe Emendate::NumberToken do
     before(:all) do
       @t = described_class.new(type: :number, lexeme: '12', location: @loc)
     end
+
     it 'sets type as expected' do
       expect(@t.type).to eq(:number1or2)
     end
@@ -26,6 +27,7 @@ RSpec.describe Emendate::NumberToken do
     before(:all) do
       @t = described_class.new(type: :number, lexeme: '55555', location: @loc)
     end
+
     it 'sets type as expected' do
       expect(@t.type).to eq(:unknown)
     end

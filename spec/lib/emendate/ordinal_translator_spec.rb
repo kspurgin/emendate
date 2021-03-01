@@ -26,6 +26,7 @@ RSpec.describe Emendate::OrdinalTranslator do
       before(:all) do
         @t = translate('th20')
       end
+
       it 'warns' do
         ex = 'Ordinal indicator unexpectedly appears at beginning of date string'
         expect(@t.warnings).to include(ex)
@@ -40,6 +41,7 @@ RSpec.describe Emendate::OrdinalTranslator do
       before(:all) do
         @t = translate('22nd to 9999th')
       end
+
       it 'warns' do
         ex = 'Ordinal indicator expected after :number1or2. Found after :number4'
         expect(@t.warnings).to include(ex)

@@ -5,6 +5,7 @@ RSpec.describe Emendate::Options do
     before(:all) do
       @opt = described_class.new
     end
+
     it 'returns requested option' do
       expect(@opt.ambiguous_month_day).to eq(:as_month_day)
     end

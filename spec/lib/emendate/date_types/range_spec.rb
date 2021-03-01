@@ -13,6 +13,7 @@ RSpec.describe Emendate::DateTypes::Range do
                                           range_indicator: res[1],
                                           enddate: res[2])
     end
+
     it 'earliest = 1900-01-01' do
       expect(@r.earliest).to eq(Date.new(1900,1,1))
     end

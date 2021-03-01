@@ -13,6 +13,7 @@ RSpec.describe Emendate::CertaintyChecker do
         before(:all) do
           @c = check('[circa 2002?]')
         end
+
         it 'values include: approximate and uncertain' do
           expect(@c.certainty.sort).to eq([:approximate, :inferred, :uncertain])
         end
@@ -31,6 +32,7 @@ RSpec.describe Emendate::CertaintyChecker do
       before(:all) do
         @c = check('c. 2002')
       end
+
       it 'values include: approximate' do
         expect(@c.certainty).to eq([:approximate])
       end
@@ -44,6 +46,7 @@ RSpec.describe Emendate::CertaintyChecker do
       before(:all) do
         @c = check('2004-06~')
       end
+
       it 'values include: approximate' do
         expect(@c.certainty).to eq([:approximate])
       end
@@ -57,6 +60,7 @@ RSpec.describe Emendate::CertaintyChecker do
       before(:all) do
         @c = check('2004-06%')
       end
+
       it 'values include: approximate, uncertain' do
         expect(@c.certainty.sort).to eq([:approximate, :uncertain])
       end
@@ -70,6 +74,7 @@ RSpec.describe Emendate::CertaintyChecker do
       before(:all) do
         @c = check('2004-06~-11')
       end
+
       it 'returns tokens with tilde removed' do
         expect(@c.type_string).to eq('number4 hyphen number1or2 hyphen number1or2')
       end
@@ -83,6 +88,7 @@ RSpec.describe Emendate::CertaintyChecker do
       before(:all) do
         @c = check('~2004-06-%11')
       end
+
       it 'returns tokens with uncertainty indicators removed' do
         expect(@c.type_string).to eq('number4 hyphen number1or2 hyphen number1or2')
       end
@@ -100,6 +106,7 @@ RSpec.describe Emendate::CertaintyChecker do
       before(:all) do
         @c = check('[1997]-[1998]')
       end
+
       it 'no values' do
         expect(@c.certainty).to be_empty
       end
@@ -115,6 +122,7 @@ RSpec.describe Emendate::CertaintyChecker do
         before(:all) do
           @c = check('[1667,1668,1670..1672]', square_bracket_interpretation: :edtf_set)
         end
+
         it 'certainty is one_of_set' do
           expect(@c.certainty).to eq([:one_of_set])
         end
@@ -130,6 +138,7 @@ RSpec.describe Emendate::CertaintyChecker do
       before(:all) do
         @c = check('{1667,1668,1670..1672}')
       end
+
       it 'certainty is all_of_set' do
         expect(@c.certainty).to eq([:all_of_set])
       end

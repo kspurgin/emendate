@@ -5,6 +5,7 @@ RSpec.describe Emendate::DateTypes::YearMonth do
     before(:all) do
       @dt = described_class.new(year: '2020', month: 2)
     end
+
     it 'type = :yearmonth_date_type' do
       expect(@dt.type).to eq(:yearmonth_date_type)
     end
@@ -50,6 +51,7 @@ RSpec.describe Emendate::DateTypes::YearMonth do
     before(:all) do
       @dt = described_class.new(literal: 202002)
     end
+
     it 'type = :yearmonth_date_type' do
       expect(@dt.type).to eq(:yearmonth_date_type)
     end

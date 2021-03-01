@@ -32,6 +32,7 @@ RSpec.describe Emendate::DatePartTagger do
     context 'with 0000s 1000s' do
       context 'when default options' do
         before(:all){ @result = tag('0000s 1000s') }
+
         it 'tags decade' do
           expect(@result.types).to eq(%i[decade decade])
         end
@@ -44,6 +45,7 @@ RSpec.describe Emendate::DatePartTagger do
 
       context 'when pluralized_date_interpretation: :broad' do
         before(:all){ @result = tag('0000s 1000s', pluralized_date_interpretation: :broad) }
+
         it 'tags millennium' do
           expect(@result.types).to eq(%i[millennium millennium])
         end
@@ -58,6 +60,7 @@ RSpec.describe Emendate::DatePartTagger do
     context 'with 1900s' do
       context 'when default options' do
         before(:all){ @result = tag('1900s') }
+
         it 'tags decade' do
           expect(@result.types).to eq(%i[decade])
         end
@@ -69,6 +72,7 @@ RSpec.describe Emendate::DatePartTagger do
 
       context 'when pluralized_date_interpretation: :broad' do
         before(:all){ @result = tag('1900s', pluralized_date_interpretation: :broad)}
+
         it 'tags century' do
           expect(@result.types).to eq(%i[century])
         end
@@ -130,6 +134,7 @@ RSpec.describe Emendate::DatePartTagger do
           tagger = described_class.new(tokens: pm.tokens, options: pm.options)
           @result = tagger.tag
         end
+
         it 'tags month, day, and short year' do
           expect(@result.type_string).to eq('month day year')
         end

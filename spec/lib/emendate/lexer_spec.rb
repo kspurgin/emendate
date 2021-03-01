@@ -194,6 +194,7 @@ RSpec.describe Emendate::Lexer do
         orig = 'b.c.e  bp c.e.'
         @lexer = Emendate.lex(orig)
       end
+
       it 'produces expected token types' do
         expected = [:era, :era, :era]
         expect(@lexer.tokens.types).to eq(expected)

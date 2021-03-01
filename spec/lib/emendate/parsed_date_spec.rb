@@ -2,6 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Emendate::ParsedDate do
   before(:all){ @res = Emendate.parse('2/23/2021').dates.first }
+
   describe '#to_h' do
     it 'returns hash' do
       expected = {:original_string=>nil,
