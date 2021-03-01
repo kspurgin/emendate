@@ -1,0 +1,7 @@
+require: 
+  - rubocop-performance
+  - rubocop-rspec
+
+AllCops:
+  UseCache: true
+  NewCops: enable

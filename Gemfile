@@ -6,4 +6,12 @@ gemspec
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"
 
-gem 'simplecov', require: false, group: :test
+group :test do
+  gem 'simplecov', require: false
+end
+
+group :test, :development do
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rspec', require: false
+end
