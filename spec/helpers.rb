@@ -33,7 +33,7 @@ lowercase letters = themselves, literally
     'Feb 15 2020' => { pattern: 'MON ## ####', results: [{ start: '2020-02-15', end: '2020-02-15', tags: %i[] }] },
     'Feb. 15 2020' => { pattern: 'MON. ## ####', results: [{ start: '2020-02-15', end: '2020-02-15', tags: %i[] }] },
     'February 15 2020' => { pattern: 'MONTH ## ####', results: [{ start: '2020-02-15', end: '2020-02-15', tags: %i[] }] },
-    'February 15, 2020' => { pattern: 'MONTH ##, ####', results: [{ start: '2020-02-15', end: '2020-02-15', tags: %i[] }] },  
+    'February 15, 2020' => { pattern: 'MONTH ##, ####', results: [{ start: '2020-02-15', end: '2020-02-15', tags: %i[] }] },
     '15 February 2020' => { pattern: '## MONTH ####', results: [{ start: '2020-02-15', end: '2020-02-15', tags: %i[] }] },
     '2020 February 15' => { pattern: '#### MONTH ##', results: [{ start: '2020-02-15', end: '2020-02-15', tags: %i[] }] },
     '2020 Feb 15' => { pattern: '#### MON ##', results: [{ start: '2020-02-15', end: '2020-02-15', tags: %i[] }] },
@@ -50,7 +50,7 @@ lowercase letters = themselves, literally
     '2020-3' => { pattern: '####-#', results: [{ start: '2020-03-01', end: '2020-03-31', tags: %i[] }] },
     '2002' => { pattern: '####', results: [{ start: '2002-01-01', end: '2002-12-31', tags: %i[edtf edtf0 ba] }] },
     '-2002' => { pattern: '-####', results: [{ start: '-2002-01-01', end: '-2002-12-31', tags: %i[edtf edtf1] }] },
-    '2002 C.E.' => { pattern: '#### ERA', results: [{ start: '2002-01-01', end: '2002-12-31', tags: %i[] }] },    
+    '2002 C.E.' => { pattern: '#### ERA', results: [{ start: '2002-01-01', end: '2002-12-31', tags: %i[] }] },
     '2002 B.C.E.' => { pattern: '#### ERA', results: [{ start: '-2002-01-01', end: '-2002-12-31', tags: %i[bce] }] },
     '2002?' => { pattern: '####?', results: [{ start: '2002-01-01', end: '2002-12-31', tags: %i[edtf edtf1 uncertain ba] }] },
     '2002-2005 (?)' => { pattern: '####-#### (?)', results: [{ start: '2002-01-01', end: '2005-12-31', tags: %i[uncertain inclusive_range ba] }] },
@@ -59,10 +59,10 @@ lowercase letters = themselves, literally
     '1997-1998' => { pattern: '####-####', results: [{ start: '1997-01-01', end: '1998-12-31', tags: %i[inclusive_range ba] }] },
     '[1997]-[1998]' => { pattern: '[####]-[####]', results: [{ start: '1997-01-01', end: '1998-12-31', tags: %i[inclusive_range inferred] }] },
     '1997-1998 A.D.' => { pattern: '####-#### ERA', results: [{ start: '1997-01-01', end: '1998-12-31', tags: %i[inclusive_range] }] },
-    '450 BCE - 200 BCE' => { pattern: '### ERA - ### ERA', results: [{ start: '-0449-01-01', end: '-0199-12-31', tags: %i[inclusive_range bce] }] },    
+    '450 BCE - 200 BCE' => { pattern: '### ERA - ### ERA', results: [{ start: '-0449-01-01', end: '-0199-12-31', tags: %i[inclusive_range bce] }] },
     '450 BCE - 200 CE' => { pattern: '### ERA - ### ERA', results: [{ start: '-0449-01-01', end: '0200-12-31', tags: %i[inclusive_range bce cross_era] }] },
-    '450 to 200 BCE' => { pattern: '### to ### ERA', results: [{ start: '-0449-01-01', end: '-0199-12-31', tags: %i[inclusive_range bce] }] },    
-    '[1997-1998]' => { pattern: '[####-####]', results: [{ start: '1997-01-01', end: '1998-12-31', tags: %i[inclusive_range inferred ba] }] },    
+    '450 to 200 BCE' => { pattern: '### to ### ERA', results: [{ start: '-0449-01-01', end: '-0199-12-31', tags: %i[inclusive_range bce] }] },
+    '[1997-1998]' => { pattern: '[####-####]', results: [{ start: '1997-01-01', end: '1998-12-31', tags: %i[inclusive_range inferred ba] }] },
     '1997/98' => { pattern: '####/##', results: [{ start: '1997-01-01', end: '1998-12-31', tags: %i[inclusive_range option] }] },
     '1997-98' => { pattern: '####-##', results: [{ start: '1997-01-01', end: '1998-12-31', tags: %i[inclusive_range option ba] }] },
     '1935, 1946-1947' => { pattern: '####, ####-####', results: [
@@ -77,19 +77,19 @@ lowercase letters = themselves, literally
     '1997 & 1999' => { pattern: '#### & ####', results: [
       { start: '1997-01-01', end: '1997-12-31', tags: %i[alternate_dates] },
       { start: '1999-01-01', end: '1999-12-31', tags: %i[alternate_dates] }] },
-    'before 1750' => { pattern: 'before ####', results: [{ start: '0001-01-01', end: '1750-01-01', tags: %i[after_before ba] }] },    
-    '../1985-04-12' => { pattern: '../####-@@-@@', results: [{ start: '0001-01-01', end: '1985-04-12', tags: %i[after_before open_start] }] },    
+    'before 1750' => { pattern: 'before ####', results: [{ start: '0001-01-01', end: '1750-01-01', tags: %i[after_before ba] }] },
+    '../1985-04-12' => { pattern: '../####-@@-@@', results: [{ start: '0001-01-01', end: '1985-04-12', tags: %i[after_before open_start] }] },
     '[..1760-12-03]' => { pattern: '[..####-##-##]', results: [{ start: '0001-01-01', end: '1760-12-02', tags: %i[after_before alternate_date edtf edtf2] }, { start: '1760-12-03', end: '1760-12-03', tags: %i[after_before alternate_date edtf edtf2] }] },
     '[1760-12..]' => { pattern: '[####-##..]', results: [{ start: '1760-12-01', end: '1760-12-31', tags: %i[after_before alternate_date edtf edtf2] }, { start: '1761-01-01', end: Date.today.iso8601, tags: %i[after_before alternate_date edtf edtf2] }] },
     '[1760-01,1760-02,1760-12..]' => { pattern: '[####-##,####-##,####-##..]', results: [{ start: '1760-01-01', end: '1760-01-31', tags: %i[after_before alternate_date edtf edtf2] }, { start: '1760-02-01', end: '1760-02-29', tags: %i[after_before alternate_date edtf edtf2] }, { start: '1761-01-01', end: Date.today.iso8601, tags: %i[after_before alternate_date edtf edtf2] }] },
     '1828-30, 1849-51' => { pattern: '[####-@@, ####-##]', results: [{ start: '1828-01-01', end: '1830-12-31', tags: %i[ambiguous_year_month ba multi_date inclusive_range] }, { start: '1849-01-01', end: '1851-12-31', tags: %i[ba multi_date inclusive_range] }] },
     '[1667,1760-12]' => { pattern: '[####,####-##]', results: [{ start: '1667-01-01', end: '1667-12-31', tags: %i[after_before alternate_date edtf edtf2] }, { start: '1760-12-01', end: '1760-12-31', tags: %i[after_before alternate_date edtf edtf2] }] },
     '[..1984]' => { pattern: '[..####]', results: [{ start: '0001-01-01', end: '1983-12-31', tags: %i[after_before alternate_date edtf edtf2] }, { start: '1984-01-01', end: '1984-12-31', tags: %i[after_before alternate_date edtf edtf2] }] },
-    '../1985-04' => { pattern: '../####-##', results: [{ start: '0001-01-01', end: '1985-04-30', tags: %i[after_before open_start] }] },    
-    '../1985' => { pattern: '../####', results: [{ start: '0001-01-01', end: '1985-12-31', tags: %i[after_before open_start] }] },    
-    '/1985-04-12' => { pattern: '/####-@@-@@', results: [{ start: '0001-01-01', end: '1985-04-12', tags: %i[after_before unknown_start] }] },    
-    '/1985-04' => { pattern: '/####-##', results: [{ start: '0001-01-01', end: '1985-04-30', tags: %i[after_before unknown_start] }] },    
-    '/1985' => { pattern: '/####', results: [{ start: '0001-01-01', end: '1985-12-31', tags: %i[after_before unknown_start] }] },    
+    '../1985-04' => { pattern: '../####-##', results: [{ start: '0001-01-01', end: '1985-04-30', tags: %i[after_before open_start] }] },
+    '../1985' => { pattern: '../####', results: [{ start: '0001-01-01', end: '1985-12-31', tags: %i[after_before open_start] }] },
+    '/1985-04-12' => { pattern: '/####-@@-@@', results: [{ start: '0001-01-01', end: '1985-04-12', tags: %i[after_before unknown_start] }] },
+    '/1985-04' => { pattern: '/####-##', results: [{ start: '0001-01-01', end: '1985-04-30', tags: %i[after_before unknown_start] }] },
+    '/1985' => { pattern: '/####', results: [{ start: '0001-01-01', end: '1985-12-31', tags: %i[after_before unknown_start] }] },
     'after 1815' => { pattern: 'after ####', results: [{ start: '1815-12-31', end: Date.today.iso8601, tags: %i[after_before ba] }] },
     '1985-04-12/..' => { pattern: '####-##-##/..', results: [{ start: '1985-@@-@@', end: Date.today.iso8601, tags: %i[after_before edtf edtf1 open_end] }] },
     '1985-04/..' => { pattern: '####-##/..', results: [{ start: '1985-04-01', end: Date.today.iso8601, tags: %i[after_before edtf edtf1 open_end] }] },
@@ -129,10 +129,10 @@ lowercase letters = themselves, literally
       { start: '1980-01-01', end: '1989-12-31', tags: %i[inclusive_range approximate alternate_dates decades] },
       { start: '1990-01-01', end: '1999-12-31', tags: %i[inclusive_range approximate alternate_dates decades] }] },
     'Early 1990s' => { pattern: 'early ####s', results: [{ start: '1990-01-01', end: '1995-12-31', tags: %i[inclusive_range approximate partial decades] }] },
-    'Mid 1990s' => { pattern: 'mid ####s', results: [{ start: '1993-01-01', end: '1998-12-31', tags: %i[inclusive_range approximate partial decades] }] },    
+    'Mid 1990s' => { pattern: 'mid ####s', results: [{ start: '1993-01-01', end: '1998-12-31', tags: %i[inclusive_range approximate partial decades] }] },
     'Late 1990s' => { pattern: 'late ####s', results: [{ start: '1995-01-01', end: '1999-12-31', tags: %i[inclusive_range approximate partial decades] }] },
     'Early 1990' => { pattern: 'early ####', results: [{ start: '1990-01-01', end: '1990-04-30', tags: %i[inclusive_range approximate partial] }] },
-    'Mid 1990' => { pattern: 'mid ####', results: [{ start: '1990-05-01', end: '1990-08-31', tags: %i[inclusive_range approximate partial] }] },    
+    'Mid 1990' => { pattern: 'mid ####', results: [{ start: '1990-05-01', end: '1990-08-31', tags: %i[inclusive_range approximate partial] }] },
     'Late 1990' => { pattern: 'late ####', results: [{ start: '1990-09-01', end: '1990-12-31', tags: %i[inclusive_range approximate partial] }] },
     'Spring 2020' => { pattern: 'SEASON ####', results: [{ start: '2020-04-01', end: '2020-06-30', tags: %i[inclusive_range season] }] },
     '2020 Spring' => { pattern: '#### SEASON', results: [{ start: '2020-04-01', end: '2020-06-30', tags: %i[inclusive_range season] }] },
@@ -143,7 +143,7 @@ lowercase letters = themselves, literally
     'Spring 20' => { pattern: 'SEASON ##', results: [{ start: '2020-04-01', end: '2020-06-30', tags: %i[inclusive_range season two_digit_year option] }],
                     alt_results: [{ start: '0020-04-01', end: '0020-06-30', tags: %i[inclusive_range season two_digit_year option] }]},
     '2000 June 3-15' => { pattern: '#### MONTH #-##', results: [{ start: '2020-06-03', end: '2020-06-15', tags: %i[inclusive_range] }] },
-    'June 3-15, 2000' => { pattern: 'MONTH #-##, ####', results: [{ start: '2020-06-03', end: '2020-06-15', tags: %i[inclusive_range] }] },    
+    'June 3-15, 2000' => { pattern: 'MONTH #-##, ####', results: [{ start: '2020-06-03', end: '2020-06-15', tags: %i[inclusive_range] }] },
     'June 3 -15, 2000' => { pattern: 'MONTH # -##, ####', results: [{ start: '2020-06-03', end: '2020-06-15', tags: %i[inclusive_range] }] },
     '2000 June 3, 15' => { pattern: '#### MONTH #, #', results: [
       { start: '2000-06-03', end: '2000-06-03', tags: %i[multi_date] },
@@ -184,7 +184,7 @@ lowercase letters = themselves, literally
     'mid-19th century' => { pattern: 'mid-##ORD century', results: [{ start: '1834-01-01', end: '1867-12-31', tags: %i[inclusive_range century partial] }] },
     'late 19th century' => { pattern: 'late ##ORD century', results: [{ start: '1867-01-01', end: '1900-12-31', tags: %i[inclusive_range century partial ba] }] },
     'late 19th to early 20th century' => { pattern: 'late ##ORD to early ##ORD century', results: [{ start: '1867-01-01', end: '1934-12-31', tags: %i[inclusive_range century partial ba] }] },
-    'late 19th-early 20th c.' => { pattern: 'late ##ORD-early ##ORD century', results: [{ start: '1867-01-01', end: '1934-12-31', tags: %i[inclusive_range century partial ba] }] },    
+    'late 19th-early 20th c.' => { pattern: 'late ##ORD-early ##ORD century', results: [{ start: '1867-01-01', end: '1934-12-31', tags: %i[inclusive_range century partial ba] }] },
     'late 19th c.' => { pattern: 'late ##ORD c.', results: [{ start: '1867-01-01', end: '1900-12-31', tags: %i[inclusive_range century partial ba] }] },
     'early to mid-19th century' => { pattern: 'early to mid-##ORD century', results: [{ start: nil, end: nil, tags: %i[unparseable ba] }] },
     '1800s' => { pattern: '####s', results: [{ start: '1800-01-01', end: '1899-12-31', tags: %i[inclusive_range approximate centuries ba] }] },
@@ -249,11 +249,11 @@ lowercase letters = themselves, literally
       .map{ |str, arr| [str, arr.map{ |result| result[:tags] }.flatten.uniq] }
       .to_h
   end
-  
+
   def examples_with_tag(tag)
     example_tags.keep_if{ |str, tags| tags.include?(tag) }.keys
   end
-  
+
   def tokenize_examples
     ex = EXAMPLES.keys
     lexed = ex.map{ |str| Emendate.lex(str) }
@@ -317,7 +317,7 @@ lowercase letters = themselves, literally
   def example_results(tag: nil, options: {} )
     parse_examples(tag: tag, options: options).map(&:result)
   end
-  
+
   def example_length
     EXAMPLES.keys.sort_by{ |k| k.length }[-1].length
   end

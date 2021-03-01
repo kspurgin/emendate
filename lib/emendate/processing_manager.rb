@@ -36,7 +36,7 @@ module Emendate
         :done, :failed
 
       after_all_transitions :log_status_change, :gather_warnings
-      
+
       event :lex do
         transitions from: :startup, to: :tokenized, after: :perform_lex
       end
@@ -65,7 +65,7 @@ module Emendate
         transitions from: :indicated_ranges, to: :final_segments_checked, after: :perform_check_final_segments, guard: :no_errors?
       end
 
-      event :finalize do        
+      event :finalize do
         transitions from: :tokenized, to: :done, guard: :no_errors?
         transitions from: :tokenized, to: :failed, guard: :errors?
         transitions from: :months_converted, to: :done, guard: :no_errors?
@@ -238,7 +238,7 @@ module Emendate
         @ranges_indicated = tokens.class.new.copy(tokens)
       end
     end
-    
+
     def log_status_change
       #puts "changing from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
     end
@@ -252,7 +252,7 @@ module Emendate
     def errors?
       errors.empty? ? false : true
     end
-    
+
     def no_errors?
       errors.empty? ? true : false
     end

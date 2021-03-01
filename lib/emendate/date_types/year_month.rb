@@ -2,7 +2,7 @@
 
 module Emendate
   module DateTypes
-    
+
     class YearMonth < Emendate::DateTypes::DateType
       attr_reader :literal, :year, :month
       def initialize(**opts)

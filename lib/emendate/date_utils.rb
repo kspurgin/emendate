@@ -33,7 +33,7 @@ module Emendate
       Date::ABBR_MONTHNAMES.compact.map(&:downcase).each_with_index{ |str, i| h[str] = i + 1 }
       h
     end
-    
+
     # determines whether the number following a year could be the end of a range beginning with that year
     # 2020-10 -- false, the 10 has to be October
     # 2020-21 -- true, the 21 could indicate 2021 as end of range, OR this could mean Spring 2020

@@ -31,7 +31,7 @@ CSV.open(outfile, 'wb') do |csvout|
   CSV.foreach(options[:input]) do |row|
     val = row.first.strip
     puts val
-    
+
     result = Emendate.process(val)
 
     prep = {orig: val}

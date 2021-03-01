@@ -49,7 +49,7 @@ module Emendate
     def this_century
       Date.today.year.to_s[0, 2].to_i
     end
-    
+
     def threshold
       options.ambiguous_year_rollback_threshold
     end

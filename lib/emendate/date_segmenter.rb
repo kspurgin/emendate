@@ -4,7 +4,7 @@ module Emendate
 
   class DateSegmenter
     include DateUtils
-    
+
     attr_reader :options, :result
     attr_accessor :working
 
@@ -19,7 +19,7 @@ module Emendate
       until working.empty?
         recursive_parse
       end
-      
+
       working.copy(result)
       result.clear
       until working.empty?
@@ -79,7 +79,7 @@ module Emendate
       transfer_token
       apply_modifiers
     end
-    
+
     def recursive_parse
       return if working.empty?
       parser = parse_function
@@ -90,7 +90,7 @@ module Emendate
 
     def parse_function
       return nil if working.empty?
-      
+
       case working.types.first
       when :century
         :parse_century_date_part
@@ -172,7 +172,7 @@ module Emendate
         :name
       end
     end
-    
+
     def parse_date_parts
       pieces = consume_date_parts
         if pieces.types.sort == %i[day month year]
@@ -227,17 +227,17 @@ module Emendate
       end
       pieces
     end
-    
+
     def passthrough
       transfer_token
       recursive_parse
     end
-    
+
     def parse_non_date_part
       transfer_token
       recursive_parse
     end
-        
+
     def parse_yyyymm
       pieces = []
       year = current.lexeme[0..3]
@@ -258,7 +258,7 @@ module Emendate
         result << Emendate::DateTypes::YearMonth.new(year: year, month: month, children: pieces)
       end
       working.delete(current)
-      
+
       recursive_parse
     end
 
@@ -287,12 +287,12 @@ module Emendate
         working.delete(current)
         recursive_parse
     end
-   
+
     def transfer_token(token = current)
       result << token
       working.delete(token)
     end
-    
+
     def current
       working[0]
     end

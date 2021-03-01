@@ -15,7 +15,7 @@ module Emendate
         super(m)
       end
     end
-    
+
     class Decade < Emendate::DateTypes::DateType
       attr_reader :literal, :decade_type
       def initialize(**opts)
@@ -94,7 +94,7 @@ module Emendate
         str = literal.to_s[0..-2]
         @literal = str.to_i
       end
-      
+
       def allowed_decade_types
         %i[plural uncertainty_digits]
       end

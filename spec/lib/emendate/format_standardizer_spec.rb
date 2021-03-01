@@ -6,7 +6,7 @@ RSpec.describe Emendate::FormatStandardizer do
     fs = Emendate::FormatStandardizer.new(tokens: pm.tokens, options: pm.options)
     fs.standardize.types
   end
-  
+
   describe '#standardize' do
     context 'with 1997/98' do
       it 'replace slash with hyphen' do
@@ -28,7 +28,7 @@ RSpec.describe Emendate::FormatStandardizer do
         expect(result).to eq(%i[partial number4])
       end
     end
-    
+
     context 'with 18th or 19th century' do
       it 'adds century after 18th' do
         result = standardize('18th or 19th century')

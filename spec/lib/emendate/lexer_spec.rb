@@ -8,7 +8,7 @@ RSpec.describe Emendate::Lexer do
       expect{ Emendate.lex(orig) }.to raise_error(Emendate::UntokenizableError)
     end
   end
-  
+
   context 'with comma' do
     it 'produces expected tokens' do
       orig = ','
@@ -39,7 +39,7 @@ RSpec.describe Emendate::Lexer do
       it 'produces expected tokens' do
         orig = '{...1984'
         expected = %i[curly_bracket_open unknown number4]
-        
+
         expect{ Emendate.lex(orig) }.to raise_error(Emendate::UntokenizableError)
       end
     end
@@ -62,7 +62,7 @@ RSpec.describe Emendate::Lexer do
       expect(lexer.tokens.map(&:type)).to eq(expected)
     end
   end
-  
+
   context 'with slash' do
     it 'produces expected tokens' do
       orig = '/'

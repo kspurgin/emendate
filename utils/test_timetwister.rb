@@ -38,7 +38,7 @@ class TTTest
 
     reportable.join(' --- ')
   end
-  
+
   def passes?
     if start_date_match? && end_date_match? && range_match?
       true
@@ -48,7 +48,7 @@ class TTTest
   end
 
   private
-  
+
   def vals(a, val)
     a.map{ |ex| ex[val] }
   end
@@ -64,7 +64,7 @@ class TTTest
   def got_ranges?
     got.map{ |h| h[:inclusive_range] }
   end
-  
+
   def start_date_match?
     vals(expected, :start) == vals(got, :date_start_full) ? true : false
   end

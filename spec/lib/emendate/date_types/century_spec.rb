@@ -12,7 +12,7 @@ RSpec.describe Emendate::DateTypes::Century do
       expect{ Emendate::DateTypes::Century.new(literal: 19, century_type: :misc) }.to raise_error(Emendate::DateTypes::CenturyTypeValueError)
     end
   end
-  
+
   context 'with textual century name (19th)' do
     before(:all) do
       @dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :name)
@@ -21,7 +21,7 @@ RSpec.describe Emendate::DateTypes::Century do
     it 'type = :century_date_type' do
       expect(@dt.type).to eq(:century_date_type)
     end
-    
+
     describe '#earliest' do
       context 'without partial_indicator' do
         it 'returns 1801-01-01' do

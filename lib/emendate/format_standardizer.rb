@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Emendate
-  
+
   class FormatStandardizer
     attr_reader :result, :standardizable
     def initialize(tokens:, options: {})
@@ -52,7 +52,7 @@ module Emendate
         %i[move_month_to_beginning_of_segment]
       end
     end
-    
+
     def full_match_date_part_standardizers
       case result.date_part_types
       when %i[number1or2 number1or2 century]
@@ -69,7 +69,7 @@ module Emendate
            add_year_after_second_month]
       end
     end
-    
+
     def full_match_standardizers
       case result.types
       when %i[partial range_indicator partial number1or2 century]
@@ -97,7 +97,7 @@ module Emendate
       ins_pt = result.find_index(month1) + 1
       result.insert(ins_pt, yr)
     end
-    
+
     def add_year_after_second_month
       yr = result.when_type(:number4)[0].dup
       month2 = result.when_type(:month)[1]
@@ -121,7 +121,7 @@ module Emendate
         ins_pt += 1
       end
     end
-    
+
     def move_month_to_beginning_of_segment
       n1, m, n4 = result.extract(%i[number1or2 month number4]).segments
       m_ind = result.find_index(m)
@@ -129,7 +129,7 @@ module Emendate
       result.delete_at(m_ind)
       result.insert(d_ind, m)
     end
-    
+
     def move_year_after_first_month
       yr = result.when_type(:number4)[0]
       result.delete(yr)
@@ -147,7 +147,7 @@ module Emendate
       result.insert(ins_pt, yr.dup)
       result.delete_at(y_ind)
     end
-    
+
     def pad_3_to_4_digits
       t3 = result.select{ |t| t.type == :number3 }[0]
       t3i = result.find_index(t3)
@@ -156,7 +156,7 @@ module Emendate
       result.delete_at(t3i)
       result.insert(t3i, t4)
     end
-    
+
     def remove_post_month_comma
       comma = result.extract(%i[month number1or2 comma]).segments[-1]
       result.delete(comma)
@@ -179,7 +179,7 @@ module Emendate
         result.extract(%i[letter_t number1or2 colon number1or2 colon number1or2]).segments
       end
     end
-    
+
 
     def replace_slash_with_hyphen
       slash = result.when_type(:slash)[0]
@@ -191,7 +191,7 @@ module Emendate
       result.insert(si + 1, ht)
       result.delete(slash)
     end
-    
+
     def remove_post_partial_hyphen
       p, h = result.extract(%i[partial hyphen]).segments
       result.delete(h)

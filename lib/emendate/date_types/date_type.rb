@@ -39,11 +39,11 @@ module Emendate
       def lexeme
         raise NotImplementedError
       end
-      
+
       def range?
         raise NotImplementedError
       end
-      
+
       def type
         "#{self.class.name.split('::').last.downcase}_date_type".to_sym
       end

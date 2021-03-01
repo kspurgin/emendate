@@ -23,7 +23,7 @@ module Emendate
       return if opts[:sources].empty?
       opts[:sources].each{ |t| sources << t }
     end
-    
+
     def sources
       @sources
     end

@@ -12,12 +12,12 @@ RSpec.describe Emendate::DateTypes::Decade do
       expect{ Emendate::DateTypes::Decade.new(literal: 199, decade_type: :misc) }.to raise_error(Emendate::DateTypes::DecadeTypeValueError)
     end
   end
-  
+
   context 'with plural decade (1990s)' do
     before(:all) do
       @dt = Emendate::DateTypes::Decade.new(literal: 1990, decade_type: :plural)
     end
-    
+
     describe '#earliest' do
       it 'returns 1990-01-01' do
         expect(@dt.earliest).to eq(Date.new(1990, 1, 1))
@@ -41,7 +41,7 @@ RSpec.describe Emendate::DateTypes::Decade do
     before(:all) do
       @dt = Emendate::DateTypes::Decade.new(literal: 1900, decade_type: :plural)
     end
-    
+
     describe '#earliest' do
       it 'returns 1900-01-01' do
         expect(@dt.earliest).to eq(Date.new(1900, 1, 1))
@@ -65,7 +65,7 @@ RSpec.describe Emendate::DateTypes::Decade do
     before(:all) do
       @dt = Emendate::DateTypes::Decade.new(literal: 2000, decade_type: :plural)
     end
-    
+
     describe '#earliest' do
       it 'returns 2000-01-01' do
         expect(@dt.earliest).to eq(Date.new(2000, 1, 1))
@@ -89,7 +89,7 @@ RSpec.describe Emendate::DateTypes::Decade do
       before(:all) do
         @dt = Emendate::DateTypes::Decade.new(literal: 200, decade_type: :plural)
       end
-      
+
       describe '#earliest' do
         it 'returns 0200-01-01' do
           expect(@dt.earliest).to eq(Date.new(200, 1, 1))
@@ -113,7 +113,7 @@ RSpec.describe Emendate::DateTypes::Decade do
     before(:all) do
       @dt = Emendate::DateTypes::Decade.new(literal: 199, decade_type: :uncertainty_digits)
     end
-    
+
     describe '#earliest' do
       it 'returns 1990-01-01' do
         expect(@dt.earliest).to eq(Date.new(1990, 1, 1))
@@ -137,7 +137,7 @@ RSpec.describe Emendate::DateTypes::Decade do
     before(:all) do
       @dt = Emendate::DateTypes::Decade.new(literal: 1990, decade_type: :plural, partial_indicator: 'early')
     end
-    
+
     describe '#earliest' do
       it 'returns 1990-01-01' do
         expect(@dt.earliest).to eq(Date.new(1990, 1, 1))
@@ -161,7 +161,7 @@ RSpec.describe Emendate::DateTypes::Decade do
     before(:all) do
       @dt = Emendate::DateTypes::Decade.new(literal: 1990, decade_type: :plural, partial_indicator: 'mid')
     end
-    
+
     describe '#earliest' do
       it 'returns 1994-01-01' do
         expect(@dt.earliest).to eq(Date.new(1994, 1, 1))
@@ -185,7 +185,7 @@ RSpec.describe Emendate::DateTypes::Decade do
     before(:all) do
       @dt = Emendate::DateTypes::Decade.new(literal: 1990, decade_type: :plural, partial_indicator: 'late')
     end
-    
+
     describe '#earliest' do
       it 'returns 1997-01-01' do
         expect(@dt.earliest).to eq(Date.new(1997, 1, 1))

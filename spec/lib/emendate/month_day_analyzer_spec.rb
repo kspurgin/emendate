@@ -7,7 +7,7 @@ RSpec.describe Emendate::MonthDayAnalyzer do
     mda = Emendate::MonthDayAnalyzer.new(t[0], t[2], t[4], opt)
     mda.month.nil? ? 'ambiguous' : "#{mda.month.lexeme} #{mda.day.lexeme}"
   end
-  
+
   context 'with unambiguous month day - 12-31-2020' do
     it 'returns expected' do
       expect(prep('12-31-2001')).to eq('12 31')

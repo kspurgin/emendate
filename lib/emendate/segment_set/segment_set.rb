@@ -8,7 +8,7 @@ module Emendate
     attr_reader :segments, :certainty, :inferred_date, :warnings
     def_delegator :@segments, :[], :[]
     def_delegators :@segments, :clear, :delete, :delete_at, :empty?, :find_index, :insert, :length, :pop, :shift
-    
+
     def initialize(*args)
       @segments = Array.new(*args)
       @certainty = []
@@ -31,7 +31,7 @@ module Emendate
       @inferred_date = other_set.inferred_date
       self
     end
-    
+
     def date_parts
       segments.select{ |t| t.date_part? }
     end
@@ -51,7 +51,7 @@ module Emendate
     def is_inferred
       @inferred_date = true
     end
-    
+
 
     # returns the first sequence of segments matching the pattern of types passed in as an Array
     def extract(*args)
@@ -63,7 +63,7 @@ module Emendate
         result = self.class.new(segments)
         return result
       end
-      
+
       tails = segments.select{ |t| t.type == args[-1] }
       return self.class.new if tails.empty?
 
@@ -80,7 +80,7 @@ module Emendate
       segment.each{ |s| result << s }
       result
     end
-    
+
     def map(*args, &block)
       results = segments.map(*args, &block)
       if results.any?{ |s| s.kind_of?(Emendate::Segment) }

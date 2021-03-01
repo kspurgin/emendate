@@ -7,7 +7,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
     r = Emendate::MonthSeasonYearAnalyzer.new(t[2], t[0], pm.options)
     "#{r.result.type} #{r.result.lexeme} #{r.ambiguous}"
   end
-  
+
   context 'with unambiguous year-number - second less than first' do
     context 'with month as second element - 2020-03' do
       it 'returns month' do

@@ -12,12 +12,12 @@ RSpec.describe Emendate::DateTypes::Millennium do
       expect{ Emendate::DateTypes::Millennium.new(literal: 0000, millennium_type: :misc) }.to raise_error(Emendate::DateTypes::MillenniumTypeValueError)
     end
   end
-  
+
   context 'with plural millennium (2000s)' do
     before(:all) do
       @dt = Emendate::DateTypes::Millennium.new(literal: 2000, millennium_type: :plural)
     end
-    
+
     describe '#earliest' do
       it 'returns 2000-01-01' do
         expect(@dt.earliest).to eq(Date.new(2000, 1, 1))
@@ -41,7 +41,7 @@ RSpec.describe Emendate::DateTypes::Millennium do
     before(:all) do
       @dt = Emendate::DateTypes::Millennium.new(literal: 1, millennium_type: :uncertainty_digits)
     end
-    
+
     describe '#earliest' do
       it 'returns 1000-01-01' do
         expect(@dt.earliest).to eq(Date.new(1000, 1, 1))

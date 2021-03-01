@@ -19,7 +19,7 @@ module Emendate
       super(segments.join(', '))
     end
   end
-  
+
   class Lexer
     # ambiguous things
     # c - at beginning = circa, at end = century
@@ -54,7 +54,7 @@ module Emendate
     SQUARE_BRACKET_CLOSE = ']'
     TILDE = '~'
     UNKNOWN_DATE = %w[nodate undated unknown].freeze
-    
+
     attr_reader :norm, :tokens
     attr_accessor :next_p, :lexeme_start_p
     def initialize(norm_string)
@@ -88,7 +88,7 @@ module Emendate
       c = consume
 
       return if c == SPACE
-      
+
       token =
         if c == COLON
           token_of_type(c, :colon)
@@ -126,14 +126,14 @@ module Emendate
 
       token = Token.new(lexeme: c, type: :unknown, location: current_location) if token.nil?
 
-      
+
       tokens << token
     end
 
     def token_of_type(lexeme, type)
       Token.new(lexeme: lexeme, type: type, location: current_location)
     end
-    
+
     def consume
       c = lookahead
       self.next_p += 1
@@ -165,7 +165,7 @@ module Emendate
       type = lexeme.length == 2 ? :double_dot : :unknown
       Token.new(type: type, lexeme: lexeme, location: current_location)
     end
-    
+
     def letter
       consume_letters
       lexeme = norm[lexeme_start_p..(next_p - 1)]
@@ -238,7 +238,7 @@ module Emendate
       norm[lookahead_p]
     end
 
-    
+
     def norm_completed?
       next_p >= norm.length # our pointer starts at 0, so the last char is length - 1.
     end

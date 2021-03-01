@@ -19,11 +19,11 @@ module Emendate
         working.clear
         return result
       end
-      
+
       until working.empty?
         collapse_range
       end
-      
+
       result
     end
 
@@ -50,7 +50,7 @@ module Emendate
     def range_indicator_present?
       working.types.include?(:range_indicator)
     end
-    
+
     def current
       working[0]
     end
@@ -62,7 +62,7 @@ module Emendate
     def before_range_indicator?
       nxt.type == :range_indicator ? true : false
     end
-  
+
     def passthrough
       result << working.shift
     end

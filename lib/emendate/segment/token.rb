@@ -6,7 +6,7 @@ require 'emendate/segment/segment'
 module Emendate
   class TokenTypeError < StandardError; end
   class TokenLexemeError < StandardError; end
-  
+
   class Token < Emendate::Segment
     extend Forwardable
 
@@ -15,13 +15,13 @@ module Emendate
 
     DATE_PART_TOKEN_TYPES = %i[number1or2 number3 number4 number6 number8 s century
                                uncertainty_digits era number_month]
-    
+
     def date_part?
       DATE_PART_TOKEN_TYPES.include?(type) ? true : false
     end
-    
+
     private
-    
+
     def post_initialize(opts)
       @location = opts[:location]
     end

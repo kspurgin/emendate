@@ -20,7 +20,7 @@ module Emendate
       until working.empty? do
         process_part_certainty
       end
-      
+
       result
     end
 
@@ -38,7 +38,7 @@ module Emendate
 
       if working[0].is_a?(Emendate::NumberToken)
         :check_after_number
-      elsif uncertainty_indicator? 
+      elsif uncertainty_indicator?
         :set_number_certainty
       else
         :passthrough
@@ -48,7 +48,7 @@ module Emendate
     def uncertainty_indicator?(n = 0)
       %i[question percent tilde].include?(working[n].type)
     end
-    
+
     def passthrough
       current = working.shift
       result << current
@@ -78,7 +78,7 @@ module Emendate
         passthrough
       end
     end
-    
+
     def set_number_certainty
       certainty = certainty_val(working[0])
       if nxt.nil?
@@ -98,7 +98,7 @@ module Emendate
     def nxt(n = 1)
       working[n]
     end
-    
+
     def process_whole_certainty
       case result.types
       in [:square_bracket_open, *remain, :square_bracket_close]
@@ -122,7 +122,7 @@ module Emendate
       result.add_certainty(:uncertain)
       result.pop
     end
-    
+
     def process_approximate
       result.add_certainty(:approximate)
       result.shift

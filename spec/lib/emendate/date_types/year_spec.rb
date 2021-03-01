@@ -8,7 +8,7 @@ RSpec.describe Emendate::DateTypes::Year do
   it 'type = :year_date_type' do
     expect(@yr.type).to eq(:year_date_type)
   end
-  
+
   describe '#earliest' do
     context 'with no partial_indicator' do
       it 'returns Jan 1 of year' do

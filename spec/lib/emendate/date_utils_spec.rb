@@ -91,5 +91,5 @@ RSpec.describe Emendate::DateUtils do
       end
     end
   end
-  
+
 end

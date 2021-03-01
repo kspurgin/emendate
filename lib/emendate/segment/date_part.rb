@@ -11,7 +11,7 @@ module Emendate
     def date_part?
       true
     end
-    
+
     private
 
     def post_initialize(opts)

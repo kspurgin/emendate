@@ -24,7 +24,7 @@ module Emendate
     def date_type?
       false
     end
-    
+
     def to_s
       "#{type} #{lexeme} #{literal}"
     end
@@ -38,7 +38,7 @@ module Emendate
     def default_certainty
       []
     end
-    
+
     def default_literal
       nil
     end

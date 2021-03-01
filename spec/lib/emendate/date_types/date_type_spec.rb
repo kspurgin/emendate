@@ -14,7 +14,7 @@ RSpec.describe Emendate::DateTypes::DateType do
       expect(@dt.date_part?).to be true
     end
   end
-  
+
   describe '#earliest' do
     it 'raise error' do
       expect{ @dt.earliest }.to raise_error(NotImplementedError)
@@ -32,7 +32,7 @@ RSpec.describe Emendate::DateTypes::DateType do
       expect{ @dt.lexeme }.to raise_error(NotImplementedError)
     end
   end
-  
+
   describe '#range?' do
     it 'raise error' do
       expect{ @dt.range? }.to raise_error(NotImplementedError)

@@ -9,7 +9,7 @@ module Emendate
       :date_start, :date_end,
       :date_start_full, :date_end_full,
       :inclusive_range, :certainty
-      
+
     def initialize(datetype, whole_certainty = [])
       @original_string = nil
       @index_dates = []

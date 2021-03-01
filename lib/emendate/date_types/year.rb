@@ -32,10 +32,10 @@ module Emendate
           Date.new(literal, 9, 1)
         end
       end
-      
+
       def latest
         return latest_by_partial if range_switch.nil?
-        
+
         case range_switch
         when 'before'
           earliest_by_partial.prev_day

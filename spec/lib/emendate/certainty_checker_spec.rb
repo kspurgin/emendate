@@ -70,7 +70,7 @@ RSpec.describe Emendate::CertaintyChecker do
       end
       it 'sets uncertainty on year token to leftward_approximate' do
         expect(@c[2].certainty).to eq([:leftward_approximate])
-      end      
+      end
     end
 
     context 'with ~2004-06-%11' do
@@ -87,7 +87,7 @@ RSpec.describe Emendate::CertaintyChecker do
         expect(@c[4].certainty.sort).to eq([:approximate, :uncertain])
       end
     end
-    
+
     context 'with [1997]-[1998]' do
       before(:all) do
         @c = check('[1997]-[1998]')
@@ -128,6 +128,6 @@ RSpec.describe Emendate::CertaintyChecker do
         expect(@c.type_string).to eq(expected)
       end
     end
-    
+
   end
 end

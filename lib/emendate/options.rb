@@ -3,11 +3,11 @@
 module Emendate
   class UnknownOptionError < StandardError; end
   class UnknownOptionValueError < StandardError; end
-  
+
   class Options
 
     attr_reader :options
-    
+
     def initialize(opthash = {})
       if opthash.empty?
         @options = default
@@ -25,7 +25,7 @@ module Emendate
       @options = options.merge(opthash)
       verify
     end
-    
+
     private
 
     def default
@@ -33,7 +33,7 @@ module Emendate
         # treats 2/3 as February 3
         # alternative: as_day_month would result in March 2
         ambiguous_month_day: :as_month_day,
-        
+
         # treats 2010-12 as 2010 - 2012
         # alternative: as_month would result in December 2010
         # this option is also applied to ambiguous season/year values
@@ -72,7 +72,7 @@ module Emendate
         pluralized_date_interpretation: %i[broad]
       }
     end
-    
+
     def method_missing(option_name)
       if options.key?(option_name)
         options[option_name]
@@ -80,7 +80,7 @@ module Emendate
         raise Emendate::UnknownOptionError.new(option_name)
       end
     end
-    
+
     def verify
       unknown_options = options.keys - default.keys
       unless unknown_options.empty?

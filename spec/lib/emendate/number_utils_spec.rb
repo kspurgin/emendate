@@ -39,7 +39,7 @@ RSpec.describe Emendate::NumberUtils do
       end
     end
   end
-  
+
   describe '#valid_year?' do
     context 'with not valid (i.e. 9999)' do
       it 'returns false' do

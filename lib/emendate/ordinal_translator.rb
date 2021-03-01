@@ -19,7 +19,7 @@ module Emendate
       end
 
       return result if ois.empty?
-      
+
       ois.each do |oi|
         prev = previous(oi)
         unless prev.type == :number1or2
@@ -27,7 +27,7 @@ module Emendate
         end
         result.delete(oi)
       end
-      
+
       result
     end
 

@@ -3,7 +3,7 @@
 require 'emendate/date_utils'
 
 module Emendate
-  
+
   class AlphaMonthConverter
     attr_reader :result, :options
     include DateUtils
@@ -33,7 +33,7 @@ module Emendate
       result.insert(ins_pt, new)
       result.delete(x)
     end
-    
+
     def convert_month(token, lookup)
       str = token.lexeme
       number = lookup[str]

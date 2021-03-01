@@ -6,7 +6,7 @@ RSpec.describe Emendate::DatePartTagger do
     fs = Emendate::DatePartTagger.new(tokens: pm.tokens, options: pm.options)
     fs.tag
   end
-  
+
   describe '#tag' do
     context 'with 999' do
       it 'tags year' do

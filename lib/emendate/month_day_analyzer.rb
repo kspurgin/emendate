@@ -10,7 +10,7 @@ module Emendate
         super(m)
       end
     end
-    
+
     include DateUtils
     attr_reader :month, :day, :ambiguous
 

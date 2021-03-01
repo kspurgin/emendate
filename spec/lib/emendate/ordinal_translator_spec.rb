@@ -6,7 +6,7 @@ RSpec.describe Emendate::OrdinalTranslator do
     t = Emendate::OrdinalTranslator.new(tokens: pm.tokens, options: pm.options)
     t.translate
   end
-  
+
   describe '#translate' do
     context 'with ordinal indicator appearing after a 1 or 2 digit number' do
       it 'removes ordinal indicator' do

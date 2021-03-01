@@ -15,7 +15,7 @@ module Emendate
         super(m)
       end
     end
-    
+
     class Millennium < Emendate::DateTypes::DateType
       attr_reader :literal, :millennium_type
       def initialize(**opts)
@@ -61,7 +61,7 @@ module Emendate
         str = literal.to_s[0..-4]
         @literal = str.to_i
       end
-      
+
       def allowed_millennium_types
         %i[plural uncertainty_digits]
       end

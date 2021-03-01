@@ -15,7 +15,7 @@ module Emendate
         super(m)
       end
     end
-    
+
     class Century < Emendate::DateTypes::DateType
       attr_reader :literal, :century_type
       def initialize(**opts)
@@ -52,7 +52,7 @@ module Emendate
       def range?
         true
       end
-      
+
       private
 
       def adjusted_century

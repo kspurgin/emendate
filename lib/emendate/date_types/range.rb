@@ -2,7 +2,7 @@
 
 module Emendate
   module DateTypes
-    
+
     class Range < Emendate::DateTypes::DateType
       attr_reader :startdate, :enddate
       def initialize(**opts)

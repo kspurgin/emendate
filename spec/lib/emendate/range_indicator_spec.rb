@@ -7,7 +7,7 @@ RSpec.describe Emendate::RangeIndicator do
     ri = Emendate::RangeIndicator.new(tokens: pm.tokens, options: pm.options)
     ri.indicate
   end
-  
+
   describe '#indicate' do
     context 'without range present (circa 202127)' do
       before(:all){ @i = indicate('circa 202127') }

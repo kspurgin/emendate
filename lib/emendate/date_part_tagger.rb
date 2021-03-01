@@ -23,7 +23,7 @@ module Emendate
         super(msg)
       end
     end
-    
+
     attr_reader :options, :result, :taggable
     include DateUtils
     def initialize(tokens:, options: {})
@@ -90,7 +90,7 @@ module Emendate
     end
 
     # types = Array with 2 Segment.type symbols
-    # category = String that gets prepended to "date_part" to call DatePart building method 
+    # category = String that gets prepended to "date_part" to call DatePart building method
     def collapse_pair(types_to_collapse, target_type)
       sources = result.extract(*types_to_collapse).segments
       replace_multi_with_date_part_type(sources: sources, date_part_type: target_type)
@@ -108,7 +108,7 @@ module Emendate
                              literal: sources[0].literal,
                              source_tokens: sources)
     end
-    
+
     def replace_multi_with_date_part_type(sources:, date_part_type:)
       new_date_part = new_date_part(date_part_type, sources)
       x_ind = result.find_index(sources[0])
@@ -156,7 +156,7 @@ module Emendate
           result.warnings << "Interpreting pluralized year as century"
         when 3
           collapse_pair(%i[year letter_s], :millennium)
-        result.warnings << "Interpreting pluralized year as millennium"          
+        result.warnings << "Interpreting pluralized year as millennium"
         when 4
           collapse_pair(%i[year letter_s], :millennium)
           result.warnings << "Interpreting pluralized year as millennium"
@@ -182,7 +182,7 @@ module Emendate
         replace_x_with_given_segment(x: y, segment: new)
       end
     end
-    
+
     def tag_numeric_month_day_year
       n1, h1, n2, h2, y = result.extract(%i[number1or2 hyphen number1or2 hyphen year]).segments
       begin
@@ -218,7 +218,7 @@ module Emendate
       replace_x_with_date_part_type(x: m, date_part_type: :month)
       replace_x_with_date_part_type(x: d, date_part_type: :day)
     end
-    
+
     def tag_year_plus_numeric_month_or_season
       y1, h1, m1, h2, y2, h3, m2 = result.extract(%i[year hyphen number1or2 hyphen year hyphen number1or2]).segments
       opt = options.dup
@@ -230,7 +230,7 @@ module Emendate
       end
       hyphen_to_range_indicator(source: h2)
     end
-    
+
     def tag_year_plus_numeric_month_season_or_year
       y, h, m = result.extract(%i[year hyphen number1or2]).segments
       analyzer = Emendate::MonthSeasonYearAnalyzer.new(m, y, options)
@@ -248,7 +248,7 @@ module Emendate
       h = result.extract(%i[hyphen]).segments[0]
       hyphen_to_range_indicator(source: h)
     end
-    
+
     def tag_years
       result.each do |t|
         next unless t.type == :number4

@@ -7,7 +7,7 @@ RSpec.describe Emendate::DateSegmenter do
     ds = Emendate::DateSegmenter.new(tokens: pm.tokens, options: pm.options)
     ds.segment
   end
-       
+
   describe '#segmentation' do
     context 'with circa 202127' do
       before(:all){ @s = segment('circa 202127') }

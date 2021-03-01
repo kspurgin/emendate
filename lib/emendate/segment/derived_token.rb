@@ -6,9 +6,9 @@ require 'emendate/segment/derived_segment'
 module Emendate
   class DerivedToken < Emendate::Token
     include DerivedSegment
-    
+
     private
-    
+
     def post_initialize(opts)
       derive(opts)
 

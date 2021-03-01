@@ -30,7 +30,7 @@ RSpec.describe Emendate::SegmentSet do
         end
       end
     end
-  
+
   describe '#map' do
     context 'when results of mapping are kinds of Segments' do
       it 'returns kind of SegmentSet' do

@@ -10,7 +10,7 @@ module Emendate
     #     super(m)
     #   end
     # end
-    
+
     include DateUtils
     attr_reader :n, :year, :options, :result, :ambiguous
 
@@ -53,7 +53,7 @@ module Emendate
                              literal: lexeme.to_i,
                              source_tokens: [n])
     end
-    
+
     def expand_year
       endpt = year.lexeme.length - n.lexeme.length - 1
       prefix = year.lexeme[0..endpt]

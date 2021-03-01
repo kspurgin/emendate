@@ -8,7 +8,7 @@ RSpec.describe Emendate::Result do
       expect(res.warnings).to include(w)
     end
   end
-  
+
   describe '#to_h' do
     it 'returns hash' do
       res = Emendate.parse('mid 1800s to 2/23/21').to_h
