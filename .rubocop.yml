@@ -8,3 +8,5 @@ AllCops:
 Layout/LineLength:
   Exclude:
     - spec/helpers.rb
+RSpec/InstanceVariable:
+  Enabled: false
