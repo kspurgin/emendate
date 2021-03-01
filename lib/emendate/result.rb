@@ -11,6 +11,7 @@ module Emendate
       @errors = resulthash[:errors]
       @warnings = resulthash[:warnings]
       @dates = resulthash[:result]
+      verify_ranges
     end
 
     def to_h
@@ -24,6 +25,15 @@ module Emendate
 
     def to_json
       to_h.to_json
+    end
+
+    private
+
+    def verify_ranges
+      @dates.map(&:valid_range?).each_with_index do |vr, i|
+        next if vr == true
+        @warnings << "Date ##{i + 1} is not a valid date range"
+      end
     end
   end
 end
