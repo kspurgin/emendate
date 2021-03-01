@@ -6,7 +6,7 @@ RSpec.describe Emendate::SegmentSet do
     end
 
     describe '#extract' do
-      context 'given subset' do
+      context 'when given subset' do
         it 'extracts subset' do
           types = [:b, :c]
           res = @set.extract(types)
@@ -14,7 +14,7 @@ RSpec.describe Emendate::SegmentSet do
         end
       end
 
-      context 'given full match' do
+      context 'when given full match' do
         it 'returns copy of whole set' do
           types = %i[a b c d]
           res = @set.extract(types)
@@ -22,7 +22,7 @@ RSpec.describe Emendate::SegmentSet do
         end
       end
 
-      context 'given more types than in set' do
+      context 'when given more types than in set' do
         it 'returns empty set' do
           types = %i[a b c d e]
           res = @set.extract(types)
@@ -38,7 +38,7 @@ RSpec.describe Emendate::SegmentSet do
         expect(res).to be_a_kind_of(Emendate::SegmentSet)
       end
     end
-    context 'otherwise' do
+    context 'when results of mapping are not kinds of Segments' do
       it 'returns Array' do
         expect(@set.types).to be_a(Array)
       end

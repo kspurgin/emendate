@@ -8,8 +8,8 @@ RSpec.describe Emendate::CertaintyChecker do
   end
 
   describe '#check' do
-    context '[circa 2002?]' do
-      context 'default square bracket handling' do
+    context 'with [circa 2002?]' do
+      context 'with default square bracket handling' do
         before(:all) do
           @c = check('[circa 2002?]')
         end
@@ -25,7 +25,7 @@ RSpec.describe Emendate::CertaintyChecker do
       end
     end
 
-    context 'c. 2002' do
+    context 'with c. 2002' do
       before(:all) do
         @c = check('c. 2002')
       end
@@ -37,7 +37,7 @@ RSpec.describe Emendate::CertaintyChecker do
       end
     end
 
-    context '2004-06~' do
+    context 'with 2004-06~' do
       before(:all) do
         @c = check('2004-06~')
       end
@@ -49,7 +49,7 @@ RSpec.describe Emendate::CertaintyChecker do
       end
     end
 
-    context '2004-06%' do
+    context 'with 2004-06%' do
       before(:all) do
         @c = check('2004-06%')
       end
@@ -61,7 +61,7 @@ RSpec.describe Emendate::CertaintyChecker do
       end
     end
 
-    context '2004-06~-11' do
+    context 'with 2004-06~-11' do
       before(:all) do
         @c = check('2004-06~-11')
       end
@@ -73,7 +73,7 @@ RSpec.describe Emendate::CertaintyChecker do
       end      
     end
 
-    context '~2004-06-%11' do
+    context 'with ~2004-06-%11' do
       before(:all) do
         @c = check('~2004-06-%11')
       end
@@ -88,7 +88,7 @@ RSpec.describe Emendate::CertaintyChecker do
       end
     end
     
-    context '[1997]-[1998]' do
+    context 'with [1997]-[1998]' do
       before(:all) do
         @c = check('[1997]-[1998]')
       end
@@ -101,8 +101,8 @@ RSpec.describe Emendate::CertaintyChecker do
       end
     end
 
-    context '[1667,1668,1670..1672]' do
-      context 'edtf handling for square brackets' do
+    context 'with [1667,1668,1670..1672]' do
+      context 'with edtf handling for square brackets' do
         before(:all) do
           @c = check('[1667,1668,1670..1672]', square_bracket_interpretation: :edtf_set)
         end
@@ -116,7 +116,7 @@ RSpec.describe Emendate::CertaintyChecker do
       end
     end
 
-    context '{1667,1668,1670..1672}' do
+    context 'with {1667,1668,1670..1672}' do
       before(:all) do
         @c = check('{1667,1668,1670..1672}')
       end

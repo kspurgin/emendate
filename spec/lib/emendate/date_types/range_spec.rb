@@ -6,7 +6,7 @@ RSpec.describe Emendate::DateTypes::Range do
     pm.segmented_dates
   end
 
-  context '1900 to 1985' do
+  context 'with 1900 to 1985' do
     before(:all) do
       res = prep('1900 to 1985')
       @r = Emendate::DateTypes::Range.new(startdate: res[0],

@@ -8,21 +8,21 @@ RSpec.describe Emendate::OrdinalTranslator do
   end
   
   describe '#translate' do
-    context 'when ordinal indicator appears after a 1 or 2 digit number' do
+    context 'with ordinal indicator appearing after a 1 or 2 digit number' do
       it 'removes ordinal indicator' do
         result = translate('20th').type_string
         expect(result).to eq('number1or2')
       end
     end
 
-    context 'when no ordinal indicator' do
+    context 'with no ordinal indicator' do
       it 'returns original token set' do
         result = translate('2000').type_string
         expect(result).to eq('number4')
       end
     end
 
-    context 'when ordinal indicator is first element' do
+    context 'with ordinal indicator as first element' do
       before(:all) do
         @t = translate('th20')
       end
@@ -35,7 +35,7 @@ RSpec.describe Emendate::OrdinalTranslator do
       end
     end
 
-    context 'when ordinal indicator appears after NOT a 1 or 2 digit number' do
+    context 'with ordinal indicator appearing after NOT a 1 or 2 digit number' do
       before(:all) do
         @t = translate('22nd to 9999th')
       end

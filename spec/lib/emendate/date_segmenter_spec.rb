@@ -4,13 +4,12 @@ RSpec.describe Emendate::DateSegmenter do
 
   def segment(str, options = {})
     pm = Emendate.prep_for(str, :segment_dates, options)
-#    binding.pry
     ds = Emendate::DateSegmenter.new(tokens: pm.tokens, options: pm.options)
     ds.segment
   end
        
   describe '#segmentation' do
-    context 'circa 202127' do
+    context 'with circa 202127' do
       before(:all){ @s = segment('circa 202127') }
       it 'returns year_date_type' do
         expect(@s.type_string).to eq('year_date_type')
@@ -26,7 +25,7 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
-    context 'circa 202002' do
+    context 'with circa 202002' do
       before(:all){ @s = segment('circa 202002') }
       it 'returns expected' do
         e = %i[yearmonth_date_type]
@@ -43,7 +42,7 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
-    context '20200229' do
+    context 'with 20200229' do
       before(:all){ @s = segment('20200229') }
       it 'returns ymd' do
         e = 'yearmonthday_date_type'
@@ -60,7 +59,7 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
-    context '10000007' do
+    context 'with 10000007' do
       before(:all){ @s = segment('10000007') }
       it 'returns year' do
         expect(@s.type_string).to eq('year_date_type')
@@ -73,7 +72,7 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
-    context '20200229-20200304' do
+    context 'with 20200229-20200304' do
       it 'returns yearmonthday - yearmonthday' do
         s = segment('20200229-20200304')
         e = 'yearmonthday_date_type range_indicator yearmonthday_date_type'
@@ -81,14 +80,14 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
-    context 'after 1815' do
+    context 'with after 1815' do
       before(:all){ @s = segment('after 1815') }
       it 'returns expected' do
         expect(@s.type_string).to eq('year_date_type')
       end
     end
 
-    context 'early 19th c.' do
+    context 'with early 19th c.' do
       before(:all){ @s = segment('early 19th c.') }
       it 'returns century_date_type' do
         expect(@s.type_string).to eq('century_date_type')
@@ -98,7 +97,7 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
-    context '17th or 18th century' do
+    context 'with 17th or 18th century' do
       it 'returns expected' do
         s = segment('17th or 18th century')
         e = %i[century_date_type or century_date_type]
@@ -106,7 +105,7 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
-    context 'late 19th to early 20th century' do
+    context 'with late 19th to early 20th century' do
       before(:all){ @s = segment('late 19th to early 20th century') }
       it 'returns expected' do
         expect(@s.type_string).to eq('century_date_type range_indicator century_date_type')
@@ -117,7 +116,7 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
-    context '2-15-20' do
+    context 'with 2-15-20' do
       it 'returns yearmonthday_date_type' do
         s = segment('2-15-20')
         e = %i[yearmonthday_date_type]
@@ -125,7 +124,7 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
-    context '2 December 2020, 2020/02/15' do
+    context 'with 2 December 2020, 2020/02/15' do
       it 'returns yearmonthday_date_type comma yearmonthday_datetype' do
         s = segment('2 December 2020, 2020/02/15')
         e = %i[yearmonthday_date_type comma yearmonthday_date_type]
@@ -133,7 +132,7 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
-    context 'Mar 20' do
+    context 'with Mar 20' do
       it 'returns yearmonth_date_type' do
         s = segment('Mar 20')
         e = %i[yearmonth_date_type]
@@ -141,7 +140,7 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
-    context '1990s 199X' do
+    context 'with 1990s 199X' do
       before(:all){ @s = segment('1990s 199X') }
       it 'returns decade_date_types' do
         e = %i[decade_date_type decade_date_type]
@@ -153,7 +152,7 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
-    context '1900s (as century), 19th century, 19uu' do
+    context 'with 1900s (as century), 19th century, 19uu' do
       before(:all) do
         @s = segment('1900s 19th century 19uu', pluralized_date_interpretation: :broad)
       end
@@ -170,7 +169,7 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
-    context '1972 - 1999' do
+    context 'with 1972 - 1999' do
       before(:all){ @s = segment('1972 - 1999') }
       it 'returns: year_date_type range_indicator year_date_type' do
         expect(@s.type_string).to eq('year_date_type range_indicator year_date_type')

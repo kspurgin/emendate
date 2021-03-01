@@ -5,7 +5,7 @@ RSpec.describe Emendate::NumberToken do
     @loc = Location.new(2, 5)
   end
 
-  context 'allowed length' do
+  context 'with an allowed length' do
     before(:all) do
       @t = Emendate::NumberToken.new(type: :number, lexeme: '12', location: @loc)
     end
@@ -20,7 +20,7 @@ RSpec.describe Emendate::NumberToken do
     end
   end
 
-  context 'disallowed length' do
+  context 'with a disallowed length' do
     before(:all) do
       @t = Emendate::NumberToken.new(type: :number, lexeme: '55555', location: @loc)
     end
@@ -35,7 +35,7 @@ RSpec.describe Emendate::NumberToken do
     end
   end
 
-  context 'created with non-number type' do
+  context 'when created with non-number type' do
     it 'raises error' do
       expect{
         Emendate::NumberToken.new(type: :notnumber, lexeme: '1', location: @loc)
@@ -43,7 +43,7 @@ RSpec.describe Emendate::NumberToken do
     end
   end
 
-  context 'created with non-number lexeme' do
+  context 'when created with non-number lexeme' do
     it 'raises error' do
       expect{
         Emendate::NumberToken.new(type: :number, lexeme: '1a', location: @loc)

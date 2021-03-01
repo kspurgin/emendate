@@ -1,19 +1,19 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::DateTypes::Century do
-  context 'called without century_type' do
+  context 'when called without century_type' do
     it 'raises error' do
       expect{ Emendate::DateTypes::Century.new(literal: 19) }.to raise_error(Emendate::DateTypes::MissingCenturyTypeError)
     end
   end
 
-  context 'called with unsupported century_type value' do
+  context 'when called with unsupported century_type value' do
     it 'raises error' do
       expect{ Emendate::DateTypes::Century.new(literal: 19, century_type: :misc) }.to raise_error(Emendate::DateTypes::CenturyTypeValueError)
     end
   end
   
-  context 'textual century name (19th)' do
+  context 'with textual century name (19th)' do
     before(:all) do
       @dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :name)
     end
@@ -23,24 +23,24 @@ RSpec.describe Emendate::DateTypes::Century do
     end
     
     describe '#earliest' do
-      context 'no partial_indicator' do
+      context 'without partial_indicator' do
         it 'returns 1801-01-01' do
           expect(@dt.earliest).to eq(Date.new(1801, 1, 1))
         end
       end
-      context 'early' do
+      context 'with early' do
         it 'returns 1801-01-01' do
           dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :name, partial_indicator: 'early')
           expect(dt.earliest).to eq(Date.new(1801, 1, 1))
         end
       end
-      context 'mid' do
+      context 'with mid' do
         it 'returns 1834-01-01' do
           dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :name, partial_indicator: 'mid')
           expect(dt.earliest).to eq(Date.new(1834, 1, 1))
         end
       end
-      context 'late' do
+      context 'with late' do
         it 'returns 1867-01-01' do
           dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :name, partial_indicator: 'late')
           expect(dt.earliest).to eq(Date.new(1867, 1, 1))
@@ -49,24 +49,24 @@ RSpec.describe Emendate::DateTypes::Century do
     end
 
     describe '#latest' do
-      context 'no partial_indicator' do
+      context 'without partial_indicator' do
         it 'returns 1900-12-31' do
           expect(@dt.latest).to eq(Date.new(1900, 12, 31))
         end
       end
-      context 'early' do
+      context 'with early' do
         it 'returns 1834-12-31' do
           dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :name, partial_indicator: 'early')
           expect(dt.latest).to eq(Date.new(1834, 12, 31))
         end
       end
-      context 'mid' do
+      context 'with mid' do
         it 'returns 1867-12-31' do
           dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :name, partial_indicator: 'mid')
           expect(dt.latest).to eq(Date.new(1867, 12, 31))
         end
       end
-      context 'late' do
+      context 'with late' do
         it 'returns 1900-12-31' do
           dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :name, partial_indicator: 'late')
           expect(dt.latest).to eq(Date.new(1900, 12, 31))
@@ -81,30 +81,30 @@ RSpec.describe Emendate::DateTypes::Century do
     end
   end
 
-  context 'plural century (1900s)' do
+  context 'with plural century (1900s)' do
     before(:all) do
       @dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :plural)
     end
 
     describe '#earliest' do
-      context 'no partial_indicator' do
+      context 'without partial_indicator' do
         it 'returns 1900-01-01' do
           expect(@dt.earliest).to eq(Date.new(1900, 1, 1))
         end
       end
-      context 'early' do
+      context 'with early' do
         it 'returns 1900-01-01' do
           dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :plural, partial_indicator: 'early')
           expect(dt.earliest).to eq(Date.new(1900, 1, 1))
         end
       end
-      context 'mid' do
+      context 'with mid' do
         it 'returns 1933-01-01' do
           dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :plural, partial_indicator: 'mid')
           expect(dt.earliest).to eq(Date.new(1933, 1, 1))
         end
       end
-      context 'late' do
+      context 'with late' do
         it 'returns 1966-01-01' do
           dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :plural, partial_indicator: 'late')
           expect(dt.earliest).to eq(Date.new(1966, 1, 1))
@@ -113,24 +113,24 @@ RSpec.describe Emendate::DateTypes::Century do
     end
 
     describe '#latest' do
-      context 'no partial_indicator' do
+      context 'without partial_indicator' do
         it 'returns 1999-12-31' do
           expect(@dt.latest).to eq(Date.new(1999, 12, 31))
         end
       end
-      context 'early' do
+      context 'with early' do
         it 'returns 1933-12-31' do
           dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :plural, partial_indicator: 'early')
           expect(dt.latest).to eq(Date.new(1933, 12, 31))
         end
       end
-      context 'mid' do
+      context 'with mid' do
         it 'returns 1966-12-31' do
           dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :plural, partial_indicator: 'mid')
           expect(dt.latest).to eq(Date.new(1966, 12, 31))
         end
       end
-      context 'late' do
+      context 'with late' do
         it 'returns 1999-12-31' do
           dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :plural, partial_indicator: 'late')
           expect(dt.latest).to eq(Date.new(1999, 12, 31))
@@ -145,7 +145,7 @@ RSpec.describe Emendate::DateTypes::Century do
     end
   end
 
-  context 'uncertainty_digit century (19uu)' do
+  context 'with uncertainty_digit century (19uu)' do
     before(:all) do
       @dt = Emendate::DateTypes::Century.new(literal: 19, century_type: :uncertainty_digits)
     end

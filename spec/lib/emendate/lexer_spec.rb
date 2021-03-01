@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::Lexer do
-  context 'unknown token' do
+  context 'with unknown token' do
     it 'raises error' do
       orig = '@'
       expected = [:unknown]
@@ -9,7 +9,7 @@ RSpec.describe Emendate::Lexer do
     end
   end
   
-  context 'comma' do
+  context 'with comma' do
     it 'produces expected tokens' do
       orig = ','
       expected = [:comma]
@@ -18,8 +18,8 @@ RSpec.describe Emendate::Lexer do
     end
   end
 
-  context 'dot' do
-    context 'single dot' do
+  context 'with dot' do
+    context 'with single dot' do
       it 'produces expected tokens' do
         orig = 'Sep. 1'
         expected = %i[month_abbr_alpha number1or2]
@@ -27,7 +27,7 @@ RSpec.describe Emendate::Lexer do
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
     end
-    context 'double dot' do
+    context 'with double dot' do
       it 'produces expected tokens' do
         orig = '{..1984'
         expected = %i[curly_bracket_open double_dot number4]
@@ -35,7 +35,7 @@ RSpec.describe Emendate::Lexer do
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
     end
-    context 'multi dot' do
+    context 'with multi dot' do
       it 'produces expected tokens' do
         orig = '{...1984'
         expected = %i[curly_bracket_open unknown number4]
@@ -45,7 +45,7 @@ RSpec.describe Emendate::Lexer do
     end
   end
 
-  context 'hyphen' do
+  context 'with hyphen' do
     it 'produces expected tokens' do
       orig = '- –'
       expected = [:hyphen, :hyphen]
@@ -54,7 +54,7 @@ RSpec.describe Emendate::Lexer do
     end
   end
 
-  context 'question' do
+  context 'with question' do
     it 'produces expected tokens' do
       orig = '?'
       expected = [:question]
@@ -63,7 +63,7 @@ RSpec.describe Emendate::Lexer do
     end
   end
   
-  context 'slash' do
+  context 'with slash' do
     it 'produces expected tokens' do
       orig = '/'
       expected = [:slash]
@@ -72,7 +72,7 @@ RSpec.describe Emendate::Lexer do
     end
   end
 
-  context 'square brackets' do
+  context 'with square brackets' do
     it 'produces expected tokens' do
       orig = '[]'
       expected = [:square_bracket_open, :square_bracket_close]
@@ -81,7 +81,7 @@ RSpec.describe Emendate::Lexer do
     end
   end
 
-  context 'numbers' do
+  context 'with numbers' do
     it 'produces expected tokens' do
       orig = '1 22 333 4444'
       expected = [:number1or2, :number1or2, :number3, :number4]
@@ -90,8 +90,8 @@ RSpec.describe Emendate::Lexer do
     end
   end
 
-  context 'alpha string types' do
-    context 'ordinal' do
+  context 'with alpha string types' do
+    context 'with ordinal' do
       it 'produces expected tokens' do
         orig = 'th'
         expected = [:ordinal_indicator]
@@ -100,7 +100,7 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 'alpha month' do
+    context 'with alpha month' do
       it 'produces expected tokens' do
         orig = 'August Jan'
         expected = [:month_alpha, :month_abbr_alpha]
@@ -109,7 +109,7 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 'alpha day of week' do
+    context 'with alpha day of week' do
       it 'produces expected tokens' do
         orig = 'Mon Tuesday'
         expected = [:day_of_week_alpha, :day_of_week_alpha]
@@ -118,7 +118,7 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 'uncertainty digits -- letters in place of numbers to indicate uncertainty' do
+    context 'with uncertainty digits -- letters in place of numbers to indicate uncertainty' do
       it 'produces expected tokens' do
         orig = 'x xx uuu'
         expected = [:uncertainty_digits, :uncertainty_digits, :uncertainty_digits]
@@ -127,7 +127,7 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 'special single letters' do
+    context 'with special single letters' do
       it 'produces expected tokens' do
         # note: c isn't first in string or it'd get normalized to circa
         orig = 'e c s t y z'
@@ -137,7 +137,7 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 'century' do
+    context 'with century' do
       it 'produces expected tokens' do
         orig = 'cent century'
         expected = [:century, :century]
@@ -146,7 +146,7 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 'circa' do
+    context 'with circa' do
       it 'produces expected tokens' do
         orig = 'c ca circa'
         expected = [:approximate, :approximate, :approximate]
@@ -155,7 +155,7 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 'unknown date' do
+    context 'with unknown date' do
       it 'unknown produces expected tokens' do
         orig = 'unknown'
         expected = [:unknown_date]
@@ -176,7 +176,7 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 'or (alternate date indicator)' do
+    context 'with or (alternate date indicator)' do
       it 'produces expected tokens' do
         orig = 'or'
         expected = [:or]
@@ -185,7 +185,7 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 'eras' do
+    context 'with eras' do
       before(:all) do
         orig = 'b.c.e  bp c.e.'
         @lexer = Emendate.lex(orig)
@@ -196,7 +196,7 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 'early/late/mid' do
+    context 'with early/late/mid' do
       it 'produces expected tokens' do
         orig = 'early late middle mid'
         expected = [:partial, :partial, :partial, :partial]
@@ -205,7 +205,7 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 'before/after' do
+    context 'with before/after' do
       it 'produces expected tokens' do
         orig = 'before pre after post'
         expected = [:before, :before, :after, :after]
@@ -214,7 +214,7 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 'and' do
+    context 'with and' do
       it 'produces expected tokens' do
         orig = '& and'
         expected = [:and, :and]
@@ -223,7 +223,7 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 'seasons' do
+    context 'with seasons' do
       it 'produces expected tokens' do
         orig = 'Spring Winter Fall'
         expected = [:season, :season, :season]
@@ -232,7 +232,7 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 'edtf-specific punctuation' do
+    context 'with edtf-specific punctuation' do
       it 'produces expected tokens' do
         orig = '+%~{}:'
         expected = %i[plus percent tilde curly_bracket_open curly_bracket_close colon]
@@ -241,7 +241,7 @@ RSpec.describe Emendate::Lexer do
       end
     end
 
-    context 'range indicator' do
+    context 'with range indicator' do
       it 'produces expected tokens' do
         orig = 'to'
         expected = [:range_indicator]

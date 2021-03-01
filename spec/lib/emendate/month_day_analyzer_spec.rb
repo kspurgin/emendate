@@ -8,32 +8,32 @@ RSpec.describe Emendate::MonthDayAnalyzer do
     mda.month.nil? ? 'ambiguous' : "#{mda.month.lexeme} #{mda.day.lexeme}"
   end
   
-  context 'unambiguous month day - 12-31-2020' do
+  context 'with unambiguous month day - 12-31-2020' do
     it 'returns expected' do
       expect(prep('12-31-2001')).to eq('12 31')
     end
   end
 
-  context 'unambiguous day month - 31-12-2020' do
+  context 'with unambiguous day month - 31-12-2020' do
     it 'returns expected' do
       expect(prep('31-12-2001')).to eq('12 31')
     end
   end
 
-  context 'ambiguous - 02-03-2020' do
-    context 'default (month day)' do
+  context 'with ambiguous - 02-03-2020' do
+    context 'when default option (month day)' do
       it 'Feb 3' do
         expect(prep('02-03-2020')).to eq('02 03')
       end
     end
 
-    context 'day month' do
+    context 'when as_day_month' do
       it 'Feb 3' do
         expect(prep('02-03-2020', :as_day_month)).to eq('03 02')
       end
     end
 
-    context 'invalid - 31-29-2020' do
+    context 'with invalid - 31-29-2020' do
       it 'raises error' do
         expect{ prep('31-29-2001') }.to raise_error(Emendate::MonthDayAnalyzer::MonthDayError)
       end

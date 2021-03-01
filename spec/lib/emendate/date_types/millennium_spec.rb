@@ -1,19 +1,19 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::DateTypes::Millennium do
-  context 'called without millennium_type' do
+  context 'when called without millennium_type' do
     it 'raises error' do
       expect{ Emendate::DateTypes::Millennium.new(literal: 1000) }.to raise_error(Emendate::DateTypes::MissingMillenniumTypeError)
     end
   end
 
-  context 'called with unsupported millennium_type value' do
+  context 'when called with unsupported millennium_type value' do
     it 'raises error' do
       expect{ Emendate::DateTypes::Millennium.new(literal: 0000, millennium_type: :misc) }.to raise_error(Emendate::DateTypes::MillenniumTypeValueError)
     end
   end
   
-  context 'plural millennium (2000s)' do
+  context 'with plural millennium (2000s)' do
     before(:all) do
       @dt = Emendate::DateTypes::Millennium.new(literal: 2000, millennium_type: :plural)
     end
@@ -37,7 +37,7 @@ RSpec.describe Emendate::DateTypes::Millennium do
     end
   end
 
-  context 'uncertainty_digit millennium (1XXX)' do
+  context 'with uncertainty_digit millennium (1XXX)' do
     before(:all) do
       @dt = Emendate::DateTypes::Millennium.new(literal: 1, millennium_type: :uncertainty_digits)
     end

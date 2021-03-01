@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::DateTypes::YearMonth do
-  context 'created with month and year' do
+  context 'when created with month and year' do
     before(:all) do
       @dt = Emendate::DateTypes::YearMonth.new(year: '2020', month: 2)
     end
@@ -40,7 +40,7 @@ RSpec.describe Emendate::DateTypes::YearMonth do
     end
   end
 
-  context 'created with literal' do
+  context 'when created with literal' do
     before(:all) do
       @dt = Emendate::DateTypes::YearMonth.new(literal: 202002)
     end

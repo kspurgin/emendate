@@ -1,19 +1,19 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::DateTypes::Decade do
-  context 'called without decade_type' do
+  context 'when called without decade_type' do
     it 'raises error' do
       expect{ Emendate::DateTypes::Decade.new(literal: 199) }.to raise_error(Emendate::DateTypes::MissingDecadeTypeError)
     end
   end
 
-  context 'called with unsupported decade_type value' do
+  context 'when called with unsupported decade_type value' do
     it 'raises error' do
       expect{ Emendate::DateTypes::Decade.new(literal: 199, decade_type: :misc) }.to raise_error(Emendate::DateTypes::DecadeTypeValueError)
     end
   end
   
-  context 'plural decade (1990s)' do
+  context 'with plural decade (1990s)' do
     before(:all) do
       @dt = Emendate::DateTypes::Decade.new(literal: 1990, decade_type: :plural)
     end
@@ -37,7 +37,7 @@ RSpec.describe Emendate::DateTypes::Decade do
     end
   end
 
-  context 'plural decade (1900s)' do
+  context 'with plural decade (1900s)' do
     before(:all) do
       @dt = Emendate::DateTypes::Decade.new(literal: 1900, decade_type: :plural)
     end
@@ -61,7 +61,7 @@ RSpec.describe Emendate::DateTypes::Decade do
     end
   end
 
-    context 'plural decade (2000s)' do
+    context 'with plural decade (2000s)' do
     before(:all) do
       @dt = Emendate::DateTypes::Decade.new(literal: 2000, decade_type: :plural)
     end
@@ -85,7 +85,7 @@ RSpec.describe Emendate::DateTypes::Decade do
     end
     end
 
-    context 'plural decade (200s)' do
+    context 'with plural decade (200s)' do
       before(:all) do
         @dt = Emendate::DateTypes::Decade.new(literal: 200, decade_type: :plural)
       end
@@ -109,7 +109,7 @@ RSpec.describe Emendate::DateTypes::Decade do
       end
     end
 
-  context 'uncertainty_digit decade (199u)' do
+  context 'with uncertainty_digit decade (199u)' do
     before(:all) do
       @dt = Emendate::DateTypes::Decade.new(literal: 199, decade_type: :uncertainty_digits)
     end
@@ -133,7 +133,7 @@ RSpec.describe Emendate::DateTypes::Decade do
     end
   end
 
-  context 'early 1990s' do
+  context 'with early 1990s' do
     before(:all) do
       @dt = Emendate::DateTypes::Decade.new(literal: 1990, decade_type: :plural, partial_indicator: 'early')
     end
@@ -157,7 +157,7 @@ RSpec.describe Emendate::DateTypes::Decade do
     end
   end
 
-  context 'mid-1990s' do
+  context 'with mid-1990s' do
     before(:all) do
       @dt = Emendate::DateTypes::Decade.new(literal: 1990, decade_type: :plural, partial_indicator: 'mid')
     end
@@ -181,7 +181,7 @@ RSpec.describe Emendate::DateTypes::Decade do
     end
   end
 
-  context 'late 1990s' do
+  context 'with late 1990s' do
     before(:all) do
       @dt = Emendate::DateTypes::Decade.new(literal: 1990, decade_type: :plural, partial_indicator: 'late')
     end

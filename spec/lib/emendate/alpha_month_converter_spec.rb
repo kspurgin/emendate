@@ -8,7 +8,7 @@ RSpec.describe Emendate::AlphaMonthConverter do
   end
 
   describe '#tag' do
-    context 'month abbreviation' do
+    context 'with month abbreviation' do
       it 'tags as expected' do
         c = convert('Jan 2021')
         result = "#{c.first.type} #{c.first.lexeme}"
@@ -16,7 +16,7 @@ RSpec.describe Emendate::AlphaMonthConverter do
       end
     end
 
-    context 'month full' do
+    context 'with month full' do
       it 'tags as expected' do
         c = convert('October 2021')
         result = "#{c.first.type} #{c.first.lexeme}"
