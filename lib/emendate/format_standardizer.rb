@@ -173,7 +173,8 @@ module Emendate
       when /.*letter_t number1or2 colon number1or2 colon number1or2 letter_z.*/
         result.extract(%i[letter_t number1or2 colon number1or2 colon number1or2 letter_z]).segments
       when /.*letter_t number1or2 colon number1or2 colon number1or2 plus number1or2 colon number1or2.*/
-        result.extract(%i[letter_t number1or2 colon number1or2 colon number1or2 plus number1or2 colon number1or2]).segments
+        pattern = %i[letter_t number1or2 colon number1or2 colon number1or2 plus number1or2 colon number1or2]
+        result.extract(pattern).segments
         # the following must come last as it is a substring of the previous
       when /.*letter_t number1or2 colon number1or2 colon number1or2.*/
         result.extract(%i[letter_t number1or2 colon number1or2 colon number1or2]).segments

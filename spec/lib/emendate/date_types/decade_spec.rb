@@ -3,13 +3,15 @@ require 'spec_helper'
 RSpec.describe Emendate::DateTypes::Decade do
   context 'when called without decade_type' do
     it 'raises error' do
-      expect{ Emendate::DateTypes::Decade.new(literal: 199) }.to raise_error(Emendate::DateTypes::MissingDecadeTypeError)
+      err = Emendate::DateTypes::MissingDecadeTypeError
+      expect{Emendate::DateTypes::Decade.new(literal: 199) }.to raise_error(err)
     end
   end
 
   context 'when called with unsupported decade_type value' do
     it 'raises error' do
-      expect{ Emendate::DateTypes::Decade.new(literal: 199, decade_type: :misc) }.to raise_error(Emendate::DateTypes::DecadeTypeValueError)
+      err = Emendate::DateTypes::DecadeTypeValueError
+      expect{Emendate::DateTypes::Decade.new(literal: 199, decade_type: :misc) }.to raise_error(err)
     end
   end
 

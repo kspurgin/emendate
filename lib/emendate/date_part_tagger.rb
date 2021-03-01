@@ -241,7 +241,9 @@ module Emendate
       else
         result.delete(h)
       end
-      result.warnings << "Ambiguous year + month/season/year treated #{options.ambiguous_month_year}" if analyzer.ambiguous
+      if analyzer.ambiguous
+        result.warnings << "Ambiguous year + month/season/year treated #{options.ambiguous_month_year}"
+      end
     end
 
     def tag_hyphen_as_range_indicator

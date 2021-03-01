@@ -116,9 +116,13 @@ module Emendate
     def parse_decade_date_part
       decade = working[0]
       if s_date?(decade)
-        result << Emendate::DateTypes::Decade.new(literal: decade.literal, decade_type: :plural, children: [decade])
+        result << Emendate::DateTypes::Decade.new(literal: decade.literal,
+                                                  decade_type: :plural,
+                                                  children: [decade])
       elsif uncertainty_date?(decade)
-        result << Emendate::DateTypes::Decade.new(literal: decade.literal, decade_type: :uncertainty_digits, children: [decade])
+        result << Emendate::DateTypes::Decade.new(literal: decade.literal,
+                                                  decade_type: :uncertainty_digits, 
+                                                  children: [decade])
       end
       working.shift
       recursive_parse
@@ -135,9 +139,13 @@ module Emendate
     def parse_millennium_date_part
       millennium = working[0]
       if s_date?(millennium)
-        result << Emendate::DateTypes::Millennium.new(literal: millennium.literal, millennium_type: :plural, children: [millennium])
+        result << Emendate::DateTypes::Millennium.new(literal: millennium.literal,
+                                                      millennium_type: :plural, 
+                                                      children: [millennium])
       elsif uncertainty_date?(millennium)
-        result << Emendate::DateTypes::Millennium.new(literal: millennium.literal, millennium_type: :uncertainty_digits, children: [millennium])
+        result << Emendate::DateTypes::Millennium.new(literal: millennium.literal, 
+                                                      millennium_type: :uncertainty_digits,
+                                                      children: [millennium])
       end
       working.shift
       recursive_parse

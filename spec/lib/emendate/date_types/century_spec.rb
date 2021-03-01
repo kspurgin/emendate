@@ -3,13 +3,15 @@ require 'spec_helper'
 RSpec.describe Emendate::DateTypes::Century do
   context 'when called without century_type' do
     it 'raises error' do
-      expect{ Emendate::DateTypes::Century.new(literal: 19) }.to raise_error(Emendate::DateTypes::MissingCenturyTypeError)
+      err = Emendate::DateTypes::MissingCenturyTypeError
+      expect{Emendate::DateTypes::Century.new(literal: 19) }.to raise_error(err)
     end
   end
 
   context 'when called with unsupported century_type value' do
     it 'raises error' do
-      expect{ Emendate::DateTypes::Century.new(literal: 19, century_type: :misc) }.to raise_error(Emendate::DateTypes::CenturyTypeValueError)
+      err = Emendate::DateTypes::CenturyTypeValueError
+      expect{Emendate::DateTypes::Century.new(literal: 19, century_type: :misc) }.to raise_error(err)
     end
   end
 

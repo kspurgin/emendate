@@ -96,8 +96,10 @@ module Emendate
       return true if value == default[opt]
       return true if accepted_nondefaults[opt].include?(value)
       allowed = [default[opt], accepted_nondefaults[opt]].flatten
-      m = "#{value} is not an accepted value for the #{opt} option. Use one of the following instead: #{allowed.join(', ')}"
-      raise Emendate::UnknownOptionValueError.new(m)
+      m = <<~MSG
+      #{value} is not an accepted value for the #{opt} option. Use one of the following instead: #{allowed.join(', ')}
+      MSG
+      raise Emendate::UnknownOptionValueError.new(m.chomp)
     end
   end
 end
