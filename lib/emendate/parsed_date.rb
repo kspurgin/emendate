@@ -37,5 +37,13 @@ module Emendate
     def to_json
       to_h.to_json
     end
+
+    def valid_range?
+      return true unless @inclusive_range
+
+      sd = Date.parse(@date_start_full)
+      ed = Date.parse(@date_end_full)
+      sd < ed ? true : false
+    end
   end
 end

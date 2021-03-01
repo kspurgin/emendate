@@ -22,4 +22,26 @@ RSpec.describe Emendate::ParsedDate do
       expect(@res.to_json).to eq(expected)
     end
   end
+
+  describe '#valid_range?' do
+    context 'not a range' do
+      it 'returns true' do
+        expect(@res.valid_range?).to be true
+      end
+    end
+
+    context 'valid range' do
+      it 'returns true' do
+        d = Emendate.parse('mid 1800s to 2/23/21', ambiguous_year_rollback_threshold: 0, pluralized_date_interpretation: :broad).dates.first
+        expect(d.valid_range?).to be true
+      end
+    end
+
+    context 'invalid range' do
+      it 'returns false' do
+        d = Emendate.parse('mid 1900s to 2/23/21', ambiguous_year_rollback_threshold: 0, pluralized_date_interpretation: :broad).dates.first
+        expect(d.valid_range?).to be false
+      end
+    end
+  end
 end
