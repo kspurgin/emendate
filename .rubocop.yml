@@ -5,3 +5,6 @@ require:
 AllCops:
   UseCache: true
   NewCops: enable
+Layout/LineLength:
+  Exclude:
+    - spec/helpers.rb
