@@ -18,6 +18,7 @@ RSpec.describe Emendate::ShortYearHandler do
           expect(prep('21')).to eq(1921)
         end
       end
+
       context 'when current year is 2022' do
         before{ allow(Date).to receive(:today).and_return Date.new(2022,2,3) }
         it 'coerced to 2021' do
@@ -43,6 +44,7 @@ RSpec.describe Emendate::ShortYearHandler do
           expect(prep('08')).to eq(2008)
         end
       end
+
       context 'when current year is 2006' do
         before{ allow(Date).to receive(:today).and_return Date.new(2006,2,3) }
         it 'coerced to 1908' do

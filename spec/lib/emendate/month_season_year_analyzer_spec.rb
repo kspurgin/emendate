@@ -14,6 +14,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
         expect(prep('2020-03')).to eq('month 03 false')
       end
     end
+
     context 'with season as second element - 1995-28' do
       it 'returns season' do
         expect(prep('1995-28')).to eq('season 28 false')
@@ -34,6 +35,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
           expect(prep('2010-12')).to eq('year 2012 true')
         end
       end
+
       context 'when ambiguous_month_year: :as_month' do
         it 'returns month' do
           expect(prep('2010-12', ambiguous_month_year: :as_month)).to eq('month 12 true')
@@ -47,6 +49,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
           expect(prep('2020-21')).to eq('year 2021 true')
         end
       end
+
       context 'when ambiguous_month_year: :as_month' do
         it 'returns season' do
           expect(prep('2020-21', ambiguous_month_year: :as_month)).to eq('season 21 true')

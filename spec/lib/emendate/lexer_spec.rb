@@ -27,6 +27,7 @@ RSpec.describe Emendate::Lexer do
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
     end
+
     context 'with double dot' do
       it 'produces expected tokens' do
         orig = '{..1984'
@@ -35,6 +36,7 @@ RSpec.describe Emendate::Lexer do
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
     end
+
     context 'with multi dot' do
       it 'produces expected tokens' do
         orig = '{...1984'

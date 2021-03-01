@@ -38,6 +38,7 @@ RSpec.describe Emendate::SegmentSet do
         expect(res).to be_a_kind_of(described_class)
       end
     end
+
     context 'when results of mapping are not kinds of Segments' do
       it 'returns Array' do
         expect(@set.types).to be_a(Array)

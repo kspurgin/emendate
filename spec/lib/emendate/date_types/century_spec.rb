@@ -30,18 +30,21 @@ RSpec.describe Emendate::DateTypes::Century do
           expect(@dt.earliest).to eq(Date.new(1801, 1, 1))
         end
       end
+
       context 'with early' do
         it 'returns 1801-01-01' do
           dt = described_class.new(literal: 19, century_type: :name, partial_indicator: 'early')
           expect(dt.earliest).to eq(Date.new(1801, 1, 1))
         end
       end
+
       context 'with mid' do
         it 'returns 1834-01-01' do
           dt = described_class.new(literal: 19, century_type: :name, partial_indicator: 'mid')
           expect(dt.earliest).to eq(Date.new(1834, 1, 1))
         end
       end
+
       context 'with late' do
         it 'returns 1867-01-01' do
           dt = described_class.new(literal: 19, century_type: :name, partial_indicator: 'late')
@@ -56,18 +59,21 @@ RSpec.describe Emendate::DateTypes::Century do
           expect(@dt.latest).to eq(Date.new(1900, 12, 31))
         end
       end
+
       context 'with early' do
         it 'returns 1834-12-31' do
           dt = described_class.new(literal: 19, century_type: :name, partial_indicator: 'early')
           expect(dt.latest).to eq(Date.new(1834, 12, 31))
         end
       end
+
       context 'with mid' do
         it 'returns 1867-12-31' do
           dt = described_class.new(literal: 19, century_type: :name, partial_indicator: 'mid')
           expect(dt.latest).to eq(Date.new(1867, 12, 31))
         end
       end
+
       context 'with late' do
         it 'returns 1900-12-31' do
           dt = described_class.new(literal: 19, century_type: :name, partial_indicator: 'late')
@@ -94,18 +100,21 @@ RSpec.describe Emendate::DateTypes::Century do
           expect(@dt.earliest).to eq(Date.new(1900, 1, 1))
         end
       end
+
       context 'with early' do
         it 'returns 1900-01-01' do
           dt = described_class.new(literal: 19, century_type: :plural, partial_indicator: 'early')
           expect(dt.earliest).to eq(Date.new(1900, 1, 1))
         end
       end
+
       context 'with mid' do
         it 'returns 1933-01-01' do
           dt = described_class.new(literal: 19, century_type: :plural, partial_indicator: 'mid')
           expect(dt.earliest).to eq(Date.new(1933, 1, 1))
         end
       end
+
       context 'with late' do
         it 'returns 1966-01-01' do
           dt = described_class.new(literal: 19, century_type: :plural, partial_indicator: 'late')
@@ -120,18 +129,21 @@ RSpec.describe Emendate::DateTypes::Century do
           expect(@dt.latest).to eq(Date.new(1999, 12, 31))
         end
       end
+
       context 'with early' do
         it 'returns 1933-12-31' do
           dt = described_class.new(literal: 19, century_type: :plural, partial_indicator: 'early')
           expect(dt.latest).to eq(Date.new(1933, 12, 31))
         end
       end
+
       context 'with mid' do
         it 'returns 1966-12-31' do
           dt = described_class.new(literal: 19, century_type: :plural, partial_indicator: 'mid')
           expect(dt.latest).to eq(Date.new(1966, 12, 31))
         end
       end
+
       context 'with late' do
         it 'returns 1999-12-31' do
           dt = described_class.new(literal: 19, century_type: :plural, partial_indicator: 'late')

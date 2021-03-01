@@ -8,12 +8,14 @@ RSpec.describe Emendate::DateUtils do
         expect(res).to be false
       end
     end
+
     context 'with 1950-52 (52 must be 1952)' do
       it 'returns false' do
         res = described_class.ambiguous_post_year_value?('1950', '52')
         expect(res).to be false
       end
     end
+
     context 'with 1910-12 (12 could be December or 1912)' do
       it 'returns true' do
         res = described_class.ambiguous_post_year_value?('1910', '12')
@@ -37,6 +39,7 @@ RSpec.describe Emendate::DateUtils do
         expect(res).to be false
       end
     end
+
     context 'with 1950-52' do
       it 'returns true' do
         res = described_class.is_range?('1950', '52')
@@ -52,12 +55,14 @@ RSpec.describe Emendate::DateUtils do
         expect(res).to be false
       end
     end
+
     context 'with 2020-40 (2040 not a valid year)' do
       it 'returns false' do
         res = described_class.possible_range?('2020', '40')
         expect(res).to be false
       end
     end
+
     context 'with 2020-21' do
       it 'returns true (may be range or Spring 2020)' do
         res = described_class.possible_range?('2020', '21')
@@ -76,6 +81,7 @@ RSpec.describe Emendate::DateUtils do
         expect(described_class.valid_date?(t[0], t[2], t[4])).to be true
       end
     end
+
     context 'with invalid date - 2020-02-92' do
       it 'returns false' do
         pm = Emendate.prep_for('2020-02-92', :tag_date_parts)
@@ -83,6 +89,7 @@ RSpec.describe Emendate::DateUtils do
         expect(described_class.valid_date?(t[0], t[2], t[4])).to be false
       end
     end
+
     context 'with date invalid in Italy, valid in England - 1582-10-14' do
       it 'returns true' do
         pm = Emendate.prep_for('1582-10-14', :tag_date_parts)

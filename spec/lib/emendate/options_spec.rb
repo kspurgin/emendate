@@ -22,6 +22,7 @@ RSpec.describe Emendate::Options do
         expect{described_class.new(not_option: :as_day_month) }.to raise_error(err, 'not_option')
       end
     end
+
     context 'with unknown value for option' do
       it 'raises error' do
         err = Emendate::UnknownOptionValueError
