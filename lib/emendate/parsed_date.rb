@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'json'
+
 module Emendate
   class ParsedDate
 
@@ -21,6 +23,19 @@ module Emendate
       certainty.flatten!
       certainty.uniq!
       self
-    end    
+    end
+
+    def to_h
+      h = {}
+      self.instance_variables.each do |iv|
+        iv = iv.to_s.sub('@', '')
+        h[iv.to_sym] = self.send(iv)
+      end
+      h
+    end
+
+    def to_json
+      to_h.to_json
+    end
   end
 end
