@@ -12,9 +12,11 @@ RSpec.describe Emendate::NumberToken do
     it 'sets type as expected' do
       expect(@t.type).to eq(:number1or2)
     end
+
     it 'sets literal as expected' do
       expect(@t.literal).to eq(12)
     end
+
     it 'sets digits as expected' do
       expect(@t.digits).to eq(2)
     end
@@ -27,9 +29,11 @@ RSpec.describe Emendate::NumberToken do
     it 'sets type as expected' do
       expect(@t.type).to eq(:unknown)
     end
+
     it 'sets literal as expected' do
       expect(@t.literal).to eq(55555)
     end
+
     it 'sets digits as expected' do
       expect(@t.digits).to eq(5)
     end

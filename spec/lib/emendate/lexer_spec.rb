@@ -164,12 +164,14 @@ RSpec.describe Emendate::Lexer do
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
+
       it 'n.d. produces expected tokens' do
         orig = 'n.d.'
         expected = [:unknown_date]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
+
       it 'n. d. produces expected tokens' do
         orig = 'n. d.'
         expected = [:unknown_date]

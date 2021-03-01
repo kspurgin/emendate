@@ -14,12 +14,15 @@ RSpec.describe Emendate::DateSegmenter do
       it 'returns year_date_type' do
         expect(@s.type_string).to eq('year_date_type')
       end
+
       it 'retains certainty' do
         expect(@s.certainty).to eq([:approximate])
       end
+
       it 'returns long year warning' do
         expect(@s.warnings.length).to eq(1)
       end
+
       it 'creates datetype with expected literal' do
         expect(@s[0].literal).to eq(202127)
       end
@@ -31,12 +34,15 @@ RSpec.describe Emendate::DateSegmenter do
         e = %i[yearmonth_date_type]
         expect(@s.types).to eq(e)
       end
+
       it 'retains certainty' do
         expect(@s.certainty).to eq([:approximate])
       end
+
       it 'creates datetype with expected year' do
         expect(@s[0].year).to eq(2020)
       end
+
       it 'creates datetype with expected month' do
         expect(@s[0].month).to eq(2)
       end
@@ -48,12 +54,15 @@ RSpec.describe Emendate::DateSegmenter do
         e = 'yearmonthday_date_type'
         expect(@s.type_string).to eq(e)
       end
+
       it 'creates datetype with expected year' do
         expect(@s[0].year).to eq(2020)
       end
+
       it 'creates datetype with expected month' do
         expect(@s[0].month).to eq(2)
       end
+
       it 'creates datetype with expected day' do
         expect(@s[0].day).to eq(29)
       end
@@ -64,9 +73,11 @@ RSpec.describe Emendate::DateSegmenter do
       it 'returns year' do
         expect(@s.type_string).to eq('year_date_type')
       end
+
       it 'includes a warning' do
         expect(@s.warnings).to include('10000007 treated as a long year')
       end
+
       it 'creates datetype with expected literal' do
         expect(@s[0].literal).to eq(10000007)
       end
@@ -92,6 +103,7 @@ RSpec.describe Emendate::DateSegmenter do
       it 'returns century_date_type' do
         expect(@s.type_string).to eq('century_date_type')
       end
+
       it 'partial_indicator = early' do
         expect(@s[0].partial_indicator).to eq('early')
       end
@@ -110,6 +122,7 @@ RSpec.describe Emendate::DateSegmenter do
       it 'returns expected' do
         expect(@s.type_string).to eq('century_date_type range_indicator century_date_type')
       end
+
       it 'applies partial_indicators' do
         e = "#{@s[0].partial_indicator} #{@s[2].partial_indicator}"
         expect(e).to eq('late early')
@@ -146,6 +159,7 @@ RSpec.describe Emendate::DateSegmenter do
         e = %i[decade_date_type decade_date_type]
         expect(@s.types).to eq(e)
       end
+
       it 'returns decade_types: plural, uncertainty_digits' do
         e = 'plural uncertainty_digits'
         expect(@s.map(&:decade_type).join(' ')).to eq(e)
@@ -160,10 +174,12 @@ RSpec.describe Emendate::DateSegmenter do
         e = %i[century_date_type century_date_type century_date_type]
         expect(@s.types).to eq(e)
       end
+
       it 'returns century_types: plural, name, uncertainty_digits' do
         e = 'plural name uncertainty_digits'
         expect(@s.map(&:century_type).join(' ')).to eq(e)
       end
+
       it 'returns century literals: 19 19 19' do
         expect(@s.map(&:literal).join(' ')).to eq('19 19 19')
       end

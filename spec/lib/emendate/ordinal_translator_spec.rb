@@ -30,6 +30,7 @@ RSpec.describe Emendate::OrdinalTranslator do
         ex = 'Ordinal indicator unexpectedly appears at beginning of date string'
         expect(@t.warnings).to include(ex)
       end
+
       it 'removes ordinal indicator' do
         expect(@t.type_string).to eq('number1or2')
       end
@@ -43,6 +44,7 @@ RSpec.describe Emendate::OrdinalTranslator do
         ex = 'Ordinal indicator expected after :number1or2. Found after :number4'
         expect(@t.warnings).to include(ex)
       end
+
       it 'removes ordinal indicator' do
         expect(@t.type_string).to eq('number1or2 range_indicator number4')
       end

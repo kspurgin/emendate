@@ -8,6 +8,7 @@ RSpec.describe Emendate::DateTypes::YearMonth do
     it 'type = :yearmonth_date_type' do
       expect(@dt.type).to eq(:yearmonth_date_type)
     end
+
     describe '#earliest' do
       it 'returns 2020-02-01' do
         expect(@dt.earliest).to eq(Date.new(2020, 2, 1))
@@ -52,6 +53,7 @@ RSpec.describe Emendate::DateTypes::YearMonth do
     it 'type = :yearmonth_date_type' do
       expect(@dt.type).to eq(:yearmonth_date_type)
     end
+
     describe '#earliest' do
       it 'returns 2020-02-01' do
         expect(@dt.earliest).to eq(Date.new(2020, 2, 1))

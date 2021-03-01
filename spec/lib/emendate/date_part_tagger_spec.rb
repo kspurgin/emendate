@@ -35,6 +35,7 @@ RSpec.describe Emendate::DatePartTagger do
         it 'tags decade' do
           expect(@result.types).to eq(%i[decade decade])
         end
+
         it 'generates warnings' do
           w = ["Interpreting pluralized year as decade", "Interpreting pluralized year as decade"]
           expect(w - @result.warnings).to be_empty
@@ -46,6 +47,7 @@ RSpec.describe Emendate::DatePartTagger do
         it 'tags millennium' do
           expect(@result.types).to eq(%i[millennium millennium])
         end
+
         it 'generates warnings' do
           w = ["Interpreting pluralized year as millennium", "Interpreting pluralized year as millennium"]
           expect(w - @result.warnings).to be_empty
@@ -59,6 +61,7 @@ RSpec.describe Emendate::DatePartTagger do
         it 'tags decade' do
           expect(@result.types).to eq(%i[decade])
         end
+
         it 'literal is whole number' do
           expect(@result[0].literal).to eq(1900)
         end
@@ -69,6 +72,7 @@ RSpec.describe Emendate::DatePartTagger do
         it 'tags century' do
           expect(@result.types).to eq(%i[century])
         end
+
         it 'literal is whole number' do
           expect(@result[0].literal).to eq(1900)
         end
@@ -129,6 +133,7 @@ RSpec.describe Emendate::DatePartTagger do
         it 'tags month, day, and short year' do
           expect(@result.type_string).to eq('month day year')
         end
+
         it 'expands/tags short year to 1920' do
           expect(@result.map(&:literal).join(' ')).to eq('2 10 1920')
         end
@@ -191,6 +196,7 @@ RSpec.describe Emendate::DatePartTagger do
           tagger = described_class.new(tokens: pm.tokens, options: pm.options)
           expect(tagger.tag.type_string).to eq('month year')
         end
+
       context 'when default options (coerce to 4-digit year)' do
         it 'converts year to 2019' do
           pm = Emendate.prep_for('Mar 19', :tag_date_parts)
