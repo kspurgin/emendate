@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Emendate::SegmentSet do
     before(:all) do
-      @set = Emendate::SegmentSet.new(%i[a b c d].map{ |t| Emendate::Token.new(type: t) })
+      @set = described_class.new(%i[a b c d].map{ |t| Emendate::Token.new(type: t) })
     end
 
     describe '#extract' do
@@ -35,7 +35,7 @@ RSpec.describe Emendate::SegmentSet do
     context 'when results of mapping are kinds of Segments' do
       it 'returns kind of SegmentSet' do
         res = @set.map{ |t| t.dup }
-        expect(res).to be_a_kind_of(Emendate::SegmentSet)
+        expect(res).to be_a_kind_of(described_class)
       end
     end
     context 'when results of mapping are not kinds of Segments' do

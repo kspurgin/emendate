@@ -9,7 +9,7 @@ RSpec.describe Emendate::DateTypes::Range do
   context 'with 1900 to 1985' do
     before(:all) do
       res = prep('1900 to 1985')
-      @r = Emendate::DateTypes::Range.new(startdate: res[0],
+      @r = described_class.new(startdate: res[0],
                                           range_indicator: res[1],
                                           enddate: res[2])
     end

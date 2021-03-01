@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Emendate::DateTypes::YearMonthDay do
   before(:all) do
-    @dt = Emendate::DateTypes::YearMonthDay.new(year: '2020', month: 2, day: '29')
+    @dt = described_class.new(year: '2020', month: 2, day: '29')
   end
 
   it 'type = :yearmonthday_date_type' do

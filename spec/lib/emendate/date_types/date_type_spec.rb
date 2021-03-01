@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Emendate::DateTypes::DateType do
   before(:all) do
-    @dt = Emendate::DateTypes::DateType.new(literal: '2021')
+    @dt = described_class.new(literal: '2021')
   end
 
   it 'type = :datetype_date_type' do

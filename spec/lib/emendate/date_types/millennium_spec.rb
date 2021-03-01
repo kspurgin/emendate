@@ -4,20 +4,20 @@ RSpec.describe Emendate::DateTypes::Millennium do
   context 'when called without millennium_type' do
     it 'raises error' do
       err = Emendate::DateTypes::MissingMillenniumTypeError
-      expect{Emendate::DateTypes::Millennium.new(literal: 1000) }.to raise_error(err)
+      expect{described_class.new(literal: 1000) }.to raise_error(err)
     end
   end
 
   context 'when called with unsupported millennium_type value' do
     it 'raises error' do
       err = Emendate::DateTypes::MillenniumTypeValueError
-      expect{Emendate::DateTypes::Millennium.new(literal: 0000, millennium_type: :misc) }.to raise_error(err)
+      expect{described_class.new(literal: 0000, millennium_type: :misc) }.to raise_error(err)
     end
   end
 
   context 'with plural millennium (2000s)' do
     before(:all) do
-      @dt = Emendate::DateTypes::Millennium.new(literal: 2000, millennium_type: :plural)
+      @dt = described_class.new(literal: 2000, millennium_type: :plural)
     end
 
     describe '#earliest' do
@@ -41,7 +41,7 @@ RSpec.describe Emendate::DateTypes::Millennium do
 
   context 'with uncertainty_digit millennium (1XXX)' do
     before(:all) do
-      @dt = Emendate::DateTypes::Millennium.new(literal: 1, millennium_type: :uncertainty_digits)
+      @dt = described_class.new(literal: 1, millennium_type: :uncertainty_digits)
     end
 
     describe '#earliest' do
