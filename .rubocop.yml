@@ -10,3 +10,5 @@ Layout/LineLength:
     - spec/helpers.rb
 RSpec/InstanceVariable:
   Enabled: false
+Layout/SpaceBeforeBlockBraces:
+  EnforcedStyle: no_space
