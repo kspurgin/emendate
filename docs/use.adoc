@@ -22,18 +22,48 @@ This is also the way to use Emendate in other applications.
 
 The parsed result is:
 
+The parsed result is an `Emendate::Result` Ruby object:
+
 ----
-{:original_string=>"early 19th c.",
- :errors=>[],
- :warnings=>[],
- :result=>
-  [{:index_dates=>nil,
+#<Emendate::Result:0x00007fbbdcbd5bd8
+ @dates=
+  [#<Emendate::ParsedDate:0x00007fbbdcbd5e58
+    @certainty=[],
+    @date_end=nil,
+    @date_end_full="1834-12-31",
+    @date_start=nil,
+    @date_start_full="1801-01-01",
+    @inclusive_range=true,
+    @index_dates=[],
+    @original_string=nil>],
+ @errors=[],
+ @original_string="early 19th c.",
+ @warnings=[]>
+----
+
+You may pass in the following to return a Ruby Hash:
+
+----
+Emendate.parse('mid 1990s').to_h
+=> {:original_string=>"mid 1990s",
+ :dates=>
+  [{:original_string=>nil,
+    :index_dates=>[],
     :date_start=>nil,
     :date_end=>nil,
-    :date_start_full=>"1801-01-01",
-    :date_end_full=>"1834-12-31",
+    :date_start_full=>"1994-01-01",
+    :date_end_full=>"1996-12-31",
     :inclusive_range=>true,
-    :certainty=>[]}]}
+    :certainty=>[]}],
+ :errors=>[],
+ :warnings=>["Interpreting pluralized year as decade"]}
+ ----
+
+Or, the following to return JSON:
+
+----
+Emendate.parse('mid 1990s').to_json
+=> "{\"original_string\":\"mid 1990s\",\"dates\":[{\"original_string\":null,\"index_dates\":[],\"date_start\":null,\"date_end\":null,\"date_start_full\":\"1994-01-01\",\"date_end_full\":\"1996-12-31\",\"inclusive_range\":true,\"certainty\":[]}],\"errors\":[],\"warnings\":[\"Interpreting pluralized year as decade\"]}"
 ----
 
 For more details on the returned result, see https://github.com/kspurgin/emendate/blob/main/docs/output.adoc[docs/output.adoc].
@@ -45,65 +75,77 @@ See https://github.com/kspurgin/emendate/blob/main/docs/options.adoc[Emendate op
 .Using default settings
 ----
 Emendate.parse('2005-06')
-=> {:original_string=>"2005-06",
- :errors=>[],
- :warnings=>["Ambiguous year + month/season/year treated as_year"],
- :result=>
-  [{:index_dates=>nil,
-    :date_start=>nil,
-    :date_end=>nil,
-    :date_start_full=>"2005-01-01",
-    :date_end_full=>"2006-12-31",
-    :inclusive_range=>true,
-    :certainty=>[]}]}
+=> #<Emendate::Result:0x00007fdfb41aa2c0
+ @dates=
+  [#<Emendate::ParsedDate:0x00007fdfb41aa428
+    @certainty=[],
+    @date_end=nil,
+    @date_end_full="2006-12-31",
+    @date_start=nil,
+    @date_start_full="2005-01-01",
+    @inclusive_range=true,
+    @index_dates=[],
+    @original_string=nil>],
+ @errors=[],
+ @original_string="2005-06",
+ @warnings=["Ambiguous year + month/season/year treated as_year"]>
 ----
 
 .Using an alternative option
 ----
 Emendate.parse('2005-06', ambiguous_month_year: :as_month)
-=> {:original_string=>"2005-06",
- :errors=>[],
- :warnings=>["Ambiguous year + month/season/year treated as_month"],
- :result=>
-  [{:index_dates=>nil,
-    :date_start=>nil,
-    :date_end=>nil,
-    :date_start_full=>"2005-06-01",
-    :date_end_full=>"2005-06-30",
-    :inclusive_range=>nil,
-    :certainty=>[]}]}
+=> #<Emendate::Result:0x00007fdfd4b6d350
+ @dates=
+  [#<Emendate::ParsedDate:0x00007fdfd4b6d490
+    @certainty=[],
+    @date_end=nil,
+    @date_end_full="2005-06-30",
+    @date_start=nil,
+    @date_start_full="2005-06-01",
+    @inclusive_range=nil,
+    @index_dates=[],
+    @original_string=nil>],
+ @errors=[],
+ @original_string="2005-06",
+ @warnings=["Ambiguous year + month/season/year treated as_month"]>
 ----
 
 .Default result for value where multiple options could have an effect
 ----
-Emendate.parse('mid 1900s to 2/23/21')
-=> {:original_string=>"mid 1900s to 2/23/21",
- :errors=>[],
- :warnings=>[],
- :result=>
-  [{:index_dates=>nil,
-    :date_start=>nil,
-    :date_end=>nil,
-    :date_start_full=>"1904-01-01",
-    :date_end_full=>"1921-02-23",
-    :inclusive_range=>true,
-    :certainty=>[]}]}
+Emendate.parse('mid 1800s to 2/23/21')
+=> #<Emendate::Result:0x00007fdfb40bbdc8
+ @dates=
+  [#<Emendate::ParsedDate:0x00007fdfb40c0710
+    @certainty=[],
+    @date_end=nil,
+    @date_end_full="1921-02-23",
+    @date_start=nil,
+    @date_start_full="1804-01-01",
+    @inclusive_range=true,
+    @index_dates=[],
+    @original_string=nil>],
+ @errors=[],
+ @original_string="mid 1800s to 2/23/21",
+ @warnings=["Interpreting pluralized year as decade"]>
 ----
 
 .Setting multiple options at once
 ----
-Emendate.parse('mid 1900s to 2/23/21', ambiguous_year_rollback_threshold: 0, pluralized_date_interpretation: :broad)
-=> {:original_string=>"mid 1900s to 2/23/21",
- :errors=>[],
- :warnings=>[],
- :result=>
-  [{:index_dates=>nil,
-    :date_start=>nil,
-    :date_end=>nil,
-    :date_start_full=>"1933-01-01",
-    :date_end_full=>"1921-02-23",
-    :inclusive_range=>true,
-    :certainty=>[]}]}
+Emendate.parse('mid 1800s to 2/23/21', ambiguous_year_rollback_threshold: 0, pluralized_date_interpretation: :broad)
+=> #<Emendate::Result:0x00007fdfb4142580
+ @dates=
+  [#<Emendate::ParsedDate:0x00007fdfb4142760
+    @certainty=[],
+    @date_end=nil,
+    @date_end_full="1921-02-23",
+    @date_start=nil,
+    @date_start_full="1833-01-01",
+    @inclusive_range=true,
+    @index_dates=[],
+    @original_string=nil>],
+ @errors=[],
+ @original_string="mid 1800s to 2/23/21",
+ @warnings=["Interpreting pluralized year as century"]>
 ----
 
 == Utility script for getting Emendate output for a batch in CSV format
