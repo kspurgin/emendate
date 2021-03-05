@@ -14,6 +14,7 @@ module Emendate
       while standardizable
         functions = determine_standardizers
         break if functions.nil?
+
         functions.each{ |f| send(f) }
       end
       result

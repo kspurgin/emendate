@@ -32,13 +32,16 @@ module Emendate
 
     def apply_modifiers
       return if working.empty?
+
       mod = mod_function
       return if mod.nil?
+
       send(mod)
     end
 
     def mod_function
       return nil if working.empty?
+
       case working.types.first
       when :partial
         :mod_partial
@@ -82,6 +85,7 @@ module Emendate
 
     def recursive_parse
       return if working.empty?
+
       parser = parse_function
       return if parser.nil?
 

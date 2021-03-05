@@ -41,6 +41,7 @@ module Emendate
       while taggable
         t = determine_tagger
         break if t.nil?
+
         send(t)
       end
       result
@@ -139,6 +140,7 @@ module Emendate
     def tag_day_in_mdy
       m, d, y = result.extract(:month, :number1or2, :year).segments
       raise UntaggableDatePartError.new(d, 'invalid day value') unless valid_date?(y, m, d)
+
       replace_x_with_date_part_type(x: d, date_part_type: :day)
     end
 
@@ -258,6 +260,7 @@ module Emendate
       result.each do |t|
         next unless t.type == :number4
         next unless valid_year?(t.lexeme)
+
         replace_x_with_date_part_type(x: t, date_part_type: :year)
       end
     end

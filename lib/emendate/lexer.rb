@@ -164,6 +164,7 @@ module Emendate
       consume_dots
       lexeme = norm[lexeme_start_p..(next_p - 1)]
       return nil if lexeme.length == 1
+
       type = lexeme.length == 2 ? :double_dot : :unknown
       Token.new(type: type, lexeme: lexeme, location: current_location)
     end

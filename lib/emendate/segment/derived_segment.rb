@@ -21,6 +21,7 @@ module Emendate
       @sources = Emendate::MixedSet.new
       return if opts[:sources].nil?
       return if opts[:sources].empty?
+
       opts[:sources].each{ |t| sources << t }
     end
 

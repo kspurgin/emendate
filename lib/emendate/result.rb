@@ -33,6 +33,7 @@ module Emendate
     def verify_ranges
       @dates.map(&:valid_range?).each_with_index do |vr, i|
         next if vr == true
+
         @warnings << "Date ##{i + 1} is not a valid date range"
       end
     end

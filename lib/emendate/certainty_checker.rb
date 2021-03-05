@@ -28,8 +28,10 @@ module Emendate
 
     def process_part_certainty
       return if working.empty?
+
       processor = processing_function
       return if processor.nil?
+
       send(processor)
     end
 

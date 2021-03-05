@@ -16,11 +16,13 @@ module Emendate
 
       def earliest
         return nil if startdate.nil?
+
         startdate.earliest
       end
 
       def latest
         return nil if enddate.nil?
+
         enddate.latest
       end
 

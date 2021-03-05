@@ -92,9 +92,11 @@ module Emendate
 
     def verify_value(opt)
       return unless accepted_nondefaults.key?(opt)
+
       value = options[opt]
       return true if value == default[opt]
       return true if accepted_nondefaults[opt].include?(value)
+
       allowed = [default[opt], accepted_nondefaults[opt]].flatten
       m = <<~MSG
       #{value} is not an accepted value for the #{opt} option. Use one of the following instead: #{allowed.join(', ')}

@@ -41,6 +41,7 @@ module Emendate
     def possible_range?(year, digits)
       expanded = expand_shorter_digits(year, digits)
       return false unless valid_year?(expanded)
+
       expanded.to_i > year.to_i
     end
 

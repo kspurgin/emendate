@@ -60,6 +60,7 @@ module Emendate
       segsize = args.length
 
       return self.class.new if segments.length < segsize
+
       if segments.length == segsize
         result = self.class.new(segments)
         return result

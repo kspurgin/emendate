@@ -136,6 +136,7 @@ module Emendate
         next if t.date_type?
         next if t.type -- :or
         next if t.type == :and
+
         errors << 'Unhandled segment still present'
       end
     end
