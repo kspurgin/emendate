@@ -17,11 +17,11 @@ RSpec.describe Emendate::DateTypes::Range do
     end
 
     it 'earliest = 1900-01-01' do
-      expect(@r.earliest).to eq(Date.new(1900,1,1))
+      expect(@r.earliest).to eq(Date.new(1900, 1, 1))
     end
 
     it 'latest = 1985-12-31' do
-      expect(@r.latest).to eq(Date.new(1985,12,31))
+      expect(@r.latest).to eq(Date.new(1985, 12, 31))
     end
 
     it 'lexeme = 1900-01-01 - 1985-12-31' do

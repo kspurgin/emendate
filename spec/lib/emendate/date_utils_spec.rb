@@ -28,7 +28,7 @@ RSpec.describe Emendate::DateUtils do
 
   describe '#expand_shorter_digits' do
     it 'expands to match years as expected' do
-      ex = [['2020', '10'], ['2020', '40'], ['1998', '9'], ['1850','925']]
+      ex = [['2020', '10'], ['2020', '40'], ['1998', '9'], ['1850', '925']]
       res = ex.map{ |arr| described_class.expand_shorter_digits(arr[0], arr[1]) }
       expect(res).to eq(['2010', '2040', '1999', '1925'])
     end

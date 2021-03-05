@@ -15,7 +15,7 @@ RSpec.describe Emendate::ShortYearHandler do
   context 'when default options' do
     context 'with ambiguous year: 21' do
       context 'when current year is 2021' do
-        before{ allow(Date).to receive(:today).and_return Date.new(2021,2,3) }
+        before{ allow(Date).to receive(:today).and_return Date.new(2021, 2, 3) }
 
         it 'coerced to 1921' do
           expect(prep('21')).to eq(1921)
@@ -23,7 +23,7 @@ RSpec.describe Emendate::ShortYearHandler do
       end
 
       context 'when current year is 2022' do
-        before{ allow(Date).to receive(:today).and_return Date.new(2022,2,3) }
+        before{ allow(Date).to receive(:today).and_return Date.new(2022, 2, 3) }
 
         it 'coerced to 2021' do
           expect(prep('21')).to eq(2021)
@@ -43,7 +43,7 @@ RSpec.describe Emendate::ShortYearHandler do
   context 'when ambiguous_year_rollback_threshold: 10' do
     context 'with ambiguous year: 08' do
       context 'when current year is 2011' do
-        before{ allow(Date).to receive(:today).and_return Date.new(2011,2,3) }
+        before{ allow(Date).to receive(:today).and_return Date.new(2011, 2, 3) }
 
         it 'coerced to 2008' do
           expect(prep('08')).to eq(2008)
@@ -51,7 +51,7 @@ RSpec.describe Emendate::ShortYearHandler do
       end
 
       context 'when current year is 2006' do
-        before{ allow(Date).to receive(:today).and_return Date.new(2006,2,3) }
+        before{ allow(Date).to receive(:today).and_return Date.new(2006, 2, 3) }
 
         it 'coerced to 1908' do
           expect(prep('08')).to eq(1908)

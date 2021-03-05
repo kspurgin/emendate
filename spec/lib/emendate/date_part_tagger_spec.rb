@@ -131,7 +131,7 @@ RSpec.describe Emendate::DatePartTagger do
     context 'with 02-10-20' do
       context 'when in the year 2020' do
         before(:each) do
-          allow(Date).to receive(:today).and_return Date.new(2020,2,3)
+          allow(Date).to receive(:today).and_return Date.new(2020, 2, 3)
           pm = Emendate.prep_for('02-10-20', :tag_date_parts)
           tagger = described_class.new(tokens: pm.tokens, options: pm.options)
           @result = tagger.tag
