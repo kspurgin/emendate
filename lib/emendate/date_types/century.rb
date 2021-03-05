@@ -18,6 +18,7 @@ module Emendate
 
     class Century < Emendate::DateTypes::DateType
       attr_reader :literal, :century_type
+
       def initialize(**opts)
         super
         @literal = opts[:literal].is_a?(Integer) ? opts[:literal] : opts[:literal].to_i

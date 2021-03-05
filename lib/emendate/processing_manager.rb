@@ -13,6 +13,7 @@ module Emendate
                 :ranges_indicated,
                 :result,
                 :errors, :warnings
+
     def initialize(string, options = {})
       @orig_string = string
       @options = Emendate::Options.new(options)

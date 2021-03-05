@@ -4,6 +4,7 @@ module Emendate
 
   class FormatStandardizer
     attr_reader :result, :standardizable
+
     def initialize(tokens:, options: {})
       @result = tokens.class.new.copy(tokens)
       @standardizable = true

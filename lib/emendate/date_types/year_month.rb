@@ -5,6 +5,7 @@ module Emendate
 
     class YearMonth < Emendate::DateTypes::DateType
       attr_reader :literal, :year, :month
+
       def initialize(**opts)
         super
         if opts[:year] && opts[:month]

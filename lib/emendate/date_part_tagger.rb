@@ -6,6 +6,7 @@ module Emendate
   class DatePartTagger
     class UntaggableDatePartError < StandardError
       attr_reader :date_part, :reason
+
       def initialize(date_part, reason)
         @date_part = date_part
         @reason = reason
@@ -16,6 +17,7 @@ module Emendate
 
     class UntaggableDatePatternError < StandardError
       attr_reader :date_parts, :reason
+
       def initialize(date_parts, reason)
         @date_parts = date_parts
         @reason = reason
@@ -25,6 +27,7 @@ module Emendate
     end
 
     attr_reader :options, :result, :taggable
+
     include DateUtils
     def initialize(tokens:, options: {})
       @result = Emendate::MixedSet.new.copy(tokens)

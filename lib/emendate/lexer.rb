@@ -14,6 +14,7 @@ module Emendate
 
   class UntokenizableError < StandardError
     attr_reader :segments
+
     def initialize(unknown_tokens:)
       @segments = unknown_tokens.map{ |t| "#{Emendate::LQ}#{t.lexeme}#{Emendate::RQ}" }
       super(segments.join(', '))
@@ -57,6 +58,7 @@ module Emendate
 
     attr_reader :norm, :tokens
     attr_accessor :next_p, :lexeme_start_p
+
     def initialize(norm_string)
       @norm = norm_string
       @tokens = Emendate::TokenSet.new

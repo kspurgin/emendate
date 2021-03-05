@@ -13,6 +13,7 @@ module Emendate
     class DateType
       attr_reader :certainty
       attr_accessor :partial_indicator, :range_switch, :source_tokens
+
       def initialize(**opts)
         @source_tokens = opts[:children].nil? ? [] : Emendate::MixedSet.new(opts[:children])
         @partial_indicator = opts[:partial_indicator]

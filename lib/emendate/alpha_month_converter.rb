@@ -6,6 +6,7 @@ module Emendate
 
   class AlphaMonthConverter
     attr_reader :result, :options
+
     include DateUtils
     def initialize(tokens:, options: {})
       @result = Emendate::TokenSet.new.copy(tokens)

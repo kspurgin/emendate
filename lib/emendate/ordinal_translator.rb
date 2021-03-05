@@ -3,6 +3,7 @@
 module Emendate
   class OrdinalTranslator
     attr_reader :result, :options
+
     def initialize(tokens:, options: {})
       @result = Emendate::TokenSet.new.copy(tokens)
       @options = options

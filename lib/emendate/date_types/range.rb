@@ -5,6 +5,7 @@ module Emendate
 
     class Range < Emendate::DateTypes::DateType
       attr_reader :startdate, :enddate
+
       def initialize(**opts)
         super
         @startdate = opts[:startdate]

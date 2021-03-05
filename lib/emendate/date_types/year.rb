@@ -4,6 +4,7 @@ module Emendate
   module DateTypes
     class Year < Emendate::DateTypes::DateType
       attr_reader :literal
+
       def initialize(**opts)
         super
         @literal = opts[:literal].is_a?(Integer) ? opts[:literal] : opts[:literal].to_i

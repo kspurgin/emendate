@@ -8,6 +8,7 @@ module Emendate
     include DateUtils
 
     attr_reader :digits
+
     def post_initialize(opts)
       unless type == :number
         raise Emendate::TokenTypeError.new('Number token must be created with type = :number')

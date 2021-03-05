@@ -6,6 +6,7 @@ module Emendate
   class SegmentSet
     extend Forwardable
     attr_reader :segments, :certainty, :inferred_date, :warnings
+
     def_delegator :@segments, :[], :[]
     def_delegators :@segments, :clear, :delete, :delete_at, :empty?, :find_index, :insert, :length, :pop, :shift
 
