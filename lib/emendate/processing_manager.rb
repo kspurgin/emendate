@@ -143,9 +143,9 @@ module Emendate
 
     def prepare_result
       r = { original_string: orig_string,
-           errors: errors,
-           warnings: warnings,
-           result: []
+            errors: errors,
+            warnings: warnings,
+            result: []
           }
 
       if state == :failed
