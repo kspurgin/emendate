@@ -121,7 +121,7 @@ module Emendate
                                                   children: [decade])
       elsif uncertainty_date?(decade)
         result << Emendate::DateTypes::Decade.new(literal: decade.literal,
-                                                  decade_type: :uncertainty_digits, 
+                                                  decade_type: :uncertainty_digits,
                                                   children: [decade])
       end
       working.shift
@@ -140,10 +140,10 @@ module Emendate
       millennium = working[0]
       if s_date?(millennium)
         result << Emendate::DateTypes::Millennium.new(literal: millennium.literal,
-                                                      millennium_type: :plural, 
+                                                      millennium_type: :plural,
                                                       children: [millennium])
       elsif uncertainty_date?(millennium)
-        result << Emendate::DateTypes::Millennium.new(literal: millennium.literal, 
+        result << Emendate::DateTypes::Millennium.new(literal: millennium.literal,
                                                       millennium_type: :uncertainty_digits,
                                                       children: [millennium])
       end
