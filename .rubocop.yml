@@ -3,12 +3,9 @@ require:
   - rubocop-rspec
 
 AllCops:
+  TargetRubyVersion: 2.7
   UseCache: true
   NewCops: enable
-Layout/LineLength:
-  Exclude:
-    # example hash lines known to be long and need restructuring eventually
-    - spec/helpers.rb
 
 # Layout preferences
 Layout/SpaceBeforeBlockBraces:
@@ -20,7 +17,10 @@ RSpec/InstanceVariable:
   Enabled: false
 RSpec/BeforeAfterAll:
   Enabled: false
-
+# Nested groups help create documentation from tests
+RSpec/NestedGroups:
+  Enabled: false
+  
 # Temporarily disabled
 Style/Documentation:
   # document classes after structure/design is more set

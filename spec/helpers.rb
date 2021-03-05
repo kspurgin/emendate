@@ -17,6 +17,7 @@ lowercase letters = themselves, literally
 .,/-&?()[] = themselves, literally (same for spaces)
   }
 
+  # rubocop:todo Layout/LineLength
   EXAMPLES = {
     'unknown' => { pattern: 'unknown', results: [{ start: nil, end: nil, tags: %i[indicates_no_date] }] },
     'undated' => { pattern: 'undated', results: [{ start: nil, end: nil, tags: %i[indicates_no_date] }] },
@@ -242,7 +243,8 @@ lowercase letters = themselves, literally
     #   run via unique_token_patterns
     #'Y3388E2S3' => { pattern: 'y####e#s#', results: [{ start: nil, end: nil, tags: %i[edtf edtf2 currently_unparseable significant_digits letter_prefixed_year exponential_year] }] }
   }
-
+  # rubocop:enable Layout/LineLength
+  
   def example_tags
     EXAMPLES.map{ |str, exhash| [str, exhash[:results]] }
       .to_h
