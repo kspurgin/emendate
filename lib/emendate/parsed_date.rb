@@ -6,9 +6,9 @@ module Emendate
   class ParsedDate
 
     attr_reader :original_string, :index_dates,
-      :date_start, :date_end,
-      :date_start_full, :date_end_full,
-      :inclusive_range, :certainty
+                :date_start, :date_end,
+                :date_start_full, :date_end_full,
+                :inclusive_range, :certainty
 
     def initialize(datetype, whole_certainty = [])
       @original_string = nil

@@ -4,15 +4,15 @@ module Emendate
   class ProcessingManager
     include AASM
     attr_reader :orig_string, :options, :norm_string, :tokens, :orig_tokens,
-      :converted_months,
-      :translated_ordinals,
-      :certainty_checked,
-      :standardized_formats,
-      :tagged_date_parts,
-      :segmented_dates,
-      :ranges_indicated,
-      :result,
-      :errors, :warnings
+                :converted_months,
+                :translated_ordinals,
+                :certainty_checked,
+                :standardized_formats,
+                :tagged_date_parts,
+                :segmented_dates,
+                :ranges_indicated,
+                :result,
+                :errors, :warnings
     def initialize(string, options = {})
       @orig_string = string
       @options = Emendate::Options.new(options)
@@ -25,15 +25,15 @@ module Emendate
     aasm do
       state :startup, initial: true
       state :tokenized,
-        :months_converted,
-        :ordinals_translated,
-        :values_certainty_checked,
-        :formats_standardized,
-        :date_parts_tagged,
-        :dates_segmented,
-        :indicated_ranges,
-        :final_segments_checked,
-        :done, :failed
+            :months_converted,
+            :ordinals_translated,
+            :values_certainty_checked,
+            :formats_standardized,
+            :date_parts_tagged,
+            :dates_segmented,
+            :indicated_ranges,
+            :final_segments_checked,
+            :done, :failed
 
       after_all_transitions :log_status_change, :gather_warnings
 
