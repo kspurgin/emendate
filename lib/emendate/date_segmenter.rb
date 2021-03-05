@@ -208,8 +208,8 @@ module Emendate
       month = pieces.when_type(:month)[0]
       year = pieces.when_type(:year)[0]
       Emendate::DateTypes::YearMonth.new(year: year.literal,
-                                            month: month.literal,
-                                            children: pieces.segments)
+                                         month: month.literal,
+                                         children: pieces.segments)
     end
 
     def create_year_datetype(pieces)

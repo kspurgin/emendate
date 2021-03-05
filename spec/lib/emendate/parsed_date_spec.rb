@@ -5,14 +5,14 @@ RSpec.describe Emendate::ParsedDate do
 
   describe '#to_h' do
     it 'returns hash' do
-      expected = {:original_string=>nil,
-                  :index_dates=>[],
-                  :date_start=>nil,
-                  :date_end=>nil,
-                  :date_start_full=>'2021-02-23',
-                  :date_end_full=>'2021-02-23',
-                  :inclusive_range=>nil,
-                  :certainty=>[]}
+      expected = {:original_string => nil,
+                  :index_dates => [],
+                  :date_start => nil,
+                  :date_end => nil,
+                  :date_start_full => '2021-02-23',
+                  :date_end_full => '2021-02-23',
+                  :inclusive_range => nil,
+                  :certainty => []}
       expect(@res.to_h).to eq(expected)
     end
   end

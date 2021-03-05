@@ -41,8 +41,8 @@ module Emendate
       end
 
       result << Emendate::DateTypes::Range.new(startdate: current,
-                                         range_indicator: nxt,
-                                         enddate: nxt(2))
+                                               range_indicator: nxt,
+                                               enddate: nxt(2))
 
       [current, nxt, nxt(2)].each{ |s| working.delete(s) }
     end

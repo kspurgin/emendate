@@ -42,35 +42,35 @@ module Emendate
       end
       event :convert_months do
         transitions from: :tokenized, to: :months_converted, after: :perform_convert_months,
-          guard: :no_errors?
+                    guard: :no_errors?
       end
       event :translate_ordinals do
         transitions from: :months_converted, to: :ordinals_translated, after: :perform_translate_ordinals,
-          guard: :no_errors?
+                    guard: :no_errors?
       end
       event :certainty_check do
         transitions from: :ordinals_translated, to: :values_certainty_checked, after: :perform_certainty_check,
-          guard: :no_errors?
+                    guard: :no_errors?
       end
       event :standardize_formats do
         transitions from: :values_certainty_checked, to: :formats_standardized,
-          after: :perform_standardize_formats, guard: :no_errors?
+                    after: :perform_standardize_formats, guard: :no_errors?
       end
       event :tag_date_parts do
         transitions from: :formats_standardized, to: :date_parts_tagged, after: :perform_tag_date_parts,
-          guard: :no_errors?
+                    guard: :no_errors?
       end
       event :segment_dates do
         transitions from: :date_parts_tagged, to: :dates_segmented, after: :perform_segment_dates,
-          guard: :no_errors?
+                    guard: :no_errors?
       end
       event :indicate_ranges do
         transitions from: :dates_segmented, to: :indicated_ranges, after: :perform_indicate_ranges,
-          guard: :no_errors?
+                    guard: :no_errors?
       end
       event :check_final_segments do
         transitions from: :indicated_ranges, to: :final_segments_checked, after: :perform_check_final_segments,
-          guard: :no_errors?
+                    guard: :no_errors?
       end
 
       event :finalize do

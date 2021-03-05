@@ -10,8 +10,8 @@ RSpec.describe Emendate::DateTypes::Range do
     before(:all) do
       res = prep('1900 to 1985')
       @r = described_class.new(startdate: res[0],
-                                          range_indicator: res[1],
-                                          enddate: res[2])
+                               range_indicator: res[1],
+                               enddate: res[2])
     end
 
     it 'earliest = 1900-01-01' do
