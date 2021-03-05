@@ -241,7 +241,7 @@ lowercase letters = themselves, literally
 
     # the following example lexes fine if you do it manually/individually, but gets stuck/hands in some kind of loop when
     #   run via unique_token_patterns
-    #'Y3388E2S3' => { pattern: 'y####e#s#', results: [{ start: nil, end: nil, tags: %i[edtf edtf2 currently_unparseable significant_digits letter_prefixed_year exponential_year] }] }
+    # 'Y3388E2S3' => { pattern: 'y####e#s#', results: [{ start: nil, end: nil, tags: %i[edtf edtf2 currently_unparseable significant_digits letter_prefixed_year exponential_year] }] }
   }
   # rubocop:enable Layout/LineLength
   

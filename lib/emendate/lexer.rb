@@ -4,12 +4,12 @@ module Emendate
   def normalize_orig(orig)
     orig.downcase.sub('[?]', '?')
       .sub('(?)', '?')
-      .sub(/^c([^a-z])/, 'circa\1') #initial c followed by non-letter
-      .gsub(/b\.?c\.?(e\.?|)/, 'bce') #cleanup bc, bce
-      .gsub(/(a\.?d\.?|c\.?e\.?)/, 'ce') #cleanup ad, ce
-      .gsub(/b\.?p\.?/, 'bp') #cleanup bp
-      .sub(/^n\.? ?d\.?$/, 'nodate') #cleanup nd
-      .sub(/(st|nd|rd|th) c\.?$/, '\1 century') #ending c after ordinal
+      .sub(/^c([^a-z])/, 'circa\1') # initial c followed by non-letter
+      .gsub(/b\.?c\.?(e\.?|)/, 'bce') # cleanup bc, bce
+      .gsub(/(a\.?d\.?|c\.?e\.?)/, 'ce') # cleanup ad, ce
+      .gsub(/b\.?p\.?/, 'bp') # cleanup bp
+      .sub(/^n\.? ?d\.?$/, 'nodate') # cleanup nd
+      .sub(/(st|nd|rd|th) c\.?$/, '\1 century') # ending c after ordinal
   end
 
   class UntokenizableError < StandardError

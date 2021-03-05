@@ -11,7 +11,7 @@ require 'aasm'
 require 'pry-byebug'
 
 require 'emendate/date_types/date_type'
-#require 'emendate/segment/segment'
+# require 'emendate/segment/segment'
 
 Dir[File.dirname(__FILE__) + '/../lib/emendate/*.rb'].each do |file|
   require "emendate/#{File.basename(file, File.extname(file))}"

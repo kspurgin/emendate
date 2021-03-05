@@ -15,7 +15,7 @@ module Emendate
     private
 
     def post_initialize(opts)
-      #todo - refactor so you can take this duplicative reassignment out
+      # todo - refactor so you can take this duplicative reassignment out
       opts[:sources] = opts[:source_tokens]
       derive(opts)
     end
