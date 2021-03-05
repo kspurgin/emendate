@@ -44,7 +44,7 @@ module Emendate
     end
 
     def assume_year?
-      options.ambiguous_month_year == :as_year ? true : false
+      options.ambiguous_month_year == :as_year
     end
 
     def new_date_part(type:, lexeme:)

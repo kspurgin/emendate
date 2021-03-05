@@ -44,7 +44,7 @@ module Emendate
 
       sd = Date.parse(@date_start_full)
       ed = Date.parse(@date_end_full)
-      sd < ed ? true : false
+      sd < ed
     end
   end
 end

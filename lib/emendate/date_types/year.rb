@@ -62,7 +62,7 @@ module Emendate
       end
 
       def range?
-        partial_indicator.nil? && range_switch.nil? ? false : true
+        !(partial_indicator.nil? && range_switch.nil?)
       end
 
       def year

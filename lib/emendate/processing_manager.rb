@@ -258,11 +258,11 @@ module Emendate
     end
 
     def errors?
-      errors.empty? ? false : true
+      !errors.empty?
     end
 
     def no_errors?
-      errors.empty? ? true : false
+      errors.empty?
     end
   end
 end

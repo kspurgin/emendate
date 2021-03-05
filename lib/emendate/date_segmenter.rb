@@ -129,11 +129,11 @@ module Emendate
     end
 
     def s_date?(segment)
-      segment.sources.types.include?(:letter_s) ? true : false
+      segment.sources.types.include?(:letter_s)
     end
 
     def uncertainty_date?(segment)
-      segment.sources.types.include?(:uncertainty_digits) ? true : false
+      segment.sources.types.include?(:uncertainty_digits)
     end
 
     def parse_millennium_date_part

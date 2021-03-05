@@ -24,7 +24,7 @@ module Emendate
     end
 
     def coerce?
-      options.two_digit_year_handling == :coerce ? true : false
+      options.two_digit_year_handling == :coerce
     end
 
     def coerce_current_century

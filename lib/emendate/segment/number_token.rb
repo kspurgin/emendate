@@ -22,7 +22,7 @@ module Emendate
     end
 
     def monthable?
-      valid_month?(lexeme) ? true : false
+      valid_month?(lexeme)
     end
 
     private
@@ -36,7 +36,7 @@ module Emendate
     end
 
     def allowed_digits?
-      [1, 2, 3, 4, 6, 8].include?(digits) ? true : false
+      [1, 2, 3, 4, 6, 8].include?(digits)
     end
 
     def default_digits

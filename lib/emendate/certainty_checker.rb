@@ -161,13 +161,13 @@ module Emendate
     end
 
     def whole_done?
-      inferred_indicator? || curly? || approximate_indicator? || uncertain_indicator? ? false : true
+      !(inferred_indicator? || curly? || approximate_indicator? || uncertain_indicator?)
     end
 
     def inferred_indicator?
       case result.types
       in [:square_bracket_open, *remain, :square_bracket_close]
-        remain.include?(:square_bracket_open) || remain.include?(:square_bracket_close) ? false : true
+        !(remain.include?(:square_bracket_open) || remain.include?(:square_bracket_close))
       else
         false
       end
@@ -176,7 +176,7 @@ module Emendate
     def curly?
       case result.types
       in [:curly_bracket_open, *remain, :curly_bracket_close]
-        remain.include?(:curly_bracket_open) || remain.include?(:curly_bracket_close) ? false : true
+        !(remain.include?(:curly_bracket_open) || remain.include?(:curly_bracket_close))
       else
         false
       end

@@ -5,7 +5,7 @@ require 'emendate/segment_set/segment_set'
 module Emendate
   class TokenSet < Emendate::SegmentSet
     def any_unknown?
-      types.any?(:unknown) ? true : false
+      types.any?(:unknown)
     end
 
     def unknown

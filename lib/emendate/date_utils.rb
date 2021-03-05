@@ -9,7 +9,7 @@ module Emendate
 
     # returns true if digits after a year could be interpreted as (month OR season) OR range
     def ambiguous_post_year_value?(year, digits)
-      possible_range?(year, digits) && valid_month_or_season?(digits) ? true : false
+      possible_range?(year, digits) && valid_month_or_season?(digits)
     end
 
     # returns 2010 for 2020-10; returns 1999 for 1998-9
@@ -41,7 +41,7 @@ module Emendate
     def possible_range?(year, digits)
       expanded = expand_shorter_digits(year, digits)
       return false unless valid_year?(expanded)
-      expanded.to_i > year.to_i ? true : false
+      expanded.to_i > year.to_i
     end
 
     def two_digit_year(yr)

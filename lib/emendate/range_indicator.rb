@@ -60,7 +60,7 @@ module Emendate
     end
 
     def before_range_indicator?
-      nxt.type == :range_indicator ? true : false
+      nxt.type == :range_indicator
     end
 
     def passthrough

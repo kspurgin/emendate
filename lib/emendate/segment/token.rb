@@ -17,7 +17,7 @@ module Emendate
                                uncertainty_digits era number_month]
 
     def date_part?
-      DATE_PART_TOKEN_TYPES.include?(type) ? true : false
+      DATE_PART_TOKEN_TYPES.include?(type)
     end
 
     private
