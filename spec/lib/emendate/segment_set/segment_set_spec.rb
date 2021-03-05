@@ -10,7 +10,7 @@ RSpec.describe Emendate::SegmentSet do
     describe '#extract' do
       context 'when given subset' do
         it 'extracts subset' do
-          types = [:b, :c]
+          types = %i[b c]
           res = @set.extract(types)
           expect(res.types).to eq(types)
         end

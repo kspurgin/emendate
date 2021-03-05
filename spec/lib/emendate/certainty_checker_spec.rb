@@ -17,7 +17,7 @@ RSpec.describe Emendate::CertaintyChecker do
         end
 
         it 'values include: approximate and uncertain' do
-          expect(@c.certainty.sort).to eq([:approximate, :inferred, :uncertain])
+          expect(@c.certainty.sort).to eq(%i[approximate inferred uncertain])
         end
 
         it 'returns 1 token for 2002' do
@@ -64,7 +64,7 @@ RSpec.describe Emendate::CertaintyChecker do
       end
 
       it 'values include: approximate, uncertain' do
-        expect(@c.certainty.sort).to eq([:approximate, :uncertain])
+        expect(@c.certainty.sort).to eq(%i[approximate uncertain])
       end
 
       it 'returns tokens with tilde removed' do
@@ -100,7 +100,7 @@ RSpec.describe Emendate::CertaintyChecker do
       end
 
       it 'sets uncertainty on day token to approximate and uncertain' do
-        expect(@c[4].certainty.sort).to eq([:approximate, :uncertain])
+        expect(@c[4].certainty.sort).to eq(%i[approximate uncertain])
       end
     end
 
