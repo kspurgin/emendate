@@ -27,25 +27,34 @@ RSpec.describe Emendate::ParsedDate do
   end
 
   describe '#valid_range?' do
-    context 'not a range' do
+    context 'when not a range' do
       it 'returns true' do
         expect(@res.valid_range?).to be true
       end
     end
 
-    context 'valid range' do
-      it 'returns true' do
-        d = Emendate.parse('mid 1800s to 2/23/21',
-                           ambiguous_year_rollback_threshold: 0, 
-                           pluralized_date_interpretation: :broad).dates.first
-        expect(d.valid_range?).to be true
+    context 'when valid range' do
+      context 'when both ends of range populated' do
+        it 'returns true' do
+          d = Emendate.parse('mid 1800s to 2/23/21',
+                             ambiguous_year_rollback_threshold: 0,
+                             pluralized_date_interpretation: :broad).dates.first
+          expect(d.valid_range?).to be true
+        end
+      end
+
+      context 'when only end of range populated (e.g. before 1920)' do
+        it 'returns true' do
+          d = Emendate.parse('before 1920').dates.first
+          expect(d.valid_range?).to be true
+        end
       end
     end
 
-    context 'invalid range' do
+    context 'when invalid range' do
       it 'returns false' do
         d = Emendate.parse('mid 1900s to 2/23/21',
-                           ambiguous_year_rollback_threshold: 0, 
+                           ambiguous_year_rollback_threshold: 0,
                            pluralized_date_interpretation: :broad).dates.first
         expect(d.valid_range?).to be false
       end
