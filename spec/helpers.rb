@@ -17,7 +17,7 @@ lowercase letters = themselves, literally
 .,/-&?()[] = themselves, literally (same for spaces)
   }
 
-  # rubocop:todo Layout/LineLength
+  # rubocop:todo Layout/LineLength, Layout/MultilineArrayBraceLayout
   EXAMPLES = {
     'unknown' => { pattern: 'unknown', results: [{ start: nil, end: nil, tags: %i[indicates_no_date] }] },
     'undated' => { pattern: 'undated', results: [{ start: nil, end: nil, tags: %i[indicates_no_date] }] },
