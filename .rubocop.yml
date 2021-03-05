@@ -12,7 +12,6 @@ AllCops:
 # Layout preferences
 Layout/SpaceBeforeBlockBraces:
   EnforcedStyle: no_space
-
 Naming/MethodParameterName:
   AllowedNames: n, n1, n2, yr, x
   

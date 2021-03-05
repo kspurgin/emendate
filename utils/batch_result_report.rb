@@ -35,7 +35,7 @@ CSV.open(outfile, 'wb') do |csvout|
 
     result = Emendate.process(val)
 
-    prep = {orig: val}
+    prep = { orig: val }
     prep[:errs] = result.errors.join('; ') unless result.errors.empty?
     prep[:warnings] = result.warnings.join('; ') unless result.warnings.empty?
 

@@ -227,7 +227,7 @@ module Emendate
     def tag_year_plus_numeric_month_or_season
       y1, h1, m1, h2, y2, h3, m2 = result.extract(%i[year hyphen number1or2 hyphen year hyphen number1or2]).segments
       opt = options.dup
-      opt.merge({ambiguous_month_year: :as_month})
+      opt.merge({ ambiguous_month_year: :as_month })
       [[y1, m1, h1], [y2, m2, h3]].each do |pair|
         analyzed = Emendate::MonthSeasonYearAnalyzer.new(pair[1], pair[0], opt).result
         replace_x_with_given_segment(x: pair[1], segment: analyzed)

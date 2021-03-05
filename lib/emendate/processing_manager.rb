@@ -142,7 +142,7 @@ module Emendate
     end
 
     def prepare_result
-      r = {original_string: orig_string,
+      r = { original_string: orig_string,
            errors: errors,
            warnings: warnings,
            result: []
