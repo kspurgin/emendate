@@ -5,7 +5,7 @@ module Emendate
     class MissingCenturyTypeError < StandardError
       def initialize(types)
         m = "A century_type option with is required. Value must be one of the following: #{types.join(', ')}"
-      super(m)
+        super(m)
       end
     end
 

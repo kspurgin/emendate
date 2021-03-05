@@ -65,53 +65,53 @@ RSpec.describe Emendate::DateTypes::Decade do
     end
   end
 
-    context 'with plural decade (2000s)' do
+  context 'with plural decade (2000s)' do
+  before(:all) do
+    @dt = described_class.new(literal: 2000, decade_type: :plural)
+  end
+
+  describe '#earliest' do
+    it 'returns 2000-01-01' do
+      expect(@dt.earliest).to eq(Date.new(2000, 1, 1))
+    end
+  end
+
+  describe '#latest' do
+    it 'returns 2009-12-31' do
+      expect(@dt.latest).to eq(Date.new(2009, 12, 31))
+    end
+  end
+
+  describe '#lexeme' do
+    it 'returns 2000s' do
+      expect(@dt.lexeme).to eq('2000s')
+    end
+  end
+  end
+
+  context 'with plural decade (200s)' do
     before(:all) do
-      @dt = described_class.new(literal: 2000, decade_type: :plural)
+      @dt = described_class.new(literal: 200, decade_type: :plural)
     end
 
     describe '#earliest' do
-      it 'returns 2000-01-01' do
-        expect(@dt.earliest).to eq(Date.new(2000, 1, 1))
+      it 'returns 0200-01-01' do
+        expect(@dt.earliest).to eq(Date.new(200, 1, 1))
       end
     end
 
     describe '#latest' do
-      it 'returns 2009-12-31' do
-        expect(@dt.latest).to eq(Date.new(2009, 12, 31))
+      it 'returns 0209-12-31' do
+        expect(@dt.latest).to eq(Date.new(209, 12, 31))
       end
     end
 
     describe '#lexeme' do
-      it 'returns 2000s' do
-        expect(@dt.lexeme).to eq('2000s')
+      it 'returns 200s' do
+        expect(@dt.lexeme).to eq('200s')
       end
     end
-    end
-
-    context 'with plural decade (200s)' do
-      before(:all) do
-        @dt = described_class.new(literal: 200, decade_type: :plural)
-      end
-
-      describe '#earliest' do
-        it 'returns 0200-01-01' do
-          expect(@dt.earliest).to eq(Date.new(200, 1, 1))
-        end
-      end
-
-      describe '#latest' do
-        it 'returns 0209-12-31' do
-          expect(@dt.latest).to eq(Date.new(209, 12, 31))
-        end
-      end
-
-      describe '#lexeme' do
-        it 'returns 200s' do
-          expect(@dt.lexeme).to eq('200s')
-        end
-      end
-    end
+  end
 
   context 'with uncertainty_digit decade (199u)' do
     before(:all) do

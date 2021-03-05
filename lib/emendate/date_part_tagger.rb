@@ -161,7 +161,7 @@ module Emendate
           result.warnings << 'Interpreting pluralized year as century'
         when 3
           collapse_pair(%i[year letter_s], :millennium)
-        result.warnings << 'Interpreting pluralized year as millennium'
+          result.warnings << 'Interpreting pluralized year as millennium'
         when 4
           collapse_pair(%i[year letter_s], :millennium)
           result.warnings << 'Interpreting pluralized year as millennium'
@@ -239,7 +239,7 @@ module Emendate
     def tag_year_plus_numeric_month_season_or_year
       y, h, m = result.extract(%i[year hyphen number1or2]).segments
       analyzer = Emendate::MonthSeasonYearAnalyzer.new(m, y, options)
-        analyzed = analyzer.result
+      analyzed = analyzer.result
       replace_x_with_given_segment(x: m, segment: analyzed)
       if analyzed.type == :year
         hyphen_to_range_indicator(source: h)

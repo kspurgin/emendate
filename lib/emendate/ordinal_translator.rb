@@ -36,8 +36,8 @@ module Emendate
 
     def previous(ord_ind)
       oi_ind = result.find_index(ord_ind)
-        prev_ind = oi_ind - 1
-        result[prev_ind]
+      prev_ind = oi_ind - 1
+      result[prev_ind]
     end
   end
 end

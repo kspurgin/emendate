@@ -187,15 +187,15 @@ module Emendate
 
     def parse_date_parts
       pieces = consume_date_parts
-        if pieces.types.sort == %i[day month year]
-          result << create_year_month_day_datetype(pieces)
-        elsif pieces.types.sort == %i[month year]
-          result << create_year_month_datetype(pieces)
-        elsif pieces.types.sort == %i[year]
-          result << create_year_datetype(pieces)
-        end
+      if pieces.types.sort == %i[day month year]
+        result << create_year_month_day_datetype(pieces)
+      elsif pieces.types.sort == %i[month year]
+        result << create_year_month_datetype(pieces)
+      elsif pieces.types.sort == %i[year]
+        result << create_year_datetype(pieces)
+      end
 
-        recursive_parse
+      recursive_parse
     end
 
     def create_year_month_day_datetype(pieces)
@@ -288,16 +288,16 @@ module Emendate
       else
         date_type = :ymd
       end
-        pieces << current
+      pieces << current
 
-        case date_type
-        when :ymd
-          result << Emendate::DateTypes::YearMonthDay.new(year: year, month: month, day: day, children: pieces)
-        when :long_year
-          result << Emendate::DateTypes::Year.new(literal: current.lexeme, children: pieces)
-        end
-        working.delete(current)
-        recursive_parse
+      case date_type
+      when :ymd
+        result << Emendate::DateTypes::YearMonthDay.new(year: year, month: month, day: day, children: pieces)
+      when :long_year
+        result << Emendate::DateTypes::Year.new(literal: current.lexeme, children: pieces)
+      end
+      working.delete(current)
+      recursive_parse
     end
 
     def transfer_token(token = current)

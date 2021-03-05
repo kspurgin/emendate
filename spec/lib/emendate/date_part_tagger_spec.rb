@@ -204,21 +204,21 @@ RSpec.describe Emendate::DatePartTagger do
           expect(tagger.tag.type_string).to eq('month year')
         end
 
-      context 'when default options (coerce to 4-digit year)' do
-        it 'converts year to 2019' do
-          pm = Emendate.prep_for('Mar 19', :tag_date_parts)
-          tagger = described_class.new(tokens: pm.tokens, options: pm.options)
-          expect(tagger.tag[1].literal).to eq(2019)
+        context 'when default options (coerce to 4-digit year)' do
+          it 'converts year to 2019' do
+            pm = Emendate.prep_for('Mar 19', :tag_date_parts)
+            tagger = described_class.new(tokens: pm.tokens, options: pm.options)
+            expect(tagger.tag[1].literal).to eq(2019)
+          end
         end
-      end
 
-      context 'when two_digit_year_handling: literal' do
-        it 'leaves year as 19' do
-          pm = Emendate.prep_for('Mar 19', :tag_date_parts, two_digit_year_handling: :literal)
-          tagger = described_class.new(tokens: pm.tokens, options: pm.options)
-          expect(tagger.tag[1].literal).to eq(19)
+        context 'when two_digit_year_handling: literal' do
+          it 'leaves year as 19' do
+            pm = Emendate.prep_for('Mar 19', :tag_date_parts, two_digit_year_handling: :literal)
+            tagger = described_class.new(tokens: pm.tokens, options: pm.options)
+            expect(tagger.tag[1].literal).to eq(19)
+          end
         end
-      end
     end
   end
 end
