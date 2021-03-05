@@ -85,7 +85,6 @@ module Emendate
 
     def tokenization
       self.lexeme_start_p = next_p
-      token = nil
 
       c = consume
 

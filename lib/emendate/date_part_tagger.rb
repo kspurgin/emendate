@@ -145,12 +145,12 @@ module Emendate
     end
 
     def tag_pluralized_year
-      year, letter_s = result.extract(%i[year letter_s]).segments
 
       if options.pluralized_date_interpretation == :decade
         collapse_pair(%i[year letter_s], :decade)
         result.warnings << 'Interpreting pluralized year as decade'
       else
+        year, _letter_s = result.extract(%i[year letter_s]).segments
         zeros = year.lexeme.match(/(0+)/)[1]
         case zeros.length
         when 1
@@ -204,13 +204,13 @@ module Emendate
     end
 
     def tag_year_in_month_short_year
-      m, y = result.extract(%i[month number1or2]).segments
-      year = Emendate::ShortYearHandler.new(y, options).result
-      replace_x_with_given_segment(x: y, segment: year)
+      _mth, yr = result.extract(%i[month number1or2]).segments
+      year = Emendate::ShortYearHandler.new(yr, options).result
+      replace_x_with_given_segment(x: yr, segment: year)
     end
 
     def tag_numeric_month_day_short_year
-      n1, h1, n2, h2, n3 = result.extract(%i[number1or2 hyphen number1or2 hyphen number1or2]).segments
+      _n1, _h1, _n2, _h2, n3 = result.extract(%i[number1or2 hyphen number1or2 hyphen number1or2]).segments
       year = Emendate::ShortYearHandler.new(n3, options).result
       replace_x_with_given_segment(x: n3, segment: year)
     end

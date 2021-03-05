@@ -30,7 +30,7 @@ module Emendate
       return s unless s.nil?
 
       s = full_match_standardizers
-      standardizable = false if s.nil?
+      @standardizable = false if s.nil?
       s
     end
 
@@ -125,11 +125,11 @@ module Emendate
     end
 
     def move_month_to_beginning_of_segment
-      n1, m, n4 = result.extract(%i[number1or2 month number4]).segments
-      m_ind = result.find_index(m)
+      _n1, mth, _n4 = result.extract(%i[number1or2 month number4]).segments
+      m_ind = result.find_index(mth)
       d_ind =  m_ind - 1
       result.delete_at(m_ind)
-      result.insert(d_ind, m)
+      result.insert(d_ind, mth)
     end
 
     def move_year_after_first_month
@@ -196,7 +196,7 @@ module Emendate
     end
 
     def remove_post_partial_hyphen
-      p, h = result.extract(%i[partial hyphen]).segments
+      _p, h = result.extract(%i[partial hyphen]).segments
       result.delete(h)
     end
 

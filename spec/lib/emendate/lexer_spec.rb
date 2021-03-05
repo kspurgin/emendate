@@ -6,7 +6,6 @@ RSpec.describe Emendate::Lexer do
   context 'with unknown token' do
     it 'raises error' do
       orig = '@'
-      expected = [:unknown]
       expect{ Emendate.lex(orig) }.to raise_error(Emendate::UntokenizableError)
     end
   end
@@ -42,8 +41,6 @@ RSpec.describe Emendate::Lexer do
     context 'with multi dot' do
       it 'produces expected tokens' do
         orig = '{...1984'
-        expected = %i[curly_bracket_open unknown number4]
-
         expect{ Emendate.lex(orig) }.to raise_error(Emendate::UntokenizableError)
       end
     end
