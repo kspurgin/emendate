@@ -40,6 +40,7 @@ module Emendate
 
     def valid_range?
       return true unless @inclusive_range
+      return true if @date_start_full.nil? && !@date_end_full.nil?
 
       sd = Date.parse(@date_start_full)
       ed = Date.parse(@date_end_full)
