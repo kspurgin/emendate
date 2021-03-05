@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'emendate/number_utils'
 
 module Emendate
