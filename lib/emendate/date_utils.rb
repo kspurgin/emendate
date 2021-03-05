@@ -52,19 +52,19 @@ module Emendate
     end
 
     # pass in segments. This pulls out literals
-    def valid_date?(y, m, d)
+    def valid_date?(yr, mth, day)
       begin
-        Date.new(y.literal, m.literal, d.literal)
+        Date.new(yr.literal, mth.literal, day.literal)
       rescue Date::Error
-        valid_english_date?(y, m, d)
+        valid_english_date?(yr, mth, day)
       else
         true
       end
     end
 
-    def valid_english_date?(y, m, d)
+    def valid_english_date?(yr, mth, day)
       begin
-        Date.new(y.literal, m.literal, d.literal, Date::ENGLAND)
+        Date.new(yr.literal, mth.literal, day.literal, Date::ENGLAND)
       rescue Date::Error
         false
       else

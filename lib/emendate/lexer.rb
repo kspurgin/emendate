@@ -255,21 +255,21 @@ module Emendate
       Location.new(next_p, 1)
     end
 
-    def alpha_numeric?(c)
-      alpha?(c) || digit?(c)
+    def alpha_numeric?(char)
+      alpha?(char) || digit?(char)
     end
 
-    def alpha?(c)
-      c >= 'a' && c <= 'z' ||
-        c == '&'
+    def alpha?(char)
+      char >= 'a' && char <= 'z' ||
+        char == '&'
     end
 
-    def digit?(c)
-      c >= '0' && c <= '9'
+    def digit?(char)
+      char >= '0' && char <= '9'
     end
 
-    def dot?(c)
-      c == DOT
+    def dot?(char)
+      char == DOT
     end
 
   end
