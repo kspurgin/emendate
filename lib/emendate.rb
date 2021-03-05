@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # std lib
 require 'date'
 require 'fileutils'
