@@ -23,7 +23,7 @@ RSpec.describe Emendate::Lexer do
     context 'with single dot' do
       it 'produces expected tokens' do
         orig = 'Sep. 1'
-        expected = %i[month_abbr_alpha number1or2]
+        expected = %i[month_abbr_alpha dot space number1or2]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
@@ -49,7 +49,7 @@ RSpec.describe Emendate::Lexer do
   context 'with hyphen' do
     it 'produces expected tokens' do
       orig = '- –'
-      expected = %i[hyphen hyphen]
+      expected = %i[hyphen space hyphen]
       lexer = Emendate.lex(orig)
       expect(lexer.tokens.map(&:type)).to eq(expected)
     end
@@ -85,7 +85,7 @@ RSpec.describe Emendate::Lexer do
   context 'with numbers' do
     it 'produces expected tokens' do
       orig = '1 22 333 4444'
-      expected = %i[number1or2 number1or2 number3 number4]
+      expected = %i[number1or2 space number1or2 space number3 space number4]
       lexer = Emendate.lex(orig)
       expect(lexer.tokens.map(&:type)).to eq(expected)
     end
@@ -104,7 +104,7 @@ RSpec.describe Emendate::Lexer do
     context 'with alpha month' do
       it 'produces expected tokens' do
         orig = 'August Jan'
-        expected = %i[month_alpha month_abbr_alpha]
+        expected = %i[month_alpha space month_abbr_alpha]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
@@ -113,7 +113,7 @@ RSpec.describe Emendate::Lexer do
     context 'with alpha day of week' do
       it 'produces expected tokens' do
         orig = 'Mon Tuesday'
-        expected = %i[day_of_week_alpha day_of_week_alpha]
+        expected = %i[day_of_week_alpha space day_of_week_alpha]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
@@ -122,7 +122,7 @@ RSpec.describe Emendate::Lexer do
     context 'with uncertainty digits -- letters in place of numbers to indicate uncertainty' do
       it 'produces expected tokens' do
         orig = 'x xx uuu'
-        expected = %i[uncertainty_digits uncertainty_digits uncertainty_digits]
+        expected = %i[uncertainty_digits space uncertainty_digits space uncertainty_digits]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
@@ -132,7 +132,7 @@ RSpec.describe Emendate::Lexer do
       it 'produces expected tokens' do
         # note: c isn't first in string or it'd get normalized to circa
         orig = 'e c s t y z'
-        expected = %i[letter_e letter_c letter_s letter_t letter_y letter_z]
+        expected = %i[letter_e space letter_c space letter_s space letter_t space letter_y space letter_z]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
@@ -141,7 +141,7 @@ RSpec.describe Emendate::Lexer do
     context 'with century' do
       it 'produces expected tokens' do
         orig = 'cent century'
-        expected = %i[century century]
+        expected = %i[century space century]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
@@ -150,7 +150,7 @@ RSpec.describe Emendate::Lexer do
     context 'with circa' do
       it 'produces expected tokens' do
         orig = 'c ca circa'
-        expected = %i[approximate approximate approximate]
+        expected = %i[approximate space approximate space approximate]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
@@ -190,12 +190,12 @@ RSpec.describe Emendate::Lexer do
 
     context 'with eras' do
       before(:all) do
-        orig = 'b.c.e  bp c.e.'
+        orig = 'b.c.e bp c.e.'
         @lexer = Emendate.lex(orig)
       end
 
       it 'produces expected token types' do
-        expected = %i[era era era]
+        expected = %i[era space era space era]
         expect(@lexer.tokens.types).to eq(expected)
       end
     end
@@ -203,7 +203,7 @@ RSpec.describe Emendate::Lexer do
     context 'with early/late/mid' do
       it 'produces expected tokens' do
         orig = 'early late middle mid'
-        expected = %i[partial partial partial partial]
+        expected = %i[partial space partial space partial space partial]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
@@ -212,7 +212,7 @@ RSpec.describe Emendate::Lexer do
     context 'with before/after' do
       it 'produces expected tokens' do
         orig = 'before pre after post'
-        expected = %i[before before after after]
+        expected = %i[before space before space after space after]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
@@ -221,7 +221,7 @@ RSpec.describe Emendate::Lexer do
     context 'with and' do
       it 'produces expected tokens' do
         orig = '& and'
-        expected = %i[and and]
+        expected = %i[and space and]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
@@ -230,7 +230,7 @@ RSpec.describe Emendate::Lexer do
     context 'with seasons' do
       it 'produces expected tokens' do
         orig = 'Spring Winter Fall'
-        expected = %i[season season season]
+        expected = %i[season space season space season]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
