@@ -11,7 +11,7 @@ module Emendate
                 :inclusive_range, :certainty
 
     def initialize(datetype, whole_certainty = [])
-      @original_string = nil
+      @original_string = original_string
       @index_dates = []
       @date_start = nil
       @date_end = nil
@@ -46,5 +46,12 @@ module Emendate
       ed = Date.parse(@date_end_full)
       sd < ed
     end
+
+    private
+
+    def original_string
+      
+    end
+
   end
 end

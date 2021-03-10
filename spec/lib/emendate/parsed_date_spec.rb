@@ -7,7 +7,7 @@ RSpec.describe Emendate::ParsedDate do
 
   describe '#to_h' do
     it 'returns hash' do
-      expected = { original_string: nil,
+      expected = { original_string: '2/23/2021',
                    index_dates: [],
                    date_start: nil,
                    date_end: nil,
