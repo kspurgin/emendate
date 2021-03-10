@@ -9,7 +9,28 @@ module Emendate
 
     attr_reader :digits
 
+
+    def monthable?
+      valid_month?(lexeme)
+    end
+
+    private
+
+    def allowed_digits?
+      [1, 2, 3, 4, 6, 8].include?(digits)
+    end
+
+    def default_digits
+      lexeme.length
+    end
+
+    def default_literal
+      lexeme.to_i
+    end
+
     def post_initialize(opts)
+      super
+      
       unless type == :number
         raise Emendate::TokenTypeError.new('Number token must be created with type = :number')
       end
@@ -22,11 +43,6 @@ module Emendate
       reset_type
     end
 
-    def monthable?
-      valid_month?(lexeme)
-    end
-
-    private
 
     def reset_type
       if allowed_digits?
@@ -34,18 +50,6 @@ module Emendate
       else
         @type = :unknown
       end
-    end
-
-    def allowed_digits?
-      [1, 2, 3, 4, 6, 8].include?(digits)
-    end
-
-    def default_digits
-      lexeme.length
-    end
-
-    def default_literal
-      lexeme.to_i
     end
   end
 end

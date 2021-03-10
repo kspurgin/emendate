@@ -23,6 +23,10 @@ RSpec.describe Emendate::NumberToken do
     it 'sets digits as expected' do
       expect(@t.digits).to eq(2)
     end
+
+    it 'sets location as expected' do
+      expect(@t.location).to eq(@loc)
+    end
   end
 
   context 'with a disallowed length' do
@@ -40,6 +44,10 @@ RSpec.describe Emendate::NumberToken do
 
     it 'sets digits as expected' do
       expect(@t.digits).to eq(5)
+    end
+
+    it 'sets location as expected' do
+      expect(@t.location).to eq(@loc)
     end
   end
 
