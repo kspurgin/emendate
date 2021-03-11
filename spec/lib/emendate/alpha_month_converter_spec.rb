@@ -6,10 +6,11 @@ RSpec.describe Emendate::AlphaMonthConverter do
   def convert(str, options = {})
     pm = Emendate.prep_for(str, :convert_months, options)
     fs = Emendate::AlphaMonthConverter.new(tokens: pm.tokens, options: pm.options)
+    binding.pry
     fs.convert.segments
   end
 
-  describe '#tag' do
+  describe '#convert' do
     context 'with month abbreviation' do
       it 'tags as expected' do
         c = convert('Jan 2021')

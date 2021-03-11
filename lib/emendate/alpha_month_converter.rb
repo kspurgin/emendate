@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'emendate/date_utils'
+require 'emendate/result_editable'
 
 module Emendate
 
@@ -8,6 +9,8 @@ module Emendate
     attr_reader :result, :options
 
     include DateUtils
+    include ResultEditable
+    
     def initialize(tokens:, options: {})
       @result = Emendate::TokenSet.new.copy(tokens)
       @options = options
@@ -28,12 +31,6 @@ module Emendate
     end
 
     private
-
-    def replace_x_with_new(x:, new:)
-      ins_pt = result.find_index(x) + 1
-      result.insert(ins_pt, new)
-      result.delete(x)
-    end
 
     def convert_month(token, lookup)
       str = token.lexeme
