@@ -4,6 +4,10 @@ require 'emendate/segment/token'
 require 'emendate/segment/derived_segment'
 
 module Emendate
+
+  # A token derived from another Token or Tokens
+  # Usage:
+  # Emendate::DerivedToken.new(type: :token_type, sources: [array of source tokens])
   class DerivedToken < Emendate::Token
     include DerivedSegment
 
@@ -11,10 +15,6 @@ module Emendate
 
     def post_initialize(opts)
       derive(opts)
-
-      if sources.length == 1
-        @location = sources[0].location if location.nil?
-      end
     end
   end
 end

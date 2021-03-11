@@ -4,6 +4,12 @@ require 'emendate/segment/segment'
 require 'emendate/segment/derived_segment'
 
 module Emendate
+  # A segment that represents part of a date
+  # Usage:
+  # Emendate::DatePart.new(type: Symbol,
+  #                        lexeme: String,
+  #                        literal: Integer,
+  #                        source_tokens: [array of tokens/segments])
   class DatePart < Emendate::Segment
     include DerivedSegment
 
@@ -12,6 +18,10 @@ module Emendate
       true
     end
 
+    def location
+      @location
+    end
+    
     private
 
     def post_initialize(opts)
