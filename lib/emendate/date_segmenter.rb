@@ -58,7 +58,7 @@ module Emendate
       switch = working.shift
       if current.kind_of?(Emendate::DateTypes::DateType)
         current.range_switch = switch.lexeme
-        result << current
+        result << current.prepend_source_token(switch)
         working.shift
       else
         result << switch
@@ -69,8 +69,8 @@ module Emendate
     def mod_partial
       partial = working.shift
       if current.kind_of?(Emendate::DateTypes::DateType)
-        current.partial_indicator = partial.lexeme
-        result << current
+        current.partial_indicator = partial.lexeme.strip
+        result << current.prepend_source_token(partial)
         working.shift
       else
         result << partial

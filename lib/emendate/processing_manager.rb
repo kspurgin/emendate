@@ -4,6 +4,7 @@ module Emendate
   class ProcessingManager
     include AASM
     attr_reader :orig_string, :options, :norm_string, :tokens, :orig_tokens,
+                :collapsed_tokens,
                 :converted_months,
                 :translated_ordinals,
                 :certainty_checked,
@@ -26,6 +27,7 @@ module Emendate
     aasm do
       state :startup, initial: true
       state :tokenized,
+            :tokens_collapsed,
             :months_converted,
             :ordinals_translated,
             :values_certainty_checked,
@@ -41,8 +43,12 @@ module Emendate
       event :lex do
         transitions from: :startup, to: :tokenized, after: :perform_lex
       end
+      event :collapse_tokens do
+        transitions from: :tokenized, to: :tokens_collapsed, after: :perform_collapse_tokens,
+                    guard: :no_errors?
+      end
       event :convert_months do
-        transitions from: :tokenized, to: :months_converted, after: :perform_convert_months,
+        transitions from: :tokens_collapsed, to: :months_converted, after: :perform_convert_months,
                     guard: :no_errors?
       end
       event :translate_ordinals do
@@ -77,6 +83,8 @@ module Emendate
       event :finalize do
         transitions from: :tokenized, to: :done, guard: :no_errors?
         transitions from: :tokenized, to: :failed, guard: :errors?
+        transitions from: :tokens_collapsed, to: :done, guard: :no_errors?
+        transitions from: :tokens_collapsed, to: :failed, guard: :errors?
         transitions from: :months_converted, to: :done, guard: :no_errors?
         transitions from: :months_converted, to: :failed, guard: :errors?
         transitions from: :ordinals_translated, to: :done, guard: :no_errors?
@@ -98,6 +106,7 @@ module Emendate
 
     def process
       lex
+      collapse_tokens if may_collapse_tokens?
       convert_months if may_convert_months?
       translate_ordinals if may_translate_ordinals?
       certainty_check if may_certainty_check?
@@ -106,7 +115,7 @@ module Emendate
       segment_dates if may_segment_dates?
       indicate_ranges if may_indicate_ranges?
       finalize
-
+#binding.pry
       prepare_result
     end
 
@@ -134,7 +143,7 @@ module Emendate
 
       tokens.each do |t|
         next if t.date_type?
-        next if t.type -- :or
+        next if t.type == :or
         next if t.type == :and
 
         errors << 'Unhandled segment still present'
@@ -153,7 +162,7 @@ module Emendate
         return
       end
 
-      tokens.each{ |t| r[:result] << Emendate::ParsedDate.new(t, tokens.certainty) if t.date_type? }
+      tokens.segments.each{ |t| r[:result] << Emendate::ParsedDate.new(t, tokens.certainty, orig_string) if t.date_type? }
       @result = Emendate::Result.new(r)
     end
 
@@ -168,6 +177,13 @@ module Emendate
         @tokens = l.tokens
         @orig_tokens = tokens.class.new.copy(tokens)
       end
+    end
+
+    def perform_collapse_tokens
+      c = Emendate::TokenCollapser.new(tokens: tokens, options: options)
+      c.collapse
+      @tokens = c.result
+      @collapsed_tokens = tokens.class.new.copy(tokens)
     end
 
     def perform_convert_months

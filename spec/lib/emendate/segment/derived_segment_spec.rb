@@ -41,8 +41,8 @@ RSpec.describe Emendate::DerivedSegment do
         expect(result).to eq('0 9')
       end
 
-      it 'does not derive literal from sources' do
-        expect(@derived.literal).to be_nil
+      it 'derives numeric literal' do
+        expect(@derived.literal).to eq(123)
       end
     end
   end

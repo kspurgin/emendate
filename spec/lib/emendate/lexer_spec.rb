@@ -23,7 +23,7 @@ RSpec.describe Emendate::Lexer do
     context 'with single dot' do
       it 'produces expected tokens' do
         orig = 'Sep. 1'
-        expected = %i[month_abbr_alpha dot space number1or2]
+        expected = %i[month_abbr_alpha single_dot space number1or2]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end

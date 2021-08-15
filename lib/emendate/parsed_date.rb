@@ -6,12 +6,12 @@ module Emendate
   class ParsedDate
 
     attr_reader :original_string, :index_dates,
-                :date_start, :date_end,
-                :date_start_full, :date_end_full,
-                :inclusive_range, :certainty
+      :date_start, :date_end,
+      :date_start_full, :date_end_full,
+      :inclusive_range, :certainty
 
-    def initialize(datetype, whole_certainty = [])
-      @original_string = original_string(datetype)
+    def initialize(datetype, whole_certainty = [], orig)
+      @original_string = get_original_string(datetype, orig)
       @index_dates = []
       @date_start = nil
       @date_end = nil
@@ -49,8 +49,8 @@ module Emendate
 
     private
 
-    def original_string(datetype)
-      
+    def get_original_string(datetype, orig)
+      orig[datetype.location.col..datetype.location.length+1]
     end
 
   end

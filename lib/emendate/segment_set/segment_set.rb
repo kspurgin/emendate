@@ -8,7 +8,7 @@ module Emendate
     attr_reader :segments, :certainty, :inferred_date, :warnings
 
     def_delegator :@segments, :[], :[]
-    def_delegators :@segments, :clear, :delete, :delete_at, :empty?, :find_index, :insert, :length, :pop, :shift
+    def_delegators :@segments, :clear, :delete, :delete_at, :empty?, :find_index, :insert, :length, :pop, :shift, :unshift
 
     def initialize(*args)
       @segments = Array.new(*args)
@@ -53,7 +53,21 @@ module Emendate
       @inferred_date = true
     end
 
+    def lexeme
+      return '' if @segments.empty?
 
+      @segments.map(&:lexeme).join('')
+    end
+
+    def location
+      return Location.new(0, 0) if @segments.empty?
+      
+      locs = @segments.map(&:location)
+      col = locs.first.col
+      length = locs.map(&:length).sum
+      Location.new(col, length)
+    end
+    
     # returns the first sequence of segments matching the pattern of types passed in as an Array
     def extract(*args)
       args.flatten!

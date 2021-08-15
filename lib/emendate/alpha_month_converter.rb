@@ -33,7 +33,7 @@ module Emendate
     private
 
     def convert_month(token, lookup)
-      str = token.lexeme
+      str = token.lexeme.strip
       number = lookup[str]
       Emendate::DatePart.new(type: :month,
                              lexeme: str,

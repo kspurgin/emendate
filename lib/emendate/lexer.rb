@@ -165,7 +165,7 @@ module Emendate
 
       case lexeme.length
       when 1
-        type = :dot
+        type = :single_dot
       when 2
         type = :double_dot
       else

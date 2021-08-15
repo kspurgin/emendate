@@ -117,6 +117,22 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
+    context 'with before early 19th c.' do
+      before(:all){ @s = segment('before early 19th c.') }
+
+      it 'returns century_date_type' do
+        expect(@s.type_string).to eq('century_date_type')
+      end
+
+      it 'partial_indicator = early' do
+        expect(@s[0].partial_indicator).to eq('early')
+      end
+
+      it 'range_switch = before' do
+        expect(@s[0].range_switch).to eq('before')
+      end
+    end
+
     context 'with 17th or 18th century' do
       it 'returns expected' do
         s = segment('17th or 18th century')

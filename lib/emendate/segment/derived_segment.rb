@@ -31,10 +31,18 @@ module Emendate
     end
 
     def derive_from_multiple_values
-      @lexeme = sources.map(&:lexeme).join('') if lexeme.nil?
+      @lexeme = sources.map(&:lexeme).join('').strip if lexeme.nil?
       @location = derive_location if location.nil?
+      @literal = derive_literal if literal.nil?
     end
 
+    def derive_literal
+      literal = sources.map(&:literal).join('').strip
+      return nil unless literal.match?(/^[0-9]+$/)
+
+      literal.to_i
+    end
+    
     def derive_location
       start_position = sources[0].location.col
       length = sources.map{ |src| src.location.length }.sum

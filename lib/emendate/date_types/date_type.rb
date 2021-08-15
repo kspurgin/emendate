@@ -15,10 +15,11 @@ module Emendate
       attr_accessor :partial_indicator, :range_switch, :source_tokens
 
       def initialize(**opts)
-        @source_tokens = opts[:children].nil? ? [] : Emendate::MixedSet.new(opts[:children])
+        @source_tokens = opts[:children].nil? ? Emendate::MixedSet.new : Emendate::MixedSet.new(opts[:children])
         @partial_indicator = opts[:partial_indicator]
         @range_switch = opts[:range_switch]
         @certainty = opts[:certainty].nil? ? [] : opts[:certainty]
+        @location = location
       end
 
       def date_part?
@@ -41,6 +42,15 @@ module Emendate
         raise NotImplementedError
       end
 
+      def location
+        @source_tokens.location
+      end
+
+      def prepend_source_token(token)
+        @source_tokens.unshift(token)
+        self
+      end
+            
       def range?
         raise NotImplementedError
       end
