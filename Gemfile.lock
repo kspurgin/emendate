@@ -22,9 +22,6 @@ GEM
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    pry-byebug (3.9.0)
-      byebug (~> 11.0)
-      pry (~> 0.13.0)
     rainbow (3.0.0)
     rake (12.3.3)
     regexp_parser (2.1.1)
@@ -60,12 +57,17 @@ GEM
       rubocop (~> 1.0)
       rubocop-ast (>= 1.1.0)
     ruby-progressbar (1.11.0)
+    ruby_jard (0.3.1)
+      byebug (>= 9.1, < 12.0)
+      pry (~> 0.13.0)
+      tty-screen (~> 0.8.1)
     simplecov (0.21.2)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.2)
+    tty-screen (0.8.1)
     unicode-display_width (2.0.0)
 
 PLATFORMS
@@ -73,12 +75,12 @@ PLATFORMS
 
 DEPENDENCIES
   emendate!
-  pry-byebug
   rake (~> 12.0)
   rspec (~> 3.0)
   rubocop
   rubocop-performance
   rubocop-rspec
+  ruby_jard
   simplecov
 
 BUNDLED WITH
