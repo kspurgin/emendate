@@ -7,9 +7,6 @@ require 'fileutils'
 # external gems
 require 'aasm'
 
-# dev
-require 'pry-byebug'
-
 require 'emendate/date_types/date_type'
 # require 'emendate/segment/segment'
 
