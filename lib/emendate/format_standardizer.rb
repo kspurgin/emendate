@@ -3,9 +3,11 @@
 module Emendate
 
   class FormatStandardizer
+    include ResultEditable
     attr_reader :result, :standardizable
 
     def initialize(tokens:, options: {})
+      @options = options.options
       @result = tokens.class.new.copy(tokens)
       @standardizable = true
     end
@@ -36,6 +38,8 @@ module Emendate
 
     def partial_match_standardizers
       case result.type_string
+      when /^double_dot.*/
+        %i[open_start]
       when /.*slash.*/
         %i[replace_slash_with_hyphen]
       when /.*era.*/
@@ -183,16 +187,20 @@ module Emendate
       end
     end
 
-
+    def open_start
+      doubledot = result.when_type(:double_dot)[0]
+      openstart = Emendate::DateTypes::OpenRangeDate.new(use_date: @options[:open_unknown_start_date],
+                                                         usage: :start)
+      replace_x_with_new(x: doubledot, new: openstart)
+    end
+    
     def replace_slash_with_hyphen
       slash = result.when_type(:slash)[0]
-      si = result.find_index(slash)
       ht = Emendate::Token.new(type: :hyphen,
                                lexeme: slash.lexeme,
                                literal: '-',
                                location: slash.location)
-      result.insert(si + 1, ht)
-      result.delete(slash)
+      replace_x_with_new(x: slash, new: ht)
     end
 
     def remove_post_partial_hyphen

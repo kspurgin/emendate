@@ -114,5 +114,12 @@ RSpec.describe Emendate::FormatStandardizer do
         expect(result).to eq(%i[number4 hyphen number4])
       end
     end
+
+    context 'with ../2021' do
+      it 'replace double dot with open start date type' do
+        result = standardize('../2021')
+        expect(result).to eq(%i[openrangedate_date_type hyphen number4])
+      end
+    end
   end
 end

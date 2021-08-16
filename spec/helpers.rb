@@ -244,6 +244,21 @@ lowercase letters = themselves, literally
     # 'Y3388E2S3' => { pattern: 'y####e#s#', results: [{ start: nil, end: nil, tags: %i[edtf edtf2 currently_unparseable significant_digits letter_prefixed_year exponential_year] }] }
   }
   # rubocop:enable Layout/LineLength
+
+  def run_sequential_examples(options = {})
+    EXAMPLES.keys.each do |str|
+      begin
+        processed = Emendate.process(str, options)
+      rescue StandardError => e
+        puts "#{str} - ERROR: #{e.message}"
+      else
+        if processed.state == :failed
+          puts "#{str} - Failure state"
+          next
+        end
+      end
+    end
+  end
   
   def example_tags
     EXAMPLES.map{ |str, exhash| [str, exhash[:results]] }
