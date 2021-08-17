@@ -73,11 +73,11 @@ module Emendate
         # this needs to happen before...
       when /.*number1or2 hyphen number1or2 hyphen number1or2.*/
         :tag_numeric_month_day_short_year
+      when /.*year hyphen number1or2 hyphen number1or2.*/
+        :tag_year_numeric_month_day
         # ...this
       when /.*number1or2 hyphen number1or2 hyphen year.*/
         :tag_numeric_month_day_year
-      when /.*year hyphen number1or2 hyphen number1or2.*/
-        :tag_year_numeric_month_day
       when /.*year hyphen number1or2 hyphen year hyphen number1or2.*/
         :tag_year_plus_numeric_month_or_season
       when /.*year hyphen number1or2.*/

@@ -40,12 +40,16 @@ module Emendate
       case result.type_string
       when /^double_dot.*/
         %i[open_start]
+      when /.*double_dot$/
+        %i[open_end]
       when /.*slash.*/
         %i[replace_slash_with_hyphen]
       when /.*era.*/
         %i[remove_ce_eras]
       when /.*letter_t number1or2 colon.*/
         %i[remove_time_parts]
+      when/.*number3 uncertainty_digits.*/
+        %i[decade_as_year]
       when/.*number3.*/
         %i[pad_3_to_4_digits]
       when /.*partial hyphen.*/
@@ -153,7 +157,7 @@ module Emendate
       result.insert(ins_pt, yr.dup)
       result.delete_at(y_ind)
     end
-
+    
     def pad_3_to_4_digits
       t3 = result.select{ |t| t.type == :number3 }[0]
       t3i = result.find_index(t3)
@@ -187,11 +191,28 @@ module Emendate
       end
     end
 
+    def decade_as_year
+      num3 = result.when_type(:number3)[0]
+      udigits = result.when_type(:uncertainty_digits)[0]
+      decade = Emendate::DateTypes::Decade.new(literal: num3.literal,
+                                               decade_type: :uncertainty_digits,
+                                               children: [num3, udigits]
+                                              )
+      replace_segments_with_new(segments: [num3, udigits], new: decade)
+    end
+
     def open_start
       doubledot = result.when_type(:double_dot)[0]
       openstart = Emendate::DateTypes::OpenRangeDate.new(use_date: @options[:open_unknown_start_date],
                                                          usage: :start)
       replace_x_with_new(x: doubledot, new: openstart)
+    end
+
+    def open_end
+      doubledot = result.when_type(:double_dot)[-1]
+      openend = Emendate::DateTypes::OpenRangeDate.new(use_date: @options[:open_unknown_end_date],
+                                                         usage: :end)
+      replace_x_with_new(x: doubledot, new: openend)
     end
     
     def replace_slash_with_hyphen
