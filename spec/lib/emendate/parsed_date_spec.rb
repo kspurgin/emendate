@@ -7,7 +7,7 @@ RSpec.describe Emendate::ParsedDate do
 
   describe '#to_h' do
     it 'returns hash' do
-      expected = { original_string: nil,
+      expected = { original_string: '2/23/2021',
                    index_dates: [],
                    date_start: nil,
                    date_end: nil,
@@ -22,7 +22,7 @@ RSpec.describe Emendate::ParsedDate do
   describe '#to_json' do
     it 'returns JSON escaped string' do
       expected = <<~LONGSTRING
-      {\"original_string\":null,\"index_dates\":[],\"date_start\":null,\"date_end\":null,\"date_start_full\":\"2021-02-23\",\"date_end_full\":\"2021-02-23\",\"inclusive_range\":null,\"certainty\":[]}
+      {\"original_string\":\"2/23/2021\",\"index_dates\":[],\"date_start\":null,\"date_end\":null,\"date_start_full\":\"2021-02-23\",\"date_end_full\":\"2021-02-23\",\"inclusive_range\":null,\"certainty\":[]}
       LONGSTRING
       expect(@res.to_json).to eq(expected.chomp)
     end
@@ -55,9 +55,10 @@ RSpec.describe Emendate::ParsedDate do
 
     context 'when invalid range' do
       it 'returns false' do
-        d = Emendate.parse('mid 1900s to 2/23/21',
+        dp = Emendate.parse('mid 1900s to 2/23/21',
                            ambiguous_year_rollback_threshold: 0,
-                           pluralized_date_interpretation: :broad).dates.first
+                           pluralized_date_interpretation: :broad)
+          d = dp.dates.first
         expect(d.valid_range?).to be false
       end
     end

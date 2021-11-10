@@ -23,34 +23,58 @@ module Emendate
       working.copy(result)
       result.clear
       until working.empty?
-        apply_modifiers
+        apply_partial_modifiers
+      end
+
+      working.copy(result)
+      result.clear
+      until working.empty?
+        apply_switch_modifiers
       end
       result
     end
 
     private
 
-    def apply_modifiers
+    def apply_switch_modifiers
       return if working.empty?
 
-      mod = mod_function
+      mod = switch_mod_function
       return if mod.nil?
 
       send(mod)
     end
 
-    def mod_function
+    def apply_partial_modifiers
+      return if working.empty?
+
+      mod = partial_mod_function
+      return if mod.nil?
+
+      send(mod)
+    end
+
+    def switch_mod_function
       return nil if working.empty?
 
       case working.types.first
-      when :partial
-        :mod_partial
       when :after
         :mod_switch
       when :before
         :mod_switch
       else
-        :passthrough_mod
+        :passthrough_switch_mod
+      end
+    end
+
+    def partial_mod_function
+      return nil if working.empty?
+
+      case working.types.first
+      when :partial
+        :mod_partial
+      else
+        :passthrough_partial_mod
       end
     end
 
@@ -58,29 +82,34 @@ module Emendate
       switch = working.shift
       if current.kind_of?(Emendate::DateTypes::DateType)
         current.range_switch = switch.lexeme
-        result << current
+        result << current.prepend_source_token(switch)
         working.shift
       else
         result << switch
       end
-      apply_modifiers
+      apply_switch_modifiers
     end
 
     def mod_partial
       partial = working.shift
       if current.kind_of?(Emendate::DateTypes::DateType)
-        current.partial_indicator = partial.lexeme
-        result << current
+        current.partial_indicator = partial.lexeme.strip
+        result << current.prepend_source_token(partial)
         working.shift
       else
         result << partial
       end
-      apply_modifiers
+      apply_partial_modifiers
     end
 
-    def passthrough_mod
+    def passthrough_partial_mod
       transfer_token
-      apply_modifiers
+      apply_partial_modifiers
+    end
+
+    def passthrough_switch_mod
+      transfer_token
+      apply_switch_modifiers
     end
 
     def recursive_parse

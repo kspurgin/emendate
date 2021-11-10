@@ -59,7 +59,27 @@ module Emendate
         # Should 2000s be interpreted as 2000-2009, or 2000-2999?
         # The default is to restrict to interpreting this as a decade
         # Changing to :broad will allow it to be interpreted as century or millennium
-        pluralized_date_interpretation: :decade
+        pluralized_date_interpretation: :decade,
+
+        # What date should be inserted as the beginning of an open or unknown start date
+        # interval?
+        open_unknown_start_date: Date.new(1, 1, 1),
+
+        # What date should be inserted as the beginning of an open or unknown start date
+        # interval?
+        open_unknown_end_date: Date.new(2999, 12, 12),
+
+        # How to interpret a date like: -2001
+        # edtf = negative date (BCE)
+        # open = open start date of interval
+        # unknown = unknown start date of interval
+        date_beginning_with_hyphen: :edtf,
+
+        # How to interpret a date like: 2001-
+        # open = open close date of interval
+        # unknown = unknown close date of interval
+        date_ending_with_hyphen: :open
+
       }
     end
 
@@ -69,7 +89,9 @@ module Emendate
         ambiguous_month_year: %i[as_month],
         two_digit_year_handling: %i[literal],
         square_bracket_interpretation: %i[edtf_set],
-        pluralized_date_interpretation: %i[broad]
+        pluralized_date_interpretation: %i[broad],
+        date_beginning_with_hyphen: %i[open unknown],
+        date_ending_with_hyphen: %i[unknown]
       }
     end
 

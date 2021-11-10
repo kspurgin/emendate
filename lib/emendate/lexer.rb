@@ -88,8 +88,6 @@ module Emendate
 
       c = consume
 
-      return if c == SPACE
-
       token =
         if c == COLON
           token_of_type(c, :colon)
@@ -111,6 +109,8 @@ module Emendate
           token_of_type(c, :question)
         elsif c == SLASH
           token_of_type(c, :slash)
+        elsif c == SPACE
+          token_of_type(c, :space)
         elsif c == SQUARE_BRACKET_OPEN
           token_of_type(c, :square_bracket_open)
         elsif c == SQUARE_BRACKET_CLOSE
@@ -162,9 +162,16 @@ module Emendate
     def dots
       consume_dots
       lexeme = norm[lexeme_start_p..(next_p - 1)]
-      return nil if lexeme.length == 1
 
-      type = lexeme.length == 2 ? :double_dot : :unknown
+      case lexeme.length
+      when 1
+        type = :single_dot
+      when 2
+        type = :double_dot
+      else
+        type = :unknown
+      end
+
       Token.new(type: type, lexeme: lexeme, location: current_location)
     end
 

@@ -19,10 +19,14 @@ lowercase letters = themselves, literally
 
   # rubocop:todo Layout/LineLength, Layout/MultilineArrayBraceLayout
   EXAMPLES = {
-    'unknown' => { pattern: 'unknown', results: [{ start: nil, end: nil, tags: %i[indicates_no_date] }] },
+    'unknown' => { pattern: 'unknown', results: [{ start: nil, end: nil, tags: %i[indicates_no_date ncm] }] },
+    'unk' => { pattern: 'unk', results: [{ start: nil, end: nil, tags: %i[indicates_no_date ncm] }] },
+    'unkn' => { pattern: 'unkn', results: [{ start: nil, end: nil, tags: %i[indicates_no_date ncm] }] },
+    'unk.' => { pattern: 'unk.', results: [{ start: nil, end: nil, tags: %i[indicates_no_date ncm] }] },
     'undated' => { pattern: 'undated', results: [{ start: nil, end: nil, tags: %i[indicates_no_date] }] },
-    'n.d.' => { pattern: 'n.d.', results: [{ start: nil, end: nil, tags: %i[indicates_no_date] }] },
+    'n.d.' => { pattern: 'n.d.', results: [{ start: nil, end: nil, tags: %i[indicates_no_date ncm] }] },
     'nd' => { pattern: 'nd', results: [{ start: nil, end: nil, tags: %i[indicates_no_date] }] },
+    'not dated' => { pattern: 'not dated', results: [{ start: nil, end: nil, tags: %i[indicates_no_date ncm] }] },
     '02-03-2020' => { pattern: '@@-@@-####', results: [{ start: '2020-02-03', end: '2020-02-03', tags: %i[ambiguous_day_month option] }] },
     '02-15-2020' => { pattern: '##-##-####', results: [{ start: '2020-02-15', end: '2020-02-15', tags: %i[] }] },
     '2/15/2020' => { pattern: '#/##/####', results: [{ start: '2020-02-15', end: '2020-02-15', tags: %i[] }] },
@@ -49,7 +53,7 @@ lowercase letters = themselves, literally
     '2020 Mar' => { pattern: '#### MON', results: [{ start: '2020-03-01', end: '2020-03-31', tags: %i[] }] },
     '2020-03' => { pattern: '####-##', results: [{ start: '2020-03-01', end: '2020-03-31', tags: %i[edtf edtf0 ba] }] },
     '2020-3' => { pattern: '####-#', results: [{ start: '2020-03-01', end: '2020-03-31', tags: %i[] }] },
-    '2002' => { pattern: '####', results: [{ start: '2002-01-01', end: '2002-12-31', tags: %i[edtf edtf0 ba] }] },
+    '2002' => { pattern: '####', results: [{ start: '2002-01-01', end: '2002-12-31', tags: %i[edtf edtf0 ba ncm] }] },
     '-2002' => { pattern: '-####', results: [{ start: '-2002-01-01', end: '-2002-12-31', tags: %i[edtf edtf1] }] },
     '2002 C.E.' => { pattern: '#### ERA', results: [{ start: '2002-01-01', end: '2002-12-31', tags: %i[] }] },
     '2002 B.C.E.' => { pattern: '#### ERA', results: [{ start: '-2002-01-01', end: '-2002-12-31', tags: %i[bce] }] },
@@ -98,7 +102,7 @@ lowercase letters = themselves, literally
     '1985-04-12/' => { pattern: '####-##-##/', results: [{ start: '1985-@@-@@', end: Date.today.iso8601, tags: %i[after_before edtf edtf1 unknown_end] }] },
     '1985-04/' => { pattern: '####-##/', results: [{ start: '1985-04-01', end: Date.today.iso8601, tags: %i[after_before edtf edtf1 unknown_end] }] },
     '1985/' => { pattern: '####/', results: [{ start: '1985-01-01', end: Date.today.iso8601, tags: %i[after_before edtf edtf1 unknown_end] }] },
-    'circa 2002' => { pattern: 'circa ####', results: [{ start: '2002-01-01', end: '2002-12-31', tags: %i[approximate] }] },
+    'circa 2002' => { pattern: 'circa ####', results: [{ start: '2002-01-01', end: '2002-12-31', tags: %i[approximate ncm] }] },
     '[circa 2002?]' => { pattern: '[circa ####?]', results: [{ start: '2002-01-01', end: '2002-12-31', tags: %i[approximate inferred uncertain] }] },
     'c. 2002' => { pattern: 'c. ####', results: [{ start: '2002-01-01', end: '2002-12-31', tags: %i[approximate] }] },
     'c 2002' => { pattern: 'c ####', results: [{ start: '2002-01-01', end: '2002-12-31', tags: %i[approximate] }] },
@@ -244,6 +248,21 @@ lowercase letters = themselves, literally
     # 'Y3388E2S3' => { pattern: 'y####e#s#', results: [{ start: nil, end: nil, tags: %i[edtf edtf2 currently_unparseable significant_digits letter_prefixed_year exponential_year] }] }
   }
   # rubocop:enable Layout/LineLength
+
+  def run_sequential_examples(options = {})
+    EXAMPLES.keys.each do |str|
+      begin
+        processed = Emendate.process(str, options)
+      rescue StandardError => e
+        puts "#{str} - ERROR: #{e.message}"
+      else
+        if processed.state == :failed
+          puts "#{str} - Failure state"
+          next
+        end
+      end
+    end
+  end
   
   def example_tags
     EXAMPLES.map{ |str, exhash| [str, exhash[:results]] }

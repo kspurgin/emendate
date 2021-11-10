@@ -4,6 +4,7 @@ require 'simplecov'
 SimpleCov.start
 
 require 'bundler/setup'
+require 'ruby_jard'
 require 'emendate'
 
 RSpec.configure do |config|

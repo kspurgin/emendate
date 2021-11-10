@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Lexer, parser, transformer for messy date metadata}
   spec.homepage      = 'https://github.com/kspurgin/emendate'
   spec.license       = 'MIT'
-  spec.required_ruby_version = Gem::Requirement.new('>= 2.7.2')
+  spec.required_ruby_version = Gem::Requirement.new('>= 2.7.3')
 
   spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
 
@@ -27,8 +27,6 @@ Gem::Specification.new do |spec|
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
-
-  spec.add_development_dependency 'pry-byebug'
 
   spec.add_dependency 'aasm'
 end
