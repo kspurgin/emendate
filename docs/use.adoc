@@ -24,6 +24,7 @@ The parsed result is:
 
 The parsed result is an `Emendate::Result` Ruby object:
 
+[source]
 ----
 #<Emendate::Result:0x00007fbbdcbd5bd8
  @dates=
@@ -43,6 +44,7 @@ The parsed result is an `Emendate::Result` Ruby object:
 
 You may pass in the following to return a Ruby Hash:
 
+[source]
 ----
 Emendate.parse('mid 1990s').to_h
 => {:original_string=>"mid 1990s",
@@ -57,10 +59,11 @@ Emendate.parse('mid 1990s').to_h
     :certainty=>[]}],
  :errors=>[],
  :warnings=>["Interpreting pluralized year as decade"]}
- ----
+----
 
 Or, the following to return JSON:
 
+[source]
 ----
 Emendate.parse('mid 1990s').to_json
 => "{\"original_string\":\"mid 1990s\",\"dates\":[{\"original_string\":null,\"index_dates\":[],\"date_start\":null,\"date_end\":null,\"date_start_full\":\"1994-01-01\",\"date_end_full\":\"1996-12-31\",\"inclusive_range\":true,\"certainty\":[]}],\"errors\":[],\"warnings\":[\"Interpreting pluralized year as decade\"]}"
@@ -73,6 +76,7 @@ For more details on the returned result, see https://github.com/kspurgin/emendat
 See https://github.com/kspurgin/emendate/blob/main/docs/options.adoc[Emendate options] for details on the available options and what they do. The following is just to illustrate the use of options and their effect. 
 
 .Using default settings
+[source]
 ----
 Emendate.parse('2005-06')
 => #<Emendate::Result:0x00007fdfb41aa2c0
@@ -92,6 +96,7 @@ Emendate.parse('2005-06')
 ----
 
 .Using an alternative option
+[source]
 ----
 Emendate.parse('2005-06', ambiguous_month_year: :as_month)
 => #<Emendate::Result:0x00007fdfd4b6d350
@@ -111,6 +116,7 @@ Emendate.parse('2005-06', ambiguous_month_year: :as_month)
 ----
 
 .Default result for value where multiple options could have an effect
+[source]
 ----
 Emendate.parse('mid 1800s to 2/23/21')
 => #<Emendate::Result:0x00007fdfb40bbdc8
@@ -130,6 +136,7 @@ Emendate.parse('mid 1800s to 2/23/21')
 ----
 
 .Setting multiple options at once
+[source]
 ----
 Emendate.parse('mid 1800s to 2/23/21', ambiguous_year_rollback_threshold: 0, pluralized_date_interpretation: :broad)
 => #<Emendate::Result:0x00007fdfb4142580
