@@ -12,3 +12,4 @@
 
 # other
 .byebug_history
+*.csv#
