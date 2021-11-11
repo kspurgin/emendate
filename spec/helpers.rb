@@ -234,21 +234,52 @@ lowercase letters = themselves, literally
     '2004-06-XX/2004-07-03' => { pattern: '####-##-xx/####-##-##', results: [{ start: '2004-06-01', end: '2004-07-03', tags: %i[edtf edtf2 inclusive_range] }] },
 
     # The following examples aren't getting handled correctly and cause `example_results` to fail
-    #    '2004-06/2006-08' => { pattern: '####-##/####-##', results: [{ start: '2004-06-01', end: '2006-08-31', tags: %i[edtf edtf0 inclusive_range] }] },
+    '2004-06/2006-08' => { pattern: '####-##/####-##', results: [{ start: '2004-06-01', end: '2006-08-31', tags: %i[edtf edtf0 inclusive_range] }] },
     # this example makes no sense without the option set to non-default on the first value,
     #  but we're representing default expectations here
-    # '2000-01, 2001-01, 2002-02, 2003-03' => { pattern: '####-@@, ####-##, ####-##, ####-##', results: [
-    #   { start: '2000-01-01', end: '2001-12-31', tags: %i[ambiguous_multi_date  option] },
-    #   { start: '2001-01-01', end: '2001-01-31', tags: %i[ambiguous_multi_date ] },
-    #   { start: '2002-02-01', end: '2002-02-28', tags: %i[ambiguous_multi_date ] },
-    #   { start: '2003-03-01', end: '2003-03-31', tags: %i[ambiguous_multi_date ] }] },
+    '2000-01, 2001-01, 2002-02, 2003-03' => { pattern: '####-@@, ####-##, ####-##, ####-##', results: [
+      { start: '2000-01-01', end: '2001-12-31', tags: %i[ambiguous_multi_date  option] },
+      { start: '2001-01-01', end: '2001-01-31', tags: %i[ambiguous_multi_date ] },
+      { start: '2002-02-01', end: '2002-02-28', tags: %i[ambiguous_multi_date ] },
+      { start: '2003-03-01', end: '2003-03-31', tags: %i[ambiguous_multi_date ] }] },
 
     # the following example lexes fine if you do it manually/individually, but gets stuck/hands in some kind of loop when
     #   run via unique_token_patterns
-    # 'Y3388E2S3' => { pattern: 'y####e#s#', results: [{ start: nil, end: nil, tags: %i[edtf edtf2 currently_unparseable significant_digits letter_prefixed_year exponential_year] }] }
+    'Y3388E2S3' => { pattern: 'y####e#s#', results: [{ start: nil, end: nil, tags: %i[edtf edtf2 currently_unparseable significant_digits letter_prefixed_year exponential_year] }] }
   }
   # rubocop:enable Layout/LineLength
 
+  def get_example_tags(hash)
+    tags = []
+    hash[:results].each{ |result| tags << result[:tags] }
+    tags.flatten.uniq.sort
+  end
+  
+  require 'csv'
+  def example_csv
+    rows = [%w[examplestring examplepattern tags]]
+    EXAMPLES.each{ |key, hash| rows << [key, hash[:pattern], get_example_tags(hash).join(';')] }
+    CSV.open(File.expand_path('~/code/emendate/spec/support/examples.csv'), 'wb') do |csv|
+      rows.each{ |row| csv << row }
+    end
+  end
+
+  def expected_results
+    rows = [%w[examplestring occurrence start end]]
+    EXAMPLES.each do |key, hash|
+      string = key
+      occ = 0
+      hash[:results].each do |result|
+        rows << [string, occ, result[:start], result[:end]]
+        occ += 1
+      end
+    end
+    CSV.open(File.expand_path('~/code/emendate/spec/support/expected_emendate_results.csv'), 'wb') do |csv|
+      rows.each{ |row| csv << row }
+    end
+  end
+  
+  
   def run_sequential_examples(options = {})
     EXAMPLES.keys.each do |str|
       begin
