@@ -94,7 +94,7 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rspec
   ruby_jard
-  simplecov
+  simplecov (~> 0.21)
 
 BUNDLED WITH
-   2.1.4
+   2.2.22
