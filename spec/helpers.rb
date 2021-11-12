@@ -7,39 +7,40 @@ module Helpers
   extend self
 
   def example_strings
-    Examples.new.unique_example_strings
+    ExampleSet.new.tests.map(&:string).uniq.sort
+  end
+
+  def example_patterns
+    ExampleSet.new.tests.map(&:pattern).uniq.sort
   end
 
   def example_tags
-    EXAMPLES.map{ |str, exhash| [str, exhash[:results]] }
-      .to_h
-      .map{ |str, arr| [str, arr.map{ |result| result[:tags] }.flatten.uniq] }
-      .to_h
+    e = ExampleSet.new
+    tags = e.data_sets + e.date_types
+    tags.uniq.sort
   end
 
+  def example_data_set_tags
+    ExampleSet.new.data_sets
+  end
+
+  def example_date_type_tags
+    ExampleSet.new.date_types
+  end
   
-  def run_sequential_examples(options = {})
-    EXAMPLES.keys.each do |str|
-      begin
-        processed = Emendate.process(str, options)
-      rescue StandardError => e
-        puts "#{str} - ERROR: #{e.message}"
-      else
-        if processed.state == :failed
-          puts "#{str} - Failure state"
-          next
-        end
-      end
-    end
+  def run_sequential_examples(examples: ExampleSet.new, tests: nil, fail_fast: true)
+    examples.run_tests(test_list: tests, fail_fast: fail_fast)
+    examples.group_by_pass_fail[:failures].each{ |test| puts test.full_report }
+    examples.pass_fail_summary
   end
   
 
-  def examples_with_tag(tag)
-    example_tags.keep_if{ |str, tags| tags.include?(tag) }.keys
+  def examples_with(data_set: '', date_type: '')
+    ExampleSet.new(data_set: data_set, date_type: date_type)
   end
 
-  def tokenize_examples
-    ex = EXAMPLES.keys
+  def tokenize_examples(examples = ExampleSet.new)
+    ex = examples.strings
     lexed = ex.map{ |str| Emendate.lex(str) }
     tokens = lexed.map{ |t| t.tokens.types }
     ex.zip(tokens)

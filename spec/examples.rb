@@ -25,20 +25,6 @@ module Examples
 
   # pass in data_set and/or date_type tags as strings with ; as delimiter
   def examples(data_set: '', date_type: '')
-    ExampleSet.new(data_set: data_set.split(';'), date_type: date_type.split(';'))
+    ExampleSet.new(data_set: data_set, date_type: date_type)
   end
 end
-
-
-
-
-
-
-# class TestRowSet
-#   attr_reader :string, :pattern
-#   def initialize(rows)
-#     @rows = rows
-#     @string = rows.first['examplestring']
-#     @pattern = rows.first['pattern']
-#   end
-# end
