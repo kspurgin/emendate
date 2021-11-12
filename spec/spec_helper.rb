@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-require 'simplecov'
-SimpleCov.start
-
 require 'bundler/setup'
+#require 'simplecov'
+#SimpleCov.start
+
+
 require 'ruby_jard'
 require 'emendate'
 
