@@ -2,10 +2,11 @@
 
 module Examples
   class Test
-    attr_reader :string, :options, :result, :messages
+    attr_reader :string, :pattern, :options, :result, :messages
     def initialize(rows)
       @rows = rows.sort_by!{ |row| row.occurrence }
       @string = rows.first.string
+      @pattern = rows.first.pattern
       @options = rows.first.options
       @errors = []
       @messages = []

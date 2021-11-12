@@ -8,10 +8,10 @@ module Examples
   class ExampleSet
     attr_reader :data_sets, :date_types, :tests
     
-    def initialize(data_set: [], date_type: [])
+    def initialize(data_set: '', date_type: '')
       table = CSV.parse(File.read(File.expand_path(Path)), headers: true)
-      @data_set_tags = data_set.sort
-      @date_type_tags = date_type.sort
+      @data_set_tags = data_set.split(';').sort
+      @date_type_tags = date_type.split(';').sort
       allrows = []
       table.each{ |row| allrows << Row.new(row) }
       @rows = specified_rows(allrows)
@@ -26,11 +26,11 @@ module Examples
       pass_fail_summary
     end
     
-    def run_tests(test_list: nil )
+    def run_tests(test_list: nil, fail_fast: true)
       if test_list
-        tests.each{ |test| test.run(tests: test_list) }
+        tests.each{ |test| test.run(tests: test_list, fail_fast: fail_fast) }
       else
-        tests.each{ |test| test.run }
+        tests.each{ |test| test.run(fail_fast: fail_fast) }
       end
     end
     

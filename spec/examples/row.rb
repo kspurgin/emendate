@@ -6,7 +6,7 @@ module Examples
     def initialize(row)
       @row = prep(row)
       @string = @row['examplestring']
-      @pattern = @row['pattern']
+      @pattern = @row['examplepattern']
       @options = @row['options']
       @occurrence = @row['occurrence']
       @date_start_full = @row['start_full']
