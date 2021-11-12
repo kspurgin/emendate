@@ -4,7 +4,7 @@ module Emendate
   class UnknownOptionError < StandardError; end
   class UnknownOptionValueError < StandardError; end
   class AmbiguousYearRollbackThresholdError < StandardError
-    def initialize(msg='Must be two digit integer')
+    def initialize(msg='Must be one or two digit integer')
       super
     end
   end
@@ -158,7 +158,7 @@ module Emendate
       val = @options[:ambiguous_year_rollback_threshold]
       raise Emendate::AmbiguousYearRollbackThresholdError.new unless val.is_a?(Integer)
       
-      return if val.to_s.length == 2
+      return if val.to_s.length <= 2
       
       raise Emendate::AmbiguousYearRollbackThresholdError.new
     end

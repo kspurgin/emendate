@@ -25,10 +25,10 @@ Does not apply when there is no ambiguity. For example, 2020-10 will always be i
 
 What is this?:: If a two-digit year is to be coerced to four digits, what should the first two digits be? Is '20' 1920 or 2020?
 Default value:: the current year's last two digits. So, in 2021, it is `21`
-Alternate value:: any 2 digit number
+Alternate value:: any 1 or 2 digit Integer
 
 
-Numbers less than this 2-digit value are treated as current century.
+Numbers less than this value are treated as current century.
 
 Numbers greater than or equal to this are treated as the previous century.
 

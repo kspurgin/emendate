@@ -50,7 +50,7 @@ RSpec.describe Emendate::Options do
         let(:opthash){ {ambiguous_year_rollback_threshold: 500} }
         it 'raises error' do
           err = Emendate::AmbiguousYearRollbackThresholdError
-          expect{ opt }.to raise_error(err, 'Must be two digit integer')
+          expect{ opt }.to raise_error(err, 'Must be one or two digit integer')
         end
       end
 
@@ -58,7 +58,7 @@ RSpec.describe Emendate::Options do
         let(:opthash){ {ambiguous_year_rollback_threshold: '50'} }
         it 'raises error' do
           err = Emendate::AmbiguousYearRollbackThresholdError
-          expect{ opt }.to raise_error(err, 'Must be two digit integer')
+          expect{ opt }.to raise_error(err, 'Must be one or two digit integer')
         end
       end
 
