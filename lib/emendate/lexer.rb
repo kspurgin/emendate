@@ -10,7 +10,7 @@ module Emendate
       .gsub(/b\.?p\.?/, 'bp') # cleanup bp
       .sub(/^n\.? ?d\.?$/, 'nodate') # cleanup nd
       .sub(/^ *not dated *$/, 'notdated') # cleanup not dated
-      .sub(/^ unkn?\.? *$/, 'unk') # cleanup unk.
+      .sub(/^ *unkn?\.? *$/, 'unk') # cleanup unk.
       .sub(/(st|nd|rd|th) c\.?$/, '\1 century') # ending c after ordinal
   end
 

@@ -2,9 +2,10 @@
 
 module Emendate
   class UntokenizableTagger
-    attr_reader :result
+    attr_reader :str, :result
 
     def initialize(str:)
+      @str = str
       @result = Emendate::MixedSet.new
     end
 
