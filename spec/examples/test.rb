@@ -55,16 +55,28 @@ module Examples
       success? ? 'PASS' : 'FAIL'
     end
 
-    def actual(method)
-      result.result.dates.map{ |date| date.method(method).call }
+    def actual_date_vals(method)
+      dates = result.result.dates
+      return [nil] if dates.empty?
+      
+      dates.map{ |date| date.method(method).call }
+    end
+
+    def actual_val(method)
+      result.result.method(method).call
     end
     
     def all_tests
-      %i[test_date_start_full test_date_end_full]
+      %i[test_date_start_full test_date_end_full
+         test_warnings]
     end
 
-    def expected(method)
+    def expected_date_vals(method)
       @rows.map{ |row| row.method(method).call }
+    end
+
+    def expected_val(method)
+      @rows.map{ |row| row.method(method).call }.flatten.uniq
     end
     
     def option_call
@@ -78,7 +90,7 @@ module Examples
     def process
       r = result
     rescue => err
-      @errors << err
+      @errors << err.full_message
       @processable = false
     else
       @result = r
@@ -91,10 +103,10 @@ module Examples
       instance_eval(option_call)
     end
 
-    def test_runner_dates(test, method)
+    def test_runner(type:, test:, method:)
       @tests_run << test
-      got = actual(method)
-      exp = expected(method)
+      got = type == :date ? actual_date_vals(method) : actual_val(method)
+      exp = type == :date ? expected_date_vals(method) : expected_val(method)
       if got == exp
         @test_results << :pass
         return
@@ -103,15 +115,19 @@ module Examples
       @test_results << :fail
       @messages << "#{method}: EXPECTED: #{exp.join('|')}, GOT: #{got.join('|')}"
     end
-    
+
     def test_date_end_full
-      test_runner_dates(__method__, :date_end_full)
+      test_runner(type: :date, test: __method__, method: :date_end_full)
     end
 
     def test_date_start_full
-      test_runner_dates(__method__, :date_start_full)
+      test_runner(type: :date, test: __method__, method: :date_start_full)
     end
     
+    def test_warnings
+      test_runner(type: :result, test: __method__, method: :warnings)
+    end
+
     def test_processing
       @tests_run << __method__
       if @processable

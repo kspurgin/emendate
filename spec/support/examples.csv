@@ -162,10 +162,10 @@
 "1980s & 1990s","####s & ####s","alternate_dates;approximate;decades",,,1,"1990-01-01","1999-12-31",,"1980s & 1990s",
 "1980s or 1990s","####s or ####s","alternate_dates;approximate;decades",,,0,"1980-01-01","1989-12-31",,"1980s or 1990s",
 "1980s or 1990s","####s or ####s","alternate_dates;approximate;decades",,,1,"1990-01-01","1999-12-31",,"1980s or 1990s",
-"1950S2","####s#","currently_unparseable;edtf;edtf2;significant_digits",,,0,"nilValue","nilValue",,"1950S2","Currently unparseable"
+"1950S2","####s#","currently_unparseable;edtf;edtf2;significant_digits",,,0,"nilValue","nilValue",,"1950S2","Unprocessable string"
 "199u","###u","approximate;decades",,,0,"1990-01-01","1999-12-31","one_of_set","199u",
 "199X","###x","approximate;decades;edtf;edtf1",,,0,"1990-01-01","1999-12-31","one_of_set","199X",
-"156X-12-25","###x-##-##","currently_unparseable;edtf;edtf2;specific_date_in_range_of_years",,,0,"nilValue","nilValue",,"156X-12-25","Currently unparseable"
+"156X-12-25","###x-##-##","currently_unparseable;edtf;edtf2;specific_date_in_range_of_years",,,0,"nilValue","nilValue",,"156X-12-25","Unprocessable string"
 "19th c.","##ORD c.","century","ba",,0,"1801-01-01","1900-12-31",,"19th c.",
 "19th century","##ORD century","century",,,0,"1801-01-01","1900-12-31",,"19th century",
 "19th century ?","##ORD century ?","century;uncertain",,,0,"1801-01-01","1900-12-31",,"19th century ?",
@@ -174,10 +174,10 @@
 "17th or 18th century","##ORD or ##ORD century","alternate_dates;century",,,1,"1701-01-01","1800-12-31",,"17th or 18th century",
 "18uu","##uu","approximate;centuries",,,0,"1800-01-01","1899-12-31",,"18uu",
 "18XX","##xx","approximate;centuries;edtf;edtf1",,,0,"1800-01-01","1899-12-31",,"18XX",
-"15XX-12-25","##xx-##-##","currently_unparseable;edtf;edtf2;specific_date_in_range_of_years",,,0,"nilValue","nilValue",,"15XX-12-25","Currently unparseable"
+"15XX-12-25","##xx-##-##","currently_unparseable;edtf;edtf2;specific_date_in_range_of_years",,,0,"nilValue","nilValue",,"15XX-12-25","Unprocessable string"
 "1uuu","#uuu","approximate;millennia",,,0,"1000-01-01","1999-12-31",,"1uuu",
-"1XXX-12","#xxx-##","currently_unparseable;edtf;edtf2;in_specific_month_in_any_year",,,0,"nilValue","nilValue",,"1XXX-12","Currently unparseable"
-"1XXX-XX","#xxx-xx","currently_unparseable;edtf;edtf2;in_specific_month_in_any_year",,,0,"nilValue","nilValue",,"1XXX-XX","Currently unparseable"
+"1XXX-12","#xxx-##","currently_unparseable;edtf;edtf2;in_specific_month_in_any_year",,,0,"nilValue","nilValue",,"1XXX-12","Unprocessable string"
+"1XXX-XX","#xxx-xx","currently_unparseable;edtf;edtf2;in_specific_month_in_any_year",,,0,"nilValue","nilValue",,"1XXX-XX","Unprocessable string"
 "after 1815","after ####","after_before","ba",,0,"1816-01-01","today",,"after 1815",
 "before 1750","before ####","after_before","ba",,0,"0001-01-01","1749-12-31",,"before 1750",
 "c 2002","c ####","approximate",,,0,"2002-01-01","2002-12-31",,"c 2002",
@@ -230,11 +230,11 @@
 "unkn","unkn","indicates_no_date","ncm",,0,"nilValue","nilValue","known_unknown","unkn",
 "unknown","unknown","indicates_no_date","ncm",,0,"nilValue","nilValue","known_unknown","unknown",
 "VIII.XIV.MMXX","VIII.XIV.MMXX","unparseable",,,0,"nilValue","nilValue",,"VIII.XIV.MMXX","Currently unparseable"
-"XXXX-12-XX","xxxx-##-xx","currently_unparseable;edtf;edtf2;in_specific_month_in_any_year",,,0,"nilValue","nilValue",,"XXXX-12-XX","Currently unparseable"
+"XXXX-12-XX","xxxx-##-xx","currently_unparseable;edtf;edtf2;in_specific_month_in_any_year",,,0,"nilValue","nilValue",,"XXXX-12-XX","Unprocessable string"
 "Y-170002","y-######","edtf;edtf1;letter_prefixed_year",,,0,"-170002-01-01","-170002-12-31",,"Y-170002",
-"Y-17E7","y-##e#","currently_unparseable;edtf;edtf2;exponential_year",,,0,"nilValue","nilValue",,"Y-17E7","Currently unparseable"
+"Y-17E7","y-##e#","currently_unparseable;edtf;edtf2;exponential_year",,,0,"nilValue","nilValue",,"Y-17E7","Unprocessable string"
 "Y170002","y######","edtf;edtf1;letter_prefixed_year",,,0,"170002-01-01","170002-12-31",,"Y170002",
-"Y171010000S3","y#########s#","currently_unparseable;edtf;edtf2;letter_prefixed_year;significant_digits",,,0,"nilValue","nilValue",,"Y171010000S3","Currently unparseable"
-"Y3388E2S3","y####e#s#","currently_unparseable;edtf;edtf2;exponential_year;letter_prefixed_year;significant_digits",,,0,"nilValue","nilValue",,"Y3388E2S3","Currently unparseable"
+"Y171010000S3","y#########s#","currently_unparseable;edtf;edtf2;letter_prefixed_year;significant_digits",,,0,"nilValue","nilValue",,"Y171010000S3","Unprocessable string"
+"Y3388E2S3","y####e#s#","currently_unparseable;edtf;edtf2;exponential_year;letter_prefixed_year;significant_digits",,,0,"nilValue","nilValue",,"Y3388E2S3","Unprocessable string"
 "2004-06-~01/2004-06-~20","####-##-~##/####-##-~##","approximate_handling_todo;edtf;edtf2",,,0,"2004-06-01","2004-06-20",,"2004-06-~01/2004-06-~20",
 "2004-06~-11","####-##~-##","edtf;edtf2;year_and_month_approximate",,,0,"2004-06-01","2004-06-01",,"2004-06~-11",

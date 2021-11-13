@@ -38,9 +38,20 @@ module Examples
       false
     end
 
+    def warnings
+      warns = @row['warnings']
+      return [] if warns.blank?
+
+      warns.split(';')
+    end
+    
+    
     def test_fingerprint
       "#{string}/#{options}"
     end
+
+    private
+    
 
     def prep(row)
       r = row.to_h

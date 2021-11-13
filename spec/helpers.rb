@@ -46,9 +46,8 @@ module Helpers
     ex.zip(tokens)
   end
 
-  def parse_examples(tag: nil, stage: nil, options: {})
-    ex = tag.nil? ? EXAMPLES.keys : examples_with_tag(tag)
-    # for regular use
+  def parse_examples(examples: ExampleSet.new, stage: nil, options: {})
+    ex = examples.strings
     if stage.nil?
       ex.map{ |str| Emendate.process(str, options) }
     else

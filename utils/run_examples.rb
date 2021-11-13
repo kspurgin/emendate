@@ -4,9 +4,25 @@ require 'bundler/setup'
 require 'emendate'
 require 'pry'
 
-#e = Emendate.examples
-e = Emendate.examples(data_set: 'ncm')
-e.run_tests
-e.group_by_pass_fail[:failures].each{ |test| puts test.full_report }
+#Emendate.process('Y-170002')
+#e = Emendate.process('MXL.VIII')
 
+#e = Emendate.examples
+#e = Emendate.examples(date_type: 'currently_unparseable')
+e = Emendate.examples(data_set: 'ncm')
+
+e.run_tests
+#e.run_tests(test_list: %i[test_processing])
+#binding.pry
+
+f = e.group_by_pass_fail[:failures]
+f.each{ |test| puts test.full_report } if f
 e.pass_fail_summary
+
+# ## token types for known unknown dates
+# e = Emendate.examples(date_type: 'indicates_no_date')
+# s = e.strings
+# s.each do |str|
+#   lexed = Emendate.lex(str)
+#   puts "#{str} : #{lexed.tokens.types.join(', ')}"
+# end

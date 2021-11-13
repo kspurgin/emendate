@@ -5,6 +5,7 @@ module Emendate
     include AASM
     attr_reader :orig_string, :options, :norm_string, :tokens, :orig_tokens,
       :tagged_untokenizable,
+      :tagged_unprocessable,
       :collapsed_tokens,
       :converted_months,
       :translated_ordinals,
@@ -28,17 +29,18 @@ module Emendate
     aasm do
       state :startup, initial: true
       state :tokenized,
-            :untokenizable_tagged,
-            :tokens_collapsed,
-            :months_converted,
-            :ordinals_translated,
-            :values_certainty_checked,
-            :formats_standardized,
-            :date_parts_tagged,
-            :dates_segmented,
-            :indicated_ranges,
-            :final_segments_checked,
-            :done, :failed
+        :untokenizable_tagged,
+        :unprocessable_tagged,
+        :tokens_collapsed,
+        :months_converted,
+        :ordinals_translated,
+        :values_certainty_checked,
+        :formats_standardized,
+        :date_parts_tagged,
+        :dates_segmented,
+        :indicated_ranges,
+        :final_segments_checked,
+        :done, :failed
 
       after_all_transitions :log_status_change, :gather_warnings
 
@@ -49,41 +51,51 @@ module Emendate
         transitions from: :tokenized, to: :untokenizable_tagged, after: :perform_tag_untokenizable,
           guard: :no_errors?
       end
+      event :exit_if_untokenizable do
+         transitions from: :untokenizable_tagged, to: :done, guard: :untokenizable?
+      end
+      event :tag_unprocessable do
+        transitions from: :untokenizable_tagged, to: :unprocessable_tagged, after: :perform_tag_unprocessable,
+          guard: :no_errors?
+      end
+      event :exit_if_unprocessable do
+         transitions from: :unprocessable_tagged, to: :done, guard: :unprocessable?
+      end
       event :collapse_tokens do
-        transitions from: :untokenizable_tagged, to: :tokens_collapsed, after: :perform_collapse_tokens,
-                    guard: :no_errors?
+        transitions from: :unprocessable_tagged, to: :tokens_collapsed, after: :perform_collapse_tokens,
+          guard: :no_errors?
       end
       event :convert_months do
         transitions from: :tokens_collapsed, to: :months_converted, after: :perform_convert_months,
-                    guard: :no_errors?
+          guard: :no_errors?
       end
       event :translate_ordinals do
         transitions from: :months_converted, to: :ordinals_translated, after: :perform_translate_ordinals,
-                    guard: :no_errors?
+          guard: :no_errors?
       end
       event :certainty_check do
         transitions from: :ordinals_translated, to: :values_certainty_checked, after: :perform_certainty_check,
-                    guard: :no_errors?
+          guard: :no_errors?
       end
       event :standardize_formats do
         transitions from: :values_certainty_checked, to: :formats_standardized,
-                    after: :perform_standardize_formats, guard: :no_errors?
+          after: :perform_standardize_formats, guard: :no_errors?
       end
       event :tag_date_parts do
         transitions from: :formats_standardized, to: :date_parts_tagged, after: :perform_tag_date_parts,
-                    guard: :no_errors?
+          guard: :no_errors?
       end
       event :segment_dates do
         transitions from: :date_parts_tagged, to: :dates_segmented, after: :perform_segment_dates,
-                    guard: :no_errors?
+          guard: :no_errors?
       end
       event :indicate_ranges do
         transitions from: :dates_segmented, to: :indicated_ranges, after: :perform_indicate_ranges,
-                    guard: :no_errors?
+          guard: :no_errors?
       end
       event :check_final_segments do
         transitions from: :indicated_ranges, to: :final_segments_checked, after: :perform_check_final_segments,
-                    guard: :no_errors?
+          guard: :no_errors?
       end
 
       event :finalize do
@@ -91,6 +103,8 @@ module Emendate
         transitions from: :tokenized, to: :failed, guard: :errors?
         transitions from: :untokenizable_tagged, to: :done, guard: :no_errors?
         transitions from: :untokenizable_tagged, to: :failed, guard: :errors?
+        transitions from: :unprocessable_tagged, to: :done, guard: :no_errors?
+        transitions from: :unprocessable_tagged, to: :failed, guard: :errors?
         transitions from: :tokens_collapsed, to: :done, guard: :no_errors?
         transitions from: :tokens_collapsed, to: :failed, guard: :errors?
         transitions from: :months_converted, to: :done, guard: :no_errors?
@@ -115,6 +129,9 @@ module Emendate
     def process
       lex
       tag_untokenizable if may_tag_untokenizable?
+      exit_if_untokenizable if may_exit_if_untokenizable?
+      tag_unprocessable if may_tag_unprocessable?
+      exit_if_unprocessable if may_exit_if_unprocessable?
       collapse_tokens if may_collapse_tokens?
       convert_months if may_convert_months?
       translate_ordinals if may_translate_ordinals?
@@ -123,7 +140,7 @@ module Emendate
       tag_date_parts if may_tag_date_parts?
       segment_dates if may_segment_dates?
       indicate_ranges if may_indicate_ranges?
-      finalize
+      finalize if may_finalize?
       prepare_result
     end
 
@@ -160,9 +177,9 @@ module Emendate
 
     def prepare_result
       r = { original_string: orig_string,
-            errors: errors,
-            warnings: warnings,
-            result: []
+           errors: errors,
+           warnings: warnings,
+           result: []
           }
 
       if state == :failed
@@ -179,7 +196,7 @@ module Emendate
       begin
         l.tokenize
       rescue Emendate::UntokenizableError => e
-        errors << e
+        errors << e.full_message
       else
         @norm_string = l.norm
         @tokens = l.tokens
@@ -206,7 +223,7 @@ module Emendate
       begin
         t.translate
       rescue StandardError => e
-        errors << e
+        errors << e.full_message
       else
         @tokens = t.result
         @translated_ordinals = tokens.class.new.copy(tokens)
@@ -218,7 +235,7 @@ module Emendate
       begin
         c.check
       rescue StandardError => e
-        errors << e
+        errors << e.full_message
       else
         @tokens = c.result
         @certainty_checked = tokens.class.new.copy(tokens)
@@ -230,7 +247,7 @@ module Emendate
       begin
         f.standardize
       rescue StandardError => e
-        errors << e
+        errors << e.full_message
       else
         @tokens = f.result
         @standardized_formats = tokens.class.new.copy(tokens)
@@ -242,21 +259,31 @@ module Emendate
       begin
         t.tag
       rescue StandardError => e
-        errors << e
+        errors << e.full_message
       else
         @tokens = t.result
         @tagged_date_parts = tokens.class.new.copy(tokens)
       end
     end
 
-    def perform_tag_untokenizable
-      return unless tokens.types.any?(:unknown)
-
-      t = Emendate::UntokenizableTagger.new(str: orig_string)
+    def perform_tag_unprocessable
+      t = Emendate::UnprocessableTagger.new(tokens: tagged_untokenizable, str: orig_string)
       begin
         t.tag
       rescue StandardError => e
-        errors << e
+        errors << e.full_message
+      else
+        @tokens = t.result
+        @tagged_unprocessable = tokens.class.new.copy(tokens)
+      end
+    end
+
+    def perform_tag_untokenizable
+      t = Emendate::UntokenizableTagger.new(tokens: tokens, str: orig_string)
+      begin
+        t.tag
+      rescue StandardError => e
+        errors << e.full_message
       else
         @tokens = t.result
         @tagged_untokenizable = tokens.class.new.copy(tokens)
@@ -268,7 +295,7 @@ module Emendate
       begin
         s.segment
       rescue StandardError => e
-        errors << e
+        errors << e.full_message
       else
         @tokens = s.result
         @segmented_dates = tokens.class.new.copy(tokens)
@@ -280,7 +307,7 @@ module Emendate
       begin
         i.indicate
       rescue StandardError => e
-        errors << e
+        errors << e.full_message
       else
         @tokens = i.result
         @ranges_indicated = tokens.class.new.copy(tokens)
@@ -303,6 +330,14 @@ module Emendate
 
     def no_errors?
       errors.empty?
+    end
+
+    def unprocessable?
+      tokens.types == [:unprocessable_value]
+    end
+
+    def untokenizable?
+      tokens.types == [:untokenizable_date_type]
     end
   end
 end

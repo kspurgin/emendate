@@ -66,7 +66,7 @@ module Emendate
 
         # how to interpret square brackets around a string: as a supplied date, or EDTF
         #  "one of" set
-        square_bracket_interpretation: :supplied_date,
+        square_bracket_interpretation: :inferred_date,
 
         # 1990s will always be interpreted as 1990-1999, but...
         # Should 1900s be interpreted as 1900-1909, or 1900-1999?

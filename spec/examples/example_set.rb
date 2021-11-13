@@ -44,7 +44,7 @@ module Examples
 
     def group_by_pass_fail
       hash = tests.group_by{ |test| test.failure? }
-      { passes: hash[false], failures: hash[true] }
+      { passes: hash[false], failures: hash[true] }.compact
     end
 
     def pass_fail_summary
