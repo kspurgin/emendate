@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Emendate::SegmentSet do
+RSpec.describe Emendate::SegmentSets::SegmentSet do
     before(:all) do
       @set = described_class.new(%i[a b c d].map{ |t| Emendate::Token.new(type: t) })
     end

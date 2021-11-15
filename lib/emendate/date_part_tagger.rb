@@ -30,7 +30,7 @@ module Emendate
 
     include DateUtils
     def initialize(tokens:, options: {})
-      @result = Emendate::MixedSet.new.copy(tokens)
+      @result = Emendate::SegmentSets::MixedSet.new.copy(tokens)
       @options = options
       @taggable = true
     end

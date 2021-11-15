@@ -7,7 +7,7 @@ module Emendate
     def initialize(tokens:, str:)
       @tokens = tokens
       @str = str
-      @result = Emendate::MixedSet.new
+      @result = Emendate::SegmentSets::MixedSet.new
     end
 
     def tag
@@ -23,7 +23,7 @@ module Emendate
     private
 
     def passthrough
-      @result = Emendate::MixedSet.new.copy(@tokens)
+      @result = Emendate::SegmentSets::MixedSet.new.copy(@tokens)
     end
 
     def untokenizable_strings

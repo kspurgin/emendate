@@ -21,7 +21,7 @@ module Emendate
       @orig_string = string
       @options = Emendate::Options.new(options)
       @norm_string = Emendate.normalize_orig(orig_string)
-      @tokens = Emendate::TokenSet.new
+      @tokens = Emendate::SegmentSets::TokenSet.new
       @errors = []
       @warnings = []
     end

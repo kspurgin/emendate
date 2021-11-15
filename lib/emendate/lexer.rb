@@ -54,7 +54,7 @@ module Emendate
 
     def initialize(norm_string)
       @norm = norm_string
-      @tokens = Emendate::TokenSet.new
+      @tokens = Emendate::SegmentSets::TokenSet.new
       @next_p = 0
       @lexeme_start_p = 0
     end
