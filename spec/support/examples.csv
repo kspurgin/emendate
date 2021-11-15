@@ -104,8 +104,8 @@
 "2020-21","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_year",0,"2020-01-01","2021-12-31",,"2020-21",
 "2020-34","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_month",0,"2020-01-01","2021-03-31",,"2020-34",
 "2020-34","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_year",0,"2020-01-01","2034-12-31",,"2020-34",
-"1910-11","####-@@","ambiguous_year_month;edtf;edtf1;two_digit_year","ncm","ambiguous_month_year: :as_year",0,"1910-01-01","1911-12-31",,"1910-11",
-"1910-11","####-@@","ambiguous_year_month;edtf;edtf1;two_digit_year","ncm","ambiguous_month_year: :as_month",0,"1910-11-01","1910-11-30",,"1910-11",
+"1910-11","####-@@","ambiguous_year_month;edtf;edtf1;two_digit_year","ncm","ambiguous_month_year: :as_year",0,"1910-01-01","1911-12-31",,"1910-11","Ambiguous year + month/season/year treated as_year"
+"1910-11","####-@@","ambiguous_year_month;edtf;edtf1;two_digit_year","ncm","ambiguous_month_year: :as_month",0,"1910-11-01","1910-11-30",,"1910-11","Ambiguous year + month/season/year treated as_month"
 "2000-01, 2001-01, 2002-02, 2003-03","####-@@, ####-##, ####-##, ####-##","ambiguous_multi_date;option",,,0,"2000-01-01","2001-12-31",,"2000-01, 2001-01, 2002-02, 2003-03",
 "2000-01, 2001-01, 2002-02, 2003-03","####-@@, ####-##, ####-##, ####-##","ambiguous_multi_date;option",,,1,"2001-01-01","2001-01-31",,"2000-01, 2001-01, 2002-02, 2003-03",
 "2000-01, 2001-01, 2002-02, 2003-03","####-@@, ####-##, ####-##, ####-##","ambiguous_multi_date;option",,,2,"2002-02-01","2002-02-28",,"2000-01, 2001-01, 2002-02, 2003-03",

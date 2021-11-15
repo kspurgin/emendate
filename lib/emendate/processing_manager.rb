@@ -151,7 +151,12 @@ module Emendate
         if events.include?(event)
           ready = true
         else
-          send("may_#{events[0]}?".to_sym) ? send(events[0]) : ready = true
+          next_events = events.select{ |event| send("may_#{event}?".to_sym) }
+          if next_events.empty?
+            puts "WARNING: cannot prep for #{event}"
+            return
+          end
+          send(next_events.first)
         end
       end
       finalize

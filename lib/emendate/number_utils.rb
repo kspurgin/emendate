@@ -22,6 +22,7 @@ module Emendate
     end
 
     def valid_year?(str)
+      str = str.to_s unless str.is_a?(String)
       str.length <= 4 && str.to_i <= DateTime.now.year
     end
 

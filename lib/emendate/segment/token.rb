@@ -14,7 +14,7 @@ module Emendate
 
     def_delegators :@location, :col, :length
 
-    COLLAPSIBLE_TOKEN_TYPES = %i[space single_dot]
+    COLLAPSIBLE_TOKEN_TYPES = %i[space single_dot standalone_zero]
     DATE_PART_TOKEN_TYPES = %i[number1or2 number3 number4 number6 number8 s century
                                uncertainty_digits era number_month]
 

@@ -95,6 +95,15 @@ RSpec.describe Emendate::Lexer do
     end
   end
 
+  context 'with standalone zero' do
+    it 'produces expected tokens' do
+      orig = '4444.0'
+      expected = %i[number4 single_dot standalone_zero]
+      lexer = Emendate.lex(orig)
+      expect(lexer.tokens.map(&:type)).to eq(expected)
+    end
+  end
+
   context 'with alpha string types' do
     context 'with ordinal' do
       it 'produces expected tokens' do

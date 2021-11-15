@@ -26,7 +26,7 @@ module Emendate
     private
 
     def collapse_backward
-      to_collapse = result.segments.select(&:collapsible?).first
+      to_collapse = result.segments.select(&:collapsible?).last
       prev = result[result.find_index(to_collapse) - 1]
       collapse_token_pair_backward(prev, to_collapse)
     end
@@ -36,7 +36,7 @@ module Emendate
     end
     
     def collapsible?
-      result.type_string.match?(/space|single_dot/)
+      result.type_string.match?(/space|single_dot|standalone_zero/)
     end
 
     def determine_action
