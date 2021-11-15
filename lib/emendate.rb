@@ -12,17 +12,8 @@ require 'active_support/core_ext/object'
 require 'emendate/date_types/date_type'
 # require 'emendate/segment/segment'
 
-Dir[File.dirname(__FILE__) + '/../lib/emendate/*.rb'].each do |file|
-  require "emendate/#{File.basename(file, File.extname(file))}"
-end
-Dir[File.dirname(__FILE__) + '/../lib/emendate/date_types/*.rb'].each do |file|
-  require "emendate/date_types/#{File.basename(file, File.extname(file))}"
-end
-Dir[File.dirname(__FILE__) + '/../lib/emendate/segment/*.rb'].each do |file|
-  require "emendate/segment/#{File.basename(file, File.extname(file))}"
-end
-Dir[File.dirname(__FILE__) + '/../lib/emendate/segment_set/*.rb'].each do |file|
-  require "emendate/segment_set/#{File.basename(file, File.extname(file))}"
+Dir.glob("#{__dir__}/**/*").sort.select { |path| path.match?(/\.rb$/) }.each do |rbfile|
+  require rbfile.delete_prefix("#{File.expand_path(__dir__)}/lib/")
 end
 
 require_relative '../spec/helpers'
