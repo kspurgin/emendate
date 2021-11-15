@@ -100,7 +100,11 @@ module Emendate
         unknown_date_output: :orig,
 
         # string to use when unknown_date_output: :custom
-        unknown_date_output_string: ''
+        unknown_date_output_string: '',
+
+        # output to use for `Emendate.translate` command
+        # must be set in order to get an `Emendate::Translation`
+        target_dialect: nil
       }
     end
 
@@ -114,7 +118,8 @@ module Emendate
         pluralized_date_interpretation: %i[broad],
         beginning_hyphen: %i[edtf open],
         ending_hyphen: %i[unknown],
-        unknown_date_output: %i[custom]
+        unknown_date_output: %i[custom],
+        target_dialect: %i[lyrasis_pseudo_edtf edtf collectionspace]
       }
     end
 

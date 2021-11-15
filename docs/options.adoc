@@ -102,6 +102,18 @@ This setting controls what will be output as the `date_start_full` value of your
 Default value:: 0001-01-01
 Alternate value:: Any year/month/day expressed as YYYY-MM-DD
 
+== target_dialect
+
+What is this?:: date expression to return when you `translate` a date string
+Default value:: `:none`
+Alternate value:: `:lyrasis_pseudo_edtf`, `:edtf`, `collectionspace`
+
+IMPORTANT: Not fully implemented at all!
+
+By default `parse` will return an `Emendate::Result` that another script can use to do whatever is needed.
+
+By calling `translate`, you can get a simpler, pre-processed `Emendate::Translation` of your original string into another date format. See https://github.com/kspurgin/emendate/blob/main/docs/output.adoc[output documentation] for details.
+
 == pluralized_date_interpretation
 
 What is this?:: Should 1900s be interpreted as 1900-1909, or 1900-1999? Should 2000s be interpreted as 2000-2009, or 2000-2999?

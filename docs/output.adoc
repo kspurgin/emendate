@@ -5,6 +5,8 @@
 
 toc::[]
 
+== `parse` output
+
 By default, `Emendate.parse` returns an `Emendate::Result` Ruby object.
 
 ----
@@ -74,7 +76,7 @@ The Emendate result `Hash` has the following keys:
 `:warnings`:: may be present if `:result` is populated.  
 `:dates`:: an `Array` of parsed date values
 
-== Comparison with TimeTwister result
+=== Comparison with TimeTwister result
 
 The `Emendate.parse` command's output is based on https://github.com/alexduryee/timetwister[Timetwister]'s output, with some important differences.
 
@@ -126,7 +128,7 @@ Emendate.parse('n.d.')
 => #<Emendate::Result:0x00007fdfb41682a8 @dates=[], @errors=[], @original_string="n.d.", @warnings=[]>
 ----
 
-== Examples of Emendate errors and warnings
+=== Examples of Emendate errors and warnings
 
 Errors indicate the date could not be parsed at all for some reason. This usually will either mean the string is just not a date, or Emendate doesn't yet understand how to deal with the given date format.
 
@@ -157,4 +159,37 @@ Emendate.parse('2/3/2021')
  @warnings=["Ambiguous month/day treated as_month_day"]>
 ----
 
+== `translate` output
 
+IMPORTANT: Still very much under development!
+
+Recieving an `Emendate::Result` can be useful for integration with your custom data workflow.
+
+However, one of the purposes of Emendate is to translate from some (or no!) date format to another date format. For this purpose, a simpler, pre-processed result is more useful.
+
+For this use case, you can call `translate` (with `target_dialect` option set), and you will receive an `Emendate::Translation` object with the following attributes:
+
+`orig`:: the original String given
+`result`:: typically a String, but some dialects may return another object type.
+`warnings`:: array of warning messages
+
+[NOTE]
+====
+If the original string could not be parsed or cannot be translated, `Emendate::Translation.result` will be an empty String (or whatever the equivalent of empty is for the object type returned by the specified dialect). Warnings indicating why a result could not be returned will be in `Emendate::Translation.warnings`.
+====
+
+=== target dialects for translation
+
+==== `:lyrasis_pseudo_edtf`
+
+A pseudo-standard format developed by LYRASIS, documented https://lyrasis.zendesk.com/hc/en-us/articles/360041734211-Deep-dive-Best-practices-for-dates-in-Islandora-MODS-metadata[here]. Provides a way to record dates in legacy (currently hosted) Islandora that will be unambiguous to translate into EDTF for migration into the new Islandora
+
+`Emendate::Translation.result` is a String
+
+==== :edtf
+
+`Emendate::Translation.result` is a String containing a valid https://www.loc.gov/standards/datetime/[EDTF] value.
+
+==== :collectionspace
+
+`Emendate::Translation.result` is (tbd) ready for passing into https://github.com/collectionspace/collectionspace-mapper/[`collectionspace-mapper`]
