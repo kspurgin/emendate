@@ -36,7 +36,7 @@ module Emendate
                                          value: empty_value,
                                          warnings: [warn])
       end
-      
+
       translator.translate(processed)
     end
 
@@ -54,7 +54,9 @@ module Emendate
     end
 
     def dialect_translator
-      "#{dialect_module}::#{date_type}".constantize.new
+      klass = "#{dialect_module}::#{date_type}".constantize
+      klass.include(dialect_module.constantize)
+      klass.new
     rescue
       nil
     end

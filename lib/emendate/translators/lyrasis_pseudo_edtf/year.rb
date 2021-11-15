@@ -4,20 +4,19 @@ require_relative '../abstract'
 
 module Emendate
   module Translators
-    module Edtf
+    module LyrasisPseudoEdtf
     # EDTF translator
       class Year  < Emendate::Translators::Abstract
         private
 
-        attr_reader :yr
+        attr_reader :base
         
         def translate_value
-          @yr = processed.tokens[0]
-          return certain_year if yr.certain?
-        end
+          @base = tokens[0].lexeme
 
-        def certain_year
-          yr.lexeme
+          return base if tokens.certain?
+          return approximate_and_uncertain if tokens.approximate_and_uncertain?
+          return approximate if tokens.approximate?
         end
       end
     end

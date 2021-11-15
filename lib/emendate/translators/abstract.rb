@@ -15,6 +15,10 @@ module Emendate
 
       private
 
+      def tokens
+        processed.tokens
+      end
+      
       def translate_value
         raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
