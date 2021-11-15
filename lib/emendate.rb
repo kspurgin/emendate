@@ -57,6 +57,13 @@ module Emendate
     lexed
   end
 
+  def translate(str, options = {})
+    pm = Emendate::ProcessingManager.new(str, options)
+    pm.process
+    translator = Emendate::Translator.new(pm)
+    translator.translate
+  end
+
   def tokenize(str)
     tokens = lex(str).map(&:type)
     puts "#{str}\t\t#{tokens.inspect}"
