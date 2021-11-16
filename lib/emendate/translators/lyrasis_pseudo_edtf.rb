@@ -9,7 +9,7 @@ module Emendate
       def empty_value
         ''
       end
-
+      
       def approximate
         "#{base} (approximate)"
       end

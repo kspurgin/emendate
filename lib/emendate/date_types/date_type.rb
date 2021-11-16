@@ -31,15 +31,23 @@ module Emendate
       end
 
       def earliest
-        raise NotImplementedError
+        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
 
       def latest
-        raise NotImplementedError
+        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+      end
+
+      def earliest_at_granularity
+        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+      end
+
+      def latest_at_granularity
+        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
 
       def lexeme
-        raise NotImplementedError
+        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
 
       def location
@@ -52,7 +60,7 @@ module Emendate
       end
             
       def range?
-        raise NotImplementedError
+        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
 
       def type

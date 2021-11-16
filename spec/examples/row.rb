@@ -2,15 +2,17 @@
 
 module Examples
   class Row
-    attr_reader :row, :string, :pattern, :options, :occurrence, :date_start_full, :date_end_full
+    attr_reader :row, :string, :pattern, :options, :occurrence, :date_start_full, :date_end_full,
+      :lyrasis_pseudo_edtf
     def initialize(row)
       @row = prep(row)
       @string = @row['examplestring']
       @pattern = @row['examplepattern']
-      @options = @row['options']
+      @options = @row['options'] ||= ''
       @occurrence = @row['occurrence']
       @date_start_full = @row['start_full']
       @date_end_full = @row['end_full']
+      @lyrasis_pseudo_edtf = @row['lyrasis_pseudo_edtf']
     end
 
     def data_sets

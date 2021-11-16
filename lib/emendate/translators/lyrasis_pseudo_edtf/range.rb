@@ -6,13 +6,16 @@ module Emendate
   module Translators
     module LyrasisPseudoEdtf
     # EDTF translator
-      class Year  < Emendate::Translators::Abstract
+      class Range  < Emendate::Translators::Abstract
         private
 
         attr_reader :base
         
         def translate_value
-          @base = tokens[0].lexeme
+          @range = tokens[0]
+          @start = @range.startdate
+          @end = @range.enddate
+          @base = "#{@start.earliest_at_granularity} - #{@end.latest_at_granularity}"
           qualify
         end
       end

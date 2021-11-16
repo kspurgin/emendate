@@ -8,12 +8,18 @@ module Emendate
       def translate(processed)
         @processed = processed
         @orig = processed.orig_string
-        @warnings = []
+        @warnings = processed.warnings
         @value = translate_value
         Emendate::Translation.new(orig: orig, value: value, warnings: warnings)
       end
 
       private
+
+      def qualify
+        return base if tokens.certain?
+        return approximate_and_uncertain if tokens.approximate_and_uncertain?
+        return approximate if tokens.approximate?
+      end
 
       def tokens
         processed.tokens

@@ -1,4 +1,19 @@
 "examplestring","examplepattern","tags_date_type","tags_data_set","options","occurrence","start","end","start_full","end_full","certainty","originalstring","warnings","lyrasis_pseudo_edtf"
+"1910-11","####-@@","ambiguous_year_month;edtf;edtf1;two_digit_year","ncm","ambiguous_month_year: :as_year",0,"1910","1911","1910-01-01","1911-12-31",,"1910-11","Ambiguous year + month/season/year treated as_year","1910 - 1911"
+"1910-11","####-@@","ambiguous_year_month;edtf;edtf1;two_digit_year","ncm","ambiguous_month_year: :as_month",0,"1910-11","1910-11","1910-11-01","1910-11-30",,"1910-11","Ambiguous year + month/season/year treated as_month","1910-11"
+"1915.0","####.0","weird_formatting","ncm",,0,"1915","1915","1915-01-01","1915-12-31",,"1915.0",,"1915"
+"2002","####","edtf;edtf0","ba;ncm",,0,"2002","2002","2002-01-01","2002-12-31",,"2002",,"2002"
+"[circa 2002]","[circa ####]","approximate;inferred","ncm","square_bracket_interpretation: :inferred_date",0,"2002","2002","2002-01-01","2002-12-31","approximate;inferred","[circa 2002]",,"2002 (approximate)"
+"circa 2002, 1992","circa ####, ####","approximate","ncm","max_output_dates: 1",0,"2002","2002","2002-01-01","2002-12-31","approximate","circa 2002",,"2002 (approximate)"
+"circa 2002, 1992","circa ####, ####","approximate","ncm","max_output_dates: 1",1,"1992","1992","1992-01-01","1992-12-31",,"1992",,"2002 (approximate)"
+"circa2002","circa####","approximate","ncm",,0,"2002","2002","2002-01-01","2002-12-31","approximate","circa2002",,"2002 (approximate)"
+"circa 2002?","circa ####?","approximate;uncertain","ncm",,0,"2002","2002","2002-01-01","2002-12-31","approximate;uncertain","circa 2002?",,"2002 (uncertain and approximate)"
+"n.d.","n.d.","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","n.d.",,"not dated"
+"not dated","not dated","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","not dated",,"not dated"
+"unk","unk","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","unk",,"not dated"
+"unk.","unk.","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","unk.",,"not dated"
+"unkn","unkn","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","unkn",,"not dated"
+"unknown","unknown","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","unknown",,"not dated"
 "-2002","-####","edtf;edtf1",,,0,"-2002","-2002","-2002-01-01","-2002-12-31",,"-2002",,
 "?2004-06-~11","?####-##-~##","day_approximate;edtf;edtf2;year_uncertain",,,0,"2004-06-01","2004-06-01","2004-06-01","2004-06-01",,"?2004-06-~11",,
 "../1985","../####","after_before;open_start",,,0,"0001","1985","0001-01-01","1985-12-31",,"../1985",,
@@ -39,7 +54,6 @@
 "[ca. 2000s]","[ca. ####]","approximate;inferred","ba",,0,,,"2000-01-01","2009-12-31",,"[ca. 2000s]",,
 "[ca. 2002]","[ca. ####]","approximate;inferred","ba",,0,,,"2002-01-01","2002-12-31",,"[ca. 2002]",,
 "[circa 2002?]","[circa ####?]","approximate;inferred;uncertain",,,0,,,"2002-01-01","2002-12-31","approximate;inferred;uncertain","[circa 2002?]",,
-"[circa 2002]","[circa ####]","approximate;inferred","ncm","square_bracket_interpretation: :inferred_date",0,"2002","2002","2002-01-01","2002-12-31","approximate;inferred","[circa 2002]",,"2002 (approximate)"
 "{..1984}","{..####}","edtf;edtf2;multi_dates",,,0,,,"0001-01-01","1983-12-31",,"{..1984}",,
 "{..1984}","{..####}","edtf;edtf2;multi_dates",,,1,,,"1984-01-01","1984-12-31",,"{..1984}",,
 "{1960,1961-12}","{####,####-##}","edtf;edtf2;multi_dates",,,0,,,"1960-01-01","1960-12-31",,"{1960,1961-12}",,
@@ -69,7 +83,6 @@
 "450 BCE - 200 BCE","### ERA - ### ERA","bce",,,0,,,"-0449-01-01","-0199-12-31",,"450 BCE - 200 BCE",,
 "450 BCE - 200 CE","### ERA - ### ERA","bce;cross_era",,,0,,,"-0449-01-01","0200-12-31",,"450 BCE - 200 CE",,
 "450 to 200 BCE","### to ### ERA","bce",,,0,,,"-0449-01-01","-0199-12-31",,"450 to 200 BCE",,
-"2002","####","edtf;edtf0","ba;ncm",,0,"2002","2002","2002-01-01","2002-12-31",,"2002",,"2002"
 "2002 (?)","#### (?)","uncertain","ba",,0,,,"2002-01-01","2002-12-31",,"2002 (?)",,
 "1997 & 1999","#### & ####","alternate_dates",,,0,,,"1997-01-01","1997-12-31",,"1997 & 1999",,
 "1997 & 1999","#### & ####","alternate_dates",,,1,,,"1999-01-01","1999-12-31",,"1997 & 1999",,
@@ -104,8 +117,6 @@
 "2020-21","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_year",0,,,"2020-01-01","2021-12-31",,"2020-21",,
 "2020-34","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_month",0,,,"2020-01-01","2021-03-31",,"2020-34",,
 "2020-34","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_year",0,,,"2020-01-01","2034-12-31",,"2020-34",,
-"1910-11","####-@@","ambiguous_year_month;edtf;edtf1;two_digit_year","ncm","ambiguous_month_year: :as_year",0,"1910","1911","1910-01-01","1911-12-31",,"1910-11","Ambiguous year + month/season/year treated as_year","1910 - 1911"
-"1910-11","####-@@","ambiguous_year_month;edtf;edtf1;two_digit_year","ncm","ambiguous_month_year: :as_month",0,"1910-11","1910-11","1910-11-01","1910-11-30",,"1910-11","Ambiguous year + month/season/year treated as_month","1910-11"
 "2000-01, 2001-01, 2002-02, 2003-03","####-@@, ####-##, ####-##, ####-##","ambiguous_multi_date;option",,,0,,,"2000-01-01","2001-12-31",,"2000-01, 2001-01, 2002-02, 2003-03",,
 "2000-01, 2001-01, 2002-02, 2003-03","####-@@, ####-##, ####-##, ####-##","ambiguous_multi_date;option",,,1,,,"2001-01-01","2001-01-31",,"2000-01, 2001-01, 2002-02, 2003-03",,
 "2000-01, 2001-01, 2002-02, 2003-03","####-@@, ####-##, ####-##, ####-##","ambiguous_multi_date;option",,,2,,,"2002-02-01","2002-02-28",,"2000-01, 2001-01, 2002-02, 2003-03",,
@@ -149,7 +160,6 @@
 "1935, 1946-1947","####, ####-####","multi_date",,,1,,,"1946-01-01","1947-12-31",,"1935, 1946-1947",,
 "2002?","####?","edtf;edtf1;uncertain","ba",,0,,,"2002-01-01","2002-12-31",,"2002?",,
 "2004?-06-11","####?-##-##","edtf;edtf2;year_uncertain",,,0,,,"2004-06-01","2004-06-01",,"2004?-06-11",,
-"1915.0","####.0","weird_formatting","ncm",,0,"1915","1915","1915-01-01","1915-12-31",,"1915.0",,"1915"
 "1985/","####/","after_before;edtf;edtf1;unknown_end",,,0,,,"1985-01-01","today",,"1985/",,
 "1985/..","####/..","after_before;edtf;edtf1;open_end",,,0,,,"1985-01-01","today",,"1985/..",,
 "1997/98","####/##",,,,0,,,"1997-01-01","1998-12-31",,"1997/98",,
@@ -190,10 +200,6 @@
 "ca. 1980s & 1990s","ca. ####s & ####s","approximate;decades;multi_date","ba",,0,,,"1980-01-01","1989-12-31",,"ca. 1980s & 1990s",,
 "ca. 1980s & 1990s","ca. ####s & ####s","approximate;decades;multi_date","ba",,1,,,"1990-01-01","1999-12-31",,"ca. 1980s & 1990s",,
 "circa 2002","circa ####","approximate",,,0,,,"2002-01-01","2002-12-31",,"circa 2002",,
-"circa 2002, 1992","circa ####, ####","approximate","ncm",,0,"2002","2002","2002-01-01","2002-12-31","approximate","circa 2002",,"2002 (approximate)"
-"circa 2002, 1992","circa ####, ####","approximate","ncm",,1,"1992","1992","1992-01-01","1992-12-31",,"1992",,"2002 (approximate)"
-"circa 2002?","circa ####?","approximate;uncertain","ncm",,0,"2002","2002","2002-01-01","2002-12-31","approximate;uncertain","circa 2002?",,"2002 (uncertain and approximate)"
-"circa2002","circa####","approximate","ncm",,0,"2002","2002","2002-01-01","2002-12-31","approximate","circa2002",,"2002 (approximate)"
 "Early 1990","early ####","approximate;partial",,,0,,,"1990-01-01","1990-04-30",,"Early 1990",,
 "Early 1990s","early ####s","approximate;decades;partial",,,0,,,"1990-01-01","1995-12-31",,"Early 1990s",,
 "early 19th century","early ##ORD century","century;partial","ba",,0,,,"1801-01-01","1834-12-31",,"early 19th century",,
@@ -219,16 +225,10 @@
 "February 15 2020","MONTH ## ####",,,,0,,,"2020-02-15","2020-02-15",,"February 15 2020",,
 "February 15, 2020","MONTH ##, ####",,,,0,,,"2020-02-15","2020-02-15",,"February 15, 2020",,
 "March 2020","MONTH ####",,,,0,,,"2020-03-01","2020-03-31",,"March 2020",,
-"n.d.","n.d.","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","n.d.",,"not dated"
 "nd","nd","indicates_no_date",,,0,,,"nilValue","nilValue","known_unknown","nd",,
-"not dated","not dated","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","not dated",,"not dated"
 "Spring 20","SEASON ##","option;season;two_digit_year",,"two_digit_year_handling: :coerce, ambiguous_year_rollback_threshold: 50",0,,,"2020-04-01","2020-06-30",,"Spring 20",,
 "Spring 2020","SEASON ####","season",,,0,,,"2020-04-01","2020-06-30",,"Spring 2020",,
 "undated","undated","indicates_no_date",,,0,,,"nilValue","nilValue","known_unknown","undated",,
-"unk","unk","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","unk",,"not dated"
-"unk.","unk.","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","unk.",,"not dated"
-"unkn","unkn","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","unkn",,"not dated"
-"unknown","unknown","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","unknown",,"not dated"
 "VIII.XIV.MMXX","VIII.XIV.MMXX","unparseable",,,0,,,"nilValue","nilValue",,"VIII.XIV.MMXX","Currently unparseable",
 "XXXX-12-XX","xxxx-##-xx","currently_unparseable;edtf;edtf2;in_specific_month_in_any_year",,,0,,,"nilValue","nilValue",,"XXXX-12-XX","Unprocessable string",
 "Y-170002","y-######","edtf;edtf1;letter_prefixed_year",,,0,,,"-170002-01-01","-170002-12-31",,"Y-170002",,

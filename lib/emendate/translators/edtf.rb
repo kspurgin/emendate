@@ -7,6 +7,14 @@ module Emendate
       def empty_value
         ''
       end
+
+      def approximate
+        "#{base}~"
+      end
+
+      def approximate_and_uncertain
+        "#{base}%"
+      end
     end
   end
 end

@@ -14,6 +14,12 @@ module Emendate
     end
   end
 
+  class MaxOutputDatesError < StandardError
+    def initialize(msg='Must be an Integer or :all')
+      super
+    end
+  end
+
   class Options
 
     attr_reader :options
@@ -104,7 +110,10 @@ module Emendate
 
         # output to use for `Emendate.translate` command
         # must be set in order to get an `Emendate::Translation`
-        target_dialect: nil
+        target_dialect: nil,
+
+        max_output_dates: :all
+        
       }
     end
 
@@ -174,12 +183,21 @@ module Emendate
 
       raise Emendate::UnknownDateOutputStringError.new
     end
+
+    def verify_max_output_dates
+      val = @options[:max_output_dates]
+      return if val == :all
+      return if val.is_a?(Integer)
+
+      raise Emendate::MaxOutputDatesError.new
+    end
     
     def verify_value(opt)
       verify_accepted_nondefault(opt) if accepted_nondefaults.key?(opt)
 
-      verify_ambiguous_year_rollback_threshold
-      verify_unknown_date_output_string
+      verify_ambiguous_year_rollback_threshold if opt == :ambiguous_year_rollback_threshold
+      verify_unknown_date_output_string if opt == :unknown_date_output_string
+      verify_max_output_dates if opt == :max_output_dates
     end
   end
 end

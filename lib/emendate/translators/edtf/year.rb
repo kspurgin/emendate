@@ -9,15 +9,11 @@ module Emendate
       class Year  < Emendate::Translators::Abstract
         private
 
-        attr_reader :yr
+        attr_reader :base
         
         def translate_value
-          @yr = processed.tokens[0]
-          return certain_year if yr.certain?
-        end
-
-        def certain_year
-          yr.lexeme
+          @base = tokens[0].lexeme
+          qualify
         end
       end
     end

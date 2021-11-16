@@ -6,7 +6,7 @@ require_relative 'translation'
 
 module Emendate
   class Translator
-    attr_reader :dialect, :processed, :date_type
+    attr_reader :dialect, :processed, :date_type, :tokens
     
     def initialize(processed)
       @processed = processed
@@ -16,6 +16,7 @@ module Emendate
         exit
       end
 
+      @tokens = truncate_tokens
       @date_type = determine_date_type
       extend dialect_module.constantize
     end
@@ -45,11 +46,13 @@ module Emendate
     private
 
     def determine_date_type
-      case processed.tokens.types.join(' ')
+      case tokens.types.join(' ')
       when 'year_date_type'
         'Year'
       when 'yearmonth_date_type'
         'YearMonth'
+      when 'range_date_type'
+        'Range'
       when 'knownunknown_date_type'
         'KnownUnknown'
       else
@@ -67,6 +70,18 @@ module Emendate
 
     def dialect_module
       "Emendate::Translators::#{dialect.to_s.camelize}"
+    end
+
+    def truncate_tokens
+      existing = processed.tokens
+      max = processed.options.max_output_dates
+      return existing if max == :all
+
+      tokens = existing.class.new.copy(existing)
+      until tokens.length == max
+        tokens.pop
+      end
+      tokens
     end
   end
 end

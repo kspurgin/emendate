@@ -71,7 +71,7 @@ module Emendate
          transitions from: :known_unknown_tagged, to: :done, guard: :known_unknown?
       end
       event :collapse_tokens do
-        transitions from: :unprocessable_tagged, to: :tokens_collapsed, after: :perform_collapse_tokens,
+        transitions from: :known_unknown_tagged, to: :tokens_collapsed, after: :perform_collapse_tokens,
           guard: :no_errors?
       end
       event :convert_months do
@@ -164,7 +164,7 @@ module Emendate
         if events.include?(event)
           ready = true
         else
-          next_events = events.select{ |event| send("may_#{event}?".to_sym) }
+          next_events = events.select{ |next_event| send("may_#{next_event}?".to_sym) }
           if next_events.empty?
             puts "WARNING: cannot prep for #{event}"
             return
