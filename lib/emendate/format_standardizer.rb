@@ -54,6 +54,8 @@ module Emendate
         %i[pad_3_to_4_digits]
       when /.*partial hyphen.*/
         %i[remove_post_partial_hyphen]
+      when /.*single_dot standalone_zero$/
+        %i[remove_ending_dot_zero]
       when /.*month number1or2 comma number4.*/
         %i[remove_post_month_comma]
       when /.*number4 month number1or2.*/
@@ -224,6 +226,14 @@ module Emendate
       replace_x_with_new(x: slash, new: ht)
     end
 
+    def remove_ending_dot_zero
+      zero = result.segments[-1]
+      dot = result.segments[-2]
+      previous = result.segments[-3]
+      derived = Emendate::DerivedToken.new(type: previous.type, sources: [previous, dot, zero])
+      replace_segments_with_new(segments: [previous, dot, zero], new: derived)
+    end
+    
     def remove_post_partial_hyphen
       _p, h = result.extract(%i[partial hyphen]).segments
       result.delete(h)

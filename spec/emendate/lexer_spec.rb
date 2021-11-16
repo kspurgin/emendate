@@ -4,9 +4,11 @@ require 'spec_helper'
 
 RSpec.describe Emendate::Lexer do
   context 'with unknown token' do
-    it 'raises error' do
+    it 'produces expected tokens' do
       orig = '@'
-      expect{ Emendate.lex(orig) }.to raise_error(Emendate::UntokenizableError)
+      expected = [:unknown]
+      lexer = Emendate.lex(orig)
+      expect(lexer.tokens.map(&:type)).to eq(expected)
     end
   end
 
@@ -41,7 +43,9 @@ RSpec.describe Emendate::Lexer do
     context 'with multi dot' do
       it 'produces expected tokens' do
         orig = '{...1984'
-        expect{ Emendate.lex(orig) }.to raise_error(Emendate::UntokenizableError)
+        expected = %i[curly_bracket_open unknown number4]
+        lexer = Emendate.lex(orig)
+        expect(lexer.tokens.map(&:type)).to eq(expected)
       end
     end
   end
@@ -86,6 +90,15 @@ RSpec.describe Emendate::Lexer do
     it 'produces expected tokens' do
       orig = '1 22 333 4444'
       expected = %i[number1or2 space number1or2 space number3 space number4]
+      lexer = Emendate.lex(orig)
+      expect(lexer.tokens.map(&:type)).to eq(expected)
+    end
+  end
+
+  context 'with standalone zero' do
+    it 'produces expected tokens' do
+      orig = '4444.0'
+      expected = %i[number4 single_dot standalone_zero]
       lexer = Emendate.lex(orig)
       expect(lexer.tokens.map(&:type)).to eq(expected)
     end

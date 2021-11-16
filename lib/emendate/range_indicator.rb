@@ -8,8 +8,8 @@ module Emendate
 
     def initialize(tokens:, options: {})
       @options = options
-      @working = Emendate::MixedSet.new.copy(tokens)
-      @result = Emendate::MixedSet.new.copy(tokens)
+      @working = Emendate::SegmentSets::MixedSet.new.copy(tokens)
+      @result = Emendate::SegmentSets::MixedSet.new.copy(tokens)
       result.clear
     end
 

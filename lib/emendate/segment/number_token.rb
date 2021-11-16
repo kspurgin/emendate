@@ -16,6 +16,7 @@ module Emendate
 
     private
 
+    # allowable length of number in digits
     def allowed_digits?
       [1, 2, 3, 4, 6, 8].include?(digits)
     end
@@ -45,11 +46,18 @@ module Emendate
 
 
     def reset_type
-      if allowed_digits?
+      if zero?
+        @type = :standalone_zero
+        @literal = nil
+      elsif allowed_digits?
         @type = digits <= 2 ? :number1or2 : "number#{digits}".to_sym
       else
         @type = :unknown
       end
+    end
+
+    def zero?
+      digits == 1 && lexeme == '0'
     end
   end
 end

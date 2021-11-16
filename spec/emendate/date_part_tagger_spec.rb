@@ -24,6 +24,13 @@ RSpec.describe Emendate::DatePartTagger do
       end
     end
 
+    context 'with 2020.0' do
+      it 'tags year' do
+        result = tag('2020.0')
+        expect(result.types).to eq(%i[year])
+      end
+    end
+
     context 'with March' do
       it 'tags month' do
         result = tag('March')

@@ -30,7 +30,7 @@ module Emendate
 
     include DateUtils
     def initialize(tokens:, options: {})
-      @result = Emendate::MixedSet.new.copy(tokens)
+      @result = Emendate::SegmentSets::MixedSet.new.copy(tokens)
       @options = options
       @taggable = true
     end
@@ -259,7 +259,7 @@ module Emendate
     def tag_years
       result.each do |t|
         next unless t.type == :number4
-        next unless valid_year?(t.lexeme)
+        next unless valid_year?(t.literal)
 
         replace_x_with_date_part_type(x: t, date_part_type: :year)
       end

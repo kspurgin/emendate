@@ -16,5 +16,12 @@ RSpec.describe Emendate::TokenCollapser do
         expect(c.type_string).to eq('month_abbr_alpha number4')
       end
     end
+
+    context 'with "2014.0"' do
+      it 'drops `.0` at end' do
+        c = collapse('2014.0')
+        expect(c.type_string).to eq('number4')
+      end
+    end
   end
 end

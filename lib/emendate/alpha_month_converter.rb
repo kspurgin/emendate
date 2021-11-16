@@ -12,7 +12,7 @@ module Emendate
     include ResultEditable
     
     def initialize(tokens:, options: {})
-      @result = Emendate::TokenSet.new.copy(tokens)
+      @result = Emendate::SegmentSets::TokenSet.new.copy(tokens)
       @options = options
     end
 

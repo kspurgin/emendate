@@ -9,16 +9,9 @@ module Emendate
       .gsub(/(a\.?d\.?|c\.?e\.?)/, 'ce') # cleanup ad, ce
       .gsub(/b\.?p\.?/, 'bp') # cleanup bp
       .sub(/^n\.? ?d\.?$/, 'nodate') # cleanup nd
+      .sub(/^ *not dated *$/, 'notdated') # cleanup not dated
+      .sub(/^ *unkn?\.? *$/, 'unk') # cleanup unk.
       .sub(/(st|nd|rd|th) c\.?$/, '\1 century') # ending c after ordinal
-  end
-
-  class UntokenizableError < StandardError
-    attr_reader :segments
-
-    def initialize(unknown_tokens:)
-      @segments = unknown_tokens.map{ |t| "#{Emendate::LQ}#{t.lexeme}#{Emendate::RQ}" }
-      super(segments.join(', '))
-    end
   end
 
   class Lexer
@@ -54,14 +47,14 @@ module Emendate
     SQUARE_BRACKET_OPEN = '['
     SQUARE_BRACKET_CLOSE = ']'
     TILDE = '~'
-    UNKNOWN_DATE = %w[nodate undated unknown].freeze
+    UNKNOWN_DATE = %w[nodate notdated undated unk unknown].freeze
 
     attr_reader :norm, :tokens
     attr_accessor :next_p, :lexeme_start_p
 
     def initialize(norm_string)
       @norm = norm_string
-      @tokens = Emendate::TokenSet.new
+      @tokens = Emendate::SegmentSets::TokenSet.new
       @next_p = 0
       @lexeme_start_p = 0
     end
@@ -70,18 +63,10 @@ module Emendate
       while norm_uncompleted?
         tokenization
       end
-      finalize
+      self
     end
 
     private
-
-    def finalize
-      if tokens.any_unknown?
-        raise Emendate::UntokenizableError.new(unknown_tokens: tokens.unknown)
-      else
-        self
-      end
-    end
 
     def tokenization
       self.lexeme_start_p = next_p

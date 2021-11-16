@@ -15,13 +15,13 @@ module Emendate
       attr_accessor :partial_indicator, :range_switch, :source_tokens
 
       def initialize(**opts)
-        @source_tokens = opts[:children].nil? ? Emendate::MixedSet.new : Emendate::MixedSet.new(opts[:children])
+        @source_tokens = opts[:children].nil? ? Emendate::SegmentSets::MixedSet.new : Emendate::SegmentSets::MixedSet.new(opts[:children])
         @partial_indicator = opts[:partial_indicator]
         @range_switch = opts[:range_switch]
         @certainty = opts[:certainty].nil? ? [] : opts[:certainty]
         @location = location
       end
-
+      
       def date_part?
         true
       end
@@ -31,15 +31,23 @@ module Emendate
       end
 
       def earliest
-        raise NotImplementedError
+        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
 
       def latest
-        raise NotImplementedError
+        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+      end
+
+      def earliest_at_granularity
+        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+      end
+
+      def latest_at_granularity
+        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
 
       def lexeme
-        raise NotImplementedError
+        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
 
       def location
@@ -52,7 +60,7 @@ module Emendate
       end
             
       def range?
-        raise NotImplementedError
+        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
 
       def type

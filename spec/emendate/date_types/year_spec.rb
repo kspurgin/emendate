@@ -61,6 +61,21 @@ RSpec.describe Emendate::DateTypes::Year do
     end
   end
 
+  describe '#earliest_at_granularity' do
+    context 'with no partial_indicator' do
+      it 'returns 2021' do
+        expect(@yr.earliest_at_granularity).to eq('2021')
+      end
+    end
+
+    context 'with early' do
+      it 'returns 2021' do
+        yr = described_class.new(literal: '2021', partial_indicator: 'early')
+        expect(@yr.earliest_at_granularity).to eq('2021')
+      end
+    end
+  end
+
   describe '#latest' do
     context 'with no partial indicator' do
       it 'returns December 31 of year' do
@@ -107,6 +122,21 @@ RSpec.describe Emendate::DateTypes::Year do
       it 'returns 2021-07-31' do
         yr = described_class.new(literal: '2021', partial_indicator: 'mid', range_switch: 'before')
         expect(yr.latest).to eq(Date.new(2021, 4, 30))
+      end
+    end
+  end
+
+  describe '#latest_at_granularity' do
+    context 'with no partial_indicator' do
+      it 'returns 2021' do
+        expect(@yr.latest_at_granularity).to eq('2021')
+      end
+    end
+
+    context 'with early' do
+      it 'returns 2021' do
+        yr = described_class.new(literal: '2021', partial_indicator: 'early')
+        expect(@yr.latest_at_granularity).to eq('2021')
       end
     end
   end

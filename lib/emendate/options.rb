@@ -3,6 +3,22 @@
 module Emendate
   class UnknownOptionError < StandardError; end
   class UnknownOptionValueError < StandardError; end
+  class AmbiguousYearRollbackThresholdError < StandardError
+    def initialize(msg='Must be one or two digit integer')
+      super
+    end
+  end
+  class UnknownDateOutputStringError < StandardError
+    def initialize(msg='Must be a String')
+      super
+    end
+  end
+
+  class MaxOutputDatesError < StandardError
+    def initialize(msg='Must be an Integer or :all')
+      super
+    end
+  end
 
   class Options
 
@@ -13,6 +29,7 @@ module Emendate
         @options = default
       else
         @options = default.merge(opthash)
+        handle_edtf_shortcut
         verify
       end
     end
@@ -30,6 +47,9 @@ module Emendate
 
     def default
       {
+        # whether to set other relevant options as appropriate for parsing EDTF input
+        edtf: false,
+        
         # treats 2/3 as February 3
         # alternative: as_day_month would result in March 2
         ambiguous_month_day: :as_month_day,
@@ -52,7 +72,7 @@ module Emendate
 
         # how to interpret square brackets around a string: as a supplied date, or EDTF
         #  "one of" set
-        square_bracket_interpretation: :supplied_date,
+        square_bracket_interpretation: :inferred_date,
 
         # 1990s will always be interpreted as 1990-1999, but...
         # Should 1900s be interpreted as 1900-1909, or 1900-1999?
@@ -67,32 +87,56 @@ module Emendate
 
         # What date should be inserted as the beginning of an open or unknown start date
         # interval?
-        open_unknown_end_date: Date.new(2999, 12, 12),
+        open_unknown_end_date: Date.new(2999, 12, 31),
 
         # How to interpret a date like: -2001
         # edtf = negative date (BCE)
         # open = open start date of interval
         # unknown = unknown start date of interval
-        date_beginning_with_hyphen: :edtf,
+        beginning_hyphen: :unknown,
 
         # How to interpret a date like: 2001-
         # open = open close date of interval
         # unknown = unknown close date of interval
-        date_ending_with_hyphen: :open
+        ending_hyphen: :open,
 
+        # what to use as output for KnownUnknownDateType
+        # orig = return the original string passed through for parsing that individual date value
+        # custom = another string, to be found as value of unknown_date_output_string
+        unknown_date_output: :orig,
+
+        # string to use when unknown_date_output: :custom
+        unknown_date_output_string: '',
+
+        # output to use for `Emendate.translate` command
+        # must be set in order to get an `Emendate::Translation`
+        target_dialect: nil,
+
+        max_output_dates: :all
+        
       }
     end
 
     def accepted_nondefaults
       {
+        edtf: [true],
         ambiguous_month_day: %i[as_day_month],
         ambiguous_month_year: %i[as_month],
         two_digit_year_handling: %i[literal],
         square_bracket_interpretation: %i[edtf_set],
         pluralized_date_interpretation: %i[broad],
-        date_beginning_with_hyphen: %i[open unknown],
-        date_ending_with_hyphen: %i[unknown]
+        beginning_hyphen: %i[edtf open],
+        ending_hyphen: %i[unknown],
+        unknown_date_output: %i[custom],
+        target_dialect: %i[lyrasis_pseudo_edtf edtf collectionspace]
       }
+    end
+
+    def handle_edtf_shortcut
+      return unless @options[:edtf]
+
+      @options[:beginning_hyphen] = :edtf
+      @options[:square_bracket_interpretation] = :edtf_set
     end
 
     def method_missing(option_name)
@@ -112,9 +156,7 @@ module Emendate
       options.each{ |opt, value| verify_value(opt) }
     end
 
-    def verify_value(opt)
-      return unless accepted_nondefaults.key?(opt)
-
+    def verify_accepted_nondefault(opt)
       value = options[opt]
       return true if value == default[opt]
       return true if accepted_nondefaults[opt].include?(value)
@@ -124,6 +166,38 @@ module Emendate
       #{value} is not an accepted value for the #{opt} option. Use one of the following instead: #{allowed.join(', ')}
       MSG
       raise Emendate::UnknownOptionValueError.new(m.chomp)
+    end
+
+    def verify_ambiguous_year_rollback_threshold      
+      val = @options[:ambiguous_year_rollback_threshold]
+      raise Emendate::AmbiguousYearRollbackThresholdError.new unless val.is_a?(Integer)
+      
+      return if val.to_s.length <= 2
+      
+      raise Emendate::AmbiguousYearRollbackThresholdError.new
+    end
+
+    def verify_unknown_date_output_string
+      val = @options[:unknown_date_output_string]
+      return if val.is_a?(String)
+
+      raise Emendate::UnknownDateOutputStringError.new
+    end
+
+    def verify_max_output_dates
+      val = @options[:max_output_dates]
+      return if val == :all
+      return if val.is_a?(Integer)
+
+      raise Emendate::MaxOutputDatesError.new
+    end
+    
+    def verify_value(opt)
+      verify_accepted_nondefault(opt) if accepted_nondefaults.key?(opt)
+
+      verify_ambiguous_year_rollback_threshold if opt == :ambiguous_year_rollback_threshold
+      verify_unknown_date_output_string if opt == :unknown_date_output_string
+      verify_max_output_dates if opt == :max_output_dates
     end
   end
 end

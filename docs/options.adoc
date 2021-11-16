@@ -25,10 +25,10 @@ Does not apply when there is no ambiguity. For example, 2020-10 will always be i
 
 What is this?:: If a two-digit year is to be coerced to four digits, what should the first two digits be? Is '20' 1920 or 2020?
 Default value:: the current year's last two digits. So, in 2021, it is `21`
-Alternate value:: any 2 digit number
+Alternate value:: any 1 or 2 digit Integer
 
 
-Numbers less than this 2-digit value are treated as current century.
+Numbers less than this value are treated as current century.
 
 Numbers greater than or equal to this are treated as the previous century.
 
@@ -41,6 +41,84 @@ If we are using the default and the current year is 2021...
 ====
 This option is irrelevant if you are using `two_digit_year_handling: :literal`
 ====
+
+== beginning_hyphen
+
+What is this?:: How to interpret a hyphen at the beginning of a date string (e.g. `-2002`)
+Default value:: `:unknown` ("beginning of range is unknown but was some point before 2002")
+
+**Alternate values**
+
+* `:edtf` (2003 BCE)
+* `:open` (known to have occurred from the beginning of time until 2002)
+
+Default is set to `:unknown` because I cannot actually imagine a case where the literal meaning of `:open` would be needed in a GLAM context, and needing to record BCE dates is comparatively rare. It is much more common to use this to mean "unknown beginning of range"
+
+== edtf
+
+What is this?:: A shorthand option to indicate incoming date values should be interpreted using options for EDTF format
+Default value:: false
+Alternative value:: true
+
+If set to true, the following will be set:
+
+* `beginning_hyphen: :edtf`
+* `square_bracket_interpretation: :edtf_set`
+
+== ending_hyphen
+
+What is this?:: How to interpret a hyphen at the end of a date string (e.g. `2002-`)
+Default value:: `:open` ("known to have occurred from 2002 until now, and occurrence is ongoing")
+
+**Alternate values**
+
+* `:unknown` ("occurrence ended some time after 2002 and now, but exact end date is unknown")
+
+Default value is `:open` because this form is frequently used to record the ongoing (still currenting happening, and expected to continue happening) publication of continuing resources.
+
+== max_output_dates
+
+What is this?:: Some strings will get parsed into multiple dates (`2002, 2004`). By default each individual date found will be returned. Some applications can only handle a single date, so you may want to limit the number of dates included in the output. 
+Default value:: `:all` ("known to have occurred from 2002 until now, and occurrence is ongoing")
+Alternate value:: any Integer
+
+== open_unknown_end_date
+
+Date ranges may have open or unknown end dates.
+
+To display such dates, we don't need to make up a end date.
+
+However, depending on your application, meaningfully indexing or faceting on this value may require some made-up end date.
+
+This setting controls what will be output as the `date_end_full` value of your Emendate.result in the case of an open or unknown end date. The `date_end` value will be derived from this value, but possibly truncated to match the level of granularity of the known/closed end date.
+
+Default value:: 2999-12-31
+Alternate value:: Any year/month/day expressed as YYYY-MM-DD
+
+== open_unknown_start_date
+
+Date ranges may have open or unknown start dates.
+
+To display such dates, we don't need to make up a start date.
+
+However, depending on your application, meaningfully indexing or faceting on this value may require some made-up start date.
+
+This setting controls what will be output as the `date_start_full` value of your Emendate.result in the case of an open or unknown start date. The `date_start` value will be derived from this value, but possibly truncated to match the level of granularity of the known/closed end date.
+
+Default value:: 0001-01-01
+Alternate value:: Any year/month/day expressed as YYYY-MM-DD
+
+== target_dialect
+
+What is this?:: date expression to return when you `translate` a date string
+Default value:: `:none`
+Alternate value:: `:lyrasis_pseudo_edtf`, `:edtf`, `collectionspace`
+
+IMPORTANT: Not fully implemented at all!
+
+By default `parse` will return an `Emendate::Result` that another script can use to do whatever is needed.
+
+By calling `translate`, you can get a simpler, pre-processed `Emendate::Translation` of your original string into another date format. See https://github.com/kspurgin/emendate/blob/main/docs/output.adoc[output documentation] for details.
 
 == pluralized_date_interpretation
 
@@ -62,4 +140,31 @@ What is this?::  Should 80 be treated as 1980 or literally as the year 80?
 Default value:: `:coerce`, resulting in 1980
 Alternate value:: `:literal`, resulting in 80
 
-When using the default, also pay attention to the `ambiguous_year_rollback_threshold` option.
+[TIP]
+====
+If you are using the default option (`:coerce`), also pay attention to the `ambiguous_year_rollback_threshold` option to ensure desired results.
+====
+
+== unknown_date_output
+
+What is this?::  When a parsed string is determined to represent a known-to-be unknown date, what string should be output? 
+Default value:: `:orig`, the original date string will be returned
+Alternate value:: `:custom`, indicates that you are providing a string to be used in outputting all ``KnownUnknownDateType``s
+
+[IMPORTANT]
+====
+If you set this to `:custom`, and do not provide a custom value for `unknown_date_output_string`, a blank string will be output.
+====
+
+== unknown_date_output_string
+
+What is this?::  The string used for outputting ``KnownUnknownDateType``s if you have set `unknown_date_output: :custom`
+Default value:: `''`, blank String
+Alternate value:: any String value, which may be useful if you are trying to standardize "n.d.", "undated", and "no date" all to be output as "not dated"
+
+[TIP]
+====
+This setting is not used if `unknown_date_output: :orig`
+====
+
+
