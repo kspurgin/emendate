@@ -6,6 +6,7 @@ module Emendate
     attr_reader :orig_string, :options, :norm_string, :tokens, :orig_tokens,
       :tagged_untokenizable,
       :tagged_unprocessable,
+      :tagged_known_unknown,
       :collapsed_tokens,
       :converted_months,
       :translated_ordinals,
@@ -31,6 +32,7 @@ module Emendate
       state :tokenized,
         :untokenizable_tagged,
         :unprocessable_tagged,
+        :known_unknown_tagged,
         :tokens_collapsed,
         :months_converted,
         :ordinals_translated,
@@ -60,6 +62,13 @@ module Emendate
       end
       event :exit_if_unprocessable do
          transitions from: :unprocessable_tagged, to: :done, guard: :unprocessable?
+      end
+      event :tag_known_unknown do
+        transitions from: :unprocessable_tagged, to: :known_unknown_tagged, after: :perform_tag_known_unknown,
+          guard: :no_errors?
+      end
+      event :exit_if_known_unknown do
+         transitions from: :known_unknown_tagged, to: :done, guard: :known_unknown?
       end
       event :collapse_tokens do
         transitions from: :unprocessable_tagged, to: :tokens_collapsed, after: :perform_collapse_tokens,
@@ -105,6 +114,8 @@ module Emendate
         transitions from: :untokenizable_tagged, to: :failed, guard: :errors?
         transitions from: :unprocessable_tagged, to: :done, guard: :no_errors?
         transitions from: :unprocessable_tagged, to: :failed, guard: :errors?
+        transitions from: :known_unknown_tagged, to: :done, guard: :no_errors?
+        transitions from: :known_unknown_tagged, to: :failed, guard: :errors?
         transitions from: :tokens_collapsed, to: :done, guard: :no_errors?
         transitions from: :tokens_collapsed, to: :failed, guard: :errors?
         transitions from: :months_converted, to: :done, guard: :no_errors?
@@ -132,6 +143,8 @@ module Emendate
       exit_if_untokenizable if may_exit_if_untokenizable?
       tag_unprocessable if may_tag_unprocessable?
       exit_if_unprocessable if may_exit_if_unprocessable?
+      tag_known_unknown if may_tag_known_unknown?
+      exit_if_known_unknown if may_exit_if_known_unknown?
       collapse_tokens if may_collapse_tokens?
       convert_months if may_convert_months?
       translate_ordinals if may_translate_ordinals?
@@ -295,6 +308,24 @@ module Emendate
       end
     end
 
+    def known_unknown_date_value
+      return orig_string if options.unknown_date_output == :orig
+
+      options.unknown_date_output_string
+    end
+    
+    def perform_tag_known_unknown
+      t = Emendate::KnownUnknownTagger.new(tokens: tokens, str: known_unknown_date_value)
+      begin
+        t.tag
+      rescue StandardError => e
+        errors << e.full_message
+      else
+        @tokens = t.result
+        @tagged_known_unknown = tokens.class.new.copy(tokens)
+      end
+    end
+
     def perform_segment_dates
       s = Emendate::DateSegmenter.new(tokens: tagged_date_parts, options: options)
       begin
@@ -343,6 +374,10 @@ module Emendate
 
     def untokenizable?
       tokens.types == [:untokenizable_date_type]
+    end
+
+    def known_unknown?
+      tokens.types == [:known_unknown_date_type]
     end
   end
 end

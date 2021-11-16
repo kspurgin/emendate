@@ -23,6 +23,7 @@ module Emendate
     def translate
       unless date_type
         warn = "No date type determined for #{processed.tokens.types.join(' ')}"
+        puts "WARNING: #{warn}"
         return Emendate::Translation.new(orig: processed.orig_string,
                                          value: empty_value,
                                          warnings: [warn])
@@ -32,6 +33,7 @@ module Emendate
 
       unless translator
         warn = "No translator exists for #{dialect_module}::#{date_type}"
+        puts "WARNING: #{warn}"
         return Emendate::Translation.new(orig: processed.orig_string,
                                          value: empty_value,
                                          warnings: [warn])
@@ -48,6 +50,8 @@ module Emendate
         'Year'
       when 'yearmonth_date_type'
         'YearMonth'
+      when 'knownunknown_date_type'
+        'KnownUnknown'
       else
         nil
       end
