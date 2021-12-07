@@ -12,7 +12,8 @@ require 'pry'
 
 #e = Emendate.examples
 #e = Emendate.examples(date_type: 'currently_unparseable')
-e = Emendate.examples(data_set: 'ncm')
+#e = Emendate.examples(data_set: 'ba')
+e = Emendate.examples(data_set: 'opt')
 
 e.run_tests
 #e.run_tests(test_list: %i[test_processing])
