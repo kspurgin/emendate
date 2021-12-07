@@ -23,7 +23,7 @@ module Emendate
 
     def translate
       unless date_type
-        warn = "No date type determined for #{processed.tokens.types.join(' ')}"
+        warn = "Translator cannot determine a translation date type for #{processed.tokens.types.join(' ')}"
         puts "WARNING: #{warn}"
         return Emendate::Translation.new(orig: processed.orig_string,
                                          value: empty_value,
@@ -40,13 +40,22 @@ module Emendate
                                          warnings: [warn])
       end
 
-      translator.translate(processed)
+      begin
+        translator.translate(processed)
+      rescue => err
+        return Emendate::Translation.new(orig: processed.orig_string,
+                                         value: empty_value,
+                                         warnings: [err.full_message])
+      end
+
     end
 
     private
 
     def determine_date_type
       case tokens.types.join(' ')
+      when 'century_date_type'
+        'Century'
       when 'year_date_type'
         'Year'
       when 'yearmonth_date_type'
