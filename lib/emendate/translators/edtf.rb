@@ -15,6 +15,10 @@ module Emendate
       def approximate_and_uncertain
         "#{base}%"
       end
+
+      def one_of_range_set
+        "[#{base}]"
+      end
     end
   end
 end

@@ -8,7 +8,7 @@ module Emendate
     class SegmentSet
       include Emendate::SegmentSets::CertaintyHelpers
       extend Forwardable
-      attr_reader :segments, :certainty, :inferred_date, :warnings
+      attr_reader :segments, :inferred_date, :warnings
 
       def_delegator :@segments, :[], :[]
       def_delegators :@segments, :clear, :delete, :delete_at, :empty?, :find_index, :insert, :length, :pop, :shift, :unshift
@@ -24,13 +24,17 @@ module Emendate
         segments << segment
       end
 
+      def certainty
+        @certainty.flatten.uniq.sort
+      end
+
       def add_certainty(val)
-        certainty << val
+        @certainty << val
       end
 
       def copy(other_set)
         other_set.segments.each{ |s| segments << s.dup }
-        other_set.certainty.each{ |c| certainty << c.dup }
+        other_set.certainty.each{ |c| @certainty << c.dup }
         other_set.warnings.each{ |w| warnings << w.dup }
         @inferred_date = other_set.inferred_date
         self

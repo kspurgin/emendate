@@ -19,6 +19,15 @@ module Emendate
         use_date
       end
 
+      # the *_at_granularity values should depend upon the granularity of the start/end date this is paired with
+      def earliest_at_granularity
+        earliest
+      end
+
+      def latest_at_granularity
+        latest
+      end
+
       def lexeme
         "open #{usage} date"
       end

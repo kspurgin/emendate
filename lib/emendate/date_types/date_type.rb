@@ -38,12 +38,14 @@ module Emendate
         raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
 
+      # most date types will have year granularity. Override this in datetypes that do not
       def earliest_at_granularity
-        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+        earliest.year
       end
 
+      # most date types will have year granularity. Override this in datetypes that do not
       def latest_at_granularity
-        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+        latest.year
       end
 
       def lexeme

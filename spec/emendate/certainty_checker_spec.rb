@@ -136,6 +136,38 @@ RSpec.describe Emendate::CertaintyChecker do
       end
     end
 
+    context 'with [1997 or 1999]' do
+      context 'with square brackets as inferred_date' do
+        before(:all) do
+          @c = check('[1997 or 1999]', square_bracket_interpretation: :inferred_date)
+        end
+
+        it 'certainty is inferred and one_of_set' do
+          expect(@c.certainty.sort).to eq(%i[inferred one_of_set])
+        end
+
+        it 'removes square brackets from result' do
+          expected = 'number4 number4'
+          expect(@c.type_string).to eq(expected)
+        end
+      end
+
+      context 'with square brackets as edtf_set' do
+        before(:all) do
+          @c = check('[1997 or 1999]', square_bracket_interpretation: :edtf_set)
+        end
+
+        it 'certainty is one_of_set' do
+          expect(@c.certainty.sort).to eq(%i[one_of_set])
+        end
+
+        it 'removes square brackets from result' do
+          expected = 'number4 number4'
+          expect(@c.type_string).to eq(expected)
+        end
+      end
+    end
+
     context 'with {1667,1668,1670..1672}' do
       before(:all) do
         @c = check('{1667,1668,1670..1672}')

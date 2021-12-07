@@ -15,7 +15,9 @@ module Emendate
 
       private
 
-      def qualify
+      def qualify(meth = nil)
+        return self.method(meth).call if meth
+        
         return base if tokens.certain?
         return approximate_and_uncertain if tokens.approximate_and_uncertain?
         return approximate if tokens.approximate?

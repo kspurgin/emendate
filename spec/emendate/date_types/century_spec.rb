@@ -84,6 +84,14 @@ RSpec.describe Emendate::DateTypes::Century do
       end
     end
 
+    describe '#earliest_at_granularity' do
+      context 'without partial_indicator' do
+        it 'returns 1801' do
+          expect(@dt.earliest_at_granularity).to eq(1801)
+        end
+      end
+    end
+
     describe '#lexeme' do
       it 'returns 19 century' do
         expect(@dt.lexeme).to eq('19 century')
@@ -150,6 +158,14 @@ RSpec.describe Emendate::DateTypes::Century do
         it 'returns 1999-12-31' do
           dt = described_class.new(literal: 19, century_type: :plural, partial_indicator: 'late')
           expect(dt.latest).to eq(Date.new(1999, 12, 31))
+        end
+      end
+    end
+
+    describe '#latest_at_granularity' do
+      context 'without partial_indicator' do
+        it 'returns 1999' do
+          expect(@dt.latest_at_granularity).to eq(1999)
         end
       end
     end

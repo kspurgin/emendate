@@ -17,6 +17,10 @@ module Emendate
       def approximate_and_uncertain
         "#{base} (uncertain and approximate)"
       end
+
+      def one_of_range_set
+        "#{base} (exact year unspecified)"
+      end
     end
   end
 end
