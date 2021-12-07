@@ -28,7 +28,8 @@ module Emendate
       if opthash.empty?
         @options = default
       else
-        @options = default.merge(opthash)
+        opts = prepare_keys(opthash)
+        @options = default.merge(opts)
         handle_edtf_shortcut
         verify
       end
@@ -145,6 +146,24 @@ module Emendate
       else
         raise Emendate::UnknownOptionError.new(option_name)
       end
+    end
+
+    def prepare_keys(opthash)
+      keys = opthash.keys
+
+      %i[open_unknown_start_date open_unknown_each_date].each do |key|
+        next unless keys.any?(key)
+
+        datestr = opthash[key]
+        opthash[key] = convert_date(datestr)
+      end
+
+      opthash
+    end
+
+    def convert_date(str)
+      parts = str.split('-').map(&:to_i)
+      Date.new(parts[0], parts[1], parts[2])
     end
 
     def verify

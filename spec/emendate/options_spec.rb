@@ -86,5 +86,14 @@ RSpec.describe Emendate::Options do
         end
       end
     end
+
+    context 'with custom open/unknown start date' do
+      let(:opthash){ {open_unknown_start_date: '1500-05-15'} }
+      it 'sets option as expected' do
+        expect(opt.open_unknown_start_date.year).to eq(1500)
+        expect(opt.open_unknown_start_date.month).to eq(5)
+        expect(opt.open_unknown_start_date.day).to eq(15)
+      end
+    end
   end
 end
