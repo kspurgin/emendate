@@ -17,6 +17,7 @@ module Emendate
 
       @working = result.class.new.copy(result)
       result.clear
+
       until working.empty? do
         process_part_certainty
       end
@@ -42,9 +43,19 @@ module Emendate
         :check_after_number
       elsif uncertainty_indicator?
         :set_number_certainty
+      elsif set_indicator?
+        :set_set_certainty
       else
         :passthrough
       end
+    end
+
+    # def set_indicator?(n = 0)
+    #   %i[and or].include?(working[n].type)
+    # end
+
+    def set_indicator?(n = 0)
+      %i[and or].include?(working[n].type)
     end
 
     def uncertainty_indicator?(n = 0)
@@ -58,6 +69,10 @@ module Emendate
 
     def certainty_val(token)
       case token.type
+      when :and
+        %i[all_of_set]
+      when :or
+        %i[one_of_set]
       when :question
         %i[uncertain]
       when :tilde
@@ -92,6 +107,19 @@ module Emendate
         passthrough
       else
         result.warnings << "#{working[0].lexeme} followed by non-number"
+        passthrough
+      end
+      process_part_certainty
+    end
+
+    def set_set_certainty
+      certainty = certainty_val(working[0])
+      if nxt.nil?
+        result.warnings << "#{working[0].lexeme} appears at end of string and was not handled by whole-value processor"
+        passthrough
+      else
+        result.add_certainty(certainty)
+        working.shift
         passthrough
       end
       process_part_certainty
