@@ -5,6 +5,7 @@ require 'optparse'
 
 require 'bundler/setup'
 require 'emendate'
+require 'pry'
 
 options = {}
 OptionParser.new{ |opts|
@@ -33,19 +34,19 @@ CSV.open(outfile, 'wb') do |csvout|
     val = row.first.strip
     puts val
 
-    result = Emendate.process(val)
+    processor = Emendate.process(val)
 
     prep = { orig: val }
-    prep[:errs] = result.errors.join('; ') unless result.errors.empty?
-    prep[:warnings] = result.warnings.join('; ') unless result.warnings.empty?
+    prep[:errs] = processor.errors.join('; ') unless processor.errors.empty?
+    prep[:warnings] = processor.warnings.join('; ') unless processor.warnings.empty?
 
-    if result.errors.empty?
-      unless result.result[:result].empty?
-        prep[:date_ct] = result.result[:result].length
-        prep[:certainty] = result.result[:result].map{ |r| r[:certainty].join(', ') }.join('; ')
-        prep[:start_full] = result.result[:result].map{ |r| r[:date_start_full] }.join('; ')
-        prep[:end_full] = result.result[:result].map{ |r| r[:date_end_full] }.join('; ')
-        prep[:range] = result.result[:result].map{ |r| r[:inclusive_range] }.join('; ')
+    if processor.errors.empty?
+      unless processor.result.dates.empty?
+        prep[:date_ct] = processor.result.date_count
+        prep[:certainty] = processor.result.compile_date_info(method: :certainty, delim: '; ')
+        prep[:start_full] = processor.result.compile_date_info(method: :date_start_full, delim: '; ')
+        prep[:end_full] = processor.result.compile_date_info(method: :date_end_full, delim: '; ')
+        prep[:range] = processor.result.compile_date_info(method: :inclusive_range, delim: '; ')
       end
     end
 
