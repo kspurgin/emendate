@@ -1,6 +1,20 @@
+:toc:
+:toc-placement!:
+:toclevels: 4
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
 = Emendate
 
 Lexer, parser, and manipulator for messy date metadata values
+
+toc::[]
 
 == Installation
 
@@ -90,7 +104,7 @@ Legacy metadata contains date data encoded using various standard and semi-stand
 
 Emendate's goal is to parse such date strings and return structured data objects that can be used by other applications to supply consistently formatted date values in metadata or indexes.
 
-The test set of date formats Emendate intends to support can be viewed https://github.com/kspurgin/emendate/blob/main/spec/helpers.rb[here]. Note that formats with an `unparseable` tag are not expected to be supported in any realistic timeframe.
+The test set of date formats Emendate intends to support can be viewed https://github.com/kspurgin/emendate/blob/main/spec/support/examples.csv[here]. Note that formats with an `unparseable` tag are not expected to be supported in any realistic timeframe.
 
 === My use cases
 
