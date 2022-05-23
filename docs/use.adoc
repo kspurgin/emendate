@@ -202,6 +202,9 @@ This is not in the list of instance_variables you can call, but will show you if
 
 == Working with the test set
 
+Needs to be updated...
+
++++<s>+++
 To see a list of all the date string values in the test set:
 
 `Emendate::EXAMPLES.keys`
@@ -232,3 +235,4 @@ To see only the ``Segment``s that are/can be parts of actual dates, from just af
 Note that the options need to be wrapped in curly braces here.
 
 Also note that `stage` indicates the processing step that your desired input feeds into. Processing moves from `tag_date_parts` to `segment_dates`, so if you want see the results of date part tagging, the stage the data is ready for is `segment_dates`. 
++++</s>+++
