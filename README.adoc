@@ -65,8 +65,8 @@ Emendate.parse('mid 1990s').to_h
     :inclusive_range=>true,
     :certainty=>[]}],
  :errors=>[],
- :warnings=>["Interpreting pluralized year as decade"]}
- ----
+ :warnings=>["Interpreting pluralized year as decade"]} 
+----
 
 Or, the following to return JSON:
 
