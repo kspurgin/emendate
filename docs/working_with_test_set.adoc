@@ -1,0 +1,149 @@
+:toc:
+:toc-placement!:
+:toclevels: 4
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Working with the test set
+
+toc::[]
+
+== Test set CSV
+
+This file is found at https://github.com/kspurgin/emendate/blob/main/spec/support/examples.csv[`spec/support/examples.csv`].
+
+IMPORTANT: When you open this file with an application, it is very important that it treat all fields as text values. Otherwise the application may try to be "smart" and will mess up date values trying to convert them.
+
+The CSV represents date patterns (`examplepattern`) exemplified by concrete date strings (`examplestring`), and expectations about how `emendate` will process the date strings, given the `options` provided.
+
+NOTE: If `options` is empty, `emendate`'s default options are applied.
+
+Rows with the same `examplestring` and `options` value are said to have the same "test fingerprint". These rows belong to one test, which is expected to output multiple dates in the `Emendate::Result`. The expected order of dates is expressed in the `occurrence` field, with count starting at 0.
+
+The examples are tagged with `tags_date_type` tags and `tags_data_set` tags. You can get information and run tests on subsets of the test set by selecting only examples having certain tags. There are two types of tags to facilitate building up a robust test set to support future development, while also focusing on immediately implementing only the patterns required for a given project. (I can add a bunch of examples I know will currently fail, to serve as a development roadmap. But then I can tag some of them with an active data set I'm working on, so I can test whether the app is ready for use converting project dates or not.)
+
+The remaining columns record expected values for use in tests.
+
+See Tests and expectaions below for more info.
+
+== Tests and expectations
+
+If a test expectation column is blank, this simply means a test value has not yet been provided. Tests will not be run against empty expectations.
+
+If we want to test that the returned value is nil, we enter `nilValue` in the expectation field.
+
+We can also enter `today` as an expectation, to stand in for the current date in tests. This is helpful for open-ended ranges.
+
+
+== Code examples
+
+The following examples assume you cloned the repo into a folder called `emendate` and have done:
+
+----
+cd emendate
+bin/console
+----
+
+=== Info about the entire test set
+
+To see a list of all unique date string values in the test set:
+
+`Emendate.example_strings`
+
+To see a list of all unique abstract date patterns in the test set:
+
+`Emendate.example_patterns`
+
+To see the list of all the tags used in the test set:
+
+`Emendate.example_tags`
+
+
+TIP: The type of tag (`data_set` or `date_type`) is given in parentheses after the tag value. The tag type is determined by the test CSV column (`tags_data_set` or `tags_date_type`) in which the tag is recorded. **Do not include the parenthetical tag type when using the tag!**
+
+You can also get type-specific lists of tags:
+
+`Emendate.example_data_set_tags`
+
+or
+
+`Emendate.example_date_type_tags`
+
+
+=== Creating an example set
+You will need to create an example set before testing or generating any info from the examples. Assign the example set to a variable (we are using `ex` in the examples below, so you can pass it to whatever 
+
+==== All examples
+Create a test set of all examples in the CSV.
+
+----
+ex = Emendate.examples
+ => 204 examples (from 248 rows)
+----
+
+==== Select examples by tag
+
+TIP: This is where the parenthetical tag type info you can get via `Emendate.example_tags` comes in handy.
+
+NOTE: The exact counts in the examples below will change as the test set evolves.
+
+.Examples expressing approximate dates
+----
+ex = Emendate.examples_with(date_type: 'approximate')
+ => 41 examples (from 47 rows)
+----
+
+.Examples from the `ba` dataset
+----
+ex = Emendate.examples_with(data_set: 'ba')
+ => 38 examples (from 45 rows)
+----
+
+.Examples from the `ba` dataset expressing decades
+----
+ex = Emendate.examples_with(data_set: 'ba', date_type: 'decades')
+ => 4 examples (from 6 rows)
+----
+
+You can use multiple tags of a given type to select. Separate the tag values with `;`.
+
+IMPORTANT: Criteria are always Boolean AND-ed when selecting examples.
+
+.Examples in both the `ba` and `ncm` datasets
+----
+ex = Emendate.examples_with(data_set: 'ba;ncm')
+ => 1 examples (from 1 rows)
+----
+
+
++++<s>+++
+
+[NOTE]
+====
+The following will make more sense if you have read https://github.com/kspurgin/emendate/blob/main/docs/processing.adoc[How Emendate processes date strings].
+====
+
+This will output all unique type patterns being generated from the example strings:
+
+`Emendate.unique_type_patterns`
+
+Beneath each type pattern is a list of the original strings that have ended up with this pattern.
+
+Running the command as shown above shows you all segment types, for all strings, and shows you the final result of the `SegmentSet` processing, with default configuration.
+
+Of course, there are other options!
+
+To see only the ``Segment``s that are/can be parts of actual dates, from just after date part tagging, only for examples with the inferred tag:
+
+`Emendate.unique_type_patterns(type: :date, stage: :segment_dates, tag: :inferred, options: {ambiguous_month_day: :as_day_month})`
+
+Note that the options need to be wrapped in curly braces here.
+
+Also note that `stage` indicates the processing step that your desired input feeds into. Processing moves from `tag_date_parts` to `segment_dates`, so if you want see the results of date part tagging, the stage the data is ready for is `segment_dates`. 
++++</s>+++

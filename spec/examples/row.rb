@@ -2,31 +2,24 @@
 
 module Examples
   class Row
-    attr_reader :row, :string, :pattern, :options, :occurrence, :date_start_full, :date_end_full,
-      :lyrasis_pseudo_edtf
+    attr_reader :row, :runnable_tests
     def initialize(row)
       @row = prep(row)
-      @string = @row['examplestring']
-      @pattern = @row['examplepattern']
-      @options = @row['options'] ||= ''
-      @occurrence = @row['occurrence']
-      @date_start_full = @row['start_full']
-      @date_end_full = @row['end_full']
-      @lyrasis_pseudo_edtf = @row['lyrasis_pseudo_edtf']
+      # metaprogramming bit to create an instance variable for each column
+      @row.keys.each{ |field| instance_variable_set("@#{field}".to_sym, row[field]) }
+      @runnable_tests = determine_runnable_tests
     end
 
     def data_sets
-      data = row['tags_data_set']
-      return [] if data.blank?
+      return [] if tags_data_set.blank?
 
-      data.split(';').sort
+      tags_data_set.split(';').sort
     end
     
     def date_types
-      data = row['tags_date_type']
-      return [] if data.blank?
+      return [] if tags_date_type.blank?
 
-      data.split(';').sort
+      tags_date_type.split(';').sort
     end
 
     # type value must be: :data_sets or :date_types
@@ -41,25 +34,39 @@ module Examples
     end
 
     def warnings
-      warns = @row['warnings']
-      return [] if warns.blank?
+      return [] if result_warnings.blank?
 
-      warns.split(';')
+      result_warnings.split(';')
     end
     
-    
     def test_fingerprint
-      "#{string}/#{options}"
+      "#{test_string}/#{test_options}"
     end
 
     private
-    
+
+    def determine_runnable_tests
+      row.keys
+        .select{ |field| test_expectation?(field) }
+        .select{ |field| Examples::Test::IMPLEMENTED.any?(field) }
+    end
+
+    # metaprogramming bit to avoid manually declaring attr_reader for every column in row
+    def method_missing(symbol, *args)
+      instance_variable_get("@#{symbol}".to_sym)
+    rescue
+      super(symbol, *args)
+    end
 
     def prep(row)
       r = row.to_h
       r = r.transform_values{ |val| val == 'nilValue' ? nil : val }
       r = r.transform_values{ |val| val == 'today' ? Date.today : val }
       r
+    end
+
+    def test_expectation?(field)
+      %w[date result translation].any?(field.split('_').first)
     end
   end
 end

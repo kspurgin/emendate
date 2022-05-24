@@ -1,13 +1,24 @@
 # frozen_string_literal: true
 
 module Examples
+  # Handles combining rows with the same test_string/test_options into one set of testable data,
+  #   determining what tests can be run on the data, and running the tests
+  #
+  # @todo Single responsibility principle!
   class Test
-    attr_reader :string, :pattern, :options, :result, :messages
+    IMPLEMENTED = %w[
+                     date_start_full date_end_full
+                     result_warnings
+                     translation_lyrasis_pseudo_edtf
+                    ]
+
+    attr_reader :string, :pattern, :options, :result, :messages, :runnable_tests
     def initialize(rows)
       @rows = rows.sort_by!{ |row| row.occurrence }
       @string = rows.first.string
       @pattern = rows.first.pattern
       @options = rows.first.options
+      @runnable_tests = determine_runnable_tests
       @errors = []
       @messages = []
       process
@@ -51,14 +62,26 @@ module Examples
     
     private
 
+    attr_reader :rows
+
+    def determine_runnable_tests
+      runnables = rows.map(&:runnable_tests)
+      return runnables.flatten if runnables.length == 1
+
+      runnables.shift.intersection(*runnables)
+    end
+
     def result_string
       success? ? 'PASS' : 'FAIL'
     end
 
     def all_tests
-      %i[test_date_start_full test_date_end_full
+      # test_date_start test_date_end -- not implemented by application yet
+      %i[
+         test_date_start_full test_date_end_full
          test_warnings
-         test_lyrasis_pseudo_edtf]
+         test_lyrasis_pseudo_edtf
+        ]
     end
 
     def option_call
@@ -130,6 +153,14 @@ module Examples
       @test_results << :fail
       @messages << "#{method}: EXPECTED: #{exp.join('|')}, GOT: #{got.join('|')}" unless type == :output
       @messages << "#{method}: EXPECTED: #{exp}, GOT: #{got}" if type == :output
+    end
+
+    def test_date_end
+      test_runner(type: :date, test: __method__, method: :date_end)
+    end
+
+    def test_date_start
+      test_runner(type: :date, test: __method__, method: :date_start)
     end
 
     def test_date_end_full

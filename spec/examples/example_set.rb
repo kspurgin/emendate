@@ -12,8 +12,7 @@ module Examples
       table = CSV.parse(File.read(File.expand_path(Path)), headers: true)
       @data_set_tags = data_set.split(';').sort
       @date_type_tags = date_type.split(';').sort
-      allrows = []
-      table.each{ |row| allrows << Row.new(row) }
+      allrows = table.map{ |row| Row.new(row) }
       @rows = specified_rows(allrows)
       @data_sets = @rows.map{ |row| row.data_sets }.flatten.uniq.sort
       @date_types = @rows.map{ |row| row.date_types }.flatten.uniq.sort
@@ -50,6 +49,15 @@ module Examples
     def pass_fail_summary
       group_by_pass_fail.each{ |cat, results| puts "#{cat.upcase}: #{results.length}" }
     end
+
+    def runnable_tests
+      tests.map(&:runnable_tests).flatten.uniq
+    end
+
+    def to_s
+      "#{tests.length} examples (from #{@rows.length} rows)"
+    end
+    alias_method :inspect, :to_s
     
     private
 

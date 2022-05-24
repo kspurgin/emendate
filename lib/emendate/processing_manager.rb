@@ -54,21 +54,21 @@ module Emendate
           guard: :no_errors?
       end
       event :exit_if_untokenizable do
-         transitions from: :untokenizable_tagged, to: :done, guard: :untokenizable?
+        transitions from: :untokenizable_tagged, to: :done, guard: :untokenizable?
       end
       event :tag_unprocessable do
         transitions from: :untokenizable_tagged, to: :unprocessable_tagged, after: :perform_tag_unprocessable,
           guard: :no_errors?
       end
       event :exit_if_unprocessable do
-         transitions from: :unprocessable_tagged, to: :done, guard: :unprocessable?
+        transitions from: :unprocessable_tagged, to: :done, guard: :unprocessable?
       end
       event :tag_known_unknown do
         transitions from: :unprocessable_tagged, to: :known_unknown_tagged, after: :perform_tag_known_unknown,
           guard: :no_errors?
       end
       event :exit_if_known_unknown do
-         transitions from: :known_unknown_tagged, to: :done, guard: :known_unknown?
+        transitions from: :known_unknown_tagged, to: :done, guard: :known_unknown?
       end
       event :collapse_tokens do
         transitions from: :known_unknown_tagged, to: :tokens_collapsed, after: :perform_collapse_tokens,
@@ -194,16 +194,25 @@ module Emendate
     end
 
     def prepare_result
+      state == :failed ? prepare_failed_result : prepare_ok_result
+    end
+
+    def prepare_failed_result
+      r = { original_string: orig_string,
+           errors: errors.map!{ |err| err.split("\n").first(3).join("\n") },
+           warnings: warnings,
+           result: []
+          }
+
+        @result = Emendate::Result.new(r)
+    end
+
+    def prepare_ok_result
       r = { original_string: orig_string,
            errors: errors,
            warnings: warnings,
            result: []
           }
-
-      if state == :failed
-        @result = Emendate::Result.new(r)
-        return
-      end
 
       tokens.segments.each{ |t| r[:result] << Emendate::ParsedDate.new(t, tokens.certainty, orig_string) if t.date_type? }
       @result = Emendate::Result.new(r)
