@@ -62,44 +62,53 @@ bin/console
 
 === Info about the entire test set
 
-.List all unique date string values in the entire test set:
+.List all unique date string values in the entire test set
 [source, ruby]
 ----
 Emendate.example_strings
 ----
 
-To see a list of all unique abstract date patterns in the test set:
+.List all unique abstract date patterns in the entire test set
+[source, ruby]
+----
+Emendate.example_patterns
+----
 
-`Emendate.example_patterns`
-
-To see the list of all the tags used in the test set:
-
-`Emendate.example_tags`
-
+.List all tags used in the entire test set
+[source, ruby]
+----
+Emendate.example_tags
+----
 
 TIP: The type of tag (`data_set` or `date_type`) is given in parentheses after the tag value. The tag type is determined by the test CSV column (`tags_data_set` or `tags_date_type`) in which the tag is recorded. **Do not include the parenthetical tag type when using the tag!**
 
-You can also get type-specific lists of tags:
+You can also get lists of each type of tag:
 
-`Emendate.example_data_set_tags`
+[source, ruby]
+----
+Emendate.example_data_set_tags
+----
 
 or
 
-`Emendate.example_date_type_tags`
-
+[source, ruby]
+----
+Emendate.example_date_type_tags
+----
 
 === Creating an example set
 You will need to create an example set before testing or generating any info from the examples. Assign the example set to a variable (we are using `ex` in the examples below, so you can pass it to whatever 
 
 ==== All examples
-Create a test set of all examples in the CSV.
 
+.Create a test set of all examples in the CSV.
+[source, ruby]
 ----
 ex = Emendate.examples
  => 204 examples (from 248 rows)
 ----
 
-==== Select examples by tag
+==== Selecting examples by tag
 
 TIP: This is where the parenthetical tag type info you can get via `Emendate.example_tags` comes in handy.
 
