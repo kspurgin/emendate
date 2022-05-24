@@ -22,18 +22,28 @@ IMPORTANT: When you open this file with an application, it is very important tha
 
 The CSV represents date patterns (`examplepattern`) exemplified by concrete date strings (`examplestring`), and expectations about how `emendate` will process the date strings, given the `options` provided.
 
-NOTE: If `options` is empty, `emendate`'s default options are applied.
+NOTE: If `options` is empty, `emendate` applies https://github.com/kspurgin/emendate/blob/main/docs/options.adoc[default options].
 
-Rows with the same `examplestring` and `options` value are said to have the same "test fingerprint". These rows belong to one test, which is expected to output multiple dates in the `Emendate::Result`. The expected order of dates is expressed in the `occurrence` field, with count starting at 0.
+Rows with the same `test_string` and `test_options` value are said to have the same "test fingerprint". These rows belong to one test, which is expected to output multiple dates in the `Emendate::Result`. The expected order of dates is expressed in the `dateval_occurrence` field, with count starting at 0.
 
 The examples are tagged with `tags_date_type` tags and `tags_data_set` tags. You can get information and run tests on subsets of the test set by selecting only examples having certain tags. There are two types of tags to facilitate building up a robust test set to support future development, while also focusing on immediately implementing only the patterns required for a given project. (I can add a bunch of examples I know will currently fail, to serve as a development roadmap. But then I can tag some of them with an active data set I'm working on, so I can test whether the app is ready for use converting project dates or not.)
 
-The remaining columns record expected values for use in tests.
+The remaining columns record expected values for use in tests. 
 
 See Tests and expectaions below for more info.
 
 == Tests and expectations
 
+=== Columns/tests
+Columns beginning with `date_` test expectations about the value(s) that will be returned in the `Emendate::Result.dates` Array. One row is provided per expected `@dates` Array element.
+
+Columns beginning with `result_` test expectations about other parts of the `Emendate::Result` object.
+
+Columns beginning with `translation_` test expectations about the results of `Emendate.translate`, with the remainder of the column name passed in as the `target_dialect` option value.
+
+IMPORTANT: There are some columns and values for tests that are not yet implemented.
+
+=== Values and lack thereof
 If a test expectation column is blank, this simply means a test value has not yet been provided. Tests will not be run against empty expectations.
 
 If we want to test that the returned value is nil, we enter `nilValue` in the expectation field.
@@ -52,9 +62,11 @@ bin/console
 
 === Info about the entire test set
 
-To see a list of all unique date string values in the test set:
-
+.List all unique date string values in the entire test set:
+[source, ruby]
+----
 `Emendate.example_strings`
+----
 
 To see a list of all unique abstract date patterns in the test set:
 
@@ -120,6 +132,14 @@ IMPORTANT: Criteria are always Boolean AND-ed when selecting examples.
 ex = Emendate.examples_with(data_set: 'ba;ncm')
  => 1 examples (from 1 rows)
 ----
+
+=== Info about an example set
+
+NOTE: The following examples assume you have created an `ExampleSet` in a variable named `ex`. See the above section.
+
+.List the test strings in the set
+
+
 
 
 +++<s>+++
