@@ -65,7 +65,7 @@ bin/console
 .List all unique date string values in the entire test set:
 [source, ruby]
 ----
-`Emendate.example_strings`
+Emendate.example_strings
 ----
 
 To see a list of all unique abstract date patterns in the test set:
