@@ -199,6 +199,30 @@ puts ex.get_example_data(data_method: :fingerprint)
 puts ex.runnable_tests
 ----
 
+=== Advanced processing info about an example set
+
+NOTE: The following will probably make more sense if you have read https://github.com/kspurgin/emendate/blob/main/docs/processing.adoc[How Emendate processes date strings].
+
+
+This will output all unique type patterns being generated from the example strings:
+
+`Emendate.unique_type_patterns`
+
+Beneath each type pattern is a list of the original strings that have ended up with this pattern.
+
+Running the command as shown above shows you all segment types, for all strings, and shows you the final result of the `SegmentSet` processing, with default configuration.
+
+Of course, there are other options!
+
+To see only the ``Segment``s that are/can be parts of actual dates, from just after date part tagging, only for examples with the inferred tag:
+
+`Emendate.unique_type_patterns(type: :date, stage: :segment_dates, tag: :inferred, options: {ambiguous_month_day: :as_day_month})`
+
+Note that the options need to be wrapped in curly braces here.
+
+Also note that `stage` indicates the processing step that your desired input feeds into. Processing moves from `tag_date_parts` to `segment_dates`, so if you want see the results of date part tagging, the stage the data is ready for is `segment_dates`. 
+
+
 == Date pattern conventions
 
 `#`:: digit in an unambiguous (given assumptions made) number
