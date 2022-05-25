@@ -26,7 +26,7 @@ The order and basic function of each stage is outlined below, with examples.
 
 NOTE: To get a quick look at a date pattern, we can use the `types` method on anything returning a `SegmentSet`. This lists the token/segment type of each part.
 
-== orig_tokens
+== `orig_tokens`
 
 *Produced by processing step: `:lex`*
 
@@ -63,9 +63,9 @@ ex1.orig_tokens.date_part_types
  => [:month_abbr_alpha, :number1or2, :month_alpha, :number1or2, :number4]
 ----
 
-== tagged_untokenizeable
+== `tagged_untokenizable`
 
-*Produced by processing step: `:tag_untokenizeable`*
+*Produced by processing step: `:tag_untokenizable`*
 
 If no `orig_tokens` are of type `:unknown`, everything is passed through with no change and processing continues:
 
@@ -113,12 +113,80 @@ ex2.warnings
 
 ex2.tagged_unprocessable.types
   NoMethodError: undefined method `types' for nil:NilClass <5>
+
+ex2.result
+=> #<Emendate::Result:0x00007fdfd10bb658
+ @dates=
+  [#<Emendate::ParsedDate:0x00007fdfd10bb900
+    @certainty=[],
+    @date_end=nil,
+    @date_end_full=nil,
+    @date_start=nil,
+    @date_start_full=nil,
+    @inclusive_range=nil,
+    @index_dates=[],
+    @original_string="about 1970">],
+ @errors=[],
+ @original_string="about 1970",
+ @warnings=["Untokenizable sequences: about"]> <6>
 ----
 <1> The displayed representation of the `ProcessingManager` always shows the current/final token type pattern, so this tips us off to what happens when there are tokens with type `:unknown`
 <2> Here we see that the lexing step could not tokenize `about` so it's token has type = `:unknown`
 <3> Because we already know we aren't going to be able strings with unrecognized/unidentifiable patterns, we are going to call the whole string an `:untokenizable_date_type` and stop processing.
 <4> Any untokenizeable sequences are listed in a warning on the `ProcessingManager`, to be used however you need to use such info
 <5> Because processing was stopped, the next step didn't run, so there are no more `types` to look at
+<6> The warning also makes it into the `Emendate::Result`, which also contains a single `ParsedDate` object with no information other than the original string value.
+
+The rationale for this treatement of untokenizable strings is:
+
+* If you are doing something strict with date parsing, the useful parsed info is all nil
+* If you are doing something less strict, you can easily fall back to using original string
+
+Either way, no error is raised, because we expect there are *always* going to be weird, unrecognized strings in date data sets. It is not an exceptional, error-worthy situation.
+
+== `tagged_unprocessable`
+
+*Produced by processing step: `:tag_unprocessable`*
+
+This step handles known patterns that we cannot handle and do not expect to implement any time in the immediate future, so they don't throw errors. We know what is going to happen with them, so we can treat them in a consistent, expected way.
+
+The known unprocessable patterns are hand-coded regular expressions in a constant that you can see in the console by running:
+
+`Emendate::UnprocessableTagger::Patterns`
+
+Again, this doesn't do anything to a date string we can actually deal with, so we will skip looking at `ex1` here again.
+
+[source, ruby]
+----
+ex3 = Emendate.process('XXXX-10-XX')
+ => #<Emendate::ProcessingManager:1640
+  @state=done,
+  token_type_pattern: [:unprocessable_date_type]>
+
+ex3.tagged_unprocessable.types
+ => [:unprocessable_date_type]
+
+ex3.tagged_known_unknown.types
+NoMethodError: undefined method `types' for nil:NilClass
+
+ex3.result
+=> #<Emendate::Result:0x00007f90ec1a3a40
+ @dates=
+  [#<Emendate::ParsedDate:0x00007f90ec1a3db0
+    @certainty=[],
+    @date_end=nil,
+    @date_end_full=nil,
+    @date_start=nil,
+    @date_start_full=nil,
+    @inclusive_range=nil,
+    @index_dates=[],
+    @original_string="XXXX-10-XX">],
+ @errors=[],
+ @original_string="XXXX-10-XX",
+ @warnings=["Unprocessable string"]>
+----
+
+This behavior pattern is exactly the same as for untokenizable segments, but it is explicit about the reason the date is not processed/parsed further.
 
 == converted_months
 
