@@ -83,6 +83,12 @@ bin/console
 Emendate.example_strings
 ----
 
+.List all unique test fingerprints (test_string + test_options) in the entire test set
+[source, ruby]
+----
+Emendate.example_fingerprints
+----
+
 .List all unique abstract date patterns in the entire test set
 [source, ruby]
 ----
@@ -119,8 +125,8 @@ You will need to create an example set before testing or generating any info fro
 .Create a test set of all examples in the CSV.
 [source, ruby]
 ----
-ex = Emendate.examples
- => 204 examples (from 248 rows)
+ex = Examples::ExampleSet.new
+ => Examples::ExampleSet: 204 examples from 248 rows (data_sets: , date_types: )
 ----
 
 ==== Selecting examples by tag
@@ -132,22 +138,22 @@ NOTE: The exact counts in the examples below will change as the test set evolves
 .Examples expressing approximate dates
 [source, ruby]
 ----
-ex = Emendate.examples_with(date_type: 'approximate')
- => 41 examples (from 47 rows)
+ex = Examples::ExampleSet.new(date_types: 'approximate')
+ => Examples::ExampleSet: 41 examples from 47 rows (data_sets: , date_types: approximate)
 ----
 
 .Examples from the `ba` dataset
 [source, ruby]
 ----
-ex = Emendate.examples_with(data_set: 'ba')
- => 38 examples (from 45 rows)
+ex = Examples::ExampleSet.new(data_sets: 'ba')
+ => Examples::ExampleSet: 38 examples from 45 rows (data_sets: ba, date_types: )
 ----
 
 .Examples from the `ba` dataset expressing decades
 [source, ruby]
 ----
-ex = Emendate.examples_with(data_set: 'ba', date_type: 'decades')
- => 4 examples (from 6 rows)
+ex = Examples::ExampleSet.new(data_sets: 'ba', date_types: 'decades')
+ => Examples::ExampleSet: 4 examples from 6 rows (data_sets: ba, date_types: decades)
 ----
 
 You can use multiple tags of a given type to select. Separate the tag values with `;`.
@@ -157,8 +163,8 @@ IMPORTANT: Criteria are always Boolean AND-ed when selecting examples.
 .Examples in both the `ba` and `ncm` datasets
 [source, ruby]
 ----
-ex = Emendate.examples_with(data_set: 'ba;ncm')
- => 1 examples (from 1 rows)
+ex = Examples::ExampleSet.new(data_sets: 'ba;ncm')
+ => Examples::ExampleSet: 1 examples from 1 rows (data_sets: ba;ncm, date_types: )
 ----
 
 === Info about an example set
