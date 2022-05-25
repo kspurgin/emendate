@@ -23,8 +23,7 @@ module Examples
       pm.process
       result = Emendate::Translator.new(pm).translate
     rescue StandardError => err
-#      binding.pry
-      err_msg = err.backtrace.first(3).join('|||')
+      err_msg = [err.message, err.backtrace.first(3)].flatten
       example.add_error(name.to_sym, err_msg)
       nil
     else
@@ -33,7 +32,7 @@ module Examples
     
     def translate_options
       translate_opt = {target_dialect: name.delete_prefix('translation_').to_sym}
-      example.test_options ? example.test_options.merge(translate_opt) : translate_opt
+      example.test_options ? instance_eval("{#{example.test_options}}").merge(translate_opt) : translate_opt
     end
     
   end

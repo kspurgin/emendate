@@ -79,7 +79,7 @@ RSpec.describe Examples::TestableExample do
       let(:str){ '2002' }
 
       it 'blah' do
-        result
+        binding.pry
       end
     end
   end

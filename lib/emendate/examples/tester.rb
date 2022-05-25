@@ -37,7 +37,7 @@ module Examples
     rescue
       super(symbol, *args)
     end
-    
+
     def to_s
       "#{self.class.name}, name: #{name}"
     end
@@ -49,10 +49,11 @@ module Examples
 
     def handle_test_fail
       example.add_error(name.to_sym, test_fail_mismatch)
+      example.add_test_result(name.to_sym, :failure)
     end
 
     def handle_test_success
-      example.add_error(name.to_sym, nil)
+      example.add_test_result(name.to_sym, :success)
     end
 
     def run_test
@@ -60,7 +61,8 @@ module Examples
     end
     
     def test_fail_mismatch
-      "EXPECTED:\t#{expected_result}\nRESULT\t:#{tested_result}"
+      ["EXPECTED: #{expected_result}",
+       "RESULT:   #{tested_result}"]
     end
     
     def test_passed?

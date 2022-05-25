@@ -17,13 +17,29 @@ module Examples
       @test_options = rows.first.test_options
       @processed = nil
       @errors = {}
-      @messages = {}
+      @test_results = {}
     end
 
     def add_error(testname, err)
       errors.key?(testname) ? @errors[testname] = "#{errors[testname]}|#{err}" : @errors[testname] = err
     end
 
+    def add_test_result(testname, result)
+      test_results.key?(testname) ? @test_results[testname] = result : @test_results[testname] = result
+    end
+
+    def report_error(err)
+      puts err.map{ |line| "    #{line}" }
+    end
+    
+    def report_failure
+      puts "string: #{test_string} -- opts: #{test_options}"
+      errors.each do |test, err|
+        puts "  test: #{test}"
+        report_error(err)
+      end
+    end
+    
     def run_tests(tests: nil, fail_fast: true)
       return unless testable?
       
@@ -42,9 +58,9 @@ module Examples
     end
 
     def test_status
-      return :no_tests_run if errors.empty?
+      return :no_tests_run if test_results.empty?
       
-      errors.dup.compact.empty? ? :success : :failure
+      test_results.values.any?(:failure) ? :failure : :success
     end
     
     def testable?
@@ -53,12 +69,15 @@ module Examples
 
     private
 
+    attr_reader :test_results
+    
     def check_testable
-      opt = test_options ? test_options : {}
+      opt = test_options ? instance_eval("{#{test_options}}") : {}
       processor = Emendate.process(test_string, opt)
     rescue => err
-      err_msg = err.backtrace.first(3).join('|||')
+      err_msg = [err.message, err.backtrace.first(3)].flatten
       add_error(:process, err_msg)
+      add_test_result(:process, :failure)
       false
     else
       @processed = processor.result

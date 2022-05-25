@@ -26,17 +26,57 @@ module Examples
     def failures
       grouped_by_test_status[:failure]
     end
+
+    def not_run
+      grouped_by_test_status[:no_tests_run]
+    end
+
+    def report_failures
+      return if failures.empty?
+
+      puts "\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+      puts 'FAILURES'
+      puts '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
+      failures.each{ |failure| failure.report_failure }
+    end
+
+    def report_fingerprint(type)
+      array = send(type)
+      return if array.blank?
+      
+      puts "\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+      puts type.to_s.upcase
+      puts '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
+      array.each{ |example| puts example.fingerprint }
+    end
+
+    def summary
+      puts "\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+      puts 'SUMMARY'
+      puts '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
+
+      str = %i[successes failures not_run].map{ |meth| [meth, send(meth)] }
+        .to_h
+        .compact
+        .map{ |meth, vals| "#{vals.length} #{meth.to_s}" }
+        .join(' -- ')
+      puts str
+    end
     
     def run_tests(tests: nil, fail_fast: true)
       to_run = tests ? tests.intersection(runnable_tests) : runnable_tests
       examples.each{ |example| example.run_tests(tests: to_run, fail_fast: fail_fast) }
+      report_fingerprint(:successes)
+      report_fingerprint(:not_run)
+      report_failures
+      puts summary
     end
     
     def runnable_tests
       @runnable_tests ||= determine_runnable_tests
     end
 
-    def successs
+    def successes
       grouped_by_test_status[:success]
     end
     
