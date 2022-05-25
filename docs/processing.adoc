@@ -24,6 +24,8 @@ Each input value goes through a number of processing stages. If processing fails
 
 The order and basic function of each stage is outlined below, with examples.
 
+NOTE: To get a quick look at a date pattern, we can use the `types` method on anything returning a `SegmentSet`. This lists the token/segment type of each part.
+
 == orig_tokens
 
 *Produced by processing step: `:lex`*
@@ -33,17 +35,90 @@ Original date string is normalized, then run through `Lexer`, resulting in a `To
 ----
 ex1 = Emendate.process('[Jan. 1st - February 9, 2013]')
 ex1.orig_tokens.types
-=> [:square_bracket_open,
+ => [:square_bracket_open,
  :month_abbr_alpha,
+ :single_dot,
+ :space,
  :number1or2,
  :ordinal_indicator,
+ :space,
  :hyphen,
+ :space,
  :month_alpha,
+ :space,
  :number1or2,
  :comma,
+ :space,
  :number4,
  :square_bracket_close]
 ----
+
+At this stage, we are trying to just capture the very basic patterns of the string with very minor abstraction. For instance, we are able to recognize the English months and standard month abbreviations and convert those to tokens with the types `:month_alpha` and `:month_abbr_alpha`.
+
+NOTE: We can also use the `date_part_types` method on anything returning a `SegmentSet`. This will list the token/segment type of only parts that are `DatePart` segments or ``Token``s with a type known to indicate a date part.
+
+[source, ruby]
+----
+ex1.orig_tokens.date_part_types
+ => [:month_abbr_alpha, :number1or2, :month_alpha, :number1or2, :number4]
+----
+
+== tagged_untokenizeable
+
+*Produced by processing step: `:tag_untokenizeable`*
+
+If no `orig_tokens` are of type `:unknown`, everything is passed through with no change and processing continues:
+
+[source,ruby]
+----
+ex1.tagged_untokenizable.types
+ => [:square_bracket_open,
+ :month_abbr_alpha,
+ :single_dot,
+ :space,
+ :number1or2,
+ :ordinal_indicator,
+ :space,
+ :hyphen,
+ :space,
+ :month_alpha,
+ :space,
+ :number1or2,
+ :comma,
+ :space,
+ :number4,
+ :square_bracket_close]
+
+ex1.tagged_untokenizable.date_part_types
+ => [:month_abbr_alpha, :number1or2, :month_alpha, :number1or2, :number4]
+----
+
+We'll use another example to look at what happens when one or more `orig_tokens` is tagged as type `:unknown`:
+
+[source, ruby]
+----
+ex2 = Emendate.process('about 1970')
+ => #<Emendate::ProcessingManager:1620
+  @state=done,
+  token_type_pattern: [:untokenizable_date_type]> <1>
+
+ex2.orig_tokens.types
+ => [:unknown, :space, :number4] <2>
+
+ex2.tagged_untokenizable.types
+ => [:untokenizable_date_type] <3>
+
+ex2.warnings
+ => ["Untokenizable sequences: about"] <4>
+
+ex2.tagged_unprocessable.types
+  NoMethodError: undefined method `types' for nil:NilClass <5>
+----
+<1> The displayed representation of the `ProcessingManager` always shows the current/final token type pattern, so this tips us off to what happens when there are tokens with type `:unknown`
+<2> Here we see that the lexing step could not tokenize `about` so it's token has type = `:unknown`
+<3> Because we already know we aren't going to be able strings with unrecognized/unidentifiable patterns, we are going to call the whole string an `:untokenizable_date_type` and stop processing.
+<4> Any untokenizeable sequences are listed in a warning on the `ProcessingManager`, to be used however you need to use such info
+<5> Because processing was stopped, the next step didn't run, so there are no more `types` to look at
 
 == converted_months
 
