@@ -83,6 +83,8 @@ bin/console
 Emendate.example_strings
 ----
 
+Test fingerprint is the combination of the `test_string` and `test_options` fields. The string and options values are separated by ` ||| `.
+
 .List all unique test fingerprints (test_string + test_options) in the entire test set
 [source, ruby]
 ----
@@ -118,15 +120,17 @@ Emendate.example_date_type_tags
 ----
 
 === Creating an example set
-You will need to create an example set before testing or generating any info from the examples. Assign the example set to a variable (we are using `ex` in the examples below, so you can pass it to whatever 
+You will need to create an example set before running tests on the examples or generating any other info from them.
+
+Assign the example set to a variable (we are using `ex` as the variable name in the examples below), so you can reuse the set.
 
 ==== All examples
 
 .Create a test set of all examples in the CSV.
 [source, ruby]
 ----
-ex = Examples::ExampleSet.new
- => Examples::ExampleSet: 204 examples from 248 rows (data_sets: , date_types: )
+ex = Emendate.all_examples
+ => Emendate::Examples::ExampleSet: 204 examples from 248 rows (data_sets: , date_types: )
 ----
 
 ==== Selecting examples by tag
@@ -138,22 +142,22 @@ NOTE: The exact counts in the examples below will change as the test set evolves
 .Examples expressing approximate dates
 [source, ruby]
 ----
-ex = Examples::ExampleSet.new(date_types: 'approximate')
- => Examples::ExampleSet: 41 examples from 47 rows (data_sets: , date_types: approximate)
+ex = Emendate.examples_with(date_type: 'approximate')
+ => Emendate::Examples::ExampleSet: 41 examples from 47 rows (data_sets: , date_types: approximate)
 ----
 
 .Examples from the `ba` dataset
 [source, ruby]
 ----
-ex = Examples::ExampleSet.new(data_sets: 'ba')
- => Examples::ExampleSet: 38 examples from 45 rows (data_sets: ba, date_types: )
+ex = Emendate.examples_with(data_set: 'ba')
+ => Emendate::Examples::ExampleSet: 38 examples from 45 rows (data_sets: ba, date_types: )
 ----
 
 .Examples from the `ba` dataset expressing decades
 [source, ruby]
 ----
-ex = Examples::ExampleSet.new(data_sets: 'ba', date_types: 'decades')
- => Examples::ExampleSet: 4 examples from 6 rows (data_sets: ba, date_types: decades)
+ex = Emendate.examples_with(data_set: 'ba', date_type: 'decades')
+ => Emendate::Examples::ExampleSet: 4 examples from 6 rows (data_sets: ba, date_types: decades)
 ----
 
 You can use multiple tags of a given type to select. Separate the tag values with `;`.
@@ -163,8 +167,8 @@ IMPORTANT: Criteria are always Boolean AND-ed when selecting examples.
 .Examples in both the `ba` and `ncm` datasets
 [source, ruby]
 ----
-ex = Examples::ExampleSet.new(data_sets: 'ba;ncm')
- => Examples::ExampleSet: 1 examples from 1 rows (data_sets: ba;ncm, date_types: )
+ex = Emendate.examples_with(data_set: 'ba;ncm')
+ => Emendate::Examples::ExampleSet: 1 examples from 1 rows (data_sets: ba;ncm, date_types: )
 ----
 
 === Info about an example set
@@ -174,25 +178,25 @@ NOTE: The following examples assume you have created an `ExampleSet` in a variab
 .List the test strings in the set
 [source, ruby]
 ----
-ex.list_strings
+puts ex.get_example_data(data_method: :test_string)
 ----
 
 .List the abstract test patterns in the set, with the strings of each pattern listed below
 [source, ruby]
 ----
-ex.list_by_pattern
+puts ex.get_example_data(data_method: :test_pattern)
 ----
 
 .List the strings in the test set, with the `test_options` provided for each listed below
 [source, ruby]
 ----
-ex.list_by_test_fingerprint
+puts ex.get_example_data(data_method: :fingerprint)
 ----
 
 .List runnable tests for the example set
 [source, ruby]
 ----
-ex.list_runnable_tests
+puts ex.runnable_tests
 ----
 
 == Date pattern conventions
