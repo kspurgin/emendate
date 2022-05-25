@@ -29,11 +29,22 @@ module Examples
       
       to_run = tests ? tests.intersection(runnable_tests) : runnable_tests
       testers = to_run.map{ |test| Examples::Tester.build(test: test, example: self) }
-      testers.each{ |test| test.call }
+      testers.each do |test|
+        test.call
+        if fail_fast
+          break unless errors[test.name.to_sym].nil?
+        end
+      end
     end
 
     def runnable_tests
       @runnable_tests ||= determine_runnable_tests
+    end
+
+    def test_status
+      return :no_tests_run if errors.empty?
+      
+      errors.dup.compact.empty? ? :success : :failure
     end
     
     def testable?
