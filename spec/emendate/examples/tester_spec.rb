@@ -123,5 +123,54 @@ RSpec.describe Examples::Tester do
     end
   end
 
+  context 'with translation_lyrasis_pseudo_edtf' do
+    let(:test){ 'translation_lyrasis_pseudo_edtf' }
+
+    describe 'tested_result' do
+      let(:result){ klass.tested_result }
+
+      context 'with testable example' do
+        context 'with single row example' do
+          let(:str){ '2002' }
+
+          it 'returns expected' do
+            expect(result).to eq('2002')
+          end
+        end
+      end
+
+      context 'with untestable example' do
+        let(:str){ '2002' }
+        let(:opt){ 'unknown_opt: :foo' }
+
+        it 'returns expected' do
+          expect(result).to be_nil
+        end
+      end
+    end
+
+    describe 'expected_result' do
+      let(:result){ klass.expected_result }
+
+      context 'with testable example' do
+        context 'with single row example' do
+          let(:str){ '2002' }
+
+          it 'returns expected' do
+            expect(result).to eq('2002')
+          end
+        end
+      end
+
+      context 'with untestable example' do
+        let(:str){ '2002' }
+        let(:opt){ 'unknown_opt: :foo' }
+
+        it 'returns expected' do
+          expect(result).to be_nil
+        end
+      end
+    end
+  end
 end
 

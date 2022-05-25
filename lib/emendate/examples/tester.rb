@@ -48,11 +48,15 @@ module Examples
     attr_reader :type, :example
 
     def handle_test_fail
-      example.add_error(name, test_fail_mismatch)
+      example.add_error(name.to_sym, test_fail_mismatch)
+    end
+
+    def handle_test_success
+      example.add_error(name.to_sym, nil)
     end
 
     def run_test
-      handle_test_fail unless test_passed?
+      test_passed? ? handle_test_success : handle_test_fail
     end
     
     def test_fail_mismatch

@@ -21,23 +21,21 @@ module Examples
     end
 
     def add_error(testname, err)
-      errors.key?(testname) ? @errors[testname] << err : @errors[testname] = [err].flatten
+      errors.key?(testname) ? @errors[testname] = "#{errors[testname]}|#{err}" : @errors[testname] = err
     end
 
     def run_tests(tests: nil, fail_fast: true)
       return unless testable?
       
-      to_run = tests ? tests : runnable_tests
+      to_run = tests ? tests.intersection(runnable_tests) : runnable_tests
       testers = to_run.map{ |test| Examples::Tester.build(test: test, example: self) }
+      testers.each{ |test| test.call }
+    end
+
+    def runnable_tests
+      @runnable_tests ||= determine_runnable_tests
     end
     
-    def runnable_tests
-      runnables = rows.map(&:runnable_tests)
-      return runnables.flatten if runnables.length == 1
-
-      runnables.shift.intersection(*runnables)
-    end
-
     def testable?
       @processed ? true : check_testable
     end
@@ -54,6 +52,13 @@ module Examples
     else
       @processed = processor.result
       true
+    end
+
+    def determine_runnable_tests
+      runnables = rows.map(&:runnable_tests)
+      return runnables.flatten if runnables.length == 1
+
+      runnables.shift.intersection(*runnables)
     end
   end
 end

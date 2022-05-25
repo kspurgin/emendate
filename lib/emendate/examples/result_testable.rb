@@ -14,9 +14,5 @@ module Examples
       
       example.processed.send(name.delete_prefix('result_').to_sym).join('|')
     end
-
-    def tested_result_method
-      
-    end
   end
 end
