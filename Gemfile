@@ -13,8 +13,9 @@ group :test do
 end
 
 group :test, :development do
+  gem "pry", "~> 0.14.1"
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rspec', require: false
-  gem 'ruby_jard'
 end
+

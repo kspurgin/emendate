@@ -2,12 +2,10 @@
 
 module Examples
   class Row
-    attr_reader :row, :runnable_tests
     def initialize(row)
-      @row = prep(row)
+      prepped = prep(row)
       # metaprogramming bit to create an instance variable for each column
-      @row.keys.each{ |field| instance_variable_set("@#{field}".to_sym, row[field]) }
-      @runnable_tests = determine_runnable_tests
+      prepped.keys.each{ |field| instance_variable_set("@#{field}".to_sym, row[field]) }
     end
 
     def data_sets
@@ -27,10 +25,7 @@ module Examples
       all_tags = self.method(type).call
       return false if all_tags.empty?
 
-      i = all_tags.intersection(tags)
-      return true if i.length == tags.length
-
-      false
+      tags.all?{ |tag| all_tags.any?(tag) }
     end
 
     def warnings
@@ -43,13 +38,15 @@ module Examples
       "#{test_string}/#{test_options}"
     end
 
-    private
 
-    def determine_runnable_tests
-      row.keys
-        .select{ |field| test_expectation?(field) }
-        .select{ |field| Examples::Test::IMPLEMENTED.any?(field) }
+    def runnable_tests
+      Emendate.examples.tests.map{ |test| [test, send(test.to_sym)]}
+        .to_h
+        .compact
+        .keys
     end
+
+    private
 
     # metaprogramming bit to avoid manually declaring attr_reader for every column in row
     def method_missing(symbol, *args)
@@ -59,10 +56,9 @@ module Examples
     end
 
     def prep(row)
-      r = row.to_h
-      r = r.transform_values{ |val| val == 'nilValue' ? nil : val }
-      r = r.transform_values{ |val| val == 'today' ? Date.today : val }
-      r
+      row.to_h
+      .transform_values{ |val| val == 'nilValue' ? nil : val }
+      .transform_values{ |val| val == 'today' ? Date.today : val }
     end
 
     def test_expectation?(field)

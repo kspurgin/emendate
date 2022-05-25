@@ -116,35 +116,35 @@ module Examples
       instance_eval(translate_call)
     end
 
-    def get_got(type, method)
+    def get_result(type, method)
       case type
       when :date
         dates = result.result.dates
         return [nil] if dates.empty?
         
-        dates.map{ |date| date.method(method).call }
+        dates.map{ |date| date.send(method) }
       when :result
-        result.result.method(method).call
+        result.result.send(method)
       when :output
         translate.value
       end
     end
 
-    def get_exp(type, method)
+    def get_expected(type, method)
       case type
       when :date
-        @rows.map{ |row| row.method(method).call }
+        @rows.map{ |row| row.send(method) }
       when :result
-        @rows.map{ |row| row.method(method).call }.flatten.uniq
+        @rows.map{ |row| row.send(method) }.flatten.uniq
       when :output
-        @rows.map{ |row| row.method(method).call }.flatten.uniq[0]
+        @rows.map{ |row| row.send(method) }.flatten.uniq[0]
       end
     end
     
     def test_runner(type:, test:, method:)
       @tests_run << test
-      got = get_got(type, method)
-      exp = get_exp(type, method)
+      got = get_result(type, method)
+      exp = get_expected(type, method)
       if got == exp
         @test_results << :pass
         return

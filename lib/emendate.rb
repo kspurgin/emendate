@@ -8,7 +8,9 @@ require 'fileutils'
 require 'aasm'
 require 'active_support'
 require 'active_support/core_ext/object'
+require 'dry-configurable'
 
+require 'emendate/error'
 require 'emendate/date_types/date_type'
 # require 'emendate/segment/segment'
 
@@ -16,11 +18,12 @@ Dir.glob("#{__dir__}/**/*").sort.select { |path| path.match?(/\.rb$/) }.each do 
   require rbfile.delete_prefix("#{File.expand_path(__dir__)}/lib/")
 end
 
-require_relative '../spec/helpers'
+require_relative './emendate/example_helpers'
 
 module Emendate
-  include Helpers
+  include ExampleHelpers
   extend self
+  extend Dry::Configurable
 
   LQ = "\u201C"
   RQ = "\u201D"
@@ -29,6 +32,19 @@ module Emendate
   #  to support assumptions about processing EDTF
   EDTF_TYPES = %i[double_dot percent tilde curly_bracket_open letter_y letter_t letter_z letter_e]
 
+  setting :basedir, default: Gem.loaded_specs['emendate'].full_gem_path, reader: true
+  
+  setting :examples, reader: true do
+    setting :dir, default: ->{ File.join(Emendate.basedir, 'spec', 'support') }, reader: true
+    setting :file_name, default: 'examples.csv', reader: true
+    setting :file_path, default: ->{ "#{Emendate.examples.dir.call}/#{Emendate.examples.file_name}" }, reader: true
+    setting :tests,
+      default: %w[date_start_full date_end_full
+         result_warnings
+         translation_lyrasis_pseudo_edtf],
+      reader: true
+  end
+  
   # str = String to process
   # sym = Symbol of aasm event for which you would use the results as input.
   # For example, running :tag_date_parts requires successful format standardization
@@ -67,5 +83,5 @@ module Emendate
   def tokenize(str)
     tokens = lex(str).map(&:type)
     puts "#{str}\t\t#{tokens.inspect}"
-  end
+  end  
 end

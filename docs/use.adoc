@@ -210,4 +210,4 @@ This is not in the list of instance_variables you can call, but will show you if
 
 
 == Working with the test set
-See separate page in this same directory.
+See https://github.com/kspurgin/emendate/blob/main/docs/working_with_test_set.adoc[Working with the test set page].

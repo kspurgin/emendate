@@ -50,6 +50,21 @@ If we want to test that the returned value is nil, we enter `nilValue` in the ex
 
 We can also enter `today` as an expectation, to stand in for the current date in tests. This is helpful for open-ended ranges.
 
+=== Runnable tests
+
+To be runnable, a test must be implemented, and all expectations required to run the test must be present.
+
+For example, as of 2022-05-24, there is a `date_start` column, but no `test_date_start` test has been implemented. Even though some rows have data in the `date_start` column, `test_date_start` is _not_ a runnable test.
+
+`test_date_start_full` is implemented. If a single `Emendate::Result.dates` element is expected, and the `date_start_full` column contains a value, then `test_date_start_full` is a runnable test for that test_fingerprint. If multiple `Emendate::Result.dates` elements are expected, and the `date_start_full` column contains a value in the row for each expected date, then `test_date_start_full` is a runnable test for that test_fingerprint. If multiple `Emendate::Result.dates` elements are expected, but the `date_start_full` column is not populated for each expected date, then `test_date_start_full` is _not_ a runnable test for that test_fingerprint.
+
+Tests that are not runnable due to missing expectation data will be skipped.
+
+=== `test_processing`
+
+This test determines if Emendate can successfully process a given test fingerprint without throwing an error.
+
+This test is not run manually, and does not show up in the list of runnable tests for and example set; however, it is always run first when you kick off tests. This is because it makes no sense to test that the values for a test fingerprint are as expected, if the test data cannot even be processed.
 
 == Code examples
 
@@ -80,7 +95,7 @@ Emendate.example_patterns
 Emendate.example_tags
 ----
 
-TIP: The type of tag (`data_set` or `date_type`) is given in parentheses after the tag value. The tag type is determined by the test CSV column (`tags_data_set` or `tags_date_type`) in which the tag is recorded. **Do not include the parenthetical tag type when using the tag!**
+TIP: The type of tag (`data_set` or `date_type`) is given in parentheses after the tag value. The tag type is determined by the test CSV column (`tags_data_set` or `tags_date_type`) in which the tag is recorded. **Do not include the parenthetical tag type when using the tag to https://github.com/kspurgin/emendate/blob/main/docs/working_with_test_set.adoc#selecting-examples-by-tag[select an example set]!**
 
 You can also get lists of each type of tag:
 
@@ -115,18 +130,21 @@ TIP: This is where the parenthetical tag type info you can get via `Emendate.exa
 NOTE: The exact counts in the examples below will change as the test set evolves.
 
 .Examples expressing approximate dates
+[source, ruby]
 ----
 ex = Emendate.examples_with(date_type: 'approximate')
  => 41 examples (from 47 rows)
 ----
 
 .Examples from the `ba` dataset
+[source, ruby]
 ----
 ex = Emendate.examples_with(data_set: 'ba')
  => 38 examples (from 45 rows)
 ----
 
 .Examples from the `ba` dataset expressing decades
+[source, ruby]
 ----
 ex = Emendate.examples_with(data_set: 'ba', date_type: 'decades')
  => 4 examples (from 6 rows)
@@ -137,6 +155,7 @@ You can use multiple tags of a given type to select. Separate the tag values wit
 IMPORTANT: Criteria are always Boolean AND-ed when selecting examples.
 
 .Examples in both the `ba` and `ncm` datasets
+[source, ruby]
 ----
 ex = Emendate.examples_with(data_set: 'ba;ncm')
  => 1 examples (from 1 rows)
@@ -147,8 +166,42 @@ ex = Emendate.examples_with(data_set: 'ba;ncm')
 NOTE: The following examples assume you have created an `ExampleSet` in a variable named `ex`. See the above section.
 
 .List the test strings in the set
+[source, ruby]
+----
+ex.list_strings
+----
 
+.List the abstract test patterns in the set, with the strings of each pattern listed below
+[source, ruby]
+----
+ex.list_by_pattern
+----
 
+.List the strings in the test set, with the `test_options` provided for each listed below
+[source, ruby]
+----
+ex.list_by_test_fingerprint
+----
+
+.List runnable tests for the example set
+[source, ruby]
+----
+ex.list_runnable_tests
+----
+
+== Date pattern conventions
+
+`#`:: digit in an unambiguous (given assumptions made) number
+`0`:: literally one zero
+`00`:: literally two zeroes
+`@`:: digit in an ambiguous number (i.e. it's not clear whether it's a month or day, etc.)
+`MON`:: abbreviated alphabetical month name
+`MONTH`:: alphabetical month name
+`ERA`:: BCE, AD, CE, BC, etc.
+`SEASON`:: alphabetical season term
+`ORD`:: alphabetical ordinal indication, such at st, rd, etc.
+lowercase letters:: themselves, literally
+`.,/-&?() []`:: themselves, literally (same for spaces)
 
 
 +++<s>+++

@@ -30,4 +30,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'activesupport', '~> 6'
   spec.add_dependency 'aasm'
+  spec.add_dependency 'dry-configurable', '~> 0.15.0'
+  spec.add_dependency "dry-monads", "~> 1.4"
 end
