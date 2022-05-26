@@ -199,9 +199,249 @@ puts ex.get_example_data(data_method: :fingerprint)
 puts ex.runnable_tests
 ----
 
+=== Running tests on your example set
+
+By default:
+
+* An attempt will be made to process every example. If the example cannot be processed, the error will be shown in the failure report under `test: process`. No further tests will be run on the example. 
+* All runnable tests are run for every example that can be processed without errors
+
+You can also pass in the following options:
+
+`tests`:: Array of tests to run
+`fail_fast`:: If `true`, if an example fails a test, no subsequent tests will be run for that example.
+
+[NOTE]
+====
+I purposefully tweaked the example CSV for illustrative purposes in the examples below, by making the following edits:
+
+* Add incorrect expected `date_end_full` value for `2002`
+* Insert a new example (`2003`) with no expected values in any of the columns for implemented tests
+* Added bad/unknown options to `2002 (?)`
+
+====
+
+==== Default test run
+
+[source, ruby]
+----
+ex.run_tests
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+SUCCESSES
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+1915.0 ||| no options
+2002 C.E. ||| no options
+[2002?] ||| no options
+[c. 2002] ||| no options
+[ca. 2002] ||| no options
+[circa 2002?] ||| no options
+[circa 2002] ||| square_bracket_interpretation: :inferred_date
+c 2002 ||| no options
+c. 2002 ||| no options
+c2002 ||| no options
+ca 2002 ||| no options
+ca. 2002 ||| no options
+circa 2002 ||| no options
+circa 2002? ||| no options
+circa2002 ||| no options
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+NOT_RUN
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+2003 ||| no options
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+FAILURES
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+string: 2002 -- opts:
+  test: date_end_full
+    EXPECTED: 2002-12-30
+    RESULT:   2002-12-31
+string: 2002 (?) -- opts: foo: :bar
+  test: process
+    foo
+    /Users/kristina/code/mig/emendate/lib/emendate/options.rb:172:in `verify'
+    /Users/kristina/code/mig/emendate/lib/emendate/options.rb:34:in `initialize'
+    /Users/kristina/code/mig/emendate/lib/emendate/processing_manager.rb:23:in `new'
+string: 2002 B.C.E. -- opts:
+  test: date_end_full
+    EXPECTED: -2002-12-31
+    RESULT:   2002-12-31
+  test: date_start_full
+    EXPECTED: -2002-01-01
+    RESULT:   2002-01-01
+string: 2002? -- opts:
+  test: translation_lyrasis_pseudo_edtf
+    EXPECTED: 2002 (uncertain)
+    RESULT:
+string: -2002 -- opts:
+  test: date_end_full
+    EXPECTED: -2002-12-31
+    RESULT:   2002-12-31
+  test: date_start_full
+    EXPECTED: -2002-01-01
+    RESULT:   2002-01-01
+----
+
+The report output to the screen indicates multiple test failures for some examples. For more details, I can also dig in to a particular example as follows:
+
+[source, ruby]
+----
+te = ex.examples.select{ |example| example.test_string == '2002' }.first
+ => #<Emendate::Examples::TestableExample:1520
+  @fingerprint: "2002 ||| no options",
+  @rows: 1,
+  @runnable_tests: ["date_start_full", "date_end_full", "translation_lyrasis_pseudo_edtf"],
+  @processed: Emendate::ProcessingManager,
+  @test_results: {:date_end_full=>:failure, :date_start_full=>:success, :translation_lyrasis_pseudo_edtf=>:success}, <1>
+  @errors: {:date_end_full=>["EXPECTED: 2002-12-30", "RESULT:   2002-12-31"]}>
+----
+<1> This shows me that all the runnable tests for this example were run despite the `date_end_full` test failing.
+
+==== Failing fast
+
+[source, ruby]
+----
+ex.run_tests(fail_fast: true)
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+SUCCESSES
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+1915.0 ||| no options
+2002 C.E. ||| no options
+[2002?] ||| no options
+[c. 2002] ||| no options
+[ca. 2002] ||| no options
+[circa 2002?] ||| no options
+[circa 2002] ||| square_bracket_interpretation: :inferred_date
+c 2002 ||| no options
+c. 2002 ||| no options
+c2002 ||| no options
+ca 2002 ||| no options
+ca. 2002 ||| no options
+circa 2002 ||| no options
+circa 2002? ||| no options
+circa2002 ||| no options
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+NOT_RUN
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+2003 ||| no options
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+FAILURES
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+string: 2002 -- opts:
+  test: date_end_full
+    EXPECTED: 2002-12-30
+    RESULT:   2002-12-31
+string: 2002 (?) -- opts: foo: :bar
+  test: process
+    foo
+    /Users/kristina/code/mig/emendate/lib/emendate/options.rb:172:in `verify'
+    /Users/kristina/code/mig/emendate/lib/emendate/options.rb:34:in `initialize'
+    /Users/kristina/code/mig/emendate/lib/emendate/processing_manager.rb:23:in `new'
+string: 2002 B.C.E. -- opts:
+  test: date_end_full
+    EXPECTED: -2002-12-31
+    RESULT:   2002-12-31
+string: 2002? -- opts:
+  test: translation_lyrasis_pseudo_edtf
+    EXPECTED: 2002 (uncertain)
+    RESULT:
+string: -2002 -- opts:
+  test: date_end_full
+    EXPECTED: -2002-12-31
+    RESULT:   2002-12-31
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+SUMMARY
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+15 successes -- 5 failures -- 1 not_run
+----
+
+Note that that each failure only lists one example now.
+
+The displayed error for `2002` looks exactly the same as it did before, but looking deeper:
+
+[source, ruby]
+----
+te
+ => #<Emendate::Examples::TestableExample:1520
+  @fingerprint: "2002 ||| no options",
+  @rows: 1,
+  @runnable_tests: ["date_start_full", "date_end_full", "translation_lyrasis_pseudo_edtf"],
+  @processed: Emendate::ProcessingManager,
+  @test_results: {:date_end_full=>:failure}, <1>
+  @errors: {:date_end_full=>["EXPECTED: 2002-12-30", "RESULT:   2002-12-31"]}>
+----
+<1> Only one of the three runnable tests for this example was run.
+
+==== Running a specific test
+
+[source, ruby]
+----
+ex.runnable_tests <1>
+=> ["date_end_full", "date_start_full", "translation_lyrasis_pseudo_edtf"]
+
+ex.run_tests(tests: ['date_start_full'])
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+SUCCESSES
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+1915.0 ||| no options
+2002 C.E. ||| no options
+2002 ||| no options
+2002? ||| no options
+[2002?] ||| no options
+[c. 2002] ||| no options
+[circa 2002?] ||| no options
+[circa 2002] ||| square_bracket_interpretation: :inferred_date
+c 2002 ||| no options
+c. 2002 ||| no options
+c2002 ||| no options
+ca 2002 ||| no options
+ca. 2002 ||| no options
+circa 2002 ||| no options
+circa 2002? ||| no options
+circa2002 ||| no options
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+NOT_RUN
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+2003 ||| no options
+[ca. 2002] ||| no options
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+FAILURES
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+string: 2002 (?) -- opts: foo: :bar
+  test: process
+    foo
+    /Users/kristina/code/mig/emendate/lib/emendate/options.rb:172:in `verify'
+    /Users/kristina/code/mig/emendate/lib/emendate/options.rb:34:in `initialize'
+    /Users/kristina/code/mig/emendate/lib/emendate/processing_manager.rb:23:in `new'
+string: 2002 B.C.E. -- opts:
+  test: date_start_full
+    EXPECTED: -2002-01-01
+    RESULT:   2002-01-01
+string: -2002 -- opts:
+  test: date_start_full
+    EXPECTED: -2002-01-01
+    RESULT:   2002-01-01
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+SUMMARY
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+16 successes -- 3 failures -- 2 not_run
+----
+<1> List the runnable tests for the set, for reference
+
 === Advanced processing info about an example set
 
-NOTE: The following will probably make more sense if you have read https://github.com/kspurgin/emendate/blob/main/docs/processing.adoc[How Emendate processes date strings].
+NOTE: The following will make more sense if you have read https://github.com/kspurgin/emendate/blob/main/docs/processing.adoc[How Emendate processes date strings].
+
 
 
 This will output all unique type patterns being generated from the example strings:
