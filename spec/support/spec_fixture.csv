@@ -2,7 +2,7 @@
 "a","a",,,"aaa",0,"a","a","a","a","a","a","a","a","a"
 "a","a",,,"aaa",1,,,,"aa","aa","aa","aa","aa","aa"
 "a","a",,,"aaa",2,,,"aaa","aaa","aaa","aaa","aaa",,"aaa"
-"b","b",,,,0,,,,"nilValue","nilValue",,"Untokenizable sequences: b",,
+"b","b",,,,0,,,,"nilValue","nilValue",,"Untokenizable sequences: b","b",
 "c","c","c","c",,0,"c","c","c","c","c","c","c","c","c"
 "2002","####","edtf;edtf0","ba;ncm",,0,"2002","2002","2002-01-01","2002-12-31",,"2002",,"2002","2002"
 "2002","####","edtf;edtf0","ba;ncm","unknown_opt: :foo",0,"2002","2002","2002-01-01","2002-12-31",,"2002",,"2002","2002"

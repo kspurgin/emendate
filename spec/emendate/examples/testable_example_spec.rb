@@ -65,7 +65,7 @@ RSpec.describe Emendate::Examples::TestableExample do
 
       it 'returns as expected', :aggregate_failures do
         expect(result).to eq(true)
-        expect(klass.processed).to be_a(Emendate::Result)
+        expect(klass.processed).to be_a(Emendate::ProcessingManager)
       end
     end
   end
