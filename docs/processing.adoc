@@ -225,6 +225,91 @@ ex4.result
 
 The only difference here is there is no warning in the result.
 
+== `collapsed_tokens`
+
+*Produced by processing step: `:collapse_tokens`*
+
+This step simplifies the token type pattern by collapsing non-meaningful tokens. We used the term "collapse" instead of "delete" because the non-meaningful tokens are collapsed into a `DerivedToken`, not deleted.
+
+This step makes it simpler to process the patterns going forward, as we do not have to care about whether an abbreviated month had a period after it or not, or if there were any extra spaces. 
+
+We will start over on ex1:
+
+[source, ruby]
+----
+ex1 = Emendate.process('[Jan. 1st - February 9, 2013]')
+ => #<Emendate::ProcessingManager:1540
+  @state=done,
+  token_type_pattern: [:range_date_type]>
+
+ex1.orig_tokens.types
+ => [:square_bracket_open,
+ :month_abbr_alpha,
+ :single_dot,
+ :space,
+ :number1or2,
+ :ordinal_indicator,
+ :space,
+ :hyphen,
+ :space,
+ :month_alpha,
+ :space,
+ :number1or2,
+ :comma,
+ :space,
+ :number4,
+ :square_bracket_close]
+
+ex1.collapsed_tokens.types
+=> [:square_bracket_open,
+ :month_abbr_alpha,
+ :number1or2,
+ :ordinal_indicator,
+ :hyphen,
+ :month_alpha,
+ :number1or2,
+ :comma,
+ :number4,
+ :square_bracket_close]
+----
+
+Here, the `:single_dot` and `:space` tokens have been collapsed into the `:month_abbr_alpha` token. The `:space` tokens surrounding the `:hyphen` and following the `:comma` have also been collapsed.
+
+If we look at the `:month_abbr_alpha` token, we can see that it contains multiple level of source tokens,footnote:[This is because the `:space` following the `:single_dot` is first collapsed into a `DerivedToken` with type `:single_dot.` Then the derived `:single_dot` is collapsed into `:month_abbr_alpha`. I https://github.com/kspurgin/emendate/issues/8[plan to eventually simplify the hierarchy of source tokens that is created].] but that none of the original tokens have been thrown away:
+
+[source, ruby]
+----
+ex1.collapsed_tokens[1]
+ => #<Emendate::DerivedToken:0x00007fa41fa9a400
+ @certainty=[],
+ @lexeme="jan.",
+ @literal=nil,
+ @location=#<struct Location col=1, length=5>, <1>
+ @sources=
+  #<Emendate::SegmentSets::MixedSet:0x00007fa41fa9aae0
+   @certainty=[],
+   @inferred_date=false,
+   @segments=
+    [#<Emendate::Token:0x00007fa41faa21f0 @certainty=[], @lexeme="jan", @literal=nil, @location=#<struct Location col=1, length=3>, @type=:month_abbr_alpha>,
+     #<Emendate::DerivedToken:0x00007fa41fa9b260
+      @certainty=[],
+      @lexeme=".",
+      @literal=nil,
+      @location=#<struct Location col=4, length=2>,
+      @sources=
+       #<Emendate::SegmentSets::MixedSet:0x00007fa41fa9b1e8
+        @certainty=[],
+        @inferred_date=false,
+        @segments=
+         [#<Emendate::Token:0x00007fa41faa21c8 @certainty=[], @lexeme=".", @literal=nil, @location=#<struct Location col=4, length=1>, @type=:single_dot>,
+          #<Emendate::Token:0x00007fa41faa21a0 @certainty=[], @lexeme=" ", @literal=nil, @location=#<struct Location col=5, length=1>, @type=:space>],
+        @warnings=[]>,
+      @type=:single_dot>],
+   @warnings=[]>,
+ @type=:month_abbr_alpha>
+----
+<1> The location length of the final derived token is `5`, because it represents `jan. `.
+
 == converted_months
 
 *Produced by processing step: `:convert_months`*
