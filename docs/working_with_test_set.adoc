@@ -438,6 +438,71 @@ SUMMARY
 ----
 <1> List the runnable tests for the set, for reference
 
+==== Running multiple specific tests (but not all tests)
+
+[source, ruby]
+----
+ex.run_tests(tests: ['date_start_full', 'date_end_full'])
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+SUCCESSES
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+1915.0 ||| no options
+2002 C.E. ||| no options
+2002? ||| no options
+[2002?] ||| no options
+[c. 2002] ||| no options
+[ca. 2002] ||| no options
+[circa 2002?] ||| no options
+[circa 2002] ||| square_bracket_interpretation: :inferred_date
+c 2002 ||| no options
+c. 2002 ||| no options
+c2002 ||| no options
+ca 2002 ||| no options
+ca. 2002 ||| no options
+circa 2002 ||| no options
+circa 2002? ||| no options
+circa2002 ||| no options
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+NOT_RUN
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+2003 ||| no options
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+FAILURES
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+string: 2002 -- opts:
+  test: date_end_full
+    EXPECTED: 2002-12-30
+    RESULT:   2002-12-31
+string: 2002 (?) -- opts: foo: :bar
+  test: process
+    foo
+    /Users/kristina/code/mig/emendate/lib/emendate/options.rb:172:in `verify'
+    /Users/kristina/code/mig/emendate/lib/emendate/options.rb:34:in `initialize'
+    /Users/kristina/code/mig/emendate/lib/emendate/processing_manager.rb:23:in `new'
+string: 2002 B.C.E. -- opts:
+  test: date_start_full
+    EXPECTED: -2002-01-01
+    RESULT:   2002-01-01
+  test: date_end_full
+    EXPECTED: -2002-12-31
+    RESULT:   2002-12-31
+string: -2002 -- opts:
+  test: date_start_full
+    EXPECTED: -2002-01-01
+    RESULT:   2002-01-01
+  test: date_end_full
+    EXPECTED: -2002-12-31
+    RESULT:   2002-12-31
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+SUMMARY
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+16 successes -- 4 failures -- 1 not_run
+----
+
 === Advanced processing info about an example set
 
 NOTE: The following will make more sense if you have read https://github.com/kspurgin/emendate/blob/main/docs/processing.adoc[How Emendate processes date strings].
