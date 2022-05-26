@@ -43,6 +43,18 @@ module ExampleHelpers
     ExampleSet.new(data_sets: data_set, date_types: date_type)
   end
 
+  # With one example (by string/options)
+  def specific_example(str, opt)
+    rows = Emendate::Examples::Csv.rows(str, opt)
+      .sort_by{ |row| row.dateval_occurrence }
+    if rows.empty?
+      puts "No matching rows"
+      exit
+    end
+    
+    Emendate::Examples::ExampleSet.new(rows: rows)
+  end
+
 
   def tokenize_examples(examples = ExampleSet.new)
     ex = examples.strings

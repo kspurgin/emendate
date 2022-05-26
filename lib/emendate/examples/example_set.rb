@@ -13,10 +13,16 @@ module Emendate
       
       attr_reader :examples
       
-      def initialize(data_sets: '', date_types: '')
+      def initialize(data_sets: '', date_types: '', rows: nil)
+        if rows
+          @rows = rows
+        else
+          
         @rows = Examples::RowSet.new(data_sets: data_sets, date_types: date_types)
           .rows
           .sort_by{ |row| row.dateval_occurrence }
+        end
+        
         set_up_tags(data_sets, date_types)
         
         @examples = @rows.group_by{ |row| row.test_fingerprint }
@@ -30,6 +36,7 @@ module Emendate
 
       def by_type_pattern(date_only: false, stage: :tokens)
         examples.group_by{ |example| example.type_pattern(date_only: date_only, stage: stage) }
+          .sort_by{ |pattern, data| pattern }
       end
       
       def failures
@@ -93,7 +100,7 @@ module Emendate
         puts str
       end
       
-      def run_tests(tests: nil, fail_fast: true)
+      def run_tests(tests: nil, fail_fast: false)
         to_run = tests ? tests.intersection(runnable_tests) : runnable_tests
         examples.each{ |example| example.run_tests(tests: to_run, fail_fast: fail_fast) }
         report_fingerprint(:successes)
