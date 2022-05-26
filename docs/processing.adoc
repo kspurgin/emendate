@@ -322,17 +322,21 @@ ex1.collapsed_tokens[1]
    @warnings=[]>,
  @type=:month_abbr_alpha>
 ----
-<1> The location length of the final derived token is `5`, because it represents `jan. `.
+<1> The location length of the final derived token is `5`, because it represents "jan. ".
 
-== converted_months
+=== `converted_months`
 
 *Produced by processing step: `:convert_months`*
 
-Takes `orig_tokens` and converts any ``Token``s with type `:month_alpha` or `:month_abbr_alpha` to ``DatePart``s with type `:month`.
+Takes `collapsed_tokens` and converts any ``Token``s with type `:month_alpha` or `:month_abbr_alpha` to ``DatePart``s with type `:month`.
+
+This step is just another simplification, so that we don't have to treat "January" and "Jan." separately.
+
+Note that this does not handle identification/conversion of `:number1or2` tokens that are months.
 
 ----
 ex1.converted_months.types
-=> [:square_bracket_open,
+ => [:square_bracket_open,
  :month,
  :number1or2,
  :ordinal_indicator,
@@ -344,15 +348,17 @@ ex1.converted_months.types
  :square_bracket_close]
 ----
 
-=== translated_ordinals
+=== `translated_ordinals`
 
 *Produced by processing step: `:translate_ordinals`*
 
 Removes ordinal indicators appearing as expected after numbers.
 
+This step is just another simplification, so that we don't have to treat "1" and "1st" separately.
+
 ----
-[34] ex1.translated_ordinals.types
-=> [:square_bracket_open,
+ex1.translated_ordinals.types
+ => [:square_bracket_open,
  :month,
  :number1or2,
  :hyphen,
@@ -363,7 +369,7 @@ Removes ordinal indicators appearing as expected after numbers.
  :square_bracket_close]
 ----
 
-=== certainty_checked
+=== `certainty_checked`
 
 *Produced by processing step: `:certainty_check`*
 
@@ -375,72 +381,71 @@ Encodes the following `certainty` attributes on the `SegmentSet` as appropriate 
 - `:one_of_set` (when whole string enclosed in [] and EDTF options are applied)
 - `:all_of_set` (when whole string enclosed in {})
 
-Encodes EDTF group and individual element certainty values to ``Segment``s as appropriate:
+[source, ruby]
+----
+ex1.certainty_checked.types
+ => [:month, :number1or2, :hyphen, :month, :number1or2, :comma, :number4]
+ex1.certainty_checked.certainty
+ => [:supplied]
+----
+
+The default interpretation of square brackets is as supplied/inferred date, so that value is set. We no longer have to deal with the brackets as separate tokens.
+
+If you working with EDTF, this step will encode EDTF group and individual element certainty values to relevant ``Segment``s as appropriate:
 
 - `:approximate` (applies to individual segment)
 - `:uncertain` (applies to individual segment)
 - `:leftward_approximate` (applies to individual segment and all previous segments in the same date -- the final handling of this must happen after date segmenting)
 - `:leftward_uncertain` (applies to individual segment and all previous segments in the same date -- the final handling of this must happen after date segmenting)
 
-----
-ex1.certainty_checked.types
-=> [:month, :number1or2, :hyphen, :month, :number1or2, :comma, :number4]
-ex1.certainty_checked.certainty
-	=> [:supplied]
-----
-
+[source, ruby]
 ----
 ex2 = Emendate.process('~2004-06-%11')
 ex2.certainty_checked.types
-=> [:number4, :hyphen, :number1or2, :hyphen, :number1or2]
+ => [:number4, :hyphen, :number1or2, :hyphen, :number1or2]
 ex2.certainty_checked[0].type
-=> :number4
- ex2.certainty_checked[0].certainty
-=> [:approximate]
+ => :number4
+ex2.certainty_checked[0].certainty
+ => [:approximate]
 ex2.certainty_checked[4].type
-=> :number1or2
+ => :number1or2
 ex2.certainty_checked[4].certainty
-=> [:approximate, :uncertain]
+ => [:approximate, :uncertain]
 ----
 
 For full documentation, run the following from the base `emendate` directory:
 
 `rspec spec/lib/emendate/certainty_checker_spec.rb`
 
-=== standardized_formats
+=== `standardized_formats`
 
 *Produced by processing step: `:standardize_formats`*
 
-Carries out a number of manipulations on the `SegmentSet` to standardize it in preparation for ``Token``s to be tagged as ``DatePart``s.
+Carries out many manipulations on the `SegmentSet` to standardize it in preparation for ``Token``s to be tagged as ``DatePart``s.
 
 For full documentation, run the following from the base `emendate` directory:
 
 `rspec spec/lib/emendate/format_standardizer_spec.rb`
 
-.Fills in missing date elements
+.Fills in missing date elements (inserts year for Jan 1) and removes comma after "February 9"
+[source, ruby]
 ----
 ex1.standardized_formats.types
 => [:month, :number1or2, :number4, :hyphen, :month, :number1or2, :number4]
 ----
 
-.Pads 3-digit numbers to 4
-----
-ex3 = Emendate.process('999-1-1')
-ex3.certainty_checked.types
-=> [:number3, :hyphen, :number1or2, :hyphen, :number1or2]
-ex3.standardized_formats.types
-=> [:number4, :hyphen, :number1or2, :hyphen, :number1or2]
-----
-
-=== tagged_date_parts
+=== `tagged_date_parts`
 
 *Produced by processing step: `:tag_date_parts`*
 
 Turns remaining eligible ``Token``s into ``DatePart``s.
 
+In our running example, the `:number1or2` tokens are converted to `:day` ``DatePart``s:
+
+[source, ruby]
 ----
 ex1.tagged_date_parts.types
-=> [:month, :day, :year, :hyphen, :month, :day, :year]
+ => [:month, :day, :year, :hyphen, :month, :day, :year]
 ----
 
 In the following example, ``Token``s with types `:number1or2` (18) and `:century` (cent.) are collapsed into one `DatePart` with type `:century` and literal value `18`.
@@ -459,7 +464,7 @@ ex4.tagged_date_parts[1].lexeme
 => "18cent"
 ----
 
-=== segmented_dates
+=== `segmented_dates`
 
 *Produced by processing step: `:segment_dates`*
 
@@ -483,20 +488,20 @@ ex4.segmented_dates[0].latest
 => #<Date: 1734-12-31 ((2354755j,0s,0n),+0s,2299161j)>
 ----
 
-=== ranges_indicated
+=== `ranges_indicated`
 
 *Produced by processing step: `:indicate_ranges`*
 
 Collapses ``DateType``s separated by a `range_indicator` into a single `Range` `DateType`.
 
+[source, ruby]
 ----
-ex5 = Emendate.process('1995 - 2004')
-ex5.segmented_dates.types
-=> [:year_date_type, :range_indicator, :year_date_type]
-ex5.ranges_indicated.types
-=> [:range_date_type]
-ex5.ranges_indicated[0].earliest
-=> #<Date: 1995-01-01 ((2449719j,0s,0n),+0s,2299161j)>
-ex5.ranges_indicated[0].latest
-=> #<Date: 2004-12-31 ((2453371j,0s,0n),+0s,2299161j)>
+ex1.ranges_indicated.types
+ => [:range_date_type]
+ex1.orig_string
+ => "[Jan. 1st - February 9, 2013]"
+ex1.ranges_indicated[0].earliest
+ => Tue, 01 Jan 2013
+ex1.ranges_indicated[0].latest
+ => Sat, 09 Feb 2013
 ----
