@@ -171,6 +171,22 @@ ex = Emendate.examples_with(data_set: 'ba;ncm')
  => Emendate::Examples::ExampleSet: 1 examples from 1 rows (data_sets: ba;ncm, date_types: )
 ----
 
+==== Example set containing one specific example
+
+.Example without options
+[source, ruby]
+----
+ex = Emendate.specific_example('2002', nil)
+ => Emendate::Examples::ExampleSet: 1 examples from 1 rows (data_sets: , date_types: )
+----
+
+.Example with options
+[source, ruby]
+----
+ex = Emendate.specific_example('ca. 1980s & 1990s', 'max_output_dates: 1')
+ => Emendate::Examples::ExampleSet: 1 examples from 2 rows (data_sets: , date_types: )
+----
+
 === Info about an example set
 
 NOTE: The following examples assume you have created an `ExampleSet` in a variable named `ex`. See the above section.
@@ -507,26 +523,113 @@ SUMMARY
 
 NOTE: The following will make more sense if you have read https://github.com/kspurgin/emendate/blob/main/docs/processing.adoc[How Emendate processes date strings].
 
+For understanding how `emendate` works, it can be very helpful to see how dates get transformed and represented as patterns in the application.
 
+==== `type` and `date_part_type` patterns
 
-This will output all unique type patterns being generated from the example strings:
+By default, the `report_type_patterns` will return token/segment/date_part types from the final stage of processing:
 
-`Emendate.unique_type_patterns`
+[source, ruby]
+----
+ex.report_type_patterns
+[:date_string_not_processed]
+  2002 (?) ||| foo: :bar
+[:hyphen, :year_date_type]
+  -2002 ||| no options
+[:year_date_type]
+  circa2002 ||| no options
+  [2002?] ||| no options
+  [c. 2002] ||| no options
+  [ca. 2002] ||| no options
+  [circa 2002?] ||| no options
+  [circa 2002] ||| square_bracket_interpretation: :inferred_date
+  1915.0 ||| no options
+  2002 ||| no options
+  2002 C.E. ||| no options
+  2002? ||| no options
+  c 2002 ||| no options
+  c. 2002 ||| no options
+  c2002 ||| no options
+  ca 2002 ||| no options
+  ca. 2002 ||| no options
+  circa 2002 ||| no options
+  circa 2002? ||| no options
+[:year_date_type, :bce]
+  2002 B.C.E. ||| no options
+----
+<1> Examples listed under [:date_string_not_processed] had processing errors and could not be successfully lexed/processed.
 
-Beneath each type pattern is a list of the original strings that have ended up with this pattern.
+Using the `stage` parameter, you can get the tokens/segments/date_part type patterns produced by any of the https://github.com/kspurgin/emendate/blob/main/docs/processing.adoc#processing-stages[processing stages]:
 
-Running the command as shown above shows you all segment types, for all strings, and shows you the final result of the `SegmentSet` processing, with default configuration.
+[source, ruby]
+----
+ex.report_type_patterns(stage: :orig_tokens)
+[:approximate, :number4]
+  circa2002 ||| no options
+  c2002 ||| no options
+[:approximate, :single_dot, :space, :number4]
+  c. 2002 ||| no options
+  ca. 2002 ||| no options
+[:approximate, :space, :number4]
+  c 2002 ||| no options
+  ca 2002 ||| no options
+  circa 2002 ||| no options
+[:approximate, :space, :number4, :question]
+  circa 2002? ||| no options
+[:date_string_not_processed]
+  2002 (?) ||| foo: :bar
+[:hyphen, :number4]
+  -2002 ||| no options
+[:number4]
+  2002 ||| no options
+[:number4, :question]
+  2002? ||| no options
+[:number4, :single_dot, :standalone_zero]
+  1915.0 ||| no options
+[:number4, :space, :era]
+  2002 B.C.E. ||| no options
+  2002 C.E. ||| no options
+[:square_bracket_open, :approximate, :single_dot, :space, :number4, :square_bracket_close]
+  [ca. 2002] ||| no options
+[:square_bracket_open, :approximate, :space, :number4, :question, :square_bracket_close]
+  [circa 2002?] ||| no options
+[:square_bracket_open, :approximate, :space, :number4, :square_bracket_close]
+  [circa 2002] ||| square_bracket_interpretation: :inferred_date
+[:square_bracket_open, :letter_c, :single_dot, :space, :number4, :square_bracket_close]
+  [c. 2002] ||| no options
+[:square_bracket_open, :number4, :question, :square_bracket_close]
+  [2002?] ||| no options
+----
 
-Of course, there are other options!
+Using `date_only: true`, you can get only the types of tokens/segments/date_parts recognized as parts of actual date values:
 
-To see only the ``Segment``s that are/can be parts of actual dates, from just after date part tagging, only for examples with the inferred tag:
-
-`Emendate.unique_type_patterns(type: :date, stage: :segment_dates, tag: :inferred, options: {ambiguous_month_day: :as_day_month})`
-
-Note that the options need to be wrapped in curly braces here.
-
-Also note that `stage` indicates the processing step that your desired input feeds into. Processing moves from `tag_date_parts` to `segment_dates`, so if you want see the results of date part tagging, the stage the data is ready for is `segment_dates`. 
-
+[source, ruby]
+----
+ex.report_type_patterns(stage: :orig_tokens, date_only: true)
+[:date_string_not_processed]
+  2002 (?) ||| foo: :bar
+[:number4]
+  circa2002 ||| no options
+  [2002?] ||| no options
+  [c. 2002] ||| no options
+  [ca. 2002] ||| no options
+  [circa 2002?] ||| no options
+  [circa 2002] ||| square_bracket_interpretation: :inferred_date
+  1915.0 ||| no options
+  2002 ||| no options
+  2002? ||| no options
+  c 2002 ||| no options
+  c. 2002 ||| no options
+  c2002 ||| no options
+  ca 2002 ||| no options
+  ca. 2002 ||| no options
+  circa 2002 ||| no options
+  circa 2002? ||| no options
+  -2002 ||| no options
+[:number4, :era]
+  2002 B.C.E. ||| no options
+  2002 C.E. ||| no options
+----
 
 == Date pattern conventions
 
@@ -542,29 +645,3 @@ Also note that `stage` indicates the processing step that your desired input fee
 lowercase letters:: themselves, literally
 `.,/-&?() []`:: themselves, literally (same for spaces)
 
-
-+++<s>+++
-
-[NOTE]
-====
-The following will make more sense if you have read https://github.com/kspurgin/emendate/blob/main/docs/processing.adoc[How Emendate processes date strings].
-====
-
-This will output all unique type patterns being generated from the example strings:
-
-`Emendate.unique_type_patterns`
-
-Beneath each type pattern is a list of the original strings that have ended up with this pattern.
-
-Running the command as shown above shows you all segment types, for all strings, and shows you the final result of the `SegmentSet` processing, with default configuration.
-
-Of course, there are other options!
-
-To see only the ``Segment``s that are/can be parts of actual dates, from just after date part tagging, only for examples with the inferred tag:
-
-`Emendate.unique_type_patterns(type: :date, stage: :segment_dates, tag: :inferred, options: {ambiguous_month_day: :as_day_month})`
-
-Note that the options need to be wrapped in curly braces here.
-
-Also note that `stage` indicates the processing step that your desired input feeds into. Processing moves from `tag_date_parts` to `segment_dates`, so if you want see the results of date part tagging, the stage the data is ready for is `segment_dates`. 
-+++</s>+++
