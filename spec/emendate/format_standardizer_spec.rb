@@ -34,7 +34,7 @@ RSpec.describe Emendate::FormatStandardizer do
     context 'with 18th or 19th century' do
       it 'adds century after 18th' do
         result = standardize('18th or 19th century')
-        expect(result).to eq(%i[number1or2 century or number1or2 century])
+        expect(result).to eq(%i[number1or2 century number1or2 century])
       end
     end
 
@@ -129,10 +129,10 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
-    context 'with 165X-12-25' do
+    context 'with 165X' do
       it 'replaces 165X with decade_as_year date type' do
-        result = standardize('165X-12-25')
-        expect(result).to eq(%i[decade_date_type hyphen number1or2 hyphen number1or2])
+        result = standardize('165X')
+        expect(result).to eq(%i[decade_date_type])
       end
     end
   end

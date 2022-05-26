@@ -136,7 +136,7 @@ RSpec.describe Emendate::DateSegmenter do
     context 'with 17th or 18th century' do
       it 'returns expected' do
         s = segment('17th or 18th century')
-        e = %i[century_date_type or century_date_type]
+        e = %i[century_date_type century_date_type]
         expect(s.types).to eq(e)
       end
     end
