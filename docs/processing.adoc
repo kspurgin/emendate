@@ -22,7 +22,7 @@ The result of each of these stages is a `SegmentSet` (or subclass thereof), whic
 
 A `Token` is the simplest type of `Segment`, being derived directly from the original string by the `Lexer`.
 
-Subsequent processes distill the ``Token``s (4 digit number, hyphen, 1-or-2 digit number) into ``DatePart``s (year, month), which are then distilled into ``DateType``s (year-month level date).
+Subsequent processes distill the ``Token``s (4 digit number, hyphen, 1-or-2 digit number) into ``DatePart``s (year, month), which are then distilled into ``DateType``s (year-month level date, year-month-day level date, etc.).
 
 Each more complex type of `Segment` has its own logic and functionality. For example a `DatePart` with `type` = `day` can carry with it `certainty` = `[:uncertain, :approximate]`. Every `DateType` can output an `earliest` and `latest` value and say whether it represents an inclusive range.
 
