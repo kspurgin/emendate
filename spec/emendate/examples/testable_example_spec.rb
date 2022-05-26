@@ -70,18 +70,5 @@ RSpec.describe Emendate::Examples::TestableExample do
     end
   end
 
-  describe '#run_tests' do
-    let(:tests){ nil }
-    let(:fail_fast){ true }
-    let(:result){ klass.run_tests(tests: tests, fail_fast: fail_fast) }
-
-    context 'with 2002/nil' do
-      let(:str){ '2002' }
-
-      it 'blah' do
-        binding.pry
-      end
-    end
-  end
 end
 
