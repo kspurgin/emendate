@@ -17,7 +17,7 @@ module Emendate
         return
       end
       
-      result << Emendate::DateTypes::KnownUnknown.new(lexeme: str)
+      result << Emendate::DateTypes::KnownUnknown.new(lexeme: known_unknown_date_value)
       result
     end
 
@@ -26,7 +26,7 @@ module Emendate
     attr_reader :tokens, :str, :options
     
     def known_unknown_date_value
-      return orig_string if options.unknown_date_output == :orig
+      return str if options.unknown_date_output == :orig
 
       options.unknown_date_output_string
     end
