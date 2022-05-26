@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Examples::Csv do
+RSpec.describe Emendate::Examples::Csv do
   let(:klass){ described_class.new }
   
   describe '#retrieve_rows' do

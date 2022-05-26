@@ -50,7 +50,12 @@ module Emendate
     private
 
     def get_original_string(datetype, orig)
-      orig[datetype.location.col..datetype.location.length+1]
+      case datetype.type
+      when :knownunknown_date_type
+        datetype.lexeme
+      else
+        orig[datetype.location.col..datetype.location.length+1]
+      end
     end
 
   end

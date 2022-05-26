@@ -38,6 +38,5 @@ module Emendate
     def passthrough
       @result = Emendate::SegmentSets::MixedSet.new.copy(@tokens)
     end
-
   end
 end

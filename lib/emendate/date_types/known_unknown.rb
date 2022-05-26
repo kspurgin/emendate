@@ -5,9 +5,11 @@ module Emendate
     class KnownUnknown < Emendate::DateTypes::DateType
       attr_reader :lexeme
 
+      # expect :lexeme, :children
       def initialize(**opts)
         super
         @lexeme = opts[:lexeme]
+        @children = opts[:children]
       end
 
       def earliest

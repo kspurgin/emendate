@@ -16,7 +16,8 @@ module Emendate
 
     COLLAPSIBLE_TOKEN_TYPES = %i[space single_dot standalone_zero]
     DATE_PART_TOKEN_TYPES = %i[number1or2 number3 number4 number6 number8 s century
-                               uncertainty_digits era number_month]
+                               uncertainty_digits era
+                               number_month month_alpha month_abbr_alpha]
 
     def collapsible?
       COLLAPSIBLE_TOKEN_TYPES.include?(type)

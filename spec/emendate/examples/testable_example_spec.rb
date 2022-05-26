@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Examples::TestableExample do
+RSpec.describe Emendate::Examples::TestableExample do
   let(:opt){ nil }
   let(:rows){ test_rows(str, opt) }
   let(:klass){ described_class.new(rows) }
@@ -11,7 +11,7 @@ RSpec.describe Examples::TestableExample do
     let(:str){ 'nomatchingstrings' }
 
     it 'raises error' do
-      expect{ klass }.to raise_error(Examples::TestableExample::EmptyTestSetError)
+      expect{ klass }.to raise_error(Emendate::Examples::TestableExample::EmptyTestSetError)
     end
   end
   

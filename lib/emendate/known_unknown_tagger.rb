@@ -2,11 +2,12 @@
 
 module Emendate
   class KnownUnknownTagger
-    attr_reader :str, :result
+    attr_reader :result
 
-    def initialize(tokens:, str:)
+    def initialize(tokens:, str:, options:)
       @tokens = tokens
       @str = str
+      @options = options
       @result = Emendate::SegmentSets::MixedSet.new
     end
 
@@ -17,16 +18,25 @@ module Emendate
       end
       
       result << Emendate::DateTypes::KnownUnknown.new(lexeme: str)
+      result
     end
 
     private
 
+    attr_reader :tokens, :str, :options
+    
+    def known_unknown_date_value
+      return orig_string if options.unknown_date_output == :orig
+
+      options.unknown_date_output_string
+    end
+    
     def passthrough
-      @result = Emendate::SegmentSets::MixedSet.new.copy(@tokens)
+      @result = Emendate::SegmentSets::MixedSet.new.copy(tokens)
     end
     
     def known_unknown?
-      @tokens.types == [:unknown_date]
+      tokens.types == [:unknown_date]
     end
   end
 end

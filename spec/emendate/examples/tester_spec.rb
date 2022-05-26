@@ -2,9 +2,9 @@
 
 require 'spec_helper'
 
-RSpec.describe Examples::Tester do
+RSpec.describe Emendate::Examples::Tester do
   let(:opt){ nil }
-  let(:example){ Examples::TestableExample.new(test_rows(str, opt)) }
+  let(:example){ Emendate::Examples::TestableExample.new(test_rows(str, opt)) }
   let(:klass){ described_class.build(test: test, example: example) }
 
   context 'with date_start_full test' do

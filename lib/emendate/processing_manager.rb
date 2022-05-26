@@ -179,6 +179,15 @@ module Emendate
       aasm.current_state
     end
 
+    def to_s
+      <<~OBJ
+      #<#{self.class.name}:#{self.object_id}
+        @state=#{state},
+        token_type_pattern: #{tokens.types.inspect}>
+      OBJ
+    end
+    alias_method :inspect, :to_s
+    
     private
 
     def perform_check_final_segments
@@ -317,14 +326,8 @@ module Emendate
       end
     end
 
-    def known_unknown_date_value
-      return orig_string if options.unknown_date_output == :orig
-
-      options.unknown_date_output_string
-    end
-    
     def perform_tag_known_unknown
-      t = Emendate::KnownUnknownTagger.new(tokens: tokens, str: known_unknown_date_value)
+      t = Emendate::KnownUnknownTagger.new(tokens: tokens, str: orig_string, options: options)
       begin
         t.tag
       rescue StandardError => e
@@ -378,7 +381,7 @@ module Emendate
     end
 
     def unprocessable?
-      tokens.types == [:unprocessable_value]
+      tokens.types == [:unprocessable_date_type]
     end
 
     def untokenizable?
@@ -386,7 +389,7 @@ module Emendate
     end
 
     def known_unknown?
-      tokens.types == [:known_unknown_date_type]
+      tokens.types == [:knownunknown_date_type]
     end
   end
 end

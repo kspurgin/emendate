@@ -3,31 +3,32 @@
 require_relative './examples'
 
 module ExampleHelpers
-  include Examples
+  include Emendate::Examples
   extend self
 
   # Info about entire test set
   def example_strings
-    examples.tests.map(&:string).uniq.sort
+    puts all_examples.get_example_data(:examples, :test_string)
+  end
+
+  def example_fingerprints
+    puts all_examples.get_example_data(:examples, :fingerprint)
   end
 
   def example_patterns
-    examples.tests.map(&:pattern).uniq.sort
+    puts all_examples.get_example_data(:examples, :test_pattern)
   end
 
   def example_tags
-    sets = examples.data_sets.map{ |val| "#{val} (data_set tag)" }
-    types = examples.date_types.map{ |val| "#{val} (date_type tag)" }
-    tags =  sets + types
-    tags.uniq.sort
+    puts all_examples.all_tags
   end
 
   def example_data_set_tags
-    examples.data_sets
+    puts all_examples.tags('data_set')
   end
 
   def example_date_type_tags
-    examples.date_types
+    puts all_examples.tags('date_type')
   end
 
   # Creating example sets
@@ -39,20 +40,7 @@ module ExampleHelpers
 
   # Filtered by tag(s)
   def examples_with(data_set: '', date_type: '')
-    ExampleSet.new(data_set: data_set, date_type: date_type)
-  end
-
-  # Info about set
-
-  
-  def run_examples(examples: ExampleSet.new, tests: nil, fail_fast: true)
-    examples.run_tests(test_list: tests, fail_fast: fail_fast)
-    grouped = examples.group_by_pass_fail
-    if grouped.key?(:failures)
-      grouped[:failures].each{ |test| puts test.full_report }
-    end
-    examples.pass_fail_summary
-    ''
+    ExampleSet.new(data_sets: data_set, date_types: date_type)
   end
 
 

@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Examples::Row do
+RSpec.describe Emendate::Examples::Row do
   let(:opt){ nil }
   let(:klass){ test_rows(str, opt).first }
   

@@ -152,7 +152,10 @@ This step handles known patterns that we cannot handle and do not expect to impl
 
 The known unprocessable patterns are hand-coded regular expressions in a constant that you can see in the console by running:
 
-`Emendate::UnprocessableTagger::Patterns`
+[source, ruby]
+----
+Emendate::UnprocessableTagger::Patterns
+----
 
 Again, this doesn't do anything to a date string we can actually deal with, so we will skip looking at `ex1` here again.
 
@@ -187,6 +190,40 @@ ex3.result
 ----
 
 This behavior pattern is exactly the same as for untokenizable segments, but it is explicit about the reason the date is not processed/parsed further.
+
+== `tagged_known_unknown`
+
+*Produced by processing step: `:tag_known_unknown`*
+
+This step handles patterns that express the fact of an unknown date, such as `n.d.` or `unknown`.
+
+This is going to look very familiar...
+
+[source, ruby]
+----
+ex4 = Emendate.process('n.d.')
+ => #<Emendate::ProcessingManager:1540
+  @state=done,
+  token_type_pattern: [:knownunknown_date_type]>
+
+ex4.orig_tokens.types
+ => [:unknown_date]
+
+ex4.tagged_known_unknown.types
+ => [:knownunknown_date_type]
+
+ex4.collapsed_tokens.types
+NoMethodError: undefined method `types' for nil:NilClass
+
+ex4.result
+=> #<Emendate::Result:0x00007fa4081d4418
+ @dates=[#<Emendate::ParsedDate:0x00007fa4081d4710 @certainty=[], @date_end=nil, @date_end_full=nil, @date_start=nil, @date_start_full=nil, @inclusive_range=nil, @index_dates=[], @original_string="n.d.">],
+ @errors=[],
+ @original_string="n.d.",
+ @warnings=[]>
+----
+
+The only difference here is there is no warning in the result.
 
 == converted_months
 
