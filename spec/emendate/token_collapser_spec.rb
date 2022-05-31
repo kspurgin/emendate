@@ -10,10 +10,10 @@ RSpec.describe Emendate::TokenCollapser do
   end
 
   describe '#collapse' do
-    context 'with "Jan. 2014"' do
+    context 'with "Jan. 21, 2014"' do
       it 'collapses space and single dot' do
-        c = collapse('Jan. 2014')
-        expect(c.type_string).to eq('month_abbr_alpha number4')
+        c = collapse('Jan. 21, 2014')
+        expect(c.type_string).to eq('month_abbr_alpha number1or2 comma number4')
       end
     end
 
@@ -21,6 +21,13 @@ RSpec.describe Emendate::TokenCollapser do
       it 'drops `.0` at end' do
         c = collapse('2014.0')
         expect(c.type_string).to eq('number4')
+      end
+    end
+
+    context 'with "3/2020"' do
+      it 'collapse slash into 3' do
+        c = collapse('3/2020')
+        expect(c.type_string).to eq('number1or2 number4')
       end
     end
 
