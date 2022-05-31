@@ -25,6 +25,12 @@ module Emendate
 
     private
 
+    def collapse_abbrev_month
+      month, dot, space = result.extract(%i[month_abbr_alpha single_dot space]).segments
+      derived = Emendate::DerivedToken.new(type: month.type, sources:[month, dot, space])
+      replace_segments_with_new(segments: [month, dot, space], new: derived)
+    end
+
     def collapse_backward
       to_collapse = result.segments.select(&:collapsible?).last
       prev = result[result.find_index(to_collapse) - 1]
@@ -64,6 +70,8 @@ module Emendate
         [:collapse_hyphen_backward, :before]
       when /.*partial hyphen.*/
         [:collapse_hyphen_backward, :partial]
+      when /.*month_abbr_alpha single_dot space.*/
+        :collapse_abbrev_month
       end
     end
   end
