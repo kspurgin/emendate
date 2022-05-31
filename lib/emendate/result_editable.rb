@@ -5,6 +5,16 @@ module Emendate
   # This is not the final result
   # Classes including this module must have a `result` attr_reader
   module ResultEditable
+    # derives a single token from 2 or more tokens, keeping the first token's type
+    # @param ary [Array<Symbol>]
+    def collapse_segments_backward(ary)
+      segments = result.extract(ary).segments
+      target = segments.first
+      collapsed = segments[1..-1]
+      derived = Emendate::DerivedToken.new(type: target.type, sources: collapsed)
+      replace_segments_with_new(segments: segments, new: derived)
+    end
+
     # derives a single token from two tokens, keeping the first token's type
     def collapse_token_pair_backward(s1, s2)
       new = Emendate::DerivedToken.new(type: s1.type, sources: [s1, s2])

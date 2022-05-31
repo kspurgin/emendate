@@ -18,18 +18,12 @@ module Emendate
         action = determine_action
         break if action.nil?
 
-        action.is_a?(Symbol) ? send(action) : send(action[0], action[1])
+        action.is_a?(Symbol) ? send(action) : send(action.shift, action)
       end
       result
     end
 
     private
-
-    def collapse_abbrev_month
-      month, dot, space = result.extract(%i[month_abbr_alpha single_dot space]).segments
-      derived = Emendate::DerivedToken.new(type: month.type, sources:[month, dot, space])
-      replace_segments_with_new(segments: [month, dot, space], new: derived)
-    end
 
     def collapse_backward
       to_collapse = result.segments.select(&:collapsible?).last
@@ -40,20 +34,17 @@ module Emendate
     def collapse_forward
       collapse_token_pair_forward(result[0], result[1])
     end
-
-    def collapse_hyphen_backward(previous)
-      prev, hyp = result.extract([previous, :hyphen]).segments
-      derived = Emendate::DerivedToken.new(type: prev.type, sources:[prev, hyp])
-      replace_segments_with_new(segments: [prev, hyp], new: derived)
-    end
     
     def collapsible?
-      return true if partial_match_collapsers
+      return true if full_match_collapsers || partial_match_collapsers
 
       result.type_string.match?(/space|single_dot|standalone_zero/)
     end
 
     def determine_action
+      actions = full_match_collapsers
+      return actions unless actions.nil?
+
       actions = partial_match_collapsers
       return actions unless actions.nil?
       
@@ -64,14 +55,21 @@ module Emendate
       end
     end
 
+    def full_match_collapsers
+      case result.types
+      when %i[number1or2 slash number4]
+        [:collapse_segments_backward, :number1or2, :slash]
+      end
+    end
+    
     def partial_match_collapsers
       case result.type_string
       when /.*before hyphen.*/
-        [:collapse_hyphen_backward, :before]
+        %i[collapse_segments_backward before hyphen]
       when /.*partial hyphen.*/
-        [:collapse_hyphen_backward, :partial]
+        %i[collapse_segments_backward partial hyphen]
       when /.*month_abbr_alpha single_dot space.*/
-        :collapse_abbrev_month
+        %i[collapse_segments_backward month_abbr_alpha single_dot space]
       end
     end
   end
