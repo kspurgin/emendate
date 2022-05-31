@@ -24,13 +24,6 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
-    context 'with mid-1990' do
-      it 'removes hyphen' do
-        result = standardize('mid-1990')
-        expect(result).to eq(%i[partial number4])
-      end
-    end
-
     context 'with 18th or 19th century' do
       it 'adds century after 18th' do
         result = standardize('18th or 19th century')
