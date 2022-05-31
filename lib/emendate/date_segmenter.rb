@@ -81,7 +81,7 @@ module Emendate
     def mod_switch
       switch = working.shift
       if current.kind_of?(Emendate::DateTypes::DateType)
-        current.range_switch = switch.lexeme
+        current.range_switch = switch.type.to_s
         result << current.prepend_source_token(switch)
         working.shift
       else
