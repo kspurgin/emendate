@@ -50,6 +50,21 @@ RSpec.describe Emendate::DateUtils do
     end
   end
 
+  describe '#month_abbr_literal' do
+    it 'returns expected' do
+      expect(described_class.month_abbr_literal('Sep.')).to eq(9)
+      expect(described_class.month_abbr_literal('Sept.')).to eq(9)
+      expect(described_class.month_abbr_literal('September')).to be_nil
+    end
+  end
+  
+  describe '#month_literal' do
+    it 'returns expected' do
+      expect(described_class.month_literal('September')).to eq(9)
+      expect(described_class.month_literal('Sept.')).to be_nil
+    end
+  end
+  
   describe '#possible_range' do
     context 'with 2020-10 (10 must be October)' do
       it 'returns false' do

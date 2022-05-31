@@ -23,6 +23,17 @@ module Emendate
       possible_range?(year, digits) && !valid_month_or_season?(digits) ? true : false
     end
 
+    def month_abbr_literal(month)
+      lookup = {}
+      Date::ABBR_MONTHNAMES.compact.map(&:downcase).each_with_index{ |str, i| lookup[str] = i + 1 }
+      lookup['sept'] = 9
+      lookup[month.downcase.strip.delete_suffix('.')]
+    end
+
+    def month_literal(month)
+      Date::MONTHNAMES.map{ |mth| mth.downcase if mth}.index(month.downcase)
+    end
+    
     def month_number_lookup
       h = {}
       Date::MONTHNAMES.compact.map(&:downcase).each_with_index{ |str, i| h[str] = i + 1 }

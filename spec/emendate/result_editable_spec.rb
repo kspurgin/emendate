@@ -12,6 +12,20 @@ RSpec.describe Emendate::ResultEditable do
       @result = tokens
     end
   end
+
+  describe '#collapse_segments_backward' do
+    it 'collapses as expected' do
+    tokens = Emendate.prep_for('Oct. 31, 2021', :collapse_tokens).tokens
+    e = Editable.new(tokens)
+    e.collapse_segments_backward(%i[month_abbr_alpha single_dot space])
+    expect(e.result.type_string).to eq('month_abbr_alpha number1or2 comma space number4')
+    derived = e.result.segments.first
+    expect(derived.lexeme).to eq('oct.')
+    expect(derived.literal).to eq(10)
+    expect(derived.location.col).to eq(0)
+    expect(derived.location.length).to eq(5)
+    end
+  end
   
   describe '#collapse_token_pair_backward' do
     it 'collapses as expected' do

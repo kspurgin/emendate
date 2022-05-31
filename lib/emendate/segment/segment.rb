@@ -21,6 +21,10 @@ module Emendate
       certainty.flatten!
     end
 
+    def collapsible?
+      false
+    end
+    
     def date_type?
       false
     end
