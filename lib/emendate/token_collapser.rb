@@ -18,7 +18,7 @@ module Emendate
         action = determine_action
         break if action.nil?
 
-        send(action)
+        action.is_a?(Symbol) ? send(action) : send(action[0], action[1])
       end
       result
     end
@@ -34,16 +34,36 @@ module Emendate
     def collapse_forward
       collapse_token_pair_forward(result[0], result[1])
     end
+
+    def collapse_hyphen_backward(previous)
+      prev, hyp = result.extract([previous, :hyphen]).segments
+      derived = Emendate::DerivedToken.new(type: prev.type, sources:[prev, hyp])
+      replace_segments_with_new(segments: [prev, hyp], new: derived)
+    end
     
     def collapsible?
+      return true if partial_match_collapsers
+
       result.type_string.match?(/space|single_dot|standalone_zero/)
     end
 
     def determine_action
+      actions = partial_match_collapsers
+      return actions unless actions.nil?
+      
       if result[0].collapsible?
         :collapse_forward
       else
         :collapse_backward
+      end
+    end
+
+    def partial_match_collapsers
+      case result.type_string
+      when /.*before hyphen.*/
+        [:collapse_hyphen_backward, :before]
+      when /.*partial hyphen.*/
+        [:collapse_hyphen_backward, :partial]
       end
     end
   end

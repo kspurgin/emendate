@@ -23,5 +23,19 @@ RSpec.describe Emendate::TokenCollapser do
         expect(c.type_string).to eq('number4')
       end
     end
+
+    context 'with "pre-1750"' do
+      it 'collapses - into pre' do
+        c = collapse('pre-1750')
+        expect(c.type_string).to eq('before number4')
+      end
+    end
+
+    context 'with "mid-1750"' do
+      it 'collapses - into mid' do
+        c = collapse('mid-1750')
+        expect(c.type_string).to eq('partial number4')
+      end
+    end
   end
 end
