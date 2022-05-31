@@ -52,8 +52,6 @@ module Emendate
         %i[decade_as_year]
       when/.*number3.*/
         %i[pad_3_to_4_digits]
-      when /.*partial hyphen.*/
-        %i[remove_post_partial_hyphen]
       when /.*single_dot standalone_zero$/
         %i[remove_ending_dot_zero]
       when /.*month number1or2 comma number4.*/
