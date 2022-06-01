@@ -251,7 +251,7 @@ module Emendate
     end
 
     def perform_convert_months
-      c = Emendate::AlphaMonthConverter.new(tokens: tokens, options: options)
+      c = Emendate::AlphaMonthConverter.new(tokens: tokens)
       c.convert
       @tokens = c.result
       @converted_months = tokens.class.new.copy(tokens)

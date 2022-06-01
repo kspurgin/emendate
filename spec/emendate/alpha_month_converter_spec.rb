@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Emendate::AlphaMonthConverter do
   def convert(str, options = {})
     pm = Emendate.prep_for(str, :convert_months, options)
-    fs = Emendate::AlphaMonthConverter.new(tokens: pm.tokens, options: pm.options)
+    fs = Emendate::AlphaMonthConverter.new(tokens: pm.tokens)
     fs.convert.segments
   end
 
