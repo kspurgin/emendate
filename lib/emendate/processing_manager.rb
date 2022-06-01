@@ -22,7 +22,8 @@ module Emendate
 
     def initialize(string, options = {})
       @orig_string = string
-      @options = Emendate::Options.new(options)
+      Emendate::Options.new(options) unless options.empty?
+      @options = options
       @norm_string = Emendate.normalize_orig(orig_string)
       @tokens = Emendate::SegmentSets::TokenSet.new
       @errors = []
