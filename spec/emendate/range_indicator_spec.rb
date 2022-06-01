@@ -6,7 +6,7 @@ RSpec.describe Emendate::RangeIndicator do
 
   def indicate(str, options = {})
     pm = Emendate.prep_for(str, :indicate_ranges, options)
-    ri = Emendate::RangeIndicator.new(tokens: pm.tokens, options: pm.options)
+    ri = Emendate::RangeIndicator.new(tokens: pm.tokens)
     ri.indicate
   end
 

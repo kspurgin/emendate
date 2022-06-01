@@ -3,11 +3,10 @@
 module Emendate
 
   class RangeIndicator
-    attr_reader :options, :result
+    attr_reader :result
     attr_accessor :working
 
-    def initialize(tokens:, options: {})
-      @options = options
+    def initialize(tokens:)
       @working = Emendate::SegmentSets::MixedSet.new.copy(tokens)
       @result = Emendate::SegmentSets::MixedSet.new.copy(tokens)
       result.clear
