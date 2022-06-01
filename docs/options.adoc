@@ -56,6 +56,15 @@ If we are using the default and the current year is 2021...
 This option is irrelevant if you are using `two_digit_year_handling: :literal`
 ====
 
+== before_date_treatment
+
+What is this?:: Whether to treat a date like "before 1950" or "pre-1950" as a range
+Default value:: `:point` ("before 1950" will be treated as a single date point, with earliest and latest date 1949-12-31)
+
+**Alternate values**
+
+* `:range` ("before 1950" will be treated as a range, with the value of https://github.com/kspurgin/emendate/blob/main/docs/options.adoc#open_unknown_start_date[`:open_unknown_start_date`] as the earliest date, and 1949-12-31 as the latest date)
+
 == beginning_hyphen
 
 What is this?:: How to interpret a hyphen at the beginning of a date string (e.g. `-2002`)
@@ -121,6 +130,8 @@ This setting controls what will be output as the `date_start_full` value of your
 
 Default value:: 1583-01-01
 Alternate value:: Any year/month/day expressed as YYYY-MM-DD
+
+IMPORTANT: For dates like "before 1950" or "pre-1950", this option will have no effect if https://github.com/kspurgin/emendate/blob/main/docs/options.adoc#before_date_treatment[:before_date_treatment] is `:point`. You must set that option to `:range` for this value to be used as the earliest date.
 
 NOTE: See https://github.com/kspurgin/emendate/blob/main/docs/notes.adoc#iso8601-and-bce[note on ISO8601 and BCE] for rationale for default value.
 
