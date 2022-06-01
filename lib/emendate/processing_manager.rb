@@ -294,7 +294,7 @@ module Emendate
     end
 
     def perform_tag_date_parts
-      t = Emendate::DatePartTagger.new(tokens: standardized_formats, options: options)
+      t = Emendate::DatePartTagger.new(tokens: standardized_formats)
       begin
         t.tag
       rescue StandardError => e

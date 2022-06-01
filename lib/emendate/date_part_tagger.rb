@@ -26,12 +26,11 @@ module Emendate
       end
     end
 
-    attr_reader :options, :result, :taggable
+    attr_reader :result, :taggable
 
     include DateUtils
-    def initialize(tokens:, options: {})
+    def initialize(tokens:)
       @result = Emendate::SegmentSets::MixedSet.new.copy(tokens)
-      @options = options
       @taggable = true
     end
 
@@ -152,7 +151,7 @@ module Emendate
 
     def tag_pluralized_year
 
-      if options.pluralized_date_interpretation == :decade
+      if Emendate.options.pluralized_date_interpretation == :decade
         collapse_pair(%i[year letter_s], :decade)
         result.warnings << 'Interpreting pluralized year as decade'
       else
@@ -197,7 +196,7 @@ module Emendate
     def tag_numeric_month_day_year
       n1, h1, n2, h2, y = result.extract(%i[number1or2 hyphen number1or2 hyphen year]).segments
       begin
-        analyzer = Emendate::MonthDayAnalyzer.new(n1, n2, y, options.ambiguous_month_day)
+        analyzer = Emendate::MonthDayAnalyzer.new(n1, n2, y, Emendate.options.ambiguous_month_day)
       rescue Emendate::MonthDayAnalyzer::MonthDayError => e
         raise e
       else
@@ -206,7 +205,7 @@ module Emendate
         replace_x_with_date_part_type(x: day, date_part_type: :day)
       end
       [h1, h2].each{ |h| result.delete(h) }
-      result.warnings << "Ambiguous month/day treated #{options.ambiguous_month_day}" if analyzer.ambiguous
+      result.warnings << "Ambiguous month/day treated #{Emendate.options.ambiguous_month_day}" if analyzer.ambiguous
     end
 
     def tag_year_in_month_short_year
@@ -232,19 +231,20 @@ module Emendate
 
     def tag_year_plus_numeric_month_or_season
       y1, h1, m1, h2, y2, h3, m2 = result.extract(%i[year hyphen number1or2 hyphen year hyphen number1or2]).segments
-      opt = options.dup
-      opt.merge({ ambiguous_month_year: :as_month })
+      month_year_opt = Emendate.options.ambiguous_month_year.dup
+      Emendate.config.options.ambiguous_month_year = :as_month
       [[y1, m1, h1], [y2, m2, h3]].each do |pair|
-        analyzed = Emendate::MonthSeasonYearAnalyzer.new(pair[1], pair[0], opt).result
+        analyzed = Emendate::MonthSeasonYearAnalyzer.new(pair[1], pair[0]).result
         replace_x_with_given_segment(x: pair[1], segment: analyzed)
         result.delete(pair[2])
       end
+      Emendate.config.options.ambiguous_month_year = month_year_opt
       hyphen_to_range_indicator(source: h2)
     end
 
     def tag_year_plus_numeric_month_season_or_year
       y, h, m = result.extract(%i[year hyphen number1or2]).segments
-      analyzer = Emendate::MonthSeasonYearAnalyzer.new(m, y, options)
+      analyzer = Emendate::MonthSeasonYearAnalyzer.new(m, y)
       analyzed = analyzer.result
       replace_x_with_given_segment(x: m, segment: analyzed)
       if analyzed.type == :year
@@ -253,7 +253,7 @@ module Emendate
         result.delete(h)
       end
       if analyzer.ambiguous
-        result.warnings << "Ambiguous year + month/season/year treated #{options.ambiguous_month_year}"
+        result.warnings << "Ambiguous year + month/season/year treated #{Emendate.options.ambiguous_month_year}"
       end
     end
 
