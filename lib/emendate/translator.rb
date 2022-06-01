@@ -60,6 +60,8 @@ module Emendate
         'Year'
       when 'yearmonth_date_type'
         'YearMonth'
+      when 'yearmonthday_date_type'
+        'YearMonthDay'
       when 'range_date_type'
         'Range'
       when 'knownunknown_date_type'
