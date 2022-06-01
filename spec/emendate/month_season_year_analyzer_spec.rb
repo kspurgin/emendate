@@ -3,10 +3,12 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::MonthSeasonYearAnalyzer do
+  before{ Emendate.reset_config }
+  
   def prep(str, options = {})
     pm = Emendate.prep_for(str, :tag_date_parts, options)
     t = pm.standardized_formats
-    r = Emendate::MonthSeasonYearAnalyzer.new(t[2], t[0], pm.options)
+    r = Emendate::MonthSeasonYearAnalyzer.new(t[2], t[0])
     "#{r.result.type} #{r.result.lexeme} #{r.ambiguous}"
   end
 
@@ -40,7 +42,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
 
       context 'when ambiguous_month_year: :as_month' do
         it 'returns month' do
-          expect(prep('2010-12', ambiguous_month_year: :as_month)).to eq('month 12 true')
+          expect(prep('2010-12', {ambiguous_month_year: :as_month})).to eq('month 12 true')
         end
       end
     end
@@ -54,7 +56,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
 
       context 'when ambiguous_month_year: :as_month' do
         it 'returns season' do
-          expect(prep('2020-21', ambiguous_month_year: :as_month)).to eq('season 21 true')
+          expect(prep('2020-21', {ambiguous_month_year: :as_month})).to eq('season 21 true')
         end
       end
     end

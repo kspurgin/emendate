@@ -4,20 +4,12 @@ require 'emendate/date_utils'
 
 module Emendate
   class MonthSeasonYearAnalyzer
-    # class MonthDayError < StandardError
-    #   def initialize(n1, n2, y)
-    #     m = "Cannot determine valid month/date assignment for #{n1.lexeme}-#{n2.lexeme}-#{y.lexeme}"
-    #     super(m)
-    #   end
-    # end
-
     include DateUtils
-    attr_reader :n, :year, :options, :result, :ambiguous
+    attr_reader :n, :year, :result, :ambiguous
 
-    def initialize(n, y, options)
+    def initialize(n, y)
       @n = n
       @year = y
-      @options = options
       @ambiguous = false
       analyze
     end
@@ -44,7 +36,7 @@ module Emendate
     end
 
     def assume_year?
-      options.ambiguous_month_year == :as_year
+      Emendate.options.ambiguous_month_year == :as_year
     end
 
     def new_date_part(type:, lexeme:)
