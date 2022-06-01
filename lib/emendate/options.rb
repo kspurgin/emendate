@@ -84,7 +84,7 @@ module Emendate
 
         # What date should be inserted as the beginning of an open or unknown start date
         # interval?
-        open_unknown_start_date: Date.new(1, 1, 1),
+        open_unknown_start_date: Date.new(1583, 1, 1),
 
         # What date should be inserted as the beginning of an open or unknown start date
         # interval?

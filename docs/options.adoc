@@ -119,8 +119,10 @@ However, depending on your application, meaningfully indexing or faceting on thi
 
 This setting controls what will be output as the `date_start_full` value of your Emendate.result in the case of an open or unknown start date. The `date_start` value will be derived from this value, but possibly truncated to match the level of granularity of the known/closed end date.
 
-Default value:: 0001-01-01
+Default value:: 1583-01-01
 Alternate value:: Any year/month/day expressed as YYYY-MM-DD
+
+NOTE: See https://github.com/kspurgin/emendate/blob/main/docs/notes.adoc#iso8601-and-bce[note on ISO8601 and BCE] for rationale for default value.
 
 == target_dialect
 
