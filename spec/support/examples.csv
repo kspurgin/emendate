@@ -185,10 +185,10 @@
 "450 BCE - 200 BCE","### ERA - ### ERA","bce",,,0,,,"-0449-01-01","-0199-12-31",,"450 BCE - 200 BCE",,,
 "450 BCE - 200 CE","### ERA - ### ERA","bce;cross_era",,,0,,,"-0449-01-01","0200-12-31",,"450 BCE - 200 CE",,,
 "450 to 200 BCE","### to ### ERA","bce",,,0,,,"-0449-01-01","-0199-12-31",,"450 to 200 BCE",,,
-"after 1815","after ####","after_before","ba;opt","open_unknown_end_date: 2022-06-01",0,"1816","2022","1816-01-01","2022-06-01",,"after 1815",,"1816 or a later date","[1816..]"
-"before 1750","before ####","after_before","ba","open_unknown_start_date: 1600-02-15",0,"1600","1749","1600-02-15","1749-12-31",,"before 1750",,"1749 or an earlier date","[..1749]"
-"pre-1750","pre-####","after_before","csws","open_unknown_start_date: 1600-02-15",0,"1600","1749","1600-02-15","1749-12-31",,"pre-1750",,"1749 or an earlier date","[..1749]"
-"pre 1750","pre ####","after_before","csws","open_unknown_start_date: 1600-02-15",0,"1600","1749","1600-02-15","1749-12-31",,"pre 1750",,"1749 or an earlier date","[..1749]"
+"after 1815","after ####","after_before","ba;opt","open_unknown_end_date: '2022-06-01'",0,"1816","2022","1816-01-01","2022-06-01",,"after 1815",,"1816 or a later date","[1816..]"
+"before 1750","before ####","after_before","ba","open_unknown_start_date: '1600-02-15'",0,"1600","1749","1600-02-15","1749-12-31",,"before 1750",,"1749 or an earlier date","[..1749]"
+"pre-1750","pre-####","after_before","csws","open_unknown_start_date: '1600-02-15'",0,"1600","1749","1600-02-15","1749-12-31",,"pre-1750",,"1749 or an earlier date","[..1749]"
+"pre 1750","pre ####","after_before","csws","open_unknown_start_date: '1600-02-15'",0,"1600","1749","1600-02-15","1749-12-31",,"pre 1750",,"1749 or an earlier date","[..1749]"
 "c 2002","c ####","approximate;four_digit_year;year_granularity",,,0,"2002","2002","2002-01-01","2002-12-31",,"c 2002",,,
 "c. 1997-1998","c. ####-####","approximate",,,0,,,"1997-01-01","1998-12-31",,"c. 1997-1998",,,
 "c. 2002","c. ####","approximate;four_digit_year;year_granularity",,,0,"2002","2002","2002-01-01","2002-12-31",,"c. 2002",,,
