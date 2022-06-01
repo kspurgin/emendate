@@ -82,6 +82,11 @@ module Emendate
 
     def full_match_standardizers
       case result.types
+      when %i[number4 comma month number1or2]
+        %i[
+           remove_post_year_comma
+           move_year_to_end_of_segment
+          ]
       when %i[partial range_indicator partial number1or2 century]
         %i[copy_number_century_after_first_partial]
       end
@@ -168,8 +173,13 @@ module Emendate
     end
 
     def remove_post_month_comma
-      comma = result.extract(%i[month number1or2 comma]).segments[-1]
-      result.delete(comma)
+      _month, day, comma = result.extract(%i[month number1or2 comma]).segments
+      collapse_token_pair_backward(day, comma)
+    end
+
+    def remove_post_year_comma
+      year, comma = result.extract(%i[number4 comma]).segments
+      collapse_token_pair_backward(year, comma)
     end
 
     def remove_time_parts

@@ -17,6 +17,13 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
+    context 'with 2020, Feb 15' do
+      it 'reorders segments' do
+        result = standardize('2020, Feb 15')
+        expect(result).to eq(%i[month number1or2 number4])
+      end
+    end
+
     context 'with c. 999-1-1' do
       it 'pads to 4-digit number' do
         result = standardize('c. 999-1-1')
