@@ -6,8 +6,7 @@ module Emendate
     include ResultEditable
     attr_reader :result, :standardizable
 
-    def initialize(tokens:, options: {})
-      @options = options.options
+    def initialize(tokens:)
       @result = tokens.class.new.copy(tokens)
       @standardizable = true
     end
@@ -213,15 +212,19 @@ module Emendate
 
     def open_start
       doubledot = result.when_type(:double_dot)[0]
-      openstart = Emendate::DateTypes::OpenRangeDate.new(use_date: @options[:open_unknown_start_date],
-                                                         usage: :start)
+      openstart = Emendate::DateTypes::OpenRangeDate.new(
+        use_date: Emendate.options.open_unknown_start_date,
+        usage: :start
+      )
       replace_x_with_new(x: doubledot, new: openstart)
     end
 
     def open_end
       doubledot = result.when_type(:double_dot)[-1]
-      openend = Emendate::DateTypes::OpenRangeDate.new(use_date: @options[:open_unknown_end_date],
-                                                         usage: :end)
+      openend = Emendate::DateTypes::OpenRangeDate.new(
+        use_date: Emendate.options.open_unknown_end_date,
+        usage: :end
+      )
       replace_x_with_new(x: doubledot, new: openend)
     end
     

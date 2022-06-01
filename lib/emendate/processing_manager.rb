@@ -282,7 +282,7 @@ module Emendate
     end
 
     def perform_standardize_formats
-      f = Emendate::FormatStandardizer.new(tokens: tokens, options: options)
+      f = Emendate::FormatStandardizer.new(tokens: tokens)
       begin
         f.standardize
       rescue StandardError => e
