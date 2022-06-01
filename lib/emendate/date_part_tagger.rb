@@ -42,7 +42,7 @@ module Emendate
         t = determine_tagger
         break if t.nil?
 
-        send(t)
+        t.is_a?(Symbol) ? send(t) : send(t.shift, *t)
       end
       result
     end
@@ -50,10 +50,10 @@ module Emendate
     private
 
     def determine_tagger
-      t = partial_match_tagger
+      t = full_match_tagger
       return t unless t.nil?
 
-      t = full_match_tagger
+      t = partial_match_tagger
       @taggable = false if t.nil?
       t
     end
@@ -88,9 +88,10 @@ module Emendate
     end
 
     def full_match_tagger
-      # case result.type_string
-      # when /^year hyphen year$/
-      # end
+      case result.type_string
+      when /^number1or2 year$/
+        :tag_numeric_month
+      end
     end
 
     # types = Array with 2 Segment.type symbols
@@ -133,6 +134,11 @@ module Emendate
       result.delete(x)
     end
 
+    def tag_numeric_month
+      source = result.extract([:number1or2]).segments.first
+      replace_x_with_date_part_type(x: source, date_part_type: :month)
+    end
+    
     def tag_century_num
       collapse_pair(%i[number1or2 century], :century)
     end

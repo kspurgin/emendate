@@ -119,7 +119,14 @@ RSpec.describe Emendate::DatePartTagger do
         expect(result.types).to eq(%i[month day year])
       end
     end
-   
+
+    context 'with 03/2020' do
+      it 'tags as expected' do
+        result = tag('03/2020')
+        expect(result.types).to eq(%i[month year])
+      end
+    end
+
     context 'with February 30, 2020' do
       it 'returns error' do
         pm = Emendate.prep_for('February 30, 2020', :tag_date_parts)
