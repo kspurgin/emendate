@@ -6,7 +6,6 @@ module Emendate
     module_function
     
     def msg(err)
-      binding.pry
       [err.message, err.backtrace.first(5)].flatten
     end
   end

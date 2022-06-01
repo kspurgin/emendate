@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'error_util'
+
 module Emendate
   class ProcessingManager
     include AASM
@@ -208,7 +210,7 @@ module Emendate
 
     def prepare_failed_result
       r = { original_string: orig_string,
-           errors: errors.map!{ |err| err.split("\n").first(3).join("\n") },
+           errors: errors.map!{ |err| Emendate::ErrorUtil.msg(err).join("\n") },
            warnings: warnings,
            result: []
           }
@@ -232,7 +234,7 @@ module Emendate
       begin
         l.tokenize
       rescue Emendate::UntokenizableError => e
-        errors << e.full_message
+        errors << e
       else
         @norm_string = l.norm
         @tokens = l.tokens
@@ -259,7 +261,7 @@ module Emendate
       begin
         t.translate
       rescue StandardError => e
-        errors << e.full_message
+        errors << e
       else
         @tokens = t.result
         @translated_ordinals = tokens.class.new.copy(tokens)
@@ -271,7 +273,7 @@ module Emendate
       begin
         c.check
       rescue StandardError => e
-        errors << e.full_message
+        errors << e
       else
         @tokens = c.result
         @certainty_checked = tokens.class.new.copy(tokens)
@@ -283,7 +285,7 @@ module Emendate
       begin
         f.standardize
       rescue StandardError => e
-        errors << e.full_message
+        errors << e
       else
         @tokens = f.result
         @standardized_formats = tokens.class.new.copy(tokens)
@@ -295,7 +297,7 @@ module Emendate
       begin
         t.tag
       rescue StandardError => e
-        errors << e.full_message
+        errors << e
       else
         @tokens = t.result
         @tagged_date_parts = tokens.class.new.copy(tokens)
@@ -307,7 +309,7 @@ module Emendate
       begin
         t.tag
       rescue StandardError => e
-        errors << e.full_message
+        errors << e
       else
         @tokens = t.result
         @tagged_unprocessable = tokens.class.new.copy(tokens)
@@ -319,7 +321,7 @@ module Emendate
       begin
         t.tag
       rescue StandardError => e
-        errors << e.full_message
+        errors << e
       else
         @tokens = t.result
         @tagged_untokenizable = tokens.class.new.copy(tokens)
@@ -331,7 +333,7 @@ module Emendate
       begin
         t.tag
       rescue StandardError => e
-        errors << e.full_message
+        errors << e
       else
         @tokens = t.result
         @tagged_known_unknown = tokens.class.new.copy(tokens)
@@ -343,7 +345,7 @@ module Emendate
       begin
         s.segment
       rescue StandardError => e
-        errors << e.full_message
+        errors << e
       else
         @tokens = s.result
         @segmented_dates = tokens.class.new.copy(tokens)
@@ -355,7 +357,7 @@ module Emendate
       begin
         i.indicate
       rescue StandardError => e
-        errors << e.full_message
+        errors << e
       else
         @tokens = i.result
         @ranges_indicated = tokens.class.new.copy(tokens)

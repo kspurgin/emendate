@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative '../error_util'
 require_relative 'tester'
 
 module Emendate
@@ -112,8 +113,7 @@ module Emendate
         opt = test_options ? instance_eval("{#{test_options}}") : {}
         processor = Emendate.process(test_string, opt)
       rescue => err
-        err_msg = [err.message, err.backtrace.first(3)].flatten
-        add_error(:process, err_msg)
+        add_error(:process, Emendate::ErrorUtil.msg(err))
         add_test_result(:process, :failure)
         false
       else
