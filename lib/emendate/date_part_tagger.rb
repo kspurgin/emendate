@@ -211,13 +211,13 @@ module Emendate
 
     def tag_year_in_month_short_year
       _mth, yr = result.extract(%i[month number1or2]).segments
-      year = Emendate::ShortYearHandler.new(yr, options).result
+      year = Emendate::ShortYearHandler.call(yr)
       replace_x_with_given_segment(x: yr, segment: year)
     end
 
     def tag_numeric_month_day_short_year
       _n1, _h1, _n2, _h2, n3 = result.extract(%i[number1or2 hyphen number1or2 hyphen number1or2]).segments
-      year = Emendate::ShortYearHandler.new(n3, options).result
+      year = Emendate::ShortYearHandler.call(n3)
       replace_x_with_given_segment(x: n3, segment: year)
     end
 
