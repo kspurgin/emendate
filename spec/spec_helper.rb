@@ -4,8 +4,15 @@ require 'bundler/setup'
 #require 'simplecov'
 #SimpleCov.start
 
+require 'dry/configurable/test_interface'
+
 require_relative './helpers'
 require 'emendate'
+
+module Emendate
+  enable_test_interface
+end
+
 require 'pry'
 
 RSpec.configure do |config|

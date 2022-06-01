@@ -6,6 +6,7 @@ PATH
       activesupport (~> 6)
       dry-configurable (~> 0.15.0)
       dry-monads (~> 1.4)
+      dry-validation (~> 1.8)
 
 GEM
   remote: https://rubygems.org/
@@ -117,7 +118,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  dry-validation (~> 1.8)
   emendate!
   pry (~> 0.14.1)
   rake (~> 12.0)
