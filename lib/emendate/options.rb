@@ -60,6 +60,11 @@ module Emendate
         # this option is also applied to ambiguous season/year values
         ambiguous_month_year: :as_year,
 
+        # applies to dates where range_switch == 'before' ('before 1950', 'pre-1950')
+        # if :point, date_start_full and date_end_full will be the same -- the day before the date indicated
+        # if :range, date_start_full will be set from :open_unknown_start_date
+        before_date_treatment: :point,
+
         # whether or not to expand two digit numbers that appear to be years
         # by default, will coerce 80 to 1980
         # alternative: literal would treat it as literally the year 80
@@ -123,6 +128,7 @@ module Emendate
         edtf: [true],
         ambiguous_month_day: %i[as_day_month],
         ambiguous_month_year: %i[as_month],
+        before_date_treatment: %i[range],
         two_digit_year_handling: %i[literal],
         square_bracket_interpretation: %i[edtf_set],
         pluralized_date_interpretation: %i[broad],
