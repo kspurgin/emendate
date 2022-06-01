@@ -330,7 +330,7 @@ module Emendate
     end
 
     def perform_tag_known_unknown
-      t = Emendate::KnownUnknownTagger.new(tokens: tokens, str: orig_string, options: options)
+      t = Emendate::KnownUnknownTagger.new(tokens: tokens, str: orig_string)
       begin
         t.tag
       rescue StandardError => e
