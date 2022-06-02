@@ -11,7 +11,7 @@ module Emendate
       attr_reader :segments, :inferred_date, :warnings
 
       def_delegator :@segments, :[], :[]
-      def_delegators :@segments, :clear, :delete, :delete_at, :empty?, :find_index, :insert, :length, :pop, :shift, :unshift
+      def_delegators :@segments, :clear, :delete, :delete_at, :empty?, :find_index, :first, :insert, :length, :pop, :shift, :unshift
 
       def initialize(*args)
         @segments = Array.new(*args)
