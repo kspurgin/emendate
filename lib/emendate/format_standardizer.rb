@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require_relative './complex_sendable'
+require_relative './result_editable'
+
 module Emendate
 
   class FormatStandardizer
+    include ComplexSendable
     include ResultEditable
     attr_reader :result, :standardizable
 
@@ -16,7 +20,13 @@ module Emendate
         functions = determine_standardizers
         break if functions.nil?
 
-        functions.each{ |f| send(f) }
+        functions.each do |function|
+          if function.is_a?(Symbol)
+            send(function)
+          else
+            send_complex(function)
+          end
+        end
       end
       result
     end
@@ -24,15 +34,17 @@ module Emendate
     private
 
     def determine_standardizers
-      s = partial_match_standardizers
-      return s unless s.nil?
+      fms = full_match_standardizers
+      return fms unless fms.nil?
+      
+      ps = partial_match_standardizers
+      return ps unless ps.nil?
 
-      s = full_match_date_part_standardizers
-      return s unless s.nil?
+      fmdp = full_match_date_part_standardizers
+      return fmdp unless fmdp.nil?
 
-      s = full_match_standardizers
-      @standardizable = false if s.nil?
-      s
+      @standardizable = false
+      []
     end
 
     def partial_match_standardizers
@@ -81,6 +93,16 @@ module Emendate
 
     def full_match_standardizers
       case result.types
+      when %i[number4 comma month]
+        [
+           :remove_post_year_comma,
+           [:move_x_to_end, ->{ result[0] }]
+        ]
+      when %i[number4 comma season]
+        [
+           :remove_post_year_comma,
+           [:move_x_to_end, ->{ result[0] }]
+        ]
       when %i[number4 comma month number1or2]
         %i[
            remove_post_year_comma
