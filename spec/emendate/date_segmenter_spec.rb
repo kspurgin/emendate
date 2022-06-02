@@ -6,7 +6,7 @@ RSpec.describe Emendate::DateSegmenter do
 
   def segment(str, options = {})
     pm = Emendate.prep_for(str, :segment_dates, options)
-    ds = Emendate::DateSegmenter.new(tokens: pm.tokens, options: pm.options)
+    ds = Emendate::DateSegmenter.new(tokens: pm.tokens)
     ds.segment
   end
 

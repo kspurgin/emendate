@@ -22,7 +22,8 @@ module Emendate
 
     def initialize(string, options = {})
       @orig_string = string
-      @options = Emendate::Options.new(options)
+      Emendate::Options.new(options) unless options.empty?
+      @options = options
       @norm_string = Emendate.normalize_orig(orig_string)
       @tokens = Emendate::SegmentSets::TokenSet.new
       @errors = []
@@ -243,21 +244,21 @@ module Emendate
     end
 
     def perform_collapse_tokens
-      c = Emendate::TokenCollapser.new(tokens: tokens, options: options)
+      c = Emendate::TokenCollapser.new(tokens: tokens)
       c.collapse
       @tokens = c.result
       @collapsed_tokens = tokens.class.new.copy(tokens)
     end
 
     def perform_convert_months
-      c = Emendate::AlphaMonthConverter.new(tokens: tokens, options: options)
+      c = Emendate::AlphaMonthConverter.new(tokens: tokens)
       c.convert
       @tokens = c.result
       @converted_months = tokens.class.new.copy(tokens)
     end
 
     def perform_translate_ordinals
-      t = Emendate::OrdinalTranslator.new(tokens: converted_months, options: options)
+      t = Emendate::OrdinalTranslator.new(tokens: converted_months)
       begin
         t.translate
       rescue StandardError => e
@@ -269,7 +270,7 @@ module Emendate
     end
 
     def perform_certainty_check
-      c = Emendate::CertaintyChecker.new(tokens: translated_ordinals, options: options)
+      c = Emendate::CertaintyChecker.new(tokens: translated_ordinals)
       begin
         c.check
       rescue StandardError => e
@@ -281,7 +282,7 @@ module Emendate
     end
 
     def perform_standardize_formats
-      f = Emendate::FormatStandardizer.new(tokens: tokens, options: options)
+      f = Emendate::FormatStandardizer.new(tokens: tokens)
       begin
         f.standardize
       rescue StandardError => e
@@ -293,7 +294,7 @@ module Emendate
     end
 
     def perform_tag_date_parts
-      t = Emendate::DatePartTagger.new(tokens: standardized_formats, options: options)
+      t = Emendate::DatePartTagger.new(tokens: standardized_formats)
       begin
         t.tag
       rescue StandardError => e
@@ -329,7 +330,7 @@ module Emendate
     end
 
     def perform_tag_known_unknown
-      t = Emendate::KnownUnknownTagger.new(tokens: tokens, str: orig_string, options: options)
+      t = Emendate::KnownUnknownTagger.new(tokens: tokens, str: orig_string)
       begin
         t.tag
       rescue StandardError => e
@@ -341,7 +342,7 @@ module Emendate
     end
 
     def perform_segment_dates
-      s = Emendate::DateSegmenter.new(tokens: tagged_date_parts, options: options)
+      s = Emendate::DateSegmenter.new(tokens: tagged_date_parts)
       begin
         s.segment
       rescue StandardError => e
@@ -353,7 +354,7 @@ module Emendate
     end
 
     def perform_indicate_ranges
-      i = Emendate::RangeIndicator.new(tokens: segmented_dates, options: options)
+      i = Emendate::RangeIndicator.new(tokens: segmented_dates)
       begin
         i.indicate
       rescue StandardError => e

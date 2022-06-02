@@ -10,7 +10,7 @@ module Emendate
     
     def initialize(processed)
       @processed = processed
-      @dialect = @processed.options.target_dialect
+      @dialect = Emendate.options.target_dialect
       unless dialect
         puts "ERROR: You must pass in a `target_dialect` option when using `translate`"
         exit
@@ -85,7 +85,7 @@ module Emendate
 
     def truncate_tokens
       existing = processed.tokens
-      max = processed.options.max_output_dates
+      max = Emendate.options.max_output_dates
       return existing if max == :all
 
       tokens = existing.class.new.copy(existing)

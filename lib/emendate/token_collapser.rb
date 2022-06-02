@@ -6,11 +6,10 @@ require 'emendate/result_editable'
 module Emendate
   class TokenCollapser
     include ResultEditable
-    attr_reader :result, :options
+    attr_reader :result
 
-    def initialize(tokens:, options: {})
+    def initialize(tokens:)
       @result = Emendate::SegmentSets::TokenSet.new.copy(tokens)
-      @options = options
     end
 
     def collapse

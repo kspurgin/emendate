@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Emendate::TokenCollapser do
   def collapse(str, options = {})
     pm = Emendate.prep_for(str, :collapse_tokens, options)
-    tc = described_class.new(tokens: pm.tokens, options: pm.options)
+    tc = described_class.new(tokens: pm.tokens)
     tc.collapse
   end
 

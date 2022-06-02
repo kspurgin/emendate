@@ -6,14 +6,13 @@ require 'emendate/result_editable'
 module Emendate
 
   class AlphaMonthConverter
-    attr_reader :result, :options
+    attr_reader :result
 
     include DateUtils
     include ResultEditable
     
-    def initialize(tokens:, options: {})
+    def initialize(tokens:)
       @result = Emendate::SegmentSets::TokenSet.new.copy(tokens)
-      @options = options
     end
 
     def convert

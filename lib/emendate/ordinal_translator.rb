@@ -2,11 +2,10 @@
 
 module Emendate
   class OrdinalTranslator
-    attr_reader :result, :options
+    attr_reader :result
 
-    def initialize(tokens:, options: {})
+    def initialize(tokens:)
       @result = Emendate::SegmentSets::TokenSet.new.copy(tokens)
-      @options = options
     end
 
     def translate
