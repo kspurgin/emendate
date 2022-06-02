@@ -236,8 +236,8 @@
 "n.d.","n.d.","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","n.d.",,"not dated","XXXX"
 "nd","nd","indicates_no_date",,,0,,,"nilValue","nilValue","known_unknown","nd",,"not dated","XXXX"
 "not dated","not dated","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","not dated",,"not dated","XXXX"
-"pre 1750","pre ####","after_before","csws","open_unknown_start_date: '1600-02-15'",0,"1600","1749","1600-02-15","1749-12-31",,"pre 1750",,"1749 or an earlier date","[..1749]"
-"pre-1750","pre-####","after_before","csws","open_unknown_start_date: '1600-02-15'",0,"1600","1749","1600-02-15","1749-12-31",,"pre-1750",,"1749 or an earlier date","[..1749]"
+"pre 1750","pre ####","after_before","csws","before_date_treatment: :range, open_unknown_start_date: '1600-02-15'",0,"1600","1749","1600-02-15","1749-12-31",,"pre 1750",,"1749 or an earlier date","[..1749]"
+"pre-1750","pre-####","after_before","csws","open_unknown_start_date: '1600-02-15'",0,"1749","1749","1749-12-31","1749-12-31",,"pre-1750",,"1749 or an earlier date","[..1749]"
 "Spring 20","SEASON ##","option;season;two_digit_year",,"two_digit_year_handling: :coerce, ambiguous_year_rollback_threshold: 50",0,,,"2020-04-01","2020-06-30",,"Spring 20",,,
 "Spring 2020","SEASON ####","season",,,0,,,"2020-04-01","2020-06-30",,"Spring 2020",,,
 "undated","undated","indicates_no_date",,,0,,,"nilValue","nilValue","known_unknown","undated",,"not dated","XXXX"
