@@ -8,7 +8,10 @@ module Emendate
     attr_reader :options
 
     def initialize(opthash = {})
-      return if opthash.empty?
+      if opthash.empty?
+        set_options(defaults)
+        return
+      end
 
       @opthash = opthash
       convert_dates
@@ -30,6 +33,25 @@ module Emendate
 
     attr_reader :opthash
 
+    def defaults
+      {:edtf => false,
+       :ambiguous_month_day => :as_month_day,
+       :ambiguous_month_year => :as_year,
+       :before_date_treatment => :point,
+       :two_digit_year_handling => :coerce,
+       :ambiguous_year_rollback_threshold => Date.today.year.to_s[-2..-1].to_i,
+       :square_bracket_interpretation => :inferred_date,
+       :pluralized_date_interpretation => :decade,
+       :open_unknown_start_date => Date.new(1583, 1, 1),
+       :open_unknown_end_date => Date.new(2999, 12, 31),
+       :beginning_hyphen => :unknown,
+       :ending_hyphen => :open,
+       :unknown_date_output => :orig,
+       :unknown_date_output_string => "",
+       :target_dialect => nil,
+       :max_output_dates => :all}
+    end
+    
     def report_errors_and_exit(errs)
       errs.each{ |key, errs| puts ":#{key} option #{errs.join('; ')}" }
       puts 'Exiting...'
@@ -48,8 +70,8 @@ module Emendate
       end
     end
     
-    def set_options
-      opthash.each{ |key, val| Emendate.config.options.send("#{key}=".to_sym, val) }
+    def set_options(opts = opthash)
+      opts.each{ |key, val| Emendate.config.options.send("#{key}=".to_sym, val) }
     end
 
     def handle_edtf_shortcut
