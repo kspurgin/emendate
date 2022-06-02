@@ -3,6 +3,8 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::Translators::LyrasisPseudoEdtf::KnownUnknown do
+  before{ Emendate.reset_config }
+  
   let(:translation){ Emendate.translate(str, options) }
   let(:value){ translation.value }
   let(:warnings){ translation.warnings }
