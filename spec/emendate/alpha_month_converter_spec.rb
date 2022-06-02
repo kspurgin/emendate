@@ -15,6 +15,8 @@ RSpec.describe Emendate::AlphaMonthConverter do
         c = convert('Jan 2021')
         result = "#{c.first.type} #{c.first.lexeme}"
         expect(result).to eq('month jan')
+        expect(c.first.location.col).to eq(0)
+        expect(c.first.location.length).to eq(4)
       end
     end
 
