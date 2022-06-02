@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../error_util'
+require_relative '../options_contract'
 require_relative 'tester'
 
 module Emendate
@@ -110,8 +111,11 @@ module Emendate
       attr_reader :test_results
       
       def check_testable
-        opt = test_options ? instance_eval("{#{test_options}}") : {}
-        processor = Emendate.process(test_string, opt)
+        validated_opt = options_valid?
+        return false unless validated_opt
+
+        processor = Emendate.process(test_string, validated_opt)
+        Emendate::Options.new
       rescue => err
         add_error(:process, Emendate::ErrorUtil.msg(err))
         add_test_result(:process, :failure)
@@ -132,6 +136,19 @@ module Emendate
         @processed = nil
         @errors = {}
         @test_results = {}
+      end
+
+      def options_valid?
+        return {} unless test_options
+
+        opt = instance_eval("{#{test_options}}")
+        validation_errs = Emendate::OptionsContract.new.call(**opt).errors.to_h
+        return opt if validation_errs.empty?
+
+        compiled = validation_errs.map{ |key, errs| ":#{key} option #{errs.join('; ')}" }
+          .join("\n")
+        add_error(:process, compiled)
+        false
       end
     end
   end
