@@ -46,6 +46,7 @@ module Emendate
     PARTIAL = %w[early late middle mid].freeze
     PLUS = '+'
     RANGE_INDICATOR = %w[to]
+    # If additional seasons are added, make sure to update the mapping to literals in AlphaMonthConverter
     SEASONS = %w[winter spring summer fall autumn]
     SLASH = '/'
     SPACE = ' '
