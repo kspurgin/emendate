@@ -260,7 +260,7 @@
 "Y170002","y######","edtf;edtf1;letter_prefixed_year",,,0,,,"170002-01-01","170002-12-31",,"Y170002",,,
 "Y171010000S3","y#########s#","currently_unparseable;edtf;edtf2;letter_prefixed_year;significant_digits",,,0,,,"nilValue","nilValue",,"Y171010000S3","Untokenizable sequences: 171010000",,
 "Y3388E2S3","y####e#s#","currently_unparseable;edtf;edtf2;exponential_year;letter_prefixed_year;significant_digits",,,0,,,"nilValue","nilValue",,"Y3388E2S3",,,
-"2020, Feb 15","YYYY, MON ##",,"csws",,0,"2020","2020","2020-02-15","2020-02-15",,"2020, Feb 15",,"2020-02-15","2020-02-15"
-"2020, Feb.","YYYY, MON.",,"csws",,0,"2020","2020","2020-02-01","2020-02-28",,"2020, Feb.",,"2020-02","2020-02"
-"2020, summer","YYYY, SEASON","season;year_granularity","csws",,0,"2020","2020","2020-07-01","2020-09-30",,"2020, summer",,,
+"2020, Feb 15","####, MON ##",,"csws",,0,"2020","2020","2020-02-15","2020-02-15",,"2020, Feb 15",,"2020-02-15","2020-02-15"
+"2020, Feb.","####, MON.",,"csws",,0,"2020","2020","2020-02-01","2020-02-29",,"2020, Feb.",,"2020-02","2020-02"
+"2020, summer","####, SEASON","season;year_granularity","csws",,0,"2020","2020","2020-07-01","2020-09-30",,"2020, summer",,,
 "1880s-1990s","####s-####s","nested_ranges;decades","csws",,0,"1880","1999","1880-01-01","1999-12-31",,"1880s-1990s",,,
