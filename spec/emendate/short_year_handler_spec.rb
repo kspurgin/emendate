@@ -3,8 +3,6 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::ShortYearHandler do
-  before{ Emendate.reset_config }
-
   let(:str){ '21' }
   let(:set_opts){ Emendate::Options.new(opts) }
   let(:token){ Emendate::Token.new(type: :stub, lexeme: str, literal: str.to_i) }

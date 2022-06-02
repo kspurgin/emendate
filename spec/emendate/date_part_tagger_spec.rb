@@ -3,8 +3,6 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::DatePartTagger do
-  before{ Emendate.reset_config }
-  
   def tag(str, options = {})
     pm = Emendate.prep_for(str, :tag_date_parts, options)
     fs = Emendate::DatePartTagger.new(tokens: pm.tokens)

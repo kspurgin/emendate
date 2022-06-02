@@ -3,8 +3,6 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::KnownUnknownTagger do
-  before{ Emendate.reset_config }
-  
   def tag(str, options = {})
     pm = Emendate.prep_for(str, :tag_known_unknown, options)
     fs = described_class.new(tokens: pm.tokens, str: str)

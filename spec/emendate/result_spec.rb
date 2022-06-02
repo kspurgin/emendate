@@ -3,8 +3,6 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::Result do
-  before{ Emendate.reset_config }
-  
   context 'with invalid range' do
     it 'returns relevant warning' do
       res = Emendate.parse('mid 1900s to 2/23/21', {ambiguous_year_rollback_threshold: 0,

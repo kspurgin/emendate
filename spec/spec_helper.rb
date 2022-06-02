@@ -4,9 +4,9 @@ require 'bundler/setup'
 #require 'simplecov'
 #SimpleCov.start
 
-require 'dry/configurable/test_interface'
-
 require_relative './helpers'
+require_relative './support/shared_contexts/global'
+
 require 'emendate'
 
 module Emendate
@@ -16,6 +16,9 @@ end
 require 'pry'
 
 RSpec.configure do |config|
+#  config.shared_context_metadata_behavior = :apply_to_host_groups
+
+  config.include Emendate::Global
   config.include Helpers
 
   config.define_derived_metadata do |meta|

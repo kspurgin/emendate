@@ -3,8 +3,6 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::Options do
-  before{ Emendate.reset_config }
-
   let(:config_opts){ Emendate.config.options.values }
   
   context 'when called with no option hash' do
