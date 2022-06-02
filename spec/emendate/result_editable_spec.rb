@@ -45,6 +45,17 @@ RSpec.describe Emendate::ResultEditable do
     end
   end
 
+  describe '#move_x_to_end' do
+    it 'moves token x to be the last token' do
+      tokens = Emendate.prep_for('1990s 3 and 11', :collapse_tokens).tokens
+      e = Editable.new(tokens)
+      e.move_x_to_end(tokens[4])
+      expect(e.result.type_string).to eq('number4 letter_s space number1or2 and space number1or2 space')
+      last = e.result[-1]
+      expect(last.location.col).to eq(7)
+    end
+  end
+
   describe '#replace_x_with_new' do
     it 'tags as expected' do
       tokens = Emendate.prep_for('Jan 2021', :convert_months).tokens

@@ -31,7 +31,13 @@ module Emendate
     def collapse_token_pair_forward(s1, s2)
       new = Emendate::DerivedToken.new(type: s2.type, sources: [s1, s2])
       replace_segments_with_new(segments: [s1, s2], new: new)
-    end    
+    end
+
+    # @param x Emendate::Segment (or subclass)
+    def move_x_to_end(x)
+      result.delete(x)
+      result << x
+    end
 
     # given an array of segments and a new (derived) segment, replaces the former with the latter
     def replace_segments_with_new(segments:, new:)
