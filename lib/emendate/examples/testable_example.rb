@@ -143,11 +143,14 @@ module Emendate
 
         opt = instance_eval("{#{test_options}}")
         validation_errs = Emendate::OptionsContract.new.call(**opt).errors.to_h
+        validation_errs.delete_if do |key, val|
+          %i[open_unknown_start_date open_unknown_end_date].any?(key) && val == ['must be a date']
+        end
         return opt if validation_errs.empty?
 
         compiled = validation_errs.map{ |key, errs| ":#{key} option #{errs.join('; ')}" }
-          .join("\n")
         add_error(:process, compiled)
+        add_test_result(:process, :failure)
         false
       end
     end

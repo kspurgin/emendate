@@ -47,5 +47,13 @@ RSpec.describe Emendate::Options do
         expect(Emendate.options.square_bracket_interpretation).to eq(:edtf_set)
       end
     end
+
+    context "with open_unknown_start_date: '1600-02-15'" do
+      let(:opthash){ {open_unknown_start_date: '1600-02-15'} }
+      it 'converts to date' do
+        call_options
+        expect(Emendate.options.open_unknown_start_date).to eq(Date.new(1600, 2, 15))
+      end
+    end
   end
 end
