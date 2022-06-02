@@ -15,6 +15,8 @@ module Emendate
       end
 
       def range?
+        return false if range_switch == 'before' && Emendate.options.before_date_treatment == :point
+        
         !(partial_indicator.nil? && range_switch.nil?)
       end
 
@@ -27,7 +29,7 @@ module Emendate
 
         case range_switch
         when 'before'
-          nil
+          earliest_for_before
         when 'after'
           latest_by_partial.next
         end
@@ -64,6 +66,14 @@ module Emendate
           Date.new(literal, 5, 1)
         when 'late'
           Date.new(literal, 9, 1)
+        end
+      end
+
+      def earliest_for_before
+        if Emendate.options.before_date_treatment == :point
+          latest
+        else
+          Emendate.options.open_unknown_start_date
         end
       end
 
