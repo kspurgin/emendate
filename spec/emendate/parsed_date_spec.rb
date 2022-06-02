@@ -3,6 +3,8 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::ParsedDate do
+  before{ Emendate.reset_config }
+  
   let(:options){ {} }
   let(:parsed){ Emendate.parse(str, options).dates.first }
 
