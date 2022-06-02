@@ -13,6 +13,14 @@ module Emendate
       replace_segments_with_new(segments: segs, new: derived)
     end
 
+    # derives a single token from 2 or more tokens, keeping the final token's type
+    # @param ary [Array<Symbol>]
+    def collapse_segments_forward(ary)
+      segs = result.extract(ary).segments
+      derived = Emendate::DerivedToken.new(type: segs.last.type, sources: segs)
+      replace_segments_with_new(segments: segs, new: derived)
+    end
+
     # derives a single token from two tokens, keeping the first token's type
     def collapse_token_pair_backward(s1, s2)
       new = Emendate::DerivedToken.new(type: s1.type, sources: [s1, s2])

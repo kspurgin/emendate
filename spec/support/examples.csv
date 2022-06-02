@@ -70,6 +70,7 @@
 "17th or 18th century","##ORD or ##ORD century","alternate_dates;century",,,1,,,"1701-01-01","1800-12-31",,"17th or 18th century",,,
 "1800s","####s","approximate;centuries","ba","pluralized_date_interpretation: :broad",0,"1800","1899","1800-01-01","1899-12-31",,,"Interpreting pluralized year as century","1800 - 1899 (exact year unspecified)","18XX"
 "1800s","####s","approximate;centuries","ba","pluralized_date_interpretation: :decade",0,"1800","1809","1800-01-01","1809-12-31",,"1800s","Interpreting pluralized year as decade","1800 - 1809 (exact year unspecified)","180X"
+"1800's","####'s","approximate;centuries","csws","pluralized_date_interpretation: :decade",0,"1800","1809","1800-01-01","1809-12-31",,"1800's","Interpreting pluralized year as decade","1800 - 1809 (exact year unspecified)","180X"
 "1828-30, 1849-51","[####-@@, ####-##]","ambiguous_year_month;multi_date","ba","max_output_dates: 1",0,"1828","1830","1828-01-01","1830-12-31",,"1828-30","Ambiguous year + month/season/year treated as_year","1828 - 1830","1828/1830"
 "1828-30, 1849-51","[####-@@, ####-##]","ambiguous_year_month;multi_date","ba",,0,"1828","1830","1828-01-01","1830-12-31",,"1828-30","Ambiguous year + month/season/year treated as_year","1828, 1829, 1830, 1849, 1850, and 1851","{1828..1830,1849..1851}"
 "1828-30, 1849-51","[####-@@, ####-##]","ambiguous_year_month;multi_date","ba","max_output_dates: 1",1,"1849","1851","1849-01-01","1851-12-31",,"1849-51","Ambiguous year + month/season/year treated as_year","1828 - 1830","1828/1830"

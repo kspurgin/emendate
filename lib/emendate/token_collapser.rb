@@ -63,6 +63,8 @@ module Emendate
     
     def partial_match_collapsers
       case result.type_string
+      when /.*apostrophe letter_s.*/
+        %i[collapse_segments_forward apostrophe letter_s]
       when /.*before hyphen.*/
         %i[collapse_segments_backward before hyphen]
       when /.*partial hyphen.*/

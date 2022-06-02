@@ -44,5 +44,12 @@ RSpec.describe Emendate::TokenCollapser do
         expect(c.type_string).to eq('partial number4')
       end
     end
+
+    context "with `1800's`" do
+      it 'collapses apostrophe into s' do
+        c = collapse(%{1800's})
+        expect(c.type_string).to eq('number4 letter_s')
+      end
+    end
   end
 end

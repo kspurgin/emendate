@@ -25,6 +25,7 @@ module Emendate
     #      to clear this up for most cases.
     AFTER = %w[after post].freeze
     AND = ['&', 'and'].freeze
+    APOSTROPHE = "'"
     BEFORE = %w[before pre].freeze
     CENTURY = %w[century cent].freeze
     CIRCA = %w[ca circa].freeze
@@ -78,7 +79,9 @@ module Emendate
       c = consume
 
       token =
-        if c == COLON
+        if c == APOSTROPHE
+          token_of_type(c, :apostrophe)
+        elsif c == COLON
           token_of_type(c, :colon)
         elsif c == COMMA
           token_of_type(c, :comma)
