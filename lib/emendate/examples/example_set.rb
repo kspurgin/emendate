@@ -57,6 +57,7 @@ module Emendate
       end
 
       def report_failures
+        return unless failures
         return if failures.empty?
 
         puts "\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
