@@ -104,6 +104,9 @@ If set to true, the following will be set:
 
 * `beginning_hyphen: :edtf`
 * `square_bracket_interpretation: :edtf_set`
+* `max_month_number_handling: :edtf_level_2`
+
+These options support the full Level 2 EDTF specification. Set the relevant options manually if incoming date values conform to EDTF Level 0 or 1.
 
 == ending_hyphen
 
@@ -121,6 +124,18 @@ Default value is `:open` because this form is frequently used to record the ongo
 What is this?:: Some strings will get parsed into multiple dates (`2002, 2004`). By default each individual date found will be returned. Some applications can only handle a single date, so you may want to limit the number of dates included in the output. 
 Default value:: `:all` ("known to have occurred from 2002 until now, and occurrence is ongoing")
 Alternate value:: any Integer
+
+== max_month_number_handling
+
+What is this?:: Tells the application what to consider the largest number that might be treated as a month (or season or EDTF Level 2 sub-year grouping, both of which get treated as month internally)
+Default value:: `:months` - largest number that can be a month is 12
+
+**Alternate values**
+
+* `:edtf_level_1` - use if input is known to include values like `2021-22` (Summer 2021, independent of location) - largest number that may be a month is 24
+* `:edtf_level_2` - use if input is known to include values like `2021-30` (Summer 2021, Southern Hemisphere) - largest number that may be a month is 41
+
+NOTE: Numbers 13-20 are never treated as months
 
 == open_unknown_end_date
 

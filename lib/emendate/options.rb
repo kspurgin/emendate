@@ -39,23 +39,26 @@ module Emendate
     attr_reader :opthash
 
     def defaults
-      {:edtf => false,
-       :ambiguous_month_day => :as_month_day,
-       :ambiguous_month_day_year => :as_month_day,
-       :ambiguous_month_year => :as_year,
-       :before_date_treatment => :point,
-       :two_digit_year_handling => :coerce,
-       :ambiguous_year_rollback_threshold => Date.today.year.to_s[-2..-1].to_i,
-       :square_bracket_interpretation => :inferred_date,
-       :pluralized_date_interpretation => :decade,
-       :open_unknown_start_date => Date.new(1583, 1, 1),
-       :open_unknown_end_date => Date.new(2999, 12, 31),
-       :beginning_hyphen => :unknown,
-       :ending_hyphen => :open,
-       :unknown_date_output => :orig,
-       :unknown_date_output_string => "",
-       :target_dialect => nil,
-       :max_output_dates => :all}
+      {
+       ambiguous_month_day: :as_month_day,
+       ambiguous_month_day_year: :as_month_day,
+       ambiguous_month_year: :as_year,
+       ambiguous_year_rollback_threshold: Date.today.year.to_s[-2..-1].to_i,
+       before_date_treatment: :point,
+       beginning_hyphen: :unknown,
+       edtf: false,
+       ending_hyphen: :open,
+       max_output_dates: :all,
+       max_month_number_handling: :months,
+       open_unknown_end_date: Date.new(2999, 12, 31),
+       open_unknown_start_date: Date.new(1583, 1, 1),
+       pluralized_date_interpretation: :decade,
+       square_bracket_interpretation: :inferred_date,
+       target_dialect: nil,
+       two_digit_year_handling: :coerce,
+       unknown_date_output: :orig,
+       unknown_date_output_string: ""
+      }
     end
     
     def report_errors_and_exit(errs)
@@ -85,6 +88,7 @@ module Emendate
 
       opthash[:beginning_hyphen] = :edtf
       opthash[:square_bracket_interpretation] = :edtf_set
+      opthash[:max_month_number_handling] = :edtf_level_2
     end
 
     def convert_dates
