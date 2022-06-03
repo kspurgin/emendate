@@ -234,5 +234,41 @@ RSpec.describe Emendate::DatePartTagger do
         end
       end
     end
+
+    context 'with 10-02-06' do
+      let(:str){ '10-02-06' }
+
+      context 'with ambiguous_month_day_year: :month_day_year' do
+        let(:options){ {ambiguous_month_day_year: :month_day_year} }
+
+        it 'tags month day year' do
+          expect(types).to eq(%i[month day year])
+        end
+      end
+
+      context 'with ambiguous_month_day_year: :day_month_year' do
+        let(:options){ {ambiguous_month_day_year: :day_month_year} }
+
+        it 'tags day month year' do
+          expect(types).to eq(%i[day month year])
+        end
+      end
+
+      context 'with ambiguous_month_day_year: :year_month_day' do
+        let(:options){ {ambiguous_month_day_year: :year_month_day} }
+
+        it 'tags year month day' do
+          expect(types).to eq(%i[year month day])
+        end
+      end
+
+      context 'with ambiguous_month_day_year: :year_day_month' do
+        let(:options){ {ambiguous_month_day_year: :year_day_month} }
+
+        it 'tags year day month' do
+          expect(types).to eq(%i[year day month])
+        end
+      end
+    end
   end
 end
