@@ -3,29 +3,6 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::DateUtils do
-  describe '#ambiguous_post_year_value?' do
-    context 'with 2020-10 (10 must be October)' do
-      it 'returns false' do
-        res = described_class.ambiguous_post_year_value?('2020', '10')
-        expect(res).to be false
-      end
-    end
-
-    context 'with 1950-52 (52 must be 1952)' do
-      it 'returns false' do
-        res = described_class.ambiguous_post_year_value?('1950', '52')
-        expect(res).to be false
-      end
-    end
-
-    context 'with 1910-12 (12 could be December or 1912)' do
-      it 'returns true' do
-        res = described_class.ambiguous_post_year_value?('1910', '12')
-        expect(res).to be true
-      end
-    end
-  end
-
   describe '#expand_shorter_digits' do
     it 'expands to match years as expected' do
       ex = [['2020', '10'], ['2020', '40'], ['1998', '9'], ['1850', '925']]
