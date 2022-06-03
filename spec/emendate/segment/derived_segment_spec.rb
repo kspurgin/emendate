@@ -36,10 +36,10 @@ RSpec.describe Emendate::DerivedSegment do
     context 'when multiple sources' do
       context 'when all sources have numeric literals' do
         let(:sources) do
-          t1 = Emendate::Token.new(type: :sym, lexeme: 'a ', literal: 1, location: Location.new(0, 2))
+          t1 = Emendate::Token.new(type: :sym, lexeme: 'a ', literal: 1, location: Emendate::Location.new(0, 2))
           t1.add_certainty(:approximate)
-          t2 = Emendate::Token.new(type: :foo, lexeme: 'cat ', literal: 2, location: Location.new(2, 4))
-          t3 = Emendate::Token.new(type: :bar, lexeme: 'sat', literal: 3, location: Location.new(6, 3))
+          t2 = Emendate::Token.new(type: :foo, lexeme: 'cat ', literal: 2, location: Emendate::Location.new(2, 4))
+          t3 = Emendate::Token.new(type: :bar, lexeme: 'sat', literal: 3, location: Emendate::Location.new(6, 3))
           [t1, t2, t3]
         end
 
@@ -55,9 +55,9 @@ RSpec.describe Emendate::DerivedSegment do
       context 'when some sources do not have numeric literals' do
         let(:sources) do
           [
-            Emendate::NumberToken.new(type: :number, lexeme: '1985', location: Location.new(0, 4)),
-            t2 = Emendate::Token.new(type: :single_dot, lexeme: '.', location: Location.new(4, 1)),
-            t3 = Emendate::NumberToken.new(type: :number, lexeme: '0', location: Location.new(5, 1))
+            Emendate::NumberToken.new(type: :number, lexeme: '1985', location: Emendate::Location.new(0, 4)),
+            t2 = Emendate::Token.new(type: :single_dot, lexeme: '.', location: Emendate::Location.new(4, 1)),
+            t3 = Emendate::NumberToken.new(type: :number, lexeme: '0', location: Emendate::Location.new(5, 1))
           ]
         end
         let(:derived_type){ :number }

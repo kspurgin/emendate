@@ -4,7 +4,7 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::NumberToken do
-  let(:loc){ Location.new(2, 5) }
+  let(:loc){ Emendate::Location.new(2, 5) }
   let(:t){ described_class.new(type: :number, lexeme: lexeme, location: loc) }
 
   context 'with an allowed length' do
