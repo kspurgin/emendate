@@ -52,6 +52,27 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
+    context 'with 2002, summer' do
+      before(:all){ @s = segment('2002, summer') }
+
+      it 'returns expected' do
+        e = %i[yearseason_date_type]
+        expect(@s.types).to eq(e)
+      end
+
+      it 'retains certainty' do
+        expect(@s.certainty).to eq([])
+      end
+
+      it 'creates datetype with expected year' do
+        expect(@s[0].year).to eq(2002)
+      end
+
+      it 'creates datetype with expected month' do
+        expect(@s[0].month).to eq(22)
+      end
+    end
+
     context 'with 20200229' do
       before(:all){ @s = segment('20200229') }
 
