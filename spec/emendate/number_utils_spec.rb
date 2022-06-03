@@ -93,6 +93,41 @@ RSpec.describe Emendate::NumberUtils do
     end
   end
 
+  describe '#valid_month_or_season' do
+    def result(str)
+      numutils.valid_month_or_season?(str)
+    end
+
+    it 'returns expected with defaults' do
+      expect(result('6')).to be true
+      expect(result('14')).to be false
+      expect(result('22')).to be false
+      expect(result('40')).to be false
+    end
+    
+    context 'with max_month_number_handling: :edtf_level_1' do
+      before{ Emendate.config.options.max_month_number_handling = :edtf_level_1 }
+
+      it 'returns expected' do
+        expect(result('6')).to be true
+        expect(result('14')).to be false
+        expect(result('22')).to be true
+        expect(result('40')).to be false
+      end
+    end
+
+    context 'with max_month_number_handling: :edtf_level_2' do
+      before{ Emendate.config.options.max_month_number_handling = :edtf_level_2 }
+
+      it 'returns expected' do
+        expect(result('6')).to be true
+        expect(result('14')).to be false
+        expect(result('22')).to be true
+        expect(result('40')).to be true
+      end
+    end
+  end
+  
   describe '#valid_season?' do
     def result(str)
       numutils.valid_season?(str)

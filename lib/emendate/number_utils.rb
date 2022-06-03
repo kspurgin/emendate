@@ -29,6 +29,10 @@ module Emendate
       true
     end
 
+    def valid_month_or_season?(str)
+      ( valid_month?(str) || valid_season?(str) )
+    end
+
     # EDTF season/quarter/semester indicators
     def valid_season?(str)
       return false if Emendate.options.max_month_number_handling == :months
@@ -43,10 +47,6 @@ module Emendate
     def valid_year?(str)
       str = str.to_s unless str.is_a?(String)
       str.length <= 4 && str.to_i <= DateTime.now.year
-    end
-
-    def valid_month_or_season?(str)
-      ( valid_month?(str) || valid_season?(str) )
     end
   end
 end
