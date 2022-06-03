@@ -20,9 +20,9 @@ module Emendate
       result.each do |t|
         case t.type
         when :month_alpha
-          replace_x_with_new(x: t, new: convert_month(t, month_number_lookup))
+          replace_x_with_new(x: t, new: convert_month(t))
         when :month_abbr_alpha
-          replace_x_with_new(x: t, new: convert_month(t, month_abbr_number_lookup))
+          replace_x_with_new(x: t, new: convert_month(t))
         when :season
           replace_x_with_new(x: t, new: season_token_with_literal(t))
         else
@@ -34,7 +34,7 @@ module Emendate
 
     private
 
-    def convert_month(token, lookup)
+    def convert_month(token)
       Emendate::DatePart.new(type: :month,
                              lexeme: token.lexeme,
                              literal: token.literal,

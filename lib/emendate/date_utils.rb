@@ -33,18 +33,6 @@ module Emendate
     def month_literal(month)
       Date::MONTHNAMES.map{ |mth| mth.downcase if mth}.index(month.downcase)
     end
-    
-    def month_number_lookup
-      h = {}
-      Date::MONTHNAMES.compact.map(&:downcase).each_with_index{ |str, i| h[str] = i + 1 }
-      h
-    end
-
-    def month_abbr_number_lookup
-      h = {}
-      Date::ABBR_MONTHNAMES.compact.map(&:downcase).each_with_index{ |str, i| h[str] = i + 1 }
-      h
-    end
 
     # determines whether the number following a year could be the end of a range beginning with that year
     # 2020-10 -- false, the 10 has to be October
@@ -55,13 +43,6 @@ module Emendate
 
       expanded.to_i > year.to_i
     end
-
-    # def two_digit_year(yr)
-    #   year = yr.is_a?(String) ? yr : yr.to_s
-    #   max = year.length - 1
-    #   min = max - 1
-    #   year[min..max]
-    # end
 
     # pass in segments. This pulls out literals
     def valid_date?(yr, mth, day)
