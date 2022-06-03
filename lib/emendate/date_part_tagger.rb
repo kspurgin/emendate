@@ -196,7 +196,7 @@ module Emendate
     def tag_numeric_month_day_year
       n1, h1, n2, h2, y = result.extract(%i[number1or2 hyphen number1or2 hyphen year]).segments
       begin
-        analyzer = Emendate::MonthDayAnalyzer.new(n1, n2, y, Emendate.options.ambiguous_month_day)
+        analyzer = Emendate::MonthDayAnalyzer.new(n1, n2, y)
       rescue Emendate::MonthDayAnalyzer::MonthDayError => e
         raise e
       else

@@ -9,11 +9,6 @@ module Emendate
 
     attr_reader :digits
 
-
-    def monthable?
-      valid_month?(lexeme)
-    end
-
     private
 
     # allowable length of number in digits

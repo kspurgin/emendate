@@ -3,41 +3,64 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::MonthDayAnalyzer do
-  def prep(str, opt = :as_month_day)
-    pm = Emendate.prep_for(str, :tag_date_parts)
-    t = pm.standardized_formats
-    mda = Emendate::MonthDayAnalyzer.new(t[0], t[2], t[4], opt)
-    mda.month.nil? ? 'ambiguous' : "#{mda.month.lexeme} #{mda.day.lexeme}"
+  subject(:analyzer){ described_class.new(*args) }
+
+  let(:args) do
+    t = Emendate.prep_for(str, :tag_date_parts).standardized_formats
+    [t[0], t[2], t[4]]
   end
 
-  context 'with unambiguous month day - 12-31-2020' do
-    it 'returns expected' do
-      expect(prep('12-31-2001')).to eq('12 31')
-    end
-  end
-
-  context 'with unambiguous day month - 31-12-2020' do
-    it 'returns expected' do
-      expect(prep('31-12-2001')).to eq('12 31')
-    end
-  end
-
-  context 'with ambiguous - 02-03-2020' do
-    context 'when default option (month day)' do
-      it 'Feb 3' do
-        expect(prep('02-03-2020')).to eq('02 03')
+  describe '#call' do
+    let(:result){ analyzer.call }
+    let(:month){ result.month.lexeme }
+    let(:day){ result.day.lexeme }
+    let(:ambiguous){ result.ambiguous }
+    
+    context 'with unambiguous month day - 12-31-2020' do
+      let(:str){ '12-31-2020' }
+      
+      it 'returns expected' do
+        expect(month).to eq('12')
+        expect(day).to eq('31')
+        expect(ambiguous).to be false
       end
     end
 
-    context 'when as_day_month' do
-      it 'Feb 3' do
-        expect(prep('02-03-2020', :as_day_month)).to eq('03 02')
+    context 'with unambiguous day month - 31-12-2020' do
+      let(:str){ '31-12-2020' }
+      
+      it 'returns expected' do
+        expect(month).to eq('12')
+        expect(day).to eq('31')
+        expect(ambiguous).to be false
       end
     end
 
-    context 'with invalid - 31-29-2020' do
-      it 'raises error' do
-        expect{ prep('31-29-2001') }.to raise_error(Emendate::MonthDayAnalyzer::MonthDayError)
+    context 'with ambiguous - 02-03-2020' do
+      let(:str){ '02-03-2020' }
+      
+      it 'returns expected' do
+        expect(month).to eq('02')
+        expect(day).to eq('03')
+        expect(ambiguous).to be true
+      end
+
+      context 'when as_day_month' do
+        before{ Emendate.options.ambiguous_month_day = :as_day_month }
+        
+      it 'returns expected' do
+        expect(month).to eq('03')
+        expect(day).to eq('02')
+        expect(ambiguous).to be true
+      end
+      end
+
+      context 'with invalid - 31-29-2020' do
+        let(:str){ '31-29-2020' }
+        
+        it 'raises error' do
+          expect{ result }.to raise_error(Emendate::MonthDayAnalyzer::MonthDayError)
+        end
       end
     end
   end
