@@ -39,6 +39,13 @@ module Emendate
       result << x
     end
 
+    def new_date_part(type, sources)
+      Emendate::DatePart.new(type: type,
+                             lexeme: sources.map(&:lexeme).join,
+                             literal: sources[0].literal,
+                             source_tokens: sources)
+    end
+
     # given an array of segments and a new (derived) segment, replaces the former with the latter
     def replace_segments_with_new(segments:, new:)
       ins_pt = result.find_index(segments[-1]) + 1
@@ -49,6 +56,26 @@ module Emendate
     def replace_x_with_new(x:, new:)
       ins_pt = result.find_index(x) + 1
       result.insert(ins_pt, new)
+      result.delete(x)
+    end
+
+    def replace_multi_with_date_part_type(sources:, date_part_type:)
+      new_date_part = new_date_part(date_part_type, sources)
+      x_ind = result.find_index(sources[0])
+      result.insert(x_ind + 1, new_date_part)
+      sources.each{ |x| result.delete(x) }
+    end
+
+    def replace_x_with_date_part_type(x:, date_part_type:)
+      new_date_part = new_date_part(date_part_type, [x])
+      x_ind = result.find_index(x)
+      result.insert(x_ind + 1, new_date_part)
+      result.delete(x)
+    end
+
+    def replace_x_with_given_segment(x:, segment:)
+      x_ind = result.find_index(x)
+      result.insert(x_ind + 1, segment)
       result.delete(x)
     end
   end
