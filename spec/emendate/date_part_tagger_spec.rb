@@ -3,236 +3,236 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::DatePartTagger do
-  def tag(str, options = {})
-    pm = Emendate.prep_for(str, :tag_date_parts, options)
-    fs = Emendate::DatePartTagger.new(tokens: pm.tokens)
-    fs.tag
-  end
+  subject(:tagger){ described_class.new(tokens: tokens) }
+  let(:tokens){ Emendate.prep_for(str, :tag_date_parts, options).tokens }
+  let(:options){ {} }
+  
+  # def tag(str, options = {})
+  #   pm = Emendate.prep_for(str, :tag_date_parts, options)
+  #   fs = Emendate::DatePartTagger.new(tokens: pm.tokens)
+  #   fs.tag
+  # end
 
   describe '#tag' do
+    let(:result){ tagger.tag }
+    let(:types){ result.types }
+    
     context 'with 999' do
+      let(:str){ '999' }
       it 'tags year' do
-        result = tag('999')
-        expect(result.types).to eq(%i[year])
+        expect(types).to eq(%i[year])
       end
     end
 
     context 'with 2020' do
+      let(:str){ '2020' }
+      
       it 'tags year' do
-        result = tag('2020')
-        expect(result.types).to eq(%i[year])
+        expect(types).to eq(%i[year])
       end
     end
 
     context 'with 2020.0' do
+      let(:str){ '2020.0' }
+      
       it 'tags year' do
-        result = tag('2020.0')
-        expect(result.types).to eq(%i[year])
+        expect(types).to eq(%i[year])
       end
     end
 
     context 'with March' do
+      let(:str){ 'March' }
+      
       it 'tags month' do
-        result = tag('March')
-        expect(result.types).to eq(%i[month])
+        expect(types).to eq(%i[month])
       end
     end
 
     context 'with 0000s 1000s' do
-      context 'when default options' do
-        before(:all){ @result = tag('0000s 1000s') }
-
-        it 'tags decade' do
-          expect(@result.types).to eq(%i[decade decade])
-        end
-
-        it 'generates warnings' do
+      let(:str){ '0000s 1000s' }
+      
+      context 'with default options' do
+        it 'tags decade and warns of ambiguity' do
+          expect(types).to eq(%i[decade decade])
           w = ['Interpreting pluralized year as decade', 'Interpreting pluralized year as decade']
-          expect(w - @result.warnings).to be_empty
+          expect(w - result.warnings).to be_empty
         end
       end
 
       context 'when pluralized_date_interpretation: :broad' do
-        before(:all){ @result = tag('0000s 1000s', pluralized_date_interpretation: :broad) }
+        let(:options){ {pluralized_date_interpretation: :broad} }
 
-        it 'tags millennium' do
-          expect(@result.types).to eq(%i[millennium millennium])
-        end
-
-        it 'generates warnings' do
+        it 'tags millennium and warns of ambiguity' do
+          expect(types).to eq(%i[millennium millennium])
           w = ['Interpreting pluralized year as millennium', 'Interpreting pluralized year as millennium']
-          expect(w - @result.warnings).to be_empty
+          expect(w - result.warnings).to be_empty
         end
       end
     end
 
     context 'with 1900s' do
+      let(:str){ '1900s' }
+
       context 'when default options' do
-        before(:all){ @result = tag('1900s') }
-
         it 'tags decade' do
-          expect(@result.types).to eq(%i[decade])
-        end
-
-        it 'literal is whole number' do
-          expect(@result[0].literal).to eq(1900)
+          expect(types).to eq(%i[decade])
+          expect(result[0].literal).to eq(1900)
         end
       end
 
       context 'when pluralized_date_interpretation: :broad' do
-        before(:all){ @result = tag('1900s', pluralized_date_interpretation: :broad)}
+        let(:options){ {pluralized_date_interpretation: :broad} }
 
         it 'tags century' do
-          expect(@result.types).to eq(%i[century])
-        end
-
-        it 'literal is whole number' do
-          expect(@result[0].literal).to eq(1900)
+          expect(types).to eq(%i[century])
+          expect(result[0].literal).to eq(1900)
         end
       end
     end
 
     context 'with 1990s' do
+      let(:str){ '1990s' }
+
       it 'tags decade' do
-        result = tag('1990s')
-        expect(result.types).to eq(%i[decade])
+        expect(types).to eq(%i[decade])
       end
     end
 
     context 'with 19th century' do
+      let(:str){ '19th century' }
+      
       it 'tags century' do
-        result = tag('19th century')
-        expect(result.types).to eq(%i[century])
+        expect(types).to eq(%i[century])
       end
     end
 
     context 'with 19uu' do
+      let(:str){ '19uu' }
+      
       it 'tags century' do
-        result = tag('19uu')
-        expect(result.types).to eq(%i[century])
+        expect(types).to eq(%i[century])
       end
     end
 
     context 'with February 15, 2020' do
+      let(:str){ 'February 15, 2020' }
+
       it 'tags day (month and year are already done at this point)' do
-        result = tag('February 15, 2020')
-        expect(result.types).to eq(%i[month day year])
+        expect(types).to eq(%i[month day year])
       end
     end
 
     context 'with 03/2020' do
+      let(:str){ '03/2020' }
+      
       it 'tags as expected' do
-        result = tag('03/2020')
-        expect(result.types).to eq(%i[month year])
+        expect(types).to eq(%i[month year])
       end
     end
 
     context 'with February 30, 2020' do
+      let(:str){ 'February 30, 2020' }
+      
       it 'returns error' do
-        pm = Emendate.prep_for('February 30, 2020', :tag_date_parts)
-        tagger = described_class.new(tokens: pm.tokens)
-        expect{ tagger.tag }.to raise_error(Emendate::DatePartTagger::UntaggableDatePartError)
+        expect{ result }.to raise_error(Emendate::DatePartTagger::UntaggableDatePartError)
       end
     end
 
     context 'with "Oct. 28, 1964"' do
+      let(:str){ 'Oct. 28, 1964' }
+      
       it 'tags as expected' do
-        result = tag('Oct. 28, 1964')
-        expect(result.types).to eq(%i[month day year])
+        expect(types).to eq(%i[month day year])
       end
     end
 
-    context 'with 02-10-20' do
-      context 'when in the year 2020' do
-        before(:each) do
-          allow(Date).to receive(:today).and_return Date.new(2020, 2, 3)
-          pm = Emendate.prep_for('02-10-20', :tag_date_parts, {ambiguous_year_rollback_threshold: 20})
-          tagger = described_class.new(tokens: pm.tokens)
-          @result = tagger.tag
-        end
-
-        it 'tags month, day, and short year' do
-          expect(@result.type_string).to eq('month day year')
-        end
-
-        it 'expands/tags short year to 1920' do
-          expect(@result.map(&:literal).join(' ')).to eq('2 10 1920')
-        end
+    context 'with 02-10-20 and current year is 2020' do
+      before{ allow(Date).to receive(:today).and_return Date.new(2020, 2, 3) }
+      let(:str){ '02-10-20' }
+      let(:options){ {ambiguous_year_rollback_threshold: 20} }
+      
+      it 'tags month (2), day (10), and short year (1920)' do
+        expect(types).to eq(%i[month day year])
+        expect(result.map(&:literal).join(' ')).to eq('2 10 1920')
       end
     end
 
     context 'with 02-03-2020' do
+      let(:str){ '02-03-2020' }
+      
       context 'when default options' do
         it 'tags month day year' do
-          result = tag('02-03-2020')
-          expect(result.types).to eq(%i[month day year])
+          expect(types).to eq(%i[month day year])
         end
       end
 
       context 'when ambiguous_month_day: :as_day_month' do
+        let(:options){ {ambiguous_month_day: :as_day_month} }
+        
         it 'tags day month year' do
-          pm = Emendate.prep_for('02-03-2020', :tag_date_parts, ambiguous_month_day: :as_day_month)
-          tagger = described_class.new(tokens: pm.tokens)
-          expect(tagger.tag.types).to eq(%i[day month year])
+          expect(types).to eq(%i[day month year])
         end
       end
     end
 
     context 'with 2003-04' do
+      let(:str){ '2003-04' }
+      
       context 'when default options (treat as year)' do
         it 'converts hyphen into range_indicator' do
-          result = tag('2003-04')
-          expect(result.types).to eq(%i[year range_indicator year])
+          expect(types).to eq(%i[year range_indicator year])
         end
       end
 
       context 'when ambiguous_month_year: as_month' do
-        it 'removes hyphen ' do
-          pm = Emendate.prep_for('2003-04', :tag_date_parts, ambiguous_month_year: :as_month)
-          tagger = described_class.new(tokens: pm.tokens)
-          expect(tagger.tag.type_string).to eq('year month')
+        let(:options){ {ambiguous_month_year: :as_month} }
+        
+        it 'removes hyphen' do
+          expect(types).to eq(%i[year month])
         end
       end
     end
 
     context 'with 2 December 2020, 2020/02/15' do
+      let(:str){ '2 December 2020, 2020/02/15' }
+      
       it 'tags' do
-        result = tag('2 December 2020, 2020/02/15')
-        expect(result.types).to eq(%i[month day year comma year month day])
+        expect(types).to eq(%i[month day year comma year month day])
       end
     end
 
     context 'with 2004-06/2006-08' do
+      let(:str){ '2004-06/2006-08' }
+      
       context 'when default options' do
         it 'tags' do
-          result = tag('2004-06/2006-08')
-          expect(result.type_string).to eq('year month range_indicator year month')
+          expect(types).to eq(%i[year month range_indicator year month])
         end
       end
     end
 
     context 'with Mar 19' do
-        it 'tags as month year' do
-          pm = Emendate.prep_for('Mar 19', :tag_date_parts)
-          tagger = described_class.new(tokens: pm.tokens)
-          expect(tagger.tag.type_string).to eq('month year')
-        end
+      let(:str){ 'Mar 19' }
+      
+      it 'tags as month year' do
+        expect(types).to eq(%i[month year])
+      end
 
-        context 'when default options (coerce to 4-digit year)' do
-          it 'converts year to 2019' do
-            pm = Emendate.prep_for('Mar 19', :tag_date_parts)
-            tagger = described_class.new(tokens: pm.tokens)
-            expect(tagger.tag[1].literal).to eq(2019)
-          end
+      context 'when default options (coerce to 4-digit year) and current year 2022' do
+        before{ allow(Date).to receive(:today).and_return Date.new(2022, 2, 3) }
+        
+        it 'converts year to 2019' do
+          expect(result[1].literal).to eq(2019)
         end
+      end
 
-        context 'when two_digit_year_handling: literal' do
-          it 'leaves year as 19' do
-            pm = Emendate.prep_for('Mar 19', :tag_date_parts, two_digit_year_handling: :literal)
-            tagger = described_class.new(tokens: pm.tokens)
-            expect(tagger.tag[1].literal).to eq(19)
-          end
+      context 'when two_digit_year_handling: literal' do
+        let(:options){ {two_digit_year_handling: :literal} }
+        
+        it 'leaves year as 19' do
+          expect(result[1].literal).to eq(19)
         end
+      end
     end
   end
 end
