@@ -4,10 +4,9 @@ require 'spec_helper'
 
 RSpec.describe Emendate::ShortYearHandler do
   let(:str){ '21' }
-  let(:set_opts){ Emendate::Options.new(opts) }
   let(:token){ Emendate::Token.new(type: :stub, lexeme: str, literal: str.to_i) }
   let(:result) do
-    set_opts
+    Emendate::Options.new(opts)
     Emendate::ShortYearHandler.call(token).literal
   end
 
