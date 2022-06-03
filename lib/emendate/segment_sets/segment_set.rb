@@ -2,6 +2,7 @@
 
 require 'forwardable'
 require_relative 'certainty_helpers'
+require_relative '../location'
 
 module Emendate
   module SegmentSets
@@ -67,12 +68,12 @@ module Emendate
       end
 
       def location
-        return Location.new(0, 0) if @segments.empty?
+        return Emendate::Location.new(0, 0) if @segments.empty?
         
-        locs = @segments.map(&:location)
+        locs = @segments.map(&:location).sort_by(&:col)
         col = locs.first.col
         length = locs.map(&:length).sum
-        Location.new(col, length)
+        Emendate::Location.new(col, length)
       end
       
       # returns the first sequence of segments matching the pattern of types passed in as an Array

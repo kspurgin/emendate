@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'emendate/date_utils'
+require 'emendate/location'
 
 module Emendate
   def normalize_orig(orig)
@@ -257,11 +258,11 @@ module Emendate
     end
 
     def current_location
-      Location.new(lexeme_start_p, next_p - lexeme_start_p)
+      Emendate::Location.new(lexeme_start_p, next_p - lexeme_start_p)
     end
 
     def after_source_end_location
-      Location.new(next_p, 1)
+      Emendate::Location.new(next_p, 1)
     end
 
     def alpha_numeric?(char)

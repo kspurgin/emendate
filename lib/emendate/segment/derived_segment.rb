@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'forwardable'
+require_relative '../location'
 
 module Emendate
 
@@ -46,7 +47,7 @@ module Emendate
     def derive_location
       start_position = sources[0].location.col
       length = sources.map{ |src| src.location.length }.sum
-      Location.new(start_position, length)
+      Emendate::Location.new(start_position, length)
     end
     
     def set_sources(opts)
