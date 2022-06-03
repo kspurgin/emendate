@@ -3,94 +3,112 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::DateUtils do
+  subject(:dateutils){ Class.new{ extend Emendate::DateUtils } }
+
   describe '#expand_shorter_digits' do
+    def result(yr, digits)
+      dateutils.expand_shorter_digits(yr, digits)
+    end
+    
     it 'expands to match years as expected' do
-      ex = [['2020', '10'], ['2020', '40'], ['1998', '9'], ['1850', '925']]
-      res = ex.map{ |arr| described_class.expand_shorter_digits(arr[0], arr[1]) }
-      expect(res).to eq(['2010', '2040', '1999', '1925'])
+      expect(result('2020', '10')).to eq('2010')
+      expect(result('2020', '40')).to eq('2040')
+      expect(result('1998', '9')).to eq('1999')
+      expect(result('1850', '925')).to eq('1925')
     end
   end
 
   describe '#is_range?' do
-    context 'with 1910-11' do
-      it 'returns false' do
-        res = described_class.is_range?('1910', '11')
-        expect(res).to be false
-      end
+    def result(yr, digits)
+      dateutils.is_range?(yr, digits)
     end
-
-    context 'with 1950-52' do
-      it 'returns true' do
-        res = described_class.is_range?('1950', '52')
-        expect(res).to be true
-      end
+    
+    it 'expands to match years as expected' do
+      expect(result('1910', '11')).to be false
+      expect(result('1950', '52')).to be true
     end
   end
 
   describe '#month_abbr_literal' do
-    it 'returns expected' do
-      expect(described_class.month_abbr_literal('Sep.')).to eq(9)
-      expect(described_class.month_abbr_literal('Sept.')).to eq(9)
-      expect(described_class.month_abbr_literal('September')).to be_nil
+    def result(month)
+      dateutils.month_abbr_literal(month)
+    end
+
+    it 'returns expected literals' do
+      expect(result('Sep.')).to eq(9)
+      expect(result('Sept.')).to eq(9)
+      expect(result('September')).to be_nil
     end
   end
   
   describe '#month_literal' do
+    def result(month)
+      dateutils.month_literal(month)
+    end
+
     it 'returns expected' do
-      expect(described_class.month_literal('September')).to eq(9)
-      expect(described_class.month_literal('Sept.')).to be_nil
+      expect(result('September')).to eq(9)
+      expect(result('Sept.')).to be_nil
     end
   end
   
   describe '#possible_range' do
+    let(:result){ dateutils.possible_range?(*args) }
+    
     context 'with 2020-10 (10 must be October)' do
+      let(:args){ ['2020', '10'] }
+      
       it 'returns false' do
-        res = described_class.possible_range?('2020', '10')
-        expect(res).to be false
+        expect(result).to be false
       end
     end
 
     context 'with 2020-40 (2040 not a valid year)' do
+      let(:args){ ['2020', '40'] }
+      
       it 'returns false' do
-        res = described_class.possible_range?('2020', '40')
-        expect(res).to be false
+        expect(result).to be false
       end
     end
 
     context 'with 2020-21' do
+      let(:args){ ['2020', '21'] }
+      
       it 'returns true (may be range or Spring 2020)' do
-        res = described_class.possible_range?('2020', '21')
-        expect(res).to be true
+        expect(result).to be true
       end
     end
   end
 
   describe '#valid_date?' do
-    # a range of dates in October 1582 do not exist/are not valid using the default
-    #  (Italian) Gregorian date adoption assumptions.
+    let(:tokens){ Emendate.prep_for(str, :tag_date_parts).standardized_formats }
+    let(:args){ [tokens[0], tokens[2], tokens[4]] }
+    let(:result){ dateutils.valid_date?(*args) }
+    
     context 'with valid date - 2020-02-29' do
+      let(:str){ '2020-02-29' }
+      
       it 'returns true' do
-        pm = Emendate.prep_for('2020-02-29', :tag_date_parts)
-        t = pm.standardized_formats
-        expect(described_class.valid_date?(t[0], t[2], t[4])).to be true
+        expect(result).to be true
       end
     end
 
     context 'with invalid date - 2020-02-92' do
+      let(:str){ '2020-02-92' }
+      
       it 'returns false' do
-        pm = Emendate.prep_for('2020-02-92', :tag_date_parts)
-        t = pm.standardized_formats
-        expect(described_class.valid_date?(t[0], t[2], t[4])).to be false
+        expect(result).to be false
       end
     end
 
+    # a range of dates in October 1582 do not exist/are not valid using the default
+    #  (Italian) Gregorian date adoption assumptions.
     context 'with date invalid in Italy, valid in England - 1582-10-14' do
+      let(:str){ '1582-10-14' }
+      
       it 'returns true' do
-        pm = Emendate.prep_for('1582-10-14', :tag_date_parts)
-        t = pm.standardized_formats
-        expect(described_class.valid_date?(t[0], t[2], t[4])).to be true
+        expect(result).to be true
       end
     end
   end
-
 end
