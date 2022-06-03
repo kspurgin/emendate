@@ -56,12 +56,12 @@ module Emendate
       expanded.to_i > year.to_i
     end
 
-    def two_digit_year(yr)
-      year = yr.is_a?(String) ? yr : yr.to_s
-      max = year.length - 1
-      min = max - 1
-      year[min..max]
-    end
+    # def two_digit_year(yr)
+    #   year = yr.is_a?(String) ? yr : yr.to_s
+    #   max = year.length - 1
+    #   min = max - 1
+    #   year[min..max]
+    # end
 
     # pass in segments. This pulls out literals
     def valid_date?(yr, mth, day)
