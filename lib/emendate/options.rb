@@ -4,6 +4,11 @@ require_relative 'error'
 require_relative 'options_contract'
 
 module Emendate
+  # To add or update an option there are several places to edit:
+  # - #defaults in this file -- used to reset to defaults without restarting application
+  # - Emendate::OptionsContract -- used to validate configs
+  # - Emendate (lib/emendate.rb) -- register the options with dry-configurable
+  # - docs/options.adoc
   class Options
     attr_reader :options
 
@@ -36,6 +41,7 @@ module Emendate
     def defaults
       {:edtf => false,
        :ambiguous_month_day => :as_month_day,
+       :ambiguous_month_day_year => :as_month_day,
        :ambiguous_month_year => :as_year,
        :before_date_treatment => :point,
        :two_digit_year_handling => :coerce,

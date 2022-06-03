@@ -41,7 +41,8 @@ module Emendate
     # treats 2/3 as February 3
     # alternative: as_day_month would result in March 2
     setting :ambiguous_month_day, default: :as_month_day, reader: true
-
+    setting :ambiguous_month_day_year, default: :month_day_year, reader: true
+    
     # treats 2010-12 as 2010 - 2012
     # alternative: as_month would result in December 2010
     # this option is also applied to ambiguous season/year values

@@ -8,6 +8,7 @@ module Emendate
       config.validate_keys = true
       
       optional(:ambiguous_month_day).value(:symbol)
+      optional(:ambiguous_month_day_year).value(:symbol)
       optional(:ambiguous_month_year).value(:symbol)
       optional(:ambiguous_year_rollback_threshold).value(:integer)
       optional(:before_date_treatment).value(:symbol)
@@ -29,6 +30,14 @@ module Emendate
       if key?
         allowed = %i[as_month_day as_day_month]
         val = values[:ambiguous_month_day]
+        key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
+      end
+    end
+
+    rule(:ambiguous_month_day_year) do
+      if key?
+        allowed = %i[month_day_year day_month_year year_month_day year_day_month]
+        val = values[:ambiguous_month_day_year]
         key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
       end
     end

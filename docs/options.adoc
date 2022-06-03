@@ -22,6 +22,23 @@ Alternate value:: `:as_day_month`, resulting in March 2
 
 Does not apply when there is no ambiguity. For example, 29/2 will always be interpreted as February 29, as there is no month 29.
 
+== ambiguous_month_day_year
+
+What is this?:: `10-02-06` could reasonably be interpreted in four different ways
+Default value:: `:month_day_year`, resulting in 2006-10-02
+
+**Alternate values**
+
+* `:day_month_year`, resulting in 2006-02-10
+* `:year_month_day`, resulting in 2010-02-06
+* `:year_day_month`, resulting in 2010-06-02
+
+Does not apply when there is no ambiguity. For example, 87-04-13 will always be interpreted as 1987-04-13, because:
+
+* There is no month or day 87 (so it must be year)
+* There is no month 13 (so it must be day)
+* That leaves 04 as month
+
 == ambiguous_month_year
 
 What is this?:: Does 2010-12 mean 2010-2012, or December 2010?
