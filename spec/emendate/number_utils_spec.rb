@@ -4,6 +4,54 @@ require 'spec_helper'
 
 RSpec.describe Emendate::NumberUtils do
   subject(:numutils){ Class.new{ extend Emendate::NumberUtils } }
+
+  describe '#max_season' do
+    let(:result){ numutils.max_season }
+
+    it 'returns nil with default options' do
+      expect(result).to be_nil
+    end
+
+    context 'with max_month_number_handling: :edtf_level_1' do
+      before{ Emendate.config.options.max_month_number_handling = :edtf_level_1 }
+
+      it 'returns 24' do
+        expect(result).to eq(24)
+      end
+    end
+
+    context 'with max_month_number_handling: :edtf_level_2' do
+      before{ Emendate.config.options.max_month_number_handling = :edtf_level_2 }
+
+      it 'returns 41' do
+        expect(result).to eq(41)
+      end
+    end
+  end
+
+  describe '#min_season' do
+    let(:result){ numutils.min_season }
+
+    it 'returns nil with default options' do
+      expect(result).to be_nil
+    end
+
+    context 'with max_month_number_handling: :edtf_level_1' do
+      before{ Emendate.config.options.max_month_number_handling = :edtf_level_1 }
+
+      it 'returns 21' do
+        expect(result).to eq(21)
+      end
+    end
+
+    context 'with max_month_number_handling: :edtf_level_2' do
+      before{ Emendate.config.options.max_month_number_handling = :edtf_level_2 }
+
+      it 'returns 21' do
+        expect(result).to eq(21)
+      end
+    end
+  end
   
   describe '#valid_day?' do
     let(:result){ numutils.valid_day?(str) }
@@ -46,21 +94,33 @@ RSpec.describe Emendate::NumberUtils do
   end
 
   describe '#valid_season?' do
-    let(:result){ numutils.valid_season?(str) }
+    def result(str)
+      numutils.valid_season?(str)
+    end
+
+    it 'returns expected with defaults' do
+      expect(result('14')).to be false
+      expect(result('22')).to be false
+      expect(result('40')).to be false
+    end
     
-    context 'with not valid (i.e. 14)' do
-      let(:str){ '14' }
-      
-      it 'returns false' do
-        expect(result).to be false
+    context 'with max_month_number_handling: :edtf_level_1' do
+      before{ Emendate.config.options.max_month_number_handling = :edtf_level_1 }
+
+      it 'returns expected' do
+        expect(result('14')).to be false
+        expect(result('22')).to be true
+        expect(result('40')).to be false
       end
     end
 
-    context 'with valid (i.e. 24)' do
-      let(:str){ '24' }
-      
-      it 'returns true' do
-        expect(result).to be true
+    context 'with max_month_number_handling: :edtf_level_2' do
+      before{ Emendate.config.options.max_month_number_handling = :edtf_level_2 }
+
+      it 'returns expected' do
+        expect(result('14')).to be false
+        expect(result('22')).to be true
+        expect(result('40')).to be true
       end
     end
   end
