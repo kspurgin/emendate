@@ -241,7 +241,7 @@ RSpec.describe Emendate::DatePartTagger do
       context 'with ambiguous_month_day_year: :month_day_year' do
         let(:options){ {ambiguous_month_day_year: :month_day_year} }
 
-        it 'tags month day year' do
+        it 'tags month day year', skip: 'not yet implemented' do
           expect(types).to eq(%i[month day year])
         end
       end
@@ -249,7 +249,7 @@ RSpec.describe Emendate::DatePartTagger do
       context 'with ambiguous_month_day_year: :day_month_year' do
         let(:options){ {ambiguous_month_day_year: :day_month_year} }
 
-        it 'tags day month year' do
+        it 'tags day month year', skip: 'not yet implemented' do
           expect(types).to eq(%i[day month year])
         end
       end
@@ -257,7 +257,7 @@ RSpec.describe Emendate::DatePartTagger do
       context 'with ambiguous_month_day_year: :year_month_day' do
         let(:options){ {ambiguous_month_day_year: :year_month_day} }
 
-        it 'tags year month day' do
+        it 'tags year month day', skip: 'not yet implemented' do
           expect(types).to eq(%i[year month day])
         end
       end
@@ -265,7 +265,7 @@ RSpec.describe Emendate::DatePartTagger do
       context 'with ambiguous_month_day_year: :year_day_month' do
         let(:options){ {ambiguous_month_day_year: :year_day_month} }
 
-        it 'tags year day month' do
+        it 'tags year day month', skip: 'not yet implemented' do
           expect(types).to eq(%i[year day month])
         end
       end
