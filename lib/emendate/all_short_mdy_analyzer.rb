@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'emendate/date_types/year_month_day'
 require 'emendate/date_utils'
 require 'emendate/month_day_analyzer'
 require 'emendate/result_editable'
@@ -23,26 +24,31 @@ module Emendate
     
     include DateUtils
     include ResultEditable
+
     class << self
       def call(tokens)
         self.new(tokens).call
       end
     end
 
+    attr_reader :datetype, :warnings
+    
     # @param tokens [Array<Emendate::Segment>] (or subclasses)
     def initialize(tokens)
       @result = Emendate::SegmentSets::SegmentSet.new.copy(tokens)
       @numbers = [result[0], result[2], result[4]]
+      @opt = Emendate.options.ambiguous_month_day_year
+      @warnings = []
     end
 
     def call
       analyze
-      result
+      self
     end
 
     private
 
-    attr_reader :result, :numbers, :months, :days, :years
+    attr_reader :result, :numbers, :opt
 
     def analyze
       case valid_permutations.length
@@ -58,6 +64,7 @@ module Emendate
         end
       else
         transform_all_ambiguous
+        @warnings << "Ambiguous two-digit month/day/year treated #{opt}"
       end
     end
 
@@ -68,6 +75,18 @@ module Emendate
       to_collapse = [result[ind], result[ind + 1]]
       collapse_token_pair_backward(*to_collapse)
       result[ind]
+    end
+
+    def derive_datetype
+      year = result.when_type(:year)[0]
+      month = result.when_type(:month)[0]
+      day = result.when_type(:day)[0]
+      
+      @datetype = Emendate::DateTypes::YearMonthDay.new(year: year.literal,
+                                            month: month.literal,
+                                            day: day.literal,
+                                            children: [year, month, day])
+
     end
     
     def expand_year(n)
@@ -91,6 +110,7 @@ module Emendate
         .map(&:to_sym)
 
       numbers.each_with_index{ |part, ind| transform_part(part, order[ind]) }
+      derive_datetype
     end
 
     def transform_ambiguous_pair(part)
@@ -103,13 +123,16 @@ module Emendate
       end
 
       transform_part(analyzer.month, :month)
-      transform_part(analyzer.day, :day)      
+      transform_part(analyzer.day, :day)
+      analyzer.warnings.each{ |warn| @warnings << warn }
+      derive_datetype
     end
     
     def transform_unambiguous(parts)
       transform_part(parts[0], :year)
       transform_part(parts[1], :month)
       transform_part(parts[2], :day)
+      derive_datetype
     end
 
     def transform_part(part, type)
@@ -135,21 +158,5 @@ module Emendate
         .map{ |per| permutation_valid?(per) }
         .compact
     end
-
-    #       def check_days
-    #   @days = numbers.map{ |t| valid_day?(t.lexeme) ? t : nil }.compact
-    #   fail(MonthDayYearError.new(tokens)) if days.empty?
-    # end
-
-    # def check_months
-    #   @months = numbers.map{ |t| valid_month?(t.lexeme) ? t : nil }.compact
-    #   if months.empty?
-    #   end
-
-    #   def check_years
-    #     @years = numbers.map{ |t| valid_year?(expanded_year(t)) ? t : nil }.compact
-    #     fail(MonthDayYearError.new(numbers)) if months.empty?
-    #   end
-
   end
 end

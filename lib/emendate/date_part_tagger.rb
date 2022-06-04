@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'emendate/all_short_mdy_analyzer'
 require 'emendate/date_utils'
 require 'emendate/result_editable'
 
@@ -104,9 +105,9 @@ module Emendate
     end
 
     def hyphen_to_range_indicator(source:)
-        ri = Emendate::DerivedToken.new(type: :range_indicator,
-                                        sources: [source])
-        replace_x_with_given_segment(x: source, segment: ri)
+      ri = Emendate::DerivedToken.new(type: :range_indicator,
+                                      sources: [source])
+      replace_x_with_given_segment(x: source, segment: ri)
     end
 
     def tag_numeric_month
@@ -181,7 +182,7 @@ module Emendate
         replace_x_with_date_part_type(x: day, date_part_type: :day)
       end
       [h1, h2].each{ |h| result.delete(h) }
-      result.warnings << "Ambiguous month/day treated #{Emendate.options.ambiguous_month_day}" if analyzer.ambiguous
+      analyzer.warnings.each{ |warn| result.warnings << warn }
     end
 
     def tag_year_in_month_short_year
@@ -190,11 +191,23 @@ module Emendate
       replace_x_with_given_segment(x: yr, segment: year)
     end
 
-    # def tag_numeric_month_day_short_year
-    #   _n1, _h1, _n2, _h2, n3 = result.extract(%i[number1or2 hyphen number1or2 hyphen number1or2]).segments
-    #   year = Emendate::ShortYearHandler.call(n3)
-    #   replace_x_with_given_segment(x: n3, segment: year)
-    # end
+    def tag_numeric_month_day_short_year
+      to_convert = result.extract(%i[number1or2 hyphen number1or2 hyphen number1or2])
+
+      begin
+        analyzer = Emendate::AllShortMdyAnalyzer.call(to_convert)
+      rescue Emendate::Error => err
+        raise(err)
+      end
+
+      analyzer.warnings.each{ |warn| result.warnings << warn }
+      replace_segments_with_new(segments: to_convert.segments, new: analyzer.datetype)
+      
+      binding.pry
+      # _n1, _h1, _n2, _h2, n3 = result.extract(%i[number1or2 hyphen number1or2 hyphen number1or2]).segments
+      # year = Emendate::ShortYearHandler.call(n3)
+      # replace_x_with_given_segment(x: n3, segment: year)
+    end
 
     def tag_year_numeric_month_day
       y, h1, m, h2, d = result.extract(%i[year hyphen number1or2 hyphen number1or2]).segments

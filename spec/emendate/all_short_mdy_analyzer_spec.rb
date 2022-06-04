@@ -9,15 +9,15 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
 
   describe '#call' do
     let(:result){ analyzer.call }
-    let(:types){ result.types }
-    let(:year){ result.when_type(:year)[0].literal }
+    let(:ymd){ "#{result.datetype.year} #{result.datetype.month} #{result.datetype.day}" }
+    let(:wct){ result.warnings.length }
 
     context 'with 87-04-13 (all unambiguous)' do
       let(:str){ '87-04-13' }
       
       it 'converts to date types' do
-        expect(types).to eq(%i[year month day])
-        expect(year).to eq(1987)
+        expect(ymd).to eq('1987 4 13')
+        expect(wct).to eq(0)
       end
     end
 
@@ -25,16 +25,16 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
       let(:str){ '10-02-06' }
 
       it 'converts to date types (default order)' do
-        expect(types).to eq(%i[month day year])
-        expect(year).to eq(2006)
+        expect(ymd).to eq('2006 2 10')
+        expect(wct).to eq(1)
       end
 
       context 'with day month year option' do
         before{ Emendate.options.ambiguous_month_day_year = :day_month_year }
 
         it 'converts to date types' do
-          expect(types).to eq(%i[day month year])
-          expect(year).to eq(2006)
+          expect(ymd).to eq('2006 2 10')
+          expect(wct).to eq(1)
         end
       end
 
@@ -42,8 +42,8 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
         before{ Emendate.options.ambiguous_month_day_year = :year_month_day }
 
         it 'converts to date types' do
-          expect(types).to eq(%i[year month day])
-          expect(year).to eq(2010)
+          expect(ymd).to eq('2010 2 6')
+          expect(wct).to eq(1)
         end
       end
 
@@ -51,8 +51,8 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
         before{ Emendate.options.ambiguous_month_day_year = :year_day_month }
 
         it 'converts to date types' do
-          expect(types).to eq(%i[year day month])
-          expect(year).to eq(2010)
+          expect(ymd).to eq('2010 6 2')
+          expect(wct).to eq(1)
         end
       end
     end
@@ -61,8 +61,8 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
       let(:str){ '50-02-03' }
 
       it 'returns day month year (with default options)' do
-        expect(types).to eq(%i[year month day])
-        expect(year).to eq(1950)
+          expect(ymd).to eq('1950 2 3')
+          expect(wct).to eq(1)
       end
 
     end

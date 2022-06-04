@@ -13,7 +13,7 @@ module Emendate
 
     include DateUtils
 
-    attr_reader :month, :day, :ambiguous
+    attr_reader :month, :day, :warnings
 
     class << self
       def call(...)
@@ -26,7 +26,7 @@ module Emendate
       @n2 = n2
       @y = y
       @opt = Emendate.options.ambiguous_month_day
-      @ambiguous = false
+      @warnings = []
     end
 
     def call
@@ -39,6 +39,10 @@ module Emendate
 
     attr_reader :n1, :n2, :y, :opt
 
+    def add_warning
+      @warnings << "Ambiguous month/day treated #{Emendate.options.ambiguous_month_day}"
+    end
+    
     def analyze
       if !valid_month?(n1.lexeme) && valid_month?(n2.lexeme)
         @month = n2
@@ -47,11 +51,11 @@ module Emendate
         @month = n1
         @day = n2
       elsif opt == :as_month_day
-        @ambiguous = true
+        add_warning
         @month = n1
         @day = n2
       elsif opt == :as_day_month
-        @ambiguous = true
+        add_warning
         @month = n2
         @day = n1
       end
