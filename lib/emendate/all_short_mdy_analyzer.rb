@@ -97,7 +97,7 @@ module Emendate
       yr = transform_part(part[0], :year)
 
       begin
-        analyzer = Emendate::MonthDayAnalyzer.new(part[1], part[2], yr)
+        analyzer = Emendate::MonthDayAnalyzer.call(part[1], part[2], yr)
       rescue Emendate::Error => err
         raise err
       end
