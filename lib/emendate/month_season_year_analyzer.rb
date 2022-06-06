@@ -39,17 +39,17 @@ module Emendate
       elsif assume_year?
         @result = new_date_part(type: :year, lexeme: expand_year)
         if maybe_range?
-          warning = 'Ambiguous month/year treated as year'
+          warning = 'Ambiguous year + month/season/year treated as_year'
         else
-          warning = 'Treating ambiguous month/year as year, but this creates invalid range'
+          warning = 'Ambiguous year + month/season/year treated as_year, but this creates invalid range'
         end
         @warnings << warning
       elsif valid_month?(n.lexeme)
         @result = new_date_part(type: :month, lexeme: n.lexeme)
-        @warnings << 'Ambiguous month/year treated as month'
+        @warnings << 'Ambiguous year + month/season/year treated as_month'
       elsif valid_season?(n.lexeme)
         @result = new_date_part(type: :season, lexeme: n.lexeme)
-        @warnings << 'Ambiguous month/year treated as season'
+        @warnings << 'Ambiguous year + month/season/year treated as_season'
       end
     end
 

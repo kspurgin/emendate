@@ -32,7 +32,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
       it 'returns year (default treatment for ambiguous month/year -- default month max, invalid range)' do
         expect(type).to eq(:year)
         expect(lexeme).to eq('1928')
-        expect(warnings).to eq('Treating ambiguous month/year as year, but this creates invalid range')
+        expect(warnings).to eq('Ambiguous year + month/season/year treated as_year, but this creates invalid range')
       end
 
       context 'with max_month_number_handling: :edtf_level_2' do
@@ -60,7 +60,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
       it 'returns year' do
         expect(type).to eq(:year)
         expect(lexeme).to eq('2012')
-        expect(warnings).to eq('Ambiguous month/year treated as year')
+        expect(warnings).to eq('Ambiguous year + month/season/year treated as_year')
       end
 
       context 'with ambiguous_month_year: :as_month' do
@@ -69,7 +69,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
         it 'returns year' do
           expect(type).to eq(:month)
           expect(lexeme).to eq('12')
-          expect(warnings).to eq('Ambiguous month/year treated as month')
+          expect(warnings).to eq('Ambiguous year + month/season/year treated as_month')
         end
       end
     end
@@ -91,7 +91,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
         it 'returns season' do
           expect(type).to eq(:season)
           expect(lexeme).to eq('21')
-          expect(warnings).to eq('Ambiguous month/year treated as season')
+          expect(warnings).to eq('Ambiguous year + month/season/year treated as_season')
         end
       end
     end
