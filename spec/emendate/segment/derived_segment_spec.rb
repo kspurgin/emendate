@@ -52,12 +52,12 @@ RSpec.describe Emendate::DerivedSegment do
         end
       end
 
-      context 'when some sources do not have numeric literals' do
+      context 'when some sources do not have numeric literals (1985.0)' do
         let(:sources) do
           [
             Emendate::NumberToken.new(type: :number, lexeme: '1985', location: Emendate::Location.new(0, 4)),
-            t2 = Emendate::Token.new(type: :single_dot, lexeme: '.', location: Emendate::Location.new(4, 1)),
-            t3 = Emendate::NumberToken.new(type: :number, lexeme: '0', location: Emendate::Location.new(5, 1))
+            Emendate::Token.new(type: :single_dot, lexeme: '.', location: Emendate::Location.new(4, 1)),
+            Emendate::NumberToken.new(type: :number, lexeme: '0', location: Emendate::Location.new(5, 1))
           ]
         end
         let(:derived_type){ :number }
@@ -68,6 +68,24 @@ RSpec.describe Emendate::DerivedSegment do
           expect(klass.literal).to eq(1985)
           expect(klass.location.col).to eq(0)
           expect(klass.location.length).to eq(6)
+        end
+      end
+
+      context 'when some sources do not have numeric literals (2/)' do
+        let(:sources) do
+          [
+            Emendate::NumberToken.new(type: :number, lexeme: '2', location: Emendate::Location.new(0, 1)),
+            Emendate::Token.new(type: :hyphen, lexeme: '/', location: Emendate::Location.new(1, 1))
+          ]
+        end
+        let(:derived_type){ :number }
+
+        it 'derives values as expected' do
+          expect(klass.type).to eq(:number)
+          expect(klass.lexeme).to eq('2/')
+          expect(klass.literal).to eq(2)
+          expect(klass.location.col).to eq(0)
+          expect(klass.location.length).to eq(2)
         end
       end
     end

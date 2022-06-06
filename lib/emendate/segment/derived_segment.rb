@@ -38,8 +38,9 @@ module Emendate
     end
 
     def derive_literal
-      literal = sources.map(&:literal).join('').strip
-      return nil unless literal.match?(/^[0-9]+$/)
+      literal = sources.map(&:literal)
+        .select{ |val| val.is_a?(Integer) }
+        .join('').strip
 
       literal.to_i
     end
