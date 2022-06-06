@@ -39,9 +39,12 @@ module Emendate
 
     def derive_literal
       literal = sources.map(&:literal)
+        .compact
         .select{ |val| val.is_a?(Integer) }
         .join('').strip
 
+      return nil if literal.empty?
+      
       literal.to_i
     end
     

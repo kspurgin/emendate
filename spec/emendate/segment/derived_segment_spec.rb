@@ -88,6 +88,24 @@ RSpec.describe Emendate::DerivedSegment do
           expect(klass.location.length).to eq(2)
         end
       end
+
+      context 'no sources have numeric literals (, )' do
+        let(:sources) do
+          [
+            Emendate::Token.new(type: :comma, lexeme: ',', location: Emendate::Location.new(7, 1)),
+            Emendate::Token.new(type: :space, lexeme: ' ', location: Emendate::Location.new(8, 1))
+          ]
+        end
+        let(:derived_type){ :comma }
+
+        it 'derives values as expected' do
+          expect(klass.type).to eq(:comma)
+          expect(klass.lexeme).to eq(',')
+          expect(klass.literal).to be_nil
+          expect(klass.location.col).to eq(7)
+          expect(klass.location.length).to eq(2)
+        end
+      end
     end
   end
 end
