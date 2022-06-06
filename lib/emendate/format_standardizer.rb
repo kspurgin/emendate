@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
+require_relative './complex_sendable'
+require_relative './result_editable'
+
 module Emendate
 
   class FormatStandardizer
+    include ComplexSendable
     include ResultEditable
     attr_reader :result, :standardizable
 
-    def initialize(tokens:, options: {})
-      @options = options.options
+    def initialize(tokens:)
       @result = tokens.class.new.copy(tokens)
       @standardizable = true
     end
@@ -17,7 +20,13 @@ module Emendate
         functions = determine_standardizers
         break if functions.nil?
 
-        functions.each{ |f| send(f) }
+        functions.each do |function|
+          if function.is_a?(Symbol)
+            send(function)
+          else
+            send_complex(function)
+          end
+        end
       end
       result
     end
@@ -25,15 +34,17 @@ module Emendate
     private
 
     def determine_standardizers
-      s = partial_match_standardizers
-      return s unless s.nil?
+      fms = full_match_standardizers
+      return fms unless fms.nil?
+      
+      ps = partial_match_standardizers
+      return ps unless ps.nil?
 
-      s = full_match_date_part_standardizers
-      return s unless s.nil?
+      fmdp = full_match_date_part_standardizers
+      return fmdp unless fmdp.nil?
 
-      s = full_match_standardizers
-      @standardizable = false if s.nil?
-      s
+      @standardizable = false
+      []
     end
 
     def partial_match_standardizers
@@ -82,6 +93,21 @@ module Emendate
 
     def full_match_standardizers
       case result.types
+      when %i[number4 comma month]
+        [
+           :remove_post_year_comma,
+           [:move_x_to_end, ->{ result[0] }]
+        ]
+      when %i[number4 comma season]
+        [
+           :remove_post_year_comma,
+           [:move_x_to_end, ->{ result[0] }]
+        ]
+      when %i[number4 comma month number1or2]
+        %i[
+           remove_post_year_comma
+           move_year_to_end_of_segment
+          ]
       when %i[partial range_indicator partial number1or2 century]
         %i[copy_number_century_after_first_partial]
       end
@@ -168,8 +194,13 @@ module Emendate
     end
 
     def remove_post_month_comma
-      comma = result.extract(%i[month number1or2 comma]).segments[-1]
-      result.delete(comma)
+      _month, day, comma = result.extract(%i[month number1or2 comma]).segments
+      collapse_token_pair_backward(day, comma)
+    end
+
+    def remove_post_year_comma
+      year, comma = result.extract(%i[number4 comma]).segments
+      collapse_token_pair_backward(year, comma)
     end
 
     def remove_time_parts
@@ -203,15 +234,19 @@ module Emendate
 
     def open_start
       doubledot = result.when_type(:double_dot)[0]
-      openstart = Emendate::DateTypes::OpenRangeDate.new(use_date: @options[:open_unknown_start_date],
-                                                         usage: :start)
+      openstart = Emendate::DateTypes::OpenRangeDate.new(
+        use_date: Emendate.options.open_unknown_start_date,
+        usage: :start
+      )
       replace_x_with_new(x: doubledot, new: openstart)
     end
 
     def open_end
       doubledot = result.when_type(:double_dot)[-1]
-      openend = Emendate::DateTypes::OpenRangeDate.new(use_date: @options[:open_unknown_end_date],
-                                                         usage: :end)
+      openend = Emendate::DateTypes::OpenRangeDate.new(
+        use_date: Emendate.options.open_unknown_end_date,
+        usage: :end
+      )
       replace_x_with_new(x: doubledot, new: openend)
     end
     

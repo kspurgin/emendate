@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'forwardable'
+require_relative '../location'
 
 module Emendate
 
@@ -37,16 +38,20 @@ module Emendate
     end
 
     def derive_literal
-      literal = sources.map(&:literal).join('').strip
-      return nil unless literal.match?(/^[0-9]+$/)
+      literal = sources.map(&:literal)
+        .compact
+        .select{ |val| val.is_a?(Integer) }
+        .join('').strip
 
+      return nil if literal.empty?
+      
       literal.to_i
     end
     
     def derive_location
       start_position = sources[0].location.col
       length = sources.map{ |src| src.location.length }.sum
-      Location.new(start_position, length)
+      Emendate::Location.new(start_position, length)
     end
     
     def set_sources(opts)

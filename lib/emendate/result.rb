@@ -7,12 +7,18 @@ module Emendate
 
     attr_reader :original_string, :errors, :warnings, :dates
 
-    def initialize(resulthash)
-      @original_string = resulthash[:original_string]
-      @errors = resulthash[:errors]
-      @warnings = resulthash[:warnings]
-      @dates = resulthash[:result]
-      verify_ranges
+    # @param pm [Emendate::ProcessingManager]
+    def initialize(pm)
+      @pm = pm
+      @original_string = pm.orig_string
+      @errors = pm.errors.map!{ |err| Emendate::ErrorUtil.msg(err).join("\n") }
+      @warnings = pm.warnings
+      if pm.state == :failed
+        @dates = []
+      else
+        @dates = pm.tokens.segments.select{ |t| t.date_type? }
+          .map{ |t| Emendate::ParsedDate.new(t, pm.tokens.certainty, original_string) }
+      end
     end
 
     def compile_date_info(method:, delim:)
@@ -25,10 +31,10 @@ module Emendate
     
     def to_h
       {
-        original_string: @original_string,
-        dates: @dates.map(&:to_h),
-        errors: @errors,
-        warnings: @warnings
+        original_string: original_string,
+        dates: dates.map(&:to_h),
+        errors: errors,
+        warnings: warnings
       }
     end
 
@@ -38,12 +44,6 @@ module Emendate
     
     private
 
-    def verify_ranges
-      @dates.map(&:valid_range?).each_with_index do |vr, i|
-        next if vr == true
-
-        @warnings << "Date ##{i + 1} is not a valid date range"
-      end
-    end
+    attr_reader :pm
   end
 end

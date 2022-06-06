@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Emendate::CertaintyChecker do
   def check(str, options = {})
     pm = Emendate.prep_for(str, :certainty_check, options)
-    cc = Emendate::CertaintyChecker.new(tokens: pm.tokens, options: pm.options)
+    cc = Emendate::CertaintyChecker.new(tokens: pm.tokens)
     cc.check
   end
 

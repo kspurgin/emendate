@@ -3,94 +3,92 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::DateTypes::YearMonth do
+  let(:subject){ described_class.new(**opts) }
+  
   context 'when created with month and year' do
-    before(:all) do
-      @dt = described_class.new(year: '2020', month: 2)
-    end
-
+    let(:opts){ {year: '2020', month: 2} }
+    
     it 'type = :yearmonth_date_type' do
-      expect(@dt.type).to eq(:yearmonth_date_type)
+      expect(subject.type).to eq(:yearmonth_date_type)
     end
 
     describe '#earliest' do
       it 'returns 2020-02-01' do
-        expect(@dt.earliest).to eq(Date.new(2020, 2, 1))
+        expect(subject.earliest).to eq(Date.new(2020, 2, 1))
       end
     end
 
     describe '#latest' do
       it 'returns 2020-02-29' do
-        expect(@dt.latest).to eq(Date.new(2020, 2, 29))
+        expect(subject.latest).to eq(Date.new(2020, 2, 29))
       end
     end
 
     describe '#lexeme' do
       it 'returns 2020-02' do
-        expect(@dt.lexeme).to eq('2020-02')
+        expect(subject.lexeme).to eq('2020-02')
       end
     end
 
     describe '#literal' do
       it 'returns 2020-02' do
-        expect(@dt.literal).to eq(202002)
+        expect(subject.literal).to eq(202002)
       end
     end
 
     describe '#year' do
       it 'returns 2020' do
-        expect(@dt.year).to eq(2020)
+        expect(subject.year).to eq(2020)
       end
     end
 
     describe '#month' do
       it 'returns 2' do
-        expect(@dt.month).to eq(2)
+        expect(subject.month).to eq(2)
       end
     end
   end
 
   context 'when created with literal' do
-    before(:all) do
-      @dt = described_class.new(literal: 202002)
-    end
+    let(:opts){ {literal: 202002} }
 
     it 'type = :yearmonth_date_type' do
-      expect(@dt.type).to eq(:yearmonth_date_type)
+      expect(subject.type).to eq(:yearmonth_date_type)
     end
 
     describe '#earliest' do
       it 'returns 2020-02-01' do
-        expect(@dt.earliest).to eq(Date.new(2020, 2, 1))
+        expect(subject.earliest).to eq(Date.new(2020, 2, 1))
       end
     end
 
     describe '#latest' do
       it 'returns 2020-02-29' do
-        expect(@dt.latest).to eq(Date.new(2020, 2, 29))
+        expect(subject.latest).to eq(Date.new(2020, 2, 29))
       end
     end
 
     describe '#lexeme' do
       it 'returns 2020-02' do
-        expect(@dt.lexeme).to eq('2020-02')
+        expect(subject.lexeme).to eq('2020-02')
       end
     end
 
     describe '#literal' do
       it 'returns 2020-02' do
-        expect(@dt.literal).to eq(202002)
+        expect(subject.literal).to eq(202002)
       end
     end
 
     describe '#year' do
       it 'returns 2020' do
-        expect(@dt.year).to eq(2020)
+        expect(subject.year).to eq(2020)
       end
     end
 
     describe '#month' do
       it 'returns 2' do
-        expect(@dt.month).to eq(2)
+        expect(subject.month).to eq(2)
       end
     end
   end

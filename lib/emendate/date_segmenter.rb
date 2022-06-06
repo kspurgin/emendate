@@ -5,11 +5,10 @@ module Emendate
   class DateSegmenter
     include DateUtils
 
-    attr_reader :options, :result
+    attr_reader :result
     attr_accessor :working
 
-    def initialize(tokens:, options: {})
-      @options = options
+    def initialize(tokens:)
       @working = Emendate::SegmentSets::MixedSet.new.copy(tokens)
       @result = Emendate::SegmentSets::MixedSet.new.copy(tokens)
       result.clear
@@ -81,7 +80,7 @@ module Emendate
     def mod_switch
       switch = working.shift
       if current.kind_of?(Emendate::DateTypes::DateType)
-        current.range_switch = switch.lexeme
+        current.range_switch = switch.type.to_s
         result << current.prepend_source_token(switch)
         working.shift
       else
@@ -139,6 +138,8 @@ module Emendate
         :parse_yyyymm
       when :number8
         :parse_yyyymmdd
+      when :season
+        :parse_date_parts
       when :year
         :parse_date_parts
       else
@@ -220,6 +221,8 @@ module Emendate
         result << create_year_month_day_datetype(pieces)
       elsif pieces.types.sort == %i[month year]
         result << create_year_month_datetype(pieces)
+      elsif pieces.types.sort == %i[season year]
+        result << create_year_season_datetype(pieces)
       elsif pieces.types.sort == %i[year]
         result << create_year_datetype(pieces)
       end
@@ -241,6 +244,14 @@ module Emendate
       month = pieces.when_type(:month)[0]
       year = pieces.when_type(:year)[0]
       Emendate::DateTypes::YearMonth.new(year: year.literal,
+                                         month: month.literal,
+                                         children: pieces.segments)
+    end
+
+    def create_year_season_datetype(pieces)
+      month = pieces.when_type(:season)[0]
+      year = pieces.when_type(:year)[0]
+      Emendate::DateTypes::YearSeason.new(year: year.literal,
                                          month: month.literal,
                                          children: pieces.segments)
     end

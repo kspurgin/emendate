@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../error_util'
+
 module Emendate
   module Examples
     # Mixin module for Examples::Tester
@@ -24,8 +26,7 @@ module Emendate
         pm.process
         result = Emendate::Translator.new(pm).translate
       rescue StandardError => err
-        err_msg = [err.message, err.backtrace.first(3)].flatten
-        example.add_error(name.to_sym, err_msg)
+        example.add_error(name.to_sym, Emendate::ErrorUtil.msg(err))
         nil
       else
         result

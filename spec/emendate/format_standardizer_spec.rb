@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Emendate::FormatStandardizer do
   def standardize(str, options = {})
     pm = Emendate.prep_for(str, :standardize_formats, options)
-    fs = Emendate::FormatStandardizer.new(tokens: pm.tokens, options: pm.options)
+    fs = Emendate::FormatStandardizer.new(tokens: pm.tokens)
     fs.standardize.types
   end
 
@@ -17,17 +17,31 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
+    context 'with 2020, Feb.' do
+      it 'reorders segments' do
+        result = standardize('2020, Feb.')
+        expect(result).to eq(%i[month number4])
+      end
+    end
+
+    context 'with 2020, Feb 15' do
+      it 'reorders segments' do
+        result = standardize('2020, Feb 15')
+        expect(result).to eq(%i[month number1or2 number4])
+      end
+    end
+
+    context 'with 2020, summer' do
+      it 'reorders segments' do
+        result = standardize('2020, summer')
+        expect(result).to eq(%i[season number4])
+      end
+    end
+
     context 'with c. 999-1-1' do
       it 'pads to 4-digit number' do
         result = standardize('c. 999-1-1')
         expect(result).to eq(%i[number4 hyphen number1or2 hyphen number1or2])
-      end
-    end
-
-    context 'with mid-1990' do
-      it 'removes hyphen' do
-        result = standardize('mid-1990')
-        expect(result).to eq(%i[partial number4])
       end
     end
 

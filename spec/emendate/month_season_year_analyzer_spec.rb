@@ -3,61 +3,97 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::MonthSeasonYearAnalyzer do
-  def prep(str, options = {})
-    pm = Emendate.prep_for(str, :tag_date_parts, options)
-    t = pm.standardized_formats
-    r = Emendate::MonthSeasonYearAnalyzer.new(t[2], t[0], pm.options)
-    "#{r.result.type} #{r.result.lexeme} #{r.ambiguous}"
+  subject(:analyzer){ described_class.new(*tokens) }
+  
+  let(:tokens) do
+    t = Emendate.prep_for(str, :tag_date_parts).standardized_formats
+    [t[2], t[0]]
   end
-
-  context 'with unambiguous year-number - second less than first' do
-    context 'with month as second element - 2020-03' do
+  
+  describe '#call' do
+    let(:result){ analyzer.call }
+    let(:type){ result.result.type }
+    let(:lexeme){ result.result.lexeme }
+    let(:warnings){ result.warnings.first }
+    
+    context 'with 2020-03 (unambiguous year-number - second less than first - MONTH)' do
+      let(:str){ '2020-03' }
+      
       it 'returns month' do
-        expect(prep('2020-03')).to eq('month 03 false')
+        expect(type).to eq(:month)
+        expect(lexeme).to eq('03')
+        expect(warnings).to be_nil
       end
     end
 
-    context 'with season as second element - 1995-28' do
-      it 'returns season' do
-        expect(prep('1995-28')).to eq('season 28 false')
-      end
-    end
-  end
-
-  context 'with unambiguous year-number - second greater than first and cannot be month or season - 1995-99' do
-    it 'returns year' do
-      expect(prep('1995-99')).to eq('year 1999 false')
-    end
-  end
-
-  context 'with ambiguous year-number' do
-    context 'with second element possibly a month - 2010-12' do
-      context 'when default option' do
-        it 'returns year' do
-          expect(prep('2010-12')).to eq('year 2012 true')
-        end
+    context 'with 1995-28 (unambiguous year-number - second less than first - SEASON)' do
+      let(:str){ '1995-28' }
+      
+      it 'returns year (default treatment for ambiguous month/year -- default month max, invalid range)' do
+        expect(type).to eq(:year)
+        expect(lexeme).to eq('1928')
+        expect(warnings).to eq('Ambiguous year + month/season/year treated as_year, but this creates invalid range')
       end
 
-      context 'when ambiguous_month_year: :as_month' do
-        it 'returns month' do
-          expect(prep('2010-12', ambiguous_month_year: :as_month)).to eq('month 12 true')
-        end
-      end
-    end
-
-    context 'with second element possibly a season - 2020-21' do
-      context 'when default option' do
-        it 'returns year' do
-          expect(prep('2020-21')).to eq('year 2021 true')
-        end
-      end
-
-      context 'when ambiguous_month_year: :as_month' do
+      context 'with max_month_number_handling: :edtf_level_2' do
+        before{ Emendate.config.options.max_month_number_handling = :edtf_level_2 }
+        
         it 'returns season' do
-          expect(prep('2020-21', ambiguous_month_year: :as_month)).to eq('season 21 true')
+          expect(type).to eq(:season)
+          expect(lexeme).to eq('28')
+          expect(warnings).to be_nil
+        end
+      end
+    end
+
+    context 'with 1995-99 (unambiguous year-number - second >first, cannot be month/season, valid range)' do
+      let(:str){ '1995-99' }
+        it 'returns year' do
+          expect(type).to eq(:year)
+          expect(lexeme).to eq('1999')
+          expect(warnings).to be_nil
+        end
+    end
+
+    context 'with 2010-12 (ambiguous value, with default treatment as year)' do
+      let(:str){ '2010-12' }
+      it 'returns year' do
+        expect(type).to eq(:year)
+        expect(lexeme).to eq('2012')
+        expect(warnings).to eq('Ambiguous year + month/season/year treated as_year')
+      end
+
+      context 'with ambiguous_month_year: :as_month' do
+        before{ Emendate.config.options.ambiguous_month_year = :as_month }
+
+        it 'returns year' do
+          expect(type).to eq(:month)
+          expect(lexeme).to eq('12')
+          expect(warnings).to eq('Ambiguous year + month/season/year treated as_month')
+        end
+      end
+    end
+
+    context 'with 2010-21 (ambiguous value, with default treatment as year)' do
+      let(:str){ '2010-21' }
+      it 'returns year' do
+        expect(type).to eq(:year)
+        expect(lexeme).to eq('2021')
+        expect(warnings).to be_nil # cannot be month, given default options
+      end
+
+      context 'with ambiguous_month_year: :as_month' do
+        before do
+          Emendate.config.options.ambiguous_month_year = :as_month
+          Emendate.config.options.max_month_number_handling = :edtf_level_1
+        end
+
+        it 'returns season' do
+          expect(type).to eq(:season)
+          expect(lexeme).to eq('21')
+          expect(warnings).to eq('Ambiguous year + month/season/year treated as_season')
         end
       end
     end
   end
 end
-

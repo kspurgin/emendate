@@ -23,4 +23,11 @@ RSpec.describe Emendate::Translators::Edtf::YearMonth do
       expect(warnings).to eq(['Ambiguous year + month/season/year treated as_month'])
     end
   end
+  
+  context 'with 03/2020' do
+    let(:str){ '03/2020' }
+    it 'translates as expected' do
+      expect(value).to eq('2020-03')
+    end
+  end
 end

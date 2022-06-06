@@ -3,11 +3,10 @@
 module Emendate
   class CertaintyChecker
 
-    attr_reader :result, :working, :options
+    attr_reader :result, :working
 
-    def initialize(tokens:, options: {})
+    def initialize(tokens:)
       @result = tokens.class.new.copy(tokens)
-      @options = options
     end
 
     def check
@@ -172,7 +171,7 @@ module Emendate
     def process_square_brackets(remain)
       return if remain.include?(:square_bracket_open) || remain.include?(:square_bracket_close)
 
-      if options.square_bracket_interpretation == :edtf_set
+      if Emendate.options.square_bracket_interpretation == :edtf_set
         result.add_certainty(:one_of_set)
       else
         result.add_certainty(:inferred)

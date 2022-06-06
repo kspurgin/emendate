@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Emendate::OrdinalTranslator do
   def translate(str, options = {})
     pm = Emendate.prep_for(str, :translate_ordinals, options)
-    t = Emendate::OrdinalTranslator.new(tokens: pm.tokens, options: pm.options)
+    t = Emendate::OrdinalTranslator.new(tokens: pm.tokens)
     t.translate
   end
 

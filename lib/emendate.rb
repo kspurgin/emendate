@@ -33,6 +33,27 @@ module Emendate
   EDTF_TYPES = %i[double_dot percent tilde curly_bracket_open letter_y letter_t letter_z letter_e]
 
   setting :basedir, default: Gem.loaded_specs['emendate'].full_gem_path, reader: true
+
+  setting :options, reader: true do
+    setting :ambiguous_month_day, default: :as_month_day, reader: true
+    setting :ambiguous_month_day_year, default: :month_day_year, reader: true
+    setting :ambiguous_month_year, default: :as_year, reader: true
+    setting :ambiguous_year_rollback_threshold, default: Date.today.year.to_s[-2..-1].to_i, reader: true
+    setting :before_date_treatment, default: :point, reader: true
+    setting :beginning_hyphen, default: :unknown, reader: true
+    setting :edtf, default: false, reader: true
+    setting :ending_hyphen, default: :open, reader: true
+    setting :max_output_dates, default: :all, reader: true
+    setting :max_month_number_handling, default: :months, reader: true
+    setting :open_unknown_end_date, default: Date.new(2999, 12, 31), reader: true
+    setting :open_unknown_start_date, default: Date.new(1583, 1, 1), reader: true
+    setting :pluralized_date_interpretation, default: :decade, reader: true
+    setting :square_bracket_interpretation, default: :inferred_date, reader: true
+    setting :target_dialect, default: nil, reader: true
+    setting :two_digit_year_handling, default: :coerce, reader: true
+    setting :unknown_date_output, default: :orig, reader: true
+    setting :unknown_date_output_string, default: '', reader: true
+  end
   
   setting :examples, reader: true do
     setting :dir, default: ->{ File.join(Emendate.basedir, 'spec', 'support') }, reader: true

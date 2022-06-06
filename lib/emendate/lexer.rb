@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'emendate/date_utils'
+require 'emendate/location'
+
 module Emendate
   def normalize_orig(orig)
     orig.downcase.sub('[?]', '?')
@@ -15,15 +18,18 @@ module Emendate
   end
 
   class Lexer
+    include DateUtils
+    
     # ambiguous things
     # c - at beginning = circa, at end = century
     # nd - if directly after number, ordinal indicator; otherwise unknown date. normalize_orig attempts
     #      to clear this up for most cases.
     AFTER = %w[after post].freeze
     AND = ['&', 'and'].freeze
+    APOSTROPHE = "'"
     BEFORE = %w[before pre].freeze
     CENTURY = %w[century cent].freeze
-    CIRCA = %w[ca circa].freeze
+    CIRCA = %w[about ca circa est].freeze
     COLON = ':'
     COMMA = ','
     CURLY_BRACKET_OPEN = '{'
@@ -33,7 +39,7 @@ module Emendate
     ERA = %w[bce ce bp].freeze
     HYPHEN = ["\u002D", "\u2010", "\u2011", "\u2012", "\u2013", "\u2014", "\u2015", "\u2043"].freeze
     MONTHS = Date::MONTHNAMES.compact.map(&:downcase).freeze
-    MONTH_ABBREVS = Date::ABBR_MONTHNAMES.compact.map(&:downcase).freeze
+    MONTH_ABBREVS = [Date::ABBR_MONTHNAMES.compact.map(&:downcase), 'sept'].flatten.freeze
     QUESTION = '?'
     OR_INDICATOR = %w[or].freeze
     ORDINAL_INDICATOR = %w[st nd rd th d].freeze
@@ -41,6 +47,7 @@ module Emendate
     PARTIAL = %w[early late middle mid].freeze
     PLUS = '+'
     RANGE_INDICATOR = %w[to]
+    # If additional seasons are added, make sure to update the mapping to literals in AlphaMonthConverter
     SEASONS = %w[winter spring summer fall autumn]
     SLASH = '/'
     SPACE = ' '
@@ -74,7 +81,9 @@ module Emendate
       c = consume
 
       token =
-        if c == COLON
+        if c == APOSTROPHE
+          token_of_type(c, :apostrophe)
+        elsif c == COLON
           token_of_type(c, :colon)
         elsif c == COMMA
           token_of_type(c, :comma)
@@ -164,9 +173,16 @@ module Emendate
       consume_letters
       lexeme = norm[lexeme_start_p..(next_p - 1)]
       type = letter_type(lexeme)
-      Token.new(type: type, lexeme: lexeme, location: current_location)
+      literal = letter_literal(type, lexeme)
+      Token.new(type: type, lexeme: lexeme, literal: literal, location: current_location)
     end
 
+    def letter_literal(type, lexeme)
+      return nil unless %i[month_alpha month_abbr_alpha].any?(type)
+
+      type == :month_alpha ? month_literal(lexeme) : month_abbr_literal(lexeme)
+    end
+    
     def letter_type(lexeme)
       if AFTER.include?(lexeme)
         :after
@@ -242,11 +258,11 @@ module Emendate
     end
 
     def current_location
-      Location.new(lexeme_start_p, next_p - lexeme_start_p)
+      Emendate::Location.new(lexeme_start_p, next_p - lexeme_start_p)
     end
 
     def after_source_end_location
-      Location.new(next_p, 1)
+      Emendate::Location.new(next_p, 1)
     end
 
     def alpha_numeric?(char)

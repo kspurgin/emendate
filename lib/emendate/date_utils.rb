@@ -7,11 +7,6 @@ module Emendate
     include Emendate::NumberUtils
     extend self
 
-    # returns true if digits after a year could be interpreted as (month OR season) OR range
-    def ambiguous_post_year_value?(year, digits)
-      possible_range?(year, digits) && valid_month_or_season?(digits)
-    end
-
     # returns 2010 for 2020-10; returns 1999 for 1998-9
     def expand_shorter_digits(year, digits)
       diff = year.length - digits.length - 1
@@ -23,16 +18,15 @@ module Emendate
       possible_range?(year, digits) && !valid_month_or_season?(digits) ? true : false
     end
 
-    def month_number_lookup
-      h = {}
-      Date::MONTHNAMES.compact.map(&:downcase).each_with_index{ |str, i| h[str] = i + 1 }
-      h
+    def month_abbr_literal(month)
+      lookup = {}
+      Date::ABBR_MONTHNAMES.compact.map(&:downcase).each_with_index{ |str, i| lookup[str] = i + 1 }
+      lookup['sept'] = 9
+      lookup[month.downcase.strip.delete_suffix('.')]
     end
 
-    def month_abbr_number_lookup
-      h = {}
-      Date::ABBR_MONTHNAMES.compact.map(&:downcase).each_with_index{ |str, i| h[str] = i + 1 }
-      h
+    def month_literal(month)
+      Date::MONTHNAMES.map{ |mth| mth.downcase if mth}.index(month.downcase)
     end
 
     # determines whether the number following a year could be the end of a range beginning with that year
@@ -43,13 +37,6 @@ module Emendate
       return false unless valid_year?(expanded)
 
       expanded.to_i > year.to_i
-    end
-
-    def two_digit_year(yr)
-      year = yr.is_a?(String) ? yr : yr.to_s
-      max = year.length - 1
-      min = max - 1
-      year[min..max]
     end
 
     # pass in segments. This pulls out literals

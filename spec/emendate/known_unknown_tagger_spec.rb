@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Emendate::KnownUnknownTagger do
   def tag(str, options = {})
     pm = Emendate.prep_for(str, :tag_known_unknown, options)
-    fs = described_class.new(tokens: pm.tokens, str: str, options: pm.options)
+    fs = described_class.new(tokens: pm.tokens, str: str)
     fs.tag
   end
 

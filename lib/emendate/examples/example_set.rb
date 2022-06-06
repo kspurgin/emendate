@@ -57,6 +57,7 @@ module Emendate
       end
 
       def report_failures
+        return unless failures
         return if failures.empty?
 
         puts "\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
@@ -141,7 +142,7 @@ module Emendate
       end
 
       def grouped_by_test_status
-        @grouped_by_test_status ||= examples.group_by{ |example| example.test_status }
+        examples.group_by{ |example| example.test_status }
       end
     end
   end

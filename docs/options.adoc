@@ -22,6 +22,23 @@ Alternate value:: `:as_day_month`, resulting in March 2
 
 Does not apply when there is no ambiguity. For example, 29/2 will always be interpreted as February 29, as there is no month 29.
 
+== ambiguous_month_day_year
+
+What is this?:: `10-02-06` could reasonably be interpreted in four different ways
+Default value:: `:month_day_year`, resulting in 2006-10-02
+
+**Alternate values**
+
+* `:day_month_year`, resulting in 2006-02-10
+* `:year_month_day`, resulting in 2010-02-06
+* `:year_day_month`, resulting in 2010-06-02
+
+Does not apply when there is no ambiguity. For example, 87-04-13 will always be interpreted as 1987-04-13, because:
+
+* There is no month or day 87 (so it must be year)
+* There is no month 13 (so it must be day)
+* That leaves 04 as month
+
 == ambiguous_month_year
 
 What is this?:: Does 2010-12 mean 2010-2012, or December 2010?
@@ -56,6 +73,15 @@ If we are using the default and the current year is 2021...
 This option is irrelevant if you are using `two_digit_year_handling: :literal`
 ====
 
+== before_date_treatment
+
+What is this?:: Whether to treat a date like "before 1950" or "pre-1950" as a range
+Default value:: `:point` ("before 1950" will be treated as a single date point, with earliest and latest date 1949-12-31)
+
+**Alternate values**
+
+* `:range` ("before 1950" will be treated as a range, with the value of https://github.com/kspurgin/emendate/blob/main/docs/options.adoc#open_unknown_start_date[`:open_unknown_start_date`] as the earliest date, and 1949-12-31 as the latest date)
+
 == beginning_hyphen
 
 What is this?:: How to interpret a hyphen at the beginning of a date string (e.g. `-2002`)
@@ -78,6 +104,9 @@ If set to true, the following will be set:
 
 * `beginning_hyphen: :edtf`
 * `square_bracket_interpretation: :edtf_set`
+* `max_month_number_handling: :edtf_level_2`
+
+These options support the full Level 2 EDTF specification. Set the relevant options manually if incoming date values conform to EDTF Level 0 or 1.
 
 == ending_hyphen
 
@@ -95,6 +124,18 @@ Default value is `:open` because this form is frequently used to record the ongo
 What is this?:: Some strings will get parsed into multiple dates (`2002, 2004`). By default each individual date found will be returned. Some applications can only handle a single date, so you may want to limit the number of dates included in the output. 
 Default value:: `:all` ("known to have occurred from 2002 until now, and occurrence is ongoing")
 Alternate value:: any Integer
+
+== max_month_number_handling
+
+What is this?:: Tells the application what to consider the largest number that might be treated as a month (or season or EDTF Level 2 sub-year grouping, both of which get treated as month internally)
+Default value:: `:months` - largest number that can be a month is 12
+
+**Alternate values**
+
+* `:edtf_level_1` - use if input is known to include values like `2021-22` (Summer 2021, independent of location) - largest number that may be a month is 24
+* `:edtf_level_2` - use if input is known to include values like `2021-30` (Summer 2021, Southern Hemisphere) - largest number that may be a month is 41
+
+NOTE: Numbers 13-20 are never treated as months
 
 == open_unknown_end_date
 
@@ -119,8 +160,12 @@ However, depending on your application, meaningfully indexing or faceting on thi
 
 This setting controls what will be output as the `date_start_full` value of your Emendate.result in the case of an open or unknown start date. The `date_start` value will be derived from this value, but possibly truncated to match the level of granularity of the known/closed end date.
 
-Default value:: 0001-01-01
+Default value:: 1583-01-01
 Alternate value:: Any year/month/day expressed as YYYY-MM-DD
+
+IMPORTANT: For dates like "before 1950" or "pre-1950", this option will have no effect if https://github.com/kspurgin/emendate/blob/main/docs/options.adoc#before_date_treatment[:before_date_treatment] is `:point`. You must set that option to `:range` for this value to be used as the earliest date.
+
+NOTE: See https://github.com/kspurgin/emendate/blob/main/docs/notes.adoc#iso8601-and-bce[note on ISO8601 and BCE] for rationale for default value.
 
 == target_dialect
 
