@@ -7,12 +7,6 @@ RSpec.describe Emendate::DatePartTagger do
   let(:tokens){ Emendate.prep_for(str, :tag_date_parts, options).tokens }
   let(:options){ {} }
   
-  # def tag(str, options = {})
-  #   pm = Emendate.prep_for(str, :tag_date_parts, options)
-  #   fs = Emendate::DatePartTagger.new(tokens: pm.tokens)
-  #   fs.tag
-  # end
-
   describe '#tag' do
     let(:result){ tagger.tag }
     let(:types){ result.types }
@@ -146,14 +140,16 @@ RSpec.describe Emendate::DatePartTagger do
       end
     end
 
-    context 'with 02-10-20 and current year is 2020' do
+    context 'with 2-10-20 and current year is 2020' do
       before{ allow(Date).to receive(:today).and_return Date.new(2020, 2, 3) }
-      let(:str){ '02-10-20' }
+      let(:str){ '2-10-20' }
       let(:options){ {ambiguous_year_rollback_threshold: 20} }
       
       it 'tags month (2), day (10), and short year (1920)' do
-        expect(types).to eq(%i[month day year])
-        expect(result.map(&:literal).join(' ')).to eq('2 10 1920')
+        expect(types).to eq(%i[yearmonthday_date_type])
+        expect(result.first.year).to eq(1920)
+        expect(result.first.month).to eq(2)
+        expect(result.first.day).to eq(10)
       end
     end
 
