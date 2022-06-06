@@ -15,9 +15,9 @@ module Emendate
       end
     end
 
-    class UnhandledPatternError < Emendate::Error
+    class PreferredMdyOrderInvalidError < Emendate::Error
       def initialize(tokens)
-        m = "Further development work is required to support: #{tokens.map(&:lexeme).join('-')}"
+        m = "Using ambiguous MDY order #{Emendate.options.ambiguous_month_day_year} results in invalid date for: #{tokens.map(&:lexeme).join('-')}"
         super(m)
       end
     end
@@ -60,11 +60,10 @@ module Emendate
         if valid_permutations[0][0].literal == valid_permutations[1][0].literal
           transform_ambiguous_pair(valid_permutations[0])
         else
-          fail(UnhandledPatternError.new(tokens))
+          transform_all_ambiguous
         end
       else
         transform_all_ambiguous
-        @warnings << "Ambiguous two-digit month/day/year treated #{opt}"
       end
     end
 
@@ -103,14 +102,23 @@ module Emendate
       per
     end
 
-    def transform_all_ambiguous
-      order = Emendate.options.ambiguous_month_day_year
+    def preferred_order
+      Emendate.options.ambiguous_month_day_year
         .to_s
         .split('_')
         .map(&:to_sym)
+    end
+    
+    def transform_all_ambiguous
+      numbers.each_with_index{ |part, ind| transform_part(part, preferred_order[ind]) }
+      parts = %i[year month day].map{ |type| result.when_type(type)[0] }
 
-      numbers.each_with_index{ |part, ind| transform_part(part, order[ind]) }
-      derive_datetype
+      if valid_date?(*parts)
+        @warnings << "Ambiguous two-digit month/day/year treated #{opt}"
+        derive_datetype
+      else
+        fail(PreferredMdyOrderInvalidError.new(result.segments))
+      end
     end
 
     def transform_ambiguous_pair(part)
