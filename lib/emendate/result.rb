@@ -18,7 +18,6 @@ module Emendate
       else
         @dates = pm.tokens.segments.select{ |t| t.date_type? }
           .map{ |t| Emendate::ParsedDate.new(t, pm.tokens.certainty, original_string) }
-        verify_ranges
       end
     end
 
@@ -46,13 +45,5 @@ module Emendate
     private
 
     attr_reader :pm
-
-    def verify_ranges
-      @dates.map(&:valid_range?).each_with_index do |vr, i|
-        next if vr == true
-
-        @warnings << "Date ##{i + 1} is not a valid date range"
-      end
-    end
   end
 end
