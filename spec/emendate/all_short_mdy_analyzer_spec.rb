@@ -25,7 +25,7 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
       let(:str){ '10-02-06' }
 
       it 'converts to date types (default order)' do
-        expect(ymd).to eq('2006 2 10')
+        expect(ymd).to eq('2006 10 2')
         expect(wct).to eq(1)
       end
 
@@ -71,7 +71,7 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
       let(:str){ '90-31-29' }
 
       it 'raises error' do
-        expect{ types }.to raise_error(Emendate::AllShortMdyAnalyzer::MonthDayYearError)
+        expect{ result }.to raise_error(Emendate::AllShortMdyAnalyzer::MonthDayYearError)
       end
     end
   end
