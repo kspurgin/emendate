@@ -3,8 +3,16 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::ParsedDate do
+  subject(:parsed){ described_class.new(*args) }
+
+  let(:pos){ 0 }
+  let(:args) do
+    pm = Emendate.process(str, options)
+    dateparts = pm.tokens.segments.select{ |t| t.date_type? }
+    [dateparts[pos], pm.tokens.certainty, pm.orig_string]
+  end
+
   let(:options){ {} }
-  let(:parsed){ Emendate.parse(str, options).dates.first }
 
   
   describe '#to_h' do
