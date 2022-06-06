@@ -202,11 +202,6 @@ module Emendate
 
       analyzer.warnings.each{ |warn| result.warnings << warn }
       replace_segments_with_new(segments: to_convert.segments, new: analyzer.datetype)
-      
-      binding.pry
-      # _n1, _h1, _n2, _h2, n3 = result.extract(%i[number1or2 hyphen number1or2 hyphen number1or2]).segments
-      # year = Emendate::ShortYearHandler.call(n3)
-      # replace_x_with_given_segment(x: n3, segment: year)
     end
 
     def tag_year_numeric_month_day
@@ -223,9 +218,10 @@ module Emendate
       month_year_opt = Emendate.options.ambiguous_month_year.dup
       Emendate.config.options.ambiguous_month_year = :as_month
       [[y1, m1, h1], [y2, m2, h3]].each do |pair|
-        analyzed = Emendate::MonthSeasonYearAnalyzer.new(pair[1], pair[0]).result
-        replace_x_with_given_segment(x: pair[1], segment: analyzed)
+        analyzed = Emendate::MonthSeasonYearAnalyzer.call(pair[1], pair[0])
+        replace_x_with_given_segment(x: pair[1], segment: analyzed.result)
         result.delete(pair[2])
+        analyzed.warnings.each{ |warn| result.warnings << warn }
       end
       Emendate.config.options.ambiguous_month_year = month_year_opt
       hyphen_to_range_indicator(source: h2)
@@ -233,17 +229,14 @@ module Emendate
 
     def tag_year_plus_numeric_month_season_or_year
       y, h, m = result.extract(%i[year hyphen number1or2]).segments
-      analyzer = Emendate::MonthSeasonYearAnalyzer.new(m, y)
-      analyzed = analyzer.result
-      replace_x_with_given_segment(x: m, segment: analyzed)
+      analyzed = Emendate::MonthSeasonYearAnalyzer.call(m, y)
+      replace_x_with_given_segment(x: m, segment: analyzed.result)
       if analyzed.type == :year
         hyphen_to_range_indicator(source: h)
       else
         result.delete(h)
       end
-      if analyzer.ambiguous
-        result.warnings << "Ambiguous year + month/season/year treated #{Emendate.options.ambiguous_month_year}"
-      end
+      analyzed.warnings.each{ |warn| result.warnings << warn }
     end
 
     def tag_hyphen_as_range_indicator
