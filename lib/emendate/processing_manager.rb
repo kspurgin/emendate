@@ -17,7 +17,6 @@ module Emendate
       :tagged_date_parts,
       :segmented_dates,
       :ranges_indicated,
-      :result,
       :errors, :warnings
 
     def initialize(string, options = {})
@@ -157,7 +156,6 @@ module Emendate
       segment_dates if may_segment_dates?
       indicate_ranges if may_indicate_ranges?
       finalize if may_finalize?
-      prepare_result
     end
 
     def prep_for(event)
@@ -190,6 +188,10 @@ module Emendate
       OBJ
     end
     alias_method :inspect, :to_s
+
+    def result
+      Emendate::Result.new(self)
+    end
     
     private
 
@@ -203,31 +205,6 @@ module Emendate
 
         errors << 'Unhandled segment still present'
       end
-    end
-
-    def prepare_result
-      state == :failed ? prepare_failed_result : prepare_ok_result
-    end
-
-    def prepare_failed_result
-      r = { original_string: orig_string,
-           errors: errors.map!{ |err| Emendate::ErrorUtil.msg(err).join("\n") },
-           warnings: warnings,
-           result: []
-          }
-
-        @result = Emendate::Result.new(r)
-    end
-
-    def prepare_ok_result
-      r = { original_string: orig_string,
-           errors: errors,
-           warnings: warnings,
-           result: []
-          }
-
-      tokens.segments.each{ |t| r[:result] << Emendate::ParsedDate.new(t, tokens.certainty, orig_string) if t.date_type? }
-      @result = Emendate::Result.new(r)
     end
 
     def perform_lex
