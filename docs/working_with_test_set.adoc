@@ -226,6 +226,7 @@ You can also pass in the following options:
 
 `tests`:: Array of tests to run
 `fail_fast`:: If `true`, if an example fails a test, no subsequent tests will be run for that example.
+`mode`:: If `:verbose`, will print to screen the fingerprint of each example before the tests are run. This is helpful for determining which example is throwing an unhandled exception and blowing up the whole test run.
 
 [NOTE]
 ====

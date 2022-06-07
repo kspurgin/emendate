@@ -101,9 +101,9 @@ module Emendate
         puts str
       end
       
-      def run_tests(tests: nil, fail_fast: false)
+      def run_tests(tests: nil, fail_fast: false, mode: :normal)
         to_run = tests ? tests.intersection(runnable_tests) : runnable_tests
-        examples.each{ |example| example.run_tests(tests: to_run, fail_fast: fail_fast) }
+        examples.each{ |example| example.run_tests(tests: to_run, fail_fast: fail_fast, mode: mode) }
         report_fingerprint(:successes)
         report_fingerprint(:not_run)
         report_failures

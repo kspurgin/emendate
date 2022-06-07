@@ -48,10 +48,11 @@ module Emendate
         end
       end
       
-      def run_tests(tests: nil, fail_fast: false)
+      def run_tests(tests: nil, fail_fast: false, mode: :normal)
         reset_test_data unless test_results.empty?
+        puts "Testing: #{fingerprint}" if mode == :verbose
         return unless testable?
-        
+
         to_run = tests ? tests.intersection(runnable_tests) : runnable_tests
         testers = to_run.map{ |test| Examples::Tester.build(test: test, example: self) }
         testers.each do |test|
