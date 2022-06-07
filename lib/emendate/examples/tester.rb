@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative '../error_util'
 require_relative 'date_testable'
 require_relative 'result_testable'
 require_relative 'translation_testable'
@@ -35,6 +36,9 @@ module Emendate
 
       def call
         run_test
+      rescue => err
+        example.add_error(name.to_s, Emendate::ErrorUtil.msg(err))
+        example.add_test_result(name.to_s, :failure)
       end
 
       def method_missing(symbol, *args)

@@ -116,6 +116,7 @@ module Emendate
         return false unless validated_opt
 
         processor = Emendate.process(test_string, validated_opt)
+        processor.result
         Emendate::Options.new
       rescue => err
         add_error(:process, Emendate::ErrorUtil.msg(err))
