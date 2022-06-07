@@ -92,7 +92,7 @@ module Emendate
     def mod_partial
       partial = working.shift
       if current.kind_of?(Emendate::DateTypes::DateType)
-        current.partial_indicator = partial.lexeme.strip
+        current.partial_indicator = partial.lexeme.strip.delete_suffix('-')
         result << current.prepend_source_token(partial)
         working.shift
       else
