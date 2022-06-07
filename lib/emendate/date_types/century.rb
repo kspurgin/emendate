@@ -2,14 +2,14 @@
 
 module Emendate
   module DateTypes
-    class MissingCenturyTypeError < StandardError
+    class MissingCenturyTypeError < Emendate::Error
       def initialize(types)
         m = "A century_type option with is required. Value must be one of the following: #{types.join(', ')}"
         super(m)
       end
     end
 
-    class CenturyTypeValueError < StandardError
+    class CenturyTypeValueError < Emendate::Error
       def initialize(types)
         m = "The century_type option must have one of the following values: #{types.join(', ')}"
         super(m)
@@ -23,9 +23,9 @@ module Emendate
         super
         @literal = opts[:literal].is_a?(Integer) ? opts[:literal] : opts[:literal].to_i
         if opts[:century_type].nil?
-          raise Emendate::DateTypes::MissingCenturyTypeError.new(allowed_century_types)
+          fail(MissingCenturyTypeError.new(allowed_century_types))
         elsif !allowed_century_types.include?(opts[:century_type])
-          raise Emendate::DateTypes::CenturyTypeValueError.new(allowed_century_types)
+          fail(CenturyTypeValueError.new(allowed_century_types))
         else
           @century_type = opts[:century_type]
         end
