@@ -8,6 +8,8 @@ module Emendate
   module Examples
     class Tester
       class << self
+        # @param test [String] test name
+        # @param example [Emendate::Examples::TestableExample] 
         def build(test:, example:)
           split_test = test.split('_')
           type = split_test.shift
@@ -20,7 +22,10 @@ module Emendate
       MIXEDIN_METHODS = %i[test]
       
       attr_reader :name
-      
+
+      # @param type [Constant] Module that will be mixed in to run test. Set by Tester.build from first part of test name
+      # @param name [String] test name
+      # @param example [Emendate::Examples::TestableExample] 
       def initialize(type:, name:, example:)
         @type = type
         extend type
