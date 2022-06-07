@@ -14,6 +14,8 @@ module Emendate
       .sub(/^n\.? ?d\.?$/, 'nodate') # cleanup nd
       .sub(/^ *not dated *$/, 'notdated') # cleanup not dated
       .sub(/^ *unkn?\.? *$/, 'unk') # cleanup unk.
+      .sub(/^ *date unknown?\.? *$/, 'dateunknown')
+      .sub(/^ *unknown date?\.? *$/, 'unknowndate')
       .sub(/(st|nd|rd|th) c\.?$/, '\1 century') # ending c after ordinal
   end
 
@@ -54,7 +56,7 @@ module Emendate
     SQUARE_BRACKET_OPEN = '['
     SQUARE_BRACKET_CLOSE = ']'
     TILDE = '~'
-    UNKNOWN_DATE = %w[nodate notdated undated unk unknown].freeze
+    UNKNOWN_DATE = ['dateunknown', 'nodate', 'notdated', 'undated', 'unk', 'unknown', 'unknowndate'].freeze
 
     attr_reader :norm, :tokens
     attr_accessor :next_p, :lexeme_start_p

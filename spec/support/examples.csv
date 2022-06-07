@@ -241,6 +241,7 @@
 "February 15 2020","MONTH ## ####",,,,0,"2020","2020","2020-02-15","2020-02-15",,"February 15 2020",,"2020-02-15","2020-02-15"
 "February 15, 2020","MONTH ##, ####",,,,0,"2020","2020","2020-02-15","2020-02-15",,"February 15, 2020",,"2020-02-15","2020-02-15"
 "March 2020","MONTH ####",,,,0,,,"2020-03-01","2020-03-31",,"March 2020",,"2020-03","2020-03"
+"Date Unknown","Date Unknown","indicates_no_date","csws",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","Date Unknown",,"not dated","XXXX"
 "n.d.","n.d.","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","n.d.",,"not dated","XXXX"
 "nd","nd","indicates_no_date",,,0,,,"nilValue","nilValue","known_unknown","nd",,"not dated","XXXX"
 "not dated","not dated","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","not dated",,"not dated","XXXX"
