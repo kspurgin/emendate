@@ -31,7 +31,7 @@ module Emendate
     APOSTROPHE = "'"
     BEFORE = %w[before pre].freeze
     CENTURY = %w[century cent].freeze
-    CIRCA = %w[about ca circa est].freeze
+    CIRCA = %w[about approximately around ca circa est].freeze
     COLON = ':'
     COMMA = ','
     CURLY_BRACKET_OPEN = '{'

@@ -1,3 +1,4 @@
+
 # frozen_string_literal: true
 
 require 'spec_helper'
@@ -162,8 +163,8 @@ RSpec.describe Emendate::Lexer do
 
     context 'with circa' do
       it 'produces expected tokens' do
-        orig = 'c ca circa'
-        expected = %i[approximate space approximate space approximate]
+        orig = 'c ca circa approximately around'
+        expected = %i[approximate space approximate space approximate space approximate space approximate]
         lexer = Emendate.lex(orig)
         expect(lexer.tokens.map(&:type)).to eq(expected)
       end
