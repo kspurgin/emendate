@@ -98,6 +98,11 @@ module Emendate
            :remove_post_year_comma,
            [:move_x_to_end, ->{ result[0] }]
         ]
+      when %i[number4 hyphen month]
+        [
+           :remove_post_year_hyphen,
+           [:move_x_to_end, ->{ result[0] }]
+        ]
       when %i[number4 comma season]
         [
            :remove_post_year_comma,
@@ -201,6 +206,11 @@ module Emendate
     def remove_post_year_comma
       year, comma = result.extract(%i[number4 comma]).segments
       collapse_token_pair_backward(year, comma)
+    end
+
+    def remove_post_year_hyphen
+      year, hyphen = result.extract(%i[number4 hyphen]).segments
+      collapse_token_pair_backward(year, hyphen)
     end
 
     def remove_time_parts
