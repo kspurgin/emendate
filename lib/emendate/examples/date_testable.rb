@@ -15,9 +15,11 @@ module Emendate
 
       def tested_result
         return nil unless example.testable?
-
+        return 'nilValue' if example.processed.result.dates.empty?
+        
         example.processed.result.dates
           .map{ |date| date.send(name.to_sym) }
+          .map{ |date| date.nil? ? 'nilValue' : date }
           .join('|')
       end
     end

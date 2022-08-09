@@ -16,7 +16,7 @@ module Emendate
         return nil unless example.testable?
 
         result = translate
-        return result if result.nil?
+        return 'nilValue' if result.value.nil?
 
         result.value
       end
