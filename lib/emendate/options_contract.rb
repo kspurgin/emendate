@@ -108,7 +108,7 @@ module Emendate
 
     rule(:target_dialect) do
       if key?
-        allowed = %i[lyrasis_pseudo_edtf edtf collectionspace]
+        allowed = %i[lyrasis_pseudo_edtf edtf collectionspace_structured_date_xml]
         val = values[:target_dialect]
         key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
       end
