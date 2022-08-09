@@ -11,7 +11,7 @@ module Emendate
     def initialize(pm)
       @pm = pm
       @original_string = pm.orig_string
-      @errors = pm.errors.map!{ |err| Emendate::ErrorUtil.msg(err).join("\n") }
+      @errors = map_errors
       @warnings = pm.warnings
       if pm.state == :failed
         @dates = []
@@ -45,5 +45,15 @@ module Emendate
     private
 
     attr_reader :pm
+
+    def map_errors
+      pm.errors.map do |err|
+        if err.is_a?(String)
+          err
+        else
+          Emendate::ErrorUtil.msg(err).join("\n")
+        end
+      end
+    end
   end
 end
