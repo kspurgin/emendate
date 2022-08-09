@@ -22,6 +22,14 @@ module Emendate
     end
 
     def translate
+      if processed.state == :failed
+        warn = 'Cannot translate if date processing failed'
+        puts "WARNING: #{warn}"
+        return Emendate::Translation.new(orig: processed.orig_string,
+                                         value: nil_value,
+                                         warnings: [warn])
+      end
+      
       unless date_type
         warn = "Translator cannot determine a translation date type for #{processed.tokens.types.join(' ')}"
         puts "WARNING: #{warn}"
@@ -83,6 +91,10 @@ module Emendate
       "Emendate::Translators::#{dialect.to_s.camelize}"
     end
 
+    def nil_value
+      nil
+    end
+    
     def truncate_tokens
       existing = processed.tokens
       max = Emendate.options.max_output_dates
