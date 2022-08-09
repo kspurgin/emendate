@@ -6,7 +6,7 @@ require 'emendate/result_editable'
 
 module Emendate
   class DatePartTagger
-    class UntaggableDatePartError < StandardError
+    class UntaggableDatePartError < Emendate::Error
       attr_reader :date_part, :reason
 
       def initialize(date_part, reason)
@@ -17,7 +17,7 @@ module Emendate
       end
     end
 
-    class UntaggableDatePatternError < StandardError
+    class UntaggableDatePatternError < Emendate::Error
       attr_reader :date_parts, :reason
 
       def initialize(date_parts, reason)
