@@ -2,21 +2,19 @@
 "-2002","-####","edtf;edtf1;four_digit_year;year_granularity",,,0,"-2002","-2002","-2002-01-01","-2002-12-31",,"-2002",,,,
 "?2004-06-~11","?####-##-~##","day_approximate;edtf;edtf2;year_uncertain",,,0,"2004-06-01","2004-06-01","2004-06-01","2004-06-01",,"?2004-06-~11",,,,
 "../1985","../####","after_before;open_start",,,0,"1583","1985","1583-01-01","1985-12-31",,"../1985",,,,
-"../1985-04-12","../####-@@-@@","after_before;open_start",,,0,"1583-01-01","1985-04-12","1583-01-01","1985-04-12",,"../1985-04-12",,,,
 "../1985-04","../####-##","after_before;open_start",,,0,"1583-01","1985-04","1583-01-01","1985-04-30",,"../1985-04",,,,
+"../1985-04-12","../####-@@-@@","after_before;open_start",,,0,"1583-01-01","1985-04-12","1583-01-01","1985-04-12",,"../1985-04-12",,,,
 "[..1760-12-03]","[..####-##-##]","after_before;alternate_date;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",0,"1583-01-01","1760-12-02","1583-01-01","1760-12-02","one_of_set","..",,,,
 "[..1760-12-03]","[..####-##-##]","after_before;alternate_date;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",1,"1760-12-03","1760-12-03","1760-12-03","1760-12-03",,"1760-12-03",,,,
 "[..1760-12-03]","[..####-##-##]","after_before;alternate_date;edtf;edtf2",,"square_bracket_interpretation: :inferred_date",0,"1760-12-03","1760-12-03","1760-12-03","1760-12-03","inferred","[..1760-12-03]",,,,
 "[..1984]","[..####]","after_before;alternate_date;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",0,"1583","1983","1583-01-01","1983-12-31",,"..",,,,
 "[..1984]","[..####]","after_before;alternate_date;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",1,"1984","1984","1984-01-01","1984-12-31",,"1984",,,,
-"[1997 or 1999]","[#### or ####]","alternate_dates;inferred","ba","square_bracket_interpretation: :edtf_set",0,"1997","1997","1997-01-01","1997-12-31","one_of_set","1997",,,"1997 or 1999","[1997,1999]"
-"[1997 or 1999]","[#### or ####]","alternate_dates;inferred","ba","square_bracket_interpretation: :inferred_date",0,"1997","1997","1997-01-01","1997-12-31","inferred;one_of_set","1997",,,"1997 or 1999","[1997,1999]"
-"[1997 or 1999]","[#### or ####]","alternate_dates;inferred","ba","square_bracket_interpretation: :edtf_set",1,"1999","1999","1999-01-01","1999-12-31","one_of_set","1999",,,"1997 or 1999","[1997,1999]"
-"[1997 or 1999]","[#### or ####]","alternate_dates;inferred","ba","square_bracket_interpretation: :inferred_date",1,"1999","1999","1999-01-01","1999-12-31","inferred;one_of_set","1999",,,"1997 or 1999","[1997,1999]"
-"1828-30, 1849-51","[####-@@, ####-##]","ambiguous_year_month;multi_date","ba","max_output_dates: 1",0,"1828","1830","1828-01-01","1830-12-31",,"1828-30",,"Ambiguous year + month/season/year treated as_year","1828 - 1830","1828/1830"
-"1828-30, 1849-51","[####-@@, ####-##]","ambiguous_year_month;multi_date","ba",,0,"1828","1830","1828-01-01","1830-12-31",,"1828-30",,"Ambiguous year + month/season/year treated as_year","1828, 1829, 1830, 1849, 1850, and 1851","{1828..1830,1849..1851}"
-"1828-30, 1849-51","[####-@@, ####-##]","ambiguous_year_month;multi_date","ba","max_output_dates: 1",1,"1849","1851","1849-01-01","1851-12-31",,"1849-51",,"Ambiguous year + month/season/year treated as_year","1828 - 1830","1828/1830"
-"1828-30, 1849-51","[####-@@, ####-##]","ambiguous_year_month;multi_date","ba",,1,"1849","1851","1849-01-01","1851-12-31",,"1849-51",,"Ambiguous year + month/season/year treated as_year","1828, 1829, 1830, 1849, 1850, and 1851","{1828..1830,1849..1851}"
+"[1667,1668,1670..1672]","[####,####,####..####]","alternate_dates;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",0,"1667","1667","1667-01-01","1667-12-31",,"1667",,,,
+"[1667,1668,1670..1672]","[####,####,####..####]","alternate_dates;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",1,"1668","1668","1668-01-01","1668-12-31",,"1668",,,,
+"[1667,1668,1670..1672]","[####,####,####..####]","alternate_dates;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",2,"1670","1672","1670-01-01","1672-12-31","one_of_set","1670..1672",,,,
+"[1667,1668,1670..1672]","[####,####,####..####]","alternate_dates;edtf;edtf2",,"square_bracket_interpretation: :inferred_date",0,"nilValue","nilValue","nilValue","nilValue",,"[1667,1668,1670..1672]",,"Currently unparseable",,
+"[1667,1760-12]","[####,####-##]","after_before;alternate_date;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",0,"1667","1667","1667-01-01","1667-12-31",,"1667",,,,
+"[1667,1760-12]","[####,####-##]","after_before;alternate_date;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",1,"1760-12","1760-12","1760-12-01","1760-12-31",,"1760-12",,,,
 "[1760-01,1760-02,1760-12..]","[####-##,####-##,####-##..]","after_before;alternate_date;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",0,,,"1760-01-01","1760-01-31",,"1760-01",,,,
 "[1760-01,1760-02,1760-12..]","[####-##,####-##,####-##..]","after_before;alternate_date;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",1,,,"1760-02-01","1760-02-29",,"1760-02",,,,
 "[1760-01,1760-02,1760-12..]","[####-##,####-##,####-##..]","after_before;alternate_date;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",2,,,"1760-12-01","1760-12-31",,"1760-12",,,,
@@ -24,76 +22,116 @@
 "[1760-12..]","[####-##..]","after_before;alternate_date;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",0,"1760-12","1760-12","1760-12-01","1760-12-31",,"1760-12",,"Currently unparseable",,
 "[1760-12..]","[####-##..]","after_before;alternate_date;edtf;edtf2",,"square_bracket_interpretation: :inferred_date",0,"1760-12","1760-12","1760-12-01","1760-12-31","inferred","[1760-12..]",,"Currently unparseable",,
 "[1760-12..]","[####-##..]","after_before;alternate_date;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",1,"1761-01","2999-12","1761-01-01","2999-12-31","one_of_set","..",,"Currently unparseable",,
+"[1997 or 1999]","[#### or ####]","alternate_dates;inferred","ba","square_bracket_interpretation: :edtf_set",0,"1997","1997","1997-01-01","1997-12-31","one_of_set","1997",,,"1997 or 1999","[1997,1999]"
+"[1997 or 1999]","[#### or ####]","alternate_dates;inferred","ba","square_bracket_interpretation: :inferred_date",0,"1997","1997","1997-01-01","1997-12-31","inferred;one_of_set","1997",,,"1997 or 1999","[1997,1999]"
+"[1997 or 1999]","[#### or ####]","alternate_dates;inferred","ba","square_bracket_interpretation: :edtf_set",1,"1999","1999","1999-01-01","1999-12-31","one_of_set","1999",,,"1997 or 1999","[1997,1999]"
+"[1997 or 1999]","[#### or ####]","alternate_dates;inferred","ba","square_bracket_interpretation: :inferred_date",1,"1999","1999","1999-01-01","1999-12-31","inferred;one_of_set","1999",,,"1997 or 1999","[1997,1999]"
 "[1997-1998]","[####-####]","inferred","ba","square_bracket_interpretation: :inferred_date",0,"1997","1998","1997-01-01","1998-12-31","inferred","[1997-1998]",,,"1997 - 1998","1997/1998"
-"[1667,1760-12]","[####,####-##]","after_before;alternate_date;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",0,"1667","1667","1667-01-01","1667-12-31",,"1667",,,,
-"[1667,1760-12]","[####,####-##]","after_before;alternate_date;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",1,"1760-12","1760-12","1760-12-01","1760-12-31",,"1760-12",,,,
-"[1667,1668,1670..1672]","[####,####,####..####]","alternate_dates;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",0,"1667","1667","1667-01-01","1667-12-31",,"1667",,,,
-"[1667,1668,1670..1672]","[####,####,####..####]","alternate_dates;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",1,"1668","1668","1668-01-01","1668-12-31",,"1668",,,,
-"[1667,1668,1670..1672]","[####,####,####..####]","alternate_dates;edtf;edtf2",,"square_bracket_interpretation: :edtf_set",2,"1670","1672","1670-01-01","1672-12-31","one_of_set","1670..1672",,,,
-"[1667,1668,1670..1672]","[####,####,####..####]","alternate_dates;edtf;edtf2",,"square_bracket_interpretation: :inferred_date",0,"nilValue","nilValue","nilValue","nilValue",,"[1667,1668,1670..1672]",,"Currently unparseable",,
-"[2002?]","[####?]","inferred;uncertain;four_digit_year;year_granularity",,,0,"2002","2002","2002-01-01","2002-12-31",,"[2002?]",,,,
 "[1997]-[1998]","[####]-[####]","inferred",,,0,"1997","1998","1997-01-01","1998-12-31",,"[1997]-[1998]",,,,
 "[19th century]","[##ORD century]","century;inferred","ba","square_bracket_interpretation: :inferred_date",0,"1801","1900","1801-01-01","1900-12-31","inferred","[19th century]",,,"1801 - 1900 (exact year unspecified)","[1801..1900]"
-"19th-20th century","[##ORD-##ORD century]","century","ba",,0,"1801","2000","1801-01-01","2000-12-31",,"19th-20th century",,,"1801 - 2000 (exact year unspecified)","[1801..2000]"
-"[ca. 2002-10]","[ca. ####-@@]","ambiguous_year_month_season;approximate;inferred;option","ba","ambiguous_month_year: :as_year",0,"2002","2010","2002-01-01","2010-12-31","approximate;inferred","[ca. 2002-10]",,"Ambiguous year + month/season/year treated as_year","2002 (approximate) - 2010","2002~/2010"
-"[ca. 2002-10]","[ca. ####-@@]","ambiguous_year_month_season;approximate;inferred;option","ba","ambiguous_month_year: :as_month",0,"2002-10","2002-10","2002-10-01","2002-10-31","approximate;inferred","[ca. 2002-10]",,"Ambiguous year + month/season/year treated as_month","2002-10 (approximate)","2002-10~"
+"[2002?]","[####?]","inferred;uncertain;four_digit_year;year_granularity",,,0,"2002","2002","2002-01-01","2002-12-31",,"[2002?]",,,,
 "[c. 2002]","[ca. ####]","approximate;inferred;four_digit_year;year_granularity","ba;test",,0,"2002","2002","2002-01-01","2002-12-31","approximate;inferred","[c. 2002]",,,"2002 (approximate)","2002~"
 "[ca. 2000s]","[ca. ####]","approximate;inferred","ba","pluralized_date_interpretation: :decade",0,"2000","2009","2000-01-01","2009-12-31","approximate;inferred",,,"Interpreting pluralized year as decade","2000 - 2009 (exact year unspecified)","[2000..2009]"
-"[ca. 2002]","[ca. ####]","approximate;inferred;four_digit_year;year_granularity","ba",,0,"2002","2002",,"2002-12-31","approximate;inferred","[ca. 2002]",,,"2002 (approximate)","2002~"
 "[ca. 2000s]","[ca. ####s]","approximate;inferred","ba","pluralized_date_interpretation: :broad",0,"2000","2999","2000-01-01","2999-12-31","approximate;inferred","[ca. 2000s]",,"Interpreting pluralized year as millennium","2000 - 2999 (exact year unspecified)","[2000..2999]"
+"[ca. 2002-10]","[ca. ####-@@]","ambiguous_year_month_season;approximate;inferred;option","ba","ambiguous_month_year: :as_year",0,"2002","2010","2002-01-01","2010-12-31","approximate;inferred","[ca. 2002-10]",,"Ambiguous year + month/season/year treated as_year","2002 (approximate) - 2010","2002~/2010"
+"[ca. 2002-10]","[ca. ####-@@]","ambiguous_year_month_season;approximate;inferred;option","ba","ambiguous_month_year: :as_month",0,"2002-10","2002-10","2002-10-01","2002-10-31","approximate;inferred","[ca. 2002-10]",,"Ambiguous year + month/season/year treated as_month","2002-10 (approximate)","2002-10~"
+"[ca. 2002]","[ca. ####]","approximate;inferred;four_digit_year;year_granularity","ba",,0,"2002","2002","2002-01-01","2002-12-31","approximate;inferred","[ca. 2002]",,,"2002 (approximate)","2002~"
 "[circa 2002?]","[circa ####?]","approximate;inferred;uncertain;four_digit_year;year_granularity",,,0,"2002","2002","2002-01-01","2002-12-31","approximate;inferred;uncertain","[circa 2002?]",,,,
 "[circa 2002]","[circa ####]","approximate;inferred;four_digit_year;year_granularity","ncm","square_bracket_interpretation: :inferred_date",0,"2002","2002","2002-01-01","2002-12-31","approximate;inferred","[circa 2002]",,,"2002 (approximate)","2002~"
 "{..1984}","{..####}","edtf;edtf2;multi_dates",,,0,,,"1583-01-01","1983-12-31",,"{..1984}",,,,
 "{..1984}","{..####}","edtf;edtf2;multi_dates",,,1,,,"1984-01-01","1984-12-31",,"{..1984}",,,,
-"{1960,1961-12}","{####,####-##}","edtf;edtf2;multi_dates",,,0,,,"1960-01-01","1960-12-31",,"{1960,1961-12}",,,,
-"{1960,1961-12}","{####,####-##}","edtf;edtf2;multi_dates",,,1,,,"1961-12-01","1961-12-31",,"{1960,1961-12}",,,,
 "{1667,1668,1670..1672}","{####,####,####..####}","edtf;edtf2;multi_dates",,,0,,,"1667-01-01","1667-12-31",,"{1667,1668,1670..1672}",,,,
 "{1667,1668,1670..1672}","{####,####,####..####}","edtf;edtf2;multi_dates",,,1,,,"1668-01-01","1668-12-31",,"{1667,1668,1670..1672}",,,,
 "{1667,1668,1670..1672}","{####,####,####..####}","edtf;edtf2;multi_dates",,,2,,,"1670-01-01","1670-12-31",,"{1667,1668,1670..1672}",,,,
 "{1667,1668,1670..1672}","{####,####,####..####}","edtf;edtf2;multi_dates",,,3,,,"1671-01-01","1671-12-31",,"{1667,1668,1670..1672}",,,,
 "{1667,1668,1670..1672}","{####,####,####..####}","edtf;edtf2;multi_dates",,,4,,,"1672-01-01","1672-12-31",,"{1667,1668,1670..1672}",,,,
-"10-02-06","@@-@@-@@","ambiguous_day_month_year;option;two_digit_year","csws","ambiguous_month_day_year: :year_month_day",0,"2010","2010","2010-02-06","2010-02-06",,"10-02-06",,"Ambiguous day/month/year treated as year_month_day",,
-"10-02-06","@@-@@-@@","ambiguous_day_month_year;option;two_digit_year","csws","ambiguous_month_day_year: :year_day_month",0,"2010","2010","2010-06-02","2010-06-02",,"10-02-06",,"Ambiguous day/month/year treated as year_day_month",,
-"10-02-06","@@-@@-@@","ambiguous_day_month_year;option;two_digit_year","csws","ambiguous_month_day_year: :month_day_year",0,"2006","2006","2006-10-02","2006-10-02",,"10-02-06",,"Ambiguous day/month/year treated as month_day_year",,
-"10-02-06","@@-@@-@@","ambiguous_day_month_year;option;two_digit_year","csws","ambiguous_month_day_year: :day_month_year",0,"2006","2006","2006-02-10","2006-02-10",,"10-02-06",,"Ambiguous day/month/year treated as day_month_year",,
-"02-10-96","@@-@@-##","ambiguous_day_month;option;two_digit_year",,"ambiguous_month_day: :as_month_day, two_digit_year_handling: :coerce, ambiguous_year_rollback_threshold: 50",0,"1996","1996","1996-02-10","1996-02-10",,"02-10-96",,"Ambiguous month/day treated as_month_day",,
-"02-10-96","@@-@@-##","ambiguous_day_month;option;two_digit_year",,"ambiguous_month_day: :as_day_month, two_digit_year_handling: :coerce, ambiguous_year_rollback_threshold: 50",0,"1996","1996","1996-10-02","1996-10-02",,"02-10-96",,"Ambiguous month/day treated as_day_month",,
+"{1960,1961-12}","{####,####-##}","edtf;edtf2;multi_dates",,,0,,,"1960-01-01","1960-12-31",,"{1960,1961-12}",,,,
+"{1960,1961-12}","{####,####-##}","edtf;edtf2;multi_dates",,,1,,,"1961-12-01","1961-12-31",,"{1960,1961-12}",,,,
+"/1985","/####","after_before;unknown_start",,,0,,,"1583-01-01","1985-12-31",,"/1985",,,,
+"/1985-04","/####-##","after_before;unknown_start",,,0,,,"1583-01-01","1985-04-30",,"/1985-04",,,,
+"/1985-04-12","/####-@@-@@","after_before;unknown_start",,,0,,,"1583-01-01","1985-04-12",,"/1985-04-12",,,,
 "02-03-2020","@@-@@-####","ambiguous_day_month;option",,"ambiguous_month_day: :as_month_day",0,,,"2020-02-03","2020-02-03",,"02-03-2020",,"Ambiguous month/day treated as_month_day",,
 "02-03-2020","@@-@@-####","ambiguous_day_month;option",,"ambiguous_month_day: :as_day_month",0,,,"2020-03-02","2020-03-02",,"02-03-2020",,"Ambiguous month/day treated as_day_month",,
-"1/2/2000 - 12/21/2001","@/@/#### - ##/##/####",,,,0,,,"2000-01-02","2001-12-21",,"1/2/2000 - 12/21/2001",,,,
-"/1985","/####","after_before;unknown_start",,,0,,,"1583-01-01","1985-12-31",,"/1985",,,,
-"/1985-04-12","/####-@@-@@","after_before;unknown_start",,,0,,,"1583-01-01","1985-04-12",,"/1985-04-12",,,,
-"/1985-04","/####-##","after_before;unknown_start",,,0,,,"1583-01-01","1985-04-30",,"/1985-04",,,,
-"2/15/2020","#/##/####",,,,0,,,"2020-02-15","2020-02-15",,"2/15/2020",,,,
-"3/2020","#/####",,"csws",,0,"2020","2020","2020-03-01","2020-03-31",,"3/2020",,,"2020-03","2020-03"
-"15 Feb 2020","## MON ####",,,,0,,,"2020-02-15","2020-02-15",,"15 Feb 2020",,,,
-"15 Feb. 2020","## MON. ####",,,,0,,,"2020-02-15","2020-02-15",,"15 Feb. 2020",,,,
-"15 February 2020","## MONTH ####",,,,0,,,"2020-02-15","2020-02-15",,"15 February 2020",,,,
+"02-10-96","@@-@@-##","ambiguous_day_month;option;two_digit_year",,"ambiguous_month_day: :as_month_day, two_digit_year_handling: :coerce, ambiguous_year_rollback_threshold: 50",0,"1996","1996","1996-02-10","1996-02-10",,"02-10-96",,"Ambiguous month/day treated as_month_day",,
+"02-10-96","@@-@@-##","ambiguous_day_month;option;two_digit_year",,"ambiguous_month_day: :as_day_month, two_digit_year_handling: :coerce, ambiguous_year_rollback_threshold: 50",0,"1996","1996","1996-10-02","1996-10-02",,"02-10-96",,"Ambiguous month/day treated as_day_month",,
 "02-15-20","##-##-##","option;two_digit_year",,"two_digit_year_handling: :literal",0,,,"0020-02-15","0020-02-15",,"02-15-20",,,,
 "02-15-20","##-##-##","option;two_digit_year",,"two_digit_year_handling: :coerce, ambiguous_year_rollback_threshold: 20",0,,,"1920-02-15","1920-02-15",,"02-15-20",,,,
 "02-15-20","##-##-##","option;two_digit_year",,"two_digit_year_handling: :coerce, ambiguous_year_rollback_threshold: 50",0,,,"2020-02-15","2020-02-15",,"02-15-20",,,,
 "02-15-2020","##-##-####",,,,0,,,"2020-02-15","2020-02-15",,"02-15-2020",,,,
 "02/15/2020","##/##/####",,,,0,,,"2020-02-15","2020-02-15",,"02/15/2020",,,,
 "03/2020","##/####",,"csws",,0,"2020","2020","2020-03-01","2020-03-31",,"03/2020",,,"2020-03","2020-03"
-"450 BCE - 200 BCE","### ERA - ### ERA","bce",,,0,,,"-0449-01-01","-0199-12-31",,"450 BCE - 200 BCE",,,,
-"450 BCE - 200 CE","### ERA - ### ERA","bce;cross_era",,,0,,,"-0449-01-01","0200-12-31",,"450 BCE - 200 CE",,,,
-"450 to 200 BCE","### to ### ERA","bce",,,0,,,"-0449-01-01","-0199-12-31",,"450 to 200 BCE",,,,
-"2002","####","edtf;edtf0;four_digit_year;year_granularity","ba;ncm",,0,"2002","2002","2002-01-01","2002-12-31",,"2002",,,"2002","2002"
-"2002 (?)","#### (?)","uncertain;four_digit_year;year_granularity","ba",,0,"2002","2002","2002-01-01","2002-12-31","uncertain","2002 (?)",,,"2002 (uncertain)","2002?"
+"1/2/2000 - 12/21/2001","@/@/#### - ##/##/####",,,,0,,,"2000-01-02","2001-12-21",,"1/2/2000 - 12/21/2001",,,,
+"10-02-06","@@-@@-@@","ambiguous_day_month_year;option;two_digit_year","csws","ambiguous_month_day_year: :year_month_day",0,"2010","2010","2010-02-06","2010-02-06",,"10-02-06",,"Ambiguous day/month/year treated as year_month_day",,
+"10-02-06","@@-@@-@@","ambiguous_day_month_year;option;two_digit_year","csws","ambiguous_month_day_year: :year_day_month",0,"2010","2010","2010-06-02","2010-06-02",,"10-02-06",,"Ambiguous day/month/year treated as year_day_month",,
+"10-02-06","@@-@@-@@","ambiguous_day_month_year;option;two_digit_year","csws","ambiguous_month_day_year: :month_day_year",0,"2006","2006","2006-10-02","2006-10-02",,"10-02-06",,"Ambiguous day/month/year treated as month_day_year",,
+"10-02-06","@@-@@-@@","ambiguous_day_month_year;option;two_digit_year","csws","ambiguous_month_day_year: :day_month_year",0,"2006","2006","2006-02-10","2006-02-10",,"10-02-06",,"Ambiguous day/month/year treated as day_month_year",,
+"15 Feb 2020","## MON ####",,,,0,,,"2020-02-15","2020-02-15",,"15 Feb 2020",,,,
+"15 Feb. 2020","## MON. ####",,,,0,,,"2020-02-15","2020-02-15",,"15 Feb. 2020",,,,
+"15 February 2020","## MONTH ####",,,,0,,,"2020-02-15","2020-02-15",,"15 February 2020",,,,
+"156X-12-25","###x-##-##","currently_unparseable;edtf;edtf2;specific_date_in_range_of_years",,,0,,,"nilValue","nilValue",,"156X-12-25",,"Unprocessable string",,
+"15XX-12-25","##xx-##-##","currently_unparseable;edtf;edtf2;specific_date_in_range_of_years",,,0,,,"nilValue","nilValue",,"15XX-12-25",,"Unprocessable string",,
+"17th or 18th century","##ORD or ##ORD century","alternate_dates;century",,,0,,,"1601-01-01","1700-12-31",,"17th or 18th century",,,,
+"17th or 18th century","##ORD or ##ORD century","alternate_dates;century",,,1,,,"1701-01-01","1800-12-31",,"17th or 18th century",,,,
+"1800's","####'s","approximate;centuries","csws","pluralized_date_interpretation: :decade",0,"1800","1809","1800-01-01","1809-12-31",,"1800's",,"Interpreting pluralized year as decade","1800 - 1809 (exact year unspecified)","180X"
+"1800s","####s","approximate;centuries","ba","pluralized_date_interpretation: :broad",0,"1800","1899","1800-01-01","1899-12-31",,,,"Interpreting pluralized year as century","1800 - 1899 (exact year unspecified)","18XX"
+"1800s","####s","approximate;centuries","ba","pluralized_date_interpretation: :decade",0,"1800","1809","1800-01-01","1809-12-31",,"1800s",,"Interpreting pluralized year as decade","1800 - 1809 (exact year unspecified)","180X"
+"1828-30, 1849-51","[####-@@, ####-##]","ambiguous_year_month;multi_date","ba","max_output_dates: 1",0,"1828","1830","1828-01-01","1830-12-31",,"1828-30",,"Ambiguous year + month/season/year treated as_year","1828 - 1830","1828/1830"
+"1828-30, 1849-51","[####-@@, ####-##]","ambiguous_year_month;multi_date","ba",,0,"1828","1830","1828-01-01","1830-12-31",,"1828-30",,"Ambiguous year + month/season/year treated as_year","1828, 1829, 1830, 1849, 1850, and 1851","{1828..1830,1849..1851}"
+"1828-30, 1849-51","[####-@@, ####-##]","ambiguous_year_month;multi_date","ba","max_output_dates: 1",1,"1849","1851","1849-01-01","1851-12-31",,"1849-51",,"Ambiguous year + month/season/year treated as_year","1828 - 1830","1828/1830"
+"1828-30, 1849-51","[####-@@, ####-##]","ambiguous_year_month;multi_date","ba",,1,"1849","1851","1849-01-01","1851-12-31",,"1849-51",,"Ambiguous year + month/season/year treated as_year","1828, 1829, 1830, 1849, 1850, and 1851","{1828..1830,1849..1851}"
+"1844 Jun 31","#### MON ##","invalid","ccp",,0,"nilValue","nilValue","nilValue","nilValue",,"1844 Jun 31","invalid date",,"nilValue","nilValue"
+"1880s-1990s","####s-####s","nested_ranges;decades","csws",,0,"1880","1999","1880-01-01","1999-12-31",,"1880s-1990s",,,,
+"18uu","##uu","approximate;centuries",,,0,,,"1800-01-01","1899-12-31",,"18uu",,,,
+"18XX","##xx","approximate;centuries;edtf;edtf1",,,0,,,"1800-01-01","1899-12-31",,"18XX",,,,
+"1910-11","####-@@","ambiguous_year_month;edtf;edtf1;two_digit_year","ncm","ambiguous_month_year: :as_year",0,"1910","1911","1910-01-01","1911-12-31",,"1910-11",,"Ambiguous year + month/season/year treated as_year","1910 - 1911","1910/1911"
+"1910-11","####-@@","ambiguous_year_month;edtf;edtf1;two_digit_year","ncm","ambiguous_month_year: :as_month",0,"1910-11","1910-11","1910-11-01","1910-11-30",,"1910-11",,"Ambiguous year + month/season/year treated as_month","1910-11","1910-11"
+"1912-1920's","####-####'s","nested_range;decades","csws",,0,"1912","1929","1912-01-01","1929-12-31",,"1912-1980's",,"Interpreting pluralized year as decade",,
+"1915.0","####.0","weird_formatting;four_digit_year;year_granularity","ncm",,0,"1915","1915","1915-01-01","1915-12-31",,"1915.0",,,"1915","1915"
+"1935, 1946-1947","####, ####-####","multi_date",,,0,,,"1935-01-01","1935-12-31",,"1935, 1946-1947",,,,
+"1935, 1946-1947","####, ####-####","multi_date",,,1,,,"1946-01-01","1947-12-31",,"1935, 1946-1947",,,,
+"1950S2","####s#","currently_unparseable;edtf;edtf2;significant_digits",,,0,,,"nilValue","nilValue",,"1950S2",,"Unprocessable string",,
+"1964/2008","####/####","edtf;edtf0",,,0,,,"1964-01-01","2008-12-31",,"1964/2008",,,,
+"1968-Mar","####-MON",,"ccp",,0,"1968-03","1968-03","1968-03-01","1968-03-31",,"1968-Mar",,,"1968-03","1968-03"
+"1970-80's","####-##'s","nested_ranges;decades","csws",,0,"1970","1989","1970-01-01","1989-12-31",,"1970-1980's",,"Interpreting pluralized year as decade",,
+"1980s & 1990s","####s & ####s","alternate_dates;approximate;decades",,,0,,,"1980-01-01","1989-12-31",,"1980s",,"Interpreting pluralized year as decade",,
+"1980s & 1990s","####s & ####s","alternate_dates;approximate;decades",,,1,,,"1990-01-01","1999-12-31",,"1990s",,"Interpreting pluralized year as decade",,
+"1980s or 1990s","####s or ####s","alternate_dates;approximate;decades",,,0,,,"1980-01-01","1989-12-31",,"1980s",,"Interpreting pluralized year as decade",,
+"1980s or 1990s","####s or ####s","alternate_dates;approximate;decades",,,1,,,"1990-01-01","1999-12-31",,"1990s",,"Interpreting pluralized year as decade",,
+"1984-1X","####-#x","edtf;edtf2;uncertainty_digits_month",,,0,,,"1984-10-01","1984-12-31",,"1984-1X",,,,
+"1985-04-12/","####-##-##/","after_before;edtf;edtf1;unknown_end",,,0,,,"1985-04-12","2999-12-31",,"1985-04-12/",,,,
+"1985-04-12/..","####-##-##/..","after_before;edtf;edtf1;open_end",,"ambiguous_month_day: :as_month_day",0,,,"1985-04-12","2999-12-31",,"1985-04-12/..",,,,
+"1985-04-12T23:20:30","####-##-##t##:##:##","edtf;edtf0;time",,,0,,,"1985-04-12","1985-04-12",,"1985-04-12T23:20:30",,,,
+"1985-04-12T23:20:30-04","####-##-##t##:##:##-##","edtf;edtf0;time",,,0,,,"1985-04-12","1985-04-12",,"1985-04-12T23:20:30-04",,,,
+"1985-04-12T23:20:30Z","####-##-##t##:##:##z","edtf;edtf0;time",,,0,,,"1985-04-12","1985-04-12",,"1985-04-12T23:20:30Z",,,,
+"1985-04-12T23:20:30���:30","####-##-##t##:##:####:##","edtf;edtf0;time",,,0,,,"1985-04-12","1985-04-12",,"1985-04-12T23:20:30���:30",,,,
+"1985-04-XX","####-##-xx","edtf;edtf1;uncertainty_digits",,,0,,,"1985-04-01","1985-04-30",,"1985-04-XX",,,,
+"1985-04/","####-##/","after_before;edtf;edtf1;unknown_end",,,0,,,"1985-04-01","2999-12-31",,"1985-04/",,,,
+"1985-04/..","####-##/..","after_before;edtf;edtf1;open_end",,,0,,,"1985-04-01","2999-12-31",,"1985-04/..",,,,
+"1985/","####/","after_before;edtf;edtf1;unknown_end",,,0,,,"1985-01-01","2999-12-31",,"1985/",,,,
+"1985/..","####/..","after_before;edtf;edtf1;open_end",,,0,,,"1985-01-01","2999-12-31",,"1985/..",,,,
+"1990s","####s","approximate;decades","ba","pluralized_date_interpretation: :broad",0,"1990","1999","1990-01-01","1999-12-31",,"1990s",,"Interpreting pluralized year as decade","1990 - 1999 (exact year unspecified)","199X"
+"1990s","####s","approximate;decades","ba","pluralized_date_interpretation: :decade",0,"1990","1999","1990-01-01","1999-12-31",,,,"Interpreting pluralized year as decade","1990 - 1999 (exact year unspecified)","199X"
 "1997 & 1999","#### & ####","alternate_dates",,,0,,,"1997-01-01","1997-12-31",,"1997 & 1999",,,,
 "1997 & 1999","#### & ####","alternate_dates",,,1,,,"1999-01-01","1999-12-31",,"1997 & 1999",,,,
-"2002 B.C.E.","#### ERA","bce;era;four_digit_year;year_granularity",,,0,,,"-2002-01-01","-2002-12-31",,"2002 B.C.E.",,,,
-"2002 C.E.","#### ERA","era;four_digit_year;year_granularity",,,0,,,"2002-01-01","2002-12-31",,"2002 C.E.",,,,
-"2020 Mar","#### MON",,,,0,,,"2020-03-01","2020-03-31",,"2020 Mar",,,,
-"2020 Feb 15","#### MON ##",,,,0,,,"2020-02-15","2020-02-15",,"2020 Feb 15",,,,
-"2000 May -June","#### MONTH -MONTH",,,,0,,,"2000-05-01","2000-06-30",,"2000 May -June",,,,
-"2000 June 3 - 2001 Jan 20","#### MONTH # - #### MON ##",,,,0,,,"2000-06-03","2001-01-20",,"2000 June 3 - 2001 Jan 20",,,,
-"2000 June 3- 2001 Jan 20","#### MONTH #- #### MON ##",,,,0,,,"2000-06-03","2001-01-20",,"2000 June 3- 2001 Jan 20",,,,
-"2000 June 3-15","#### MONTH #-##",,,,0,,,"2020-06-03","2020-06-15",,"2000 June 3-15",,,,
-"2000 June 3-2001 Jan 20","#### MONTH #-#### MON ##",,,,0,,,"2000-06-03","2001-01-20",,"2000 June 3-2001 Jan 20",,,,
+"1997 or 1999","#### or ####","alternate_dates","ba",,0,"1997","1997","1997-01-01","1997-12-31","one_of_set","1997 or 1999",,,"1997 or 1999","[1997,1999]"
+"1997 or 1999","#### or ####","alternate_dates","ba",,1,"1999","1999","1999-01-01","1999-12-31","one_of_set","1997 or 1999",,,"1997 or 1999","[1997,1999]"
+"1997-1998","####-####",,"ba",,0,"1997","1998","1997-01-01","1998-12-31",,"1997-1998",,,"1997 - 1998","1997/1998"
+"1997-1998 A.D.","####-#### ERA",,,,0,,,"1997-01-01","1998-12-31",,"1997-1998 A.D.",,,,
+"1997-98","####-##",,"ba",,0,"1997","1998","1997-01-01","1998-12-31",,"1997-98",,,"1997 - 1998","1997/1998"
+"1997/98","####/##",,,,0,,,"1997-01-01","1998-12-31",,"1997/98",,,,
+"199u","###u","approximate;decades",,,0,,,"1990-01-01","1999-12-31","one_of_set","199u",,,,
+"199X","###x","approximate;decades;edtf;edtf1",,,0,,,"1990-01-01","1999-12-31","one_of_set","199X",,,,
+"19th c.","##ORD c.","century","ba",,0,"1801","1900","1801-01-01","1900-12-31",,"19th c.",,,"1801 - 1900 (exact year unspecified)","[1801..1900]"
+"19th century","##ORD century","century",,,0,,,"1801-01-01","1900-12-31",,"19th century",,,,
+"19th century ?","##ORD century ?","century;uncertain",,,0,,,"1801-01-01","1900-12-31",,"19th century ?",,,,
+"19th century [?]","##ORD century [?]","century;uncertain",,,0,,,"1801-01-01","1900-12-31",,"19th century [?]",,,,
+"19th century, est.","##ORD century, est.","century;approximate","csws",,0,"1801","1900","1801-01-01","1900-12-31","approximate","19th century, est.",,,,
+"19th-20th century","[##ORD-##ORD century]","century","ba",,0,"1801","2000","1801-01-01","2000-12-31",,"19th-20th century",,,"1801 - 2000 (exact year unspecified)","[1801..2000]"
+"1uuu","#uuu","approximate;millennia",,,0,,,"1000-01-01","1999-12-31",,"1uuu",,,,
+"1XXX-12","#xxx-##","currently_unparseable;edtf;edtf2;in_specific_month_in_any_year",,,0,,,"nilValue","nilValue",,"1XXX-12",,"Unprocessable string",,
+"1XXX-XX","#xxx-xx","currently_unparseable;edtf;edtf2;in_specific_month_in_any_year",,,0,,,"nilValue","nilValue",,"1XXX-XX",,"Unprocessable string",,
+"2/15/2020","#/##/####",,,,0,,,"2020-02-15","2020-02-15",,"2/15/2020",,,,
 "2000 June 1-July 4","#### MONTH #-MONTH #",,,,0,,,"2000-06-01","2000-07-04",,"2000 June 1-July 4",,,,
-"2000 June 3, 15","#### MONTH #, #","multi_date",,,0,,,"2000-06-03","2000-06-03",,"2000 June 3",,,,
-"2000 June 3, 15","#### MONTH #, #","multi_date",,,1,,,"2000-06-15","2000-06-15",,"2000 June 15",,,,
 "2000 June 1, 2-5, 8, 9","#### MONTH #, #-#, #, #","multi_date",,,0,,,"2000-06-01","2000-06-01",,"2000 June 1",,,,
 "2000 June 1, 2-5, 8, 9","#### MONTH #, #-#, #, #","multi_date",,,1,,,"2000-06-02","2000-06-05",,"2000 June 2-5",,,,
 "2000 June 1, 2-5, 8, 9","#### MONTH #, #-#, #, #","multi_date",,,2,,,"2000-06-08","2000-06-08",,"2000 June 8",,,,
@@ -102,113 +140,83 @@
 "2000 June 1, 2-5, 8, and 9","#### MONTH #, #-#, #, and #","multi_date",,,1,,,"2000-06-02","2000-06-05",,"2000 June 2-5",,,,
 "2000 June 1, 2-5, 8, and 9","#### MONTH #, #-#, #, and #","multi_date",,,2,,,"2000-06-08","2000-06-08",,"2000 June 8",,,,
 "2000 June 1, 2-5, 8, and 9","#### MONTH #, #-#, #, and #","multi_date",,,3,,,"2000-06-09","2000-06-09",,"2000 June 9",,,,
+"2000 June 3 - 2001 Jan 20","#### MONTH # - #### MON ##",,,,0,,,"2000-06-03","2001-01-20",,"2000 June 3 - 2001 Jan 20",,,,
+"2000 June 3- 2001 Jan 20","#### MONTH #- #### MON ##",,,,0,,,"2000-06-03","2001-01-20",,"2000 June 3- 2001 Jan 20",,,,
+"2000 June 3-15","#### MONTH #-##",,,,0,,,"2020-06-03","2020-06-15",,"2000 June 3-15",,,,
+"2000 June 3-2001 Jan 20","#### MONTH #-#### MON ##",,,,0,,,"2000-06-03","2001-01-20",,"2000 June 3-2001 Jan 20",,,,
+"2000 June 3, 15","#### MONTH #, #","multi_date",,,0,,,"2000-06-03","2000-06-03",,"2000 June 3",,,,
+"2000 June 3, 15","#### MONTH #, #","multi_date",,,1,,,"2000-06-15","2000-06-15",,"2000 June 15",,,,
+"2000 May -June","#### MONTH -MONTH",,,,0,,,"2000-05-01","2000-06-30",,"2000 May -June",,,,
 "2000 May 5, June 2, 9-23","#### MONTH #, MONTH #, #-##","multi_date",,,0,,,"2000-05-05","2000-05-05",,"2000 May 5",,,,
 "2000 May 5, June 2, 9-23","#### MONTH #, MONTH #, #-##","multi_date",,,1,,,"2000-06-02","2000-06-02",,"2000 June 2",,,,
 "2000 May 5, June 2, 9-23","#### MONTH #, MONTH #, #-##","multi_date",,,2,,,"2000-06-09","2000-06-23",,"2000 June 9-23",,,,
-"2020 February 15","#### MONTH ##",,,,0,,,"2020-02-15","2020-02-15",,"2020 February 15",,,,
-"1997 or 1999","#### or ####","alternate_dates","ba",,0,"1997","1997","1997-01-01","1997-12-31","one_of_set","1997 or 1999",,,"1997 or 1999","[1997,1999]"
-"1997 or 1999","#### or ####","alternate_dates","ba",,1,"1999","1999","1999-01-01","1999-12-31","one_of_set","1997 or 1999",,,"1997 or 1999","[1997,1999]"
-"2020 Spring","#### SEASON","season",,,0,,,"2020-04-01","2020-06-30",,"2020 Spring",,,,
-"1910-11","####-@@","ambiguous_year_month;edtf;edtf1;two_digit_year","ncm","ambiguous_month_year: :as_year",0,"1910","1911","1910-01-01","1911-12-31",,"1910-11",,"Ambiguous year + month/season/year treated as_year","1910 - 1911","1910/1911"
-"1910-11","####-@@","ambiguous_year_month;edtf;edtf1;two_digit_year","ncm","ambiguous_month_year: :as_month",0,"1910-11","1910-11","1910-11-01","1910-11-30",,"1910-11",,"Ambiguous year + month/season/year treated as_month","1910-11","1910-11"
-"2020-21","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_year",0,,,"2020-01-01","2021-12-31",,"2020-21",,"Ambiguous year + month/season/year treated as_year",,
-"2020-21","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_month",0,,,"2020-04-01","2020-06-30",,"2020-21",,"Ambiguous year + month/season/year treated as_month",,
-"2020-34","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_month",0,,,"2020-01-01","2021-03-31",,"2020-34",,"Ambiguous year + month/season/year treated as_month",,
-"2020-34","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_year",0,,,"2020-01-01","2034-12-31",,"2020-34",,"Ambiguous year + month/season/year treated as_year",,
+"2000-01-00 - 2001-03-00","####-##-00 - ####-##-00",,,,0,,,"2000-01-01","2000-03-31",,"2000-01-00 - 2001-03-00",,,,
+"2000-01-00-2001-03-00","####-##-00-####-##-00",,,,0,,,"2000-01-01","2000-03-31",,"2000-01-00-2001-03-00",,,,
+"2000-01-01 or 2000-01-12","####-##-## or ####-##-##","alternate_dates",,,0,,,"2000-01-01","2000-01-01",,"2000-01-01 or 2000-01-12",,,,
+"2000-01-01 or 2000-01-12","####-##-## or ####-##-##","alternate_dates",,,1,,,"2000-01-12","2000-01-12",,"2000-01-01 or 2000-01-12",,,,
 "2000-01, 2001-01, 2002-02, 2003-03","####-@@, ####-##, ####-##, ####-##","ambiguous_multi_date;option",,,0,,,"2000-01-01","2001-12-31",,"2000-01, 2001-01, 2002-02, 2003-03",,,,
 "2000-01, 2001-01, 2002-02, 2003-03","####-@@, ####-##, ####-##, ####-##","ambiguous_multi_date;option",,,1,,,"2001-01-01","2001-01-31",,"2000-01, 2001-01, 2002-02, 2003-03",,,,
 "2000-01, 2001-01, 2002-02, 2003-03","####-@@, ####-##, ####-##, ####-##","ambiguous_multi_date;option",,,2,,,"2002-02-01","2002-02-28",,"2000-01, 2001-01, 2002-02, 2003-03",,,,
 "2000-01, 2001-01, 2002-02, 2003-03","####-@@, ####-##, ####-##, ####-##","ambiguous_multi_date;option",,,3,,,"2003-03-01","2003-03-31",,"2000-01, 2001-01, 2002-02, 2003-03",,,,
-"2004-06%","####-@@%","edtf;edtf1;uncertain_and_approximate",,,0,,,"2004-06-01","2004-06-30",,"2004-06%",,,,
-"2004-06~","####-@@~","approximate;edtf;edtf1",,,0,,,"2004-06-01","2004-06-30",,"2004-06~",,,,
-"2020-3","####-#",,,,0,,,"2020-03-01","2020-03-31",,"2020-3",,,,
-"1997-98","####-##",,"ba",,0,"1997","1998","1997-01-01","1998-12-31",,"1997-98",,,"1997 - 1998","1997/1998"
-"2020-03","####-##","edtf;edtf0","ba",,0,"2020-03","2020-03","2020-03-01","2020-03-31",,"2020-03",,,"2020-03","2020-03"
-"2020-02-15","####-##-##","edtf;edtf0",,,0,,,"2020-02-15","2020-02-15",,"2020-02-15",,,,
-"2000-01-01 or 2000-01-12","####-##-## or ####-##-##","alternate_dates",,,0,,,"2000-01-01","2000-01-01",,"2000-01-01 or 2000-01-12",,,,
-"2000-01-01 or 2000-01-12","####-##-## or ####-##-##","alternate_dates",,,1,,,"2000-01-12","2000-01-12",,"2000-01-01 or 2000-01-12",,,,
 "2001-01-01, 2002-02-02, 2003-03-03","####-##-##, ####-##-##, ####-##-##","multi_date",,,0,,,"2001-01-01","2001-01-01",,"2001-01-01, 2002-02-02, 2003-03-03",,,,
 "2001-01-01, 2002-02-02, 2003-03-03","####-##-##, ####-##-##, ####-##-##","multi_date",,,1,,,"2002-02-02","2002-02-02",,"2001-01-01, 2002-02-02, 2003-03-03",,,,
 "2001-01-01, 2002-02-02, 2003-03-03","####-##-##, ####-##-##, ####-##-##","multi_date",,,2,,,"2003-03-03","2003-03-03",,"2001-01-01, 2002-02-02, 2003-03-03",,,,
-"1985-04-12/","####-##-##/","after_before;edtf;edtf1;unknown_end",,,0,,,"1985-04-12","2999-12-31",,"1985-04-12/",,,,
-"1985-04-12/..","####-##-##/..","after_before;edtf;edtf1;open_end",,"ambiguous_month_day: :as_month_day",0,,,"1985-04-12","2999-12-31",,"1985-04-12/..",,,,
+"2002","####","edtf;edtf0;four_digit_year;year_granularity","ba;ncm",,0,"2002","2002","2002-01-01","2002-12-31",,"2002",,,"2002","2002"
+"2002 (?)","#### (?)","uncertain;four_digit_year;year_granularity","ba",,0,"2002","2002","2002-01-01","2002-12-31","uncertain","2002 (?)",,,"2002 (uncertain)","2002?"
+"2002 B.C.E.","#### ERA","bce;era;four_digit_year;year_granularity",,,0,"-2001","-2001","-2001-01-01","-2001-12-31",,"2002 B.C.E.",,,,
+"2002 C.E.","#### ERA","era;four_digit_year;year_granularity",,,0,,,"2002-01-01","2002-12-31",,"2002 C.E.",,,,
+"2002-2005 (?)","####-#### (?)","uncertain","ba",,0,"2002","2005","2002-01-01","2005-12-31","uncertain","2002-2005 (?)",,,"2002 - 2005 (uncertain)","2002/2005?"
+"2002?","####?","edtf;edtf1;uncertain;four_digit_year;year_granularity","ba",,0,"2002","2002","2002-01-01","2002-12-31",,"2002?",,,"2002 (uncertain)","2002?"
+"2004-%06-11","####-%##-##","edtf;edtf2;month_uncertain_and_approximate",,,0,,,"2004-06-01","2004-06-01",,"2004-%06-11",,,,
 "2004-02-01/2005","####-##-##/####","edtf;edtf0",,,0,,,"2004-02-01","2005-12-31",,"2004-02-01/2005",,,,
 "2004-02-01/2005-02","####-##-##/####-##","edtf;edtf0",,,0,,,"2004-02-01","2005-02-28",,"2004-02-01/2005-02",,,,
 "2004-02-01/2005-02-08","####-##-##/####-##-##","edtf;edtf0",,,0,,,"2004-02-01","2005-02-08",,"2004-02-01/2005-02-08",,,,
-"2004-06-11%","####-##-##%","edtf;edtf2;uncertain_and_approximate",,,0,,,"2004-06-01","2004-06-01",,"2004-06-11%",,,,
-"1985-04-12T23:20:30","####-##-##t##:##:##","edtf;edtf0;time",,,0,,,"1985-04-12","1985-04-12",,"1985-04-12T23:20:30",,,,
-"1985-04-12T23:20:30-04","####-##-##t##:##:##-##","edtf;edtf0;time",,,0,,,"1985-04-12","1985-04-12",,"1985-04-12T23:20:30-04",,,,
-"1985-04-12T23:20:30���:30","####-##-##t##:##:####:##","edtf;edtf0;time",,,0,,,"1985-04-12","1985-04-12",,"1985-04-12T23:20:30���:30",,,,
-"1985-04-12T23:20:30Z","####-##-##t##:##:##z","edtf;edtf0;time",,,0,,,"1985-04-12","1985-04-12",,"1985-04-12T23:20:30Z",,,,
 "2004-06-~01/2004-06-~20","####-##-~##/####-##-~##","approximate_handling_todo;edtf;edtf2",,,0,,,"2004-06-01","2004-06-20",,"2004-06-~01/2004-06-~20",,,,
-"2000-01-00 - 2001-03-00","####-##-00 - ####-##-00",,,,0,,,"2000-01-01","2000-03-31",,"2000-01-00 - 2001-03-00",,,,
-"2000-01-00-2001-03-00","####-##-00-####-##-00",,,,0,,,"2000-01-01","2000-03-31",,"2000-01-00-2001-03-00",,,,
-"1985-04-XX","####-##-xx","edtf;edtf1;uncertainty_digits",,,0,,,"1985-04-01","1985-04-30",,"1985-04-XX",,,,
+"2004-06-11%","####-##-##%","edtf;edtf2;uncertain_and_approximate",,,0,,,"2004-06-01","2004-06-01",,"2004-06-11%",,,,
 "2004-06-XX/2004-07-03","####-##-xx/####-##-##","edtf;edtf2",,,0,,,"2004-06-01","2004-07-03",,"2004-06-XX/2004-07-03",,,,
-"1970-80's","####-##'s","nested_ranges;decades","csws",,0,"1970","1989","1970-01-01","1989-12-31",,"1970-1980's",,"Interpreting pluralized year as decade",,
-"1985-04/","####-##/","after_before;edtf;edtf1;unknown_end",,,0,,,"1985-04-01","2999-12-31",,"1985-04/",,,,
-"1985-04/..","####-##/..","after_before;edtf;edtf1;open_end",,,0,,,"1985-04-01","2999-12-31",,"1985-04/..",,,,
 "2004-06/2006-08","####-##/####-##","edtf;edtf0",,,0,,,"2004-06-01","2006-08-31",,"2004-06/2006-08",,,,
-"1997-1998","####-####",,"ba",,0,"1997","1998","1997-01-01","1998-12-31",,"1997-1998",,,"1997 - 1998","1997/1998"
-"2002-2005 (?)","####-#### (?)","uncertain","ba",,0,"2002","2005","2002-01-01","2005-12-31","uncertain","2002-2005 (?)",,,"2002 - 2005 (uncertain)","2002/2005?"
-"1997-1998 A.D.","####-#### ERA",,,,0,,,"1997-01-01","1998-12-31",,"1997-1998 A.D.",,,,
-"1912-1920's","####-####'s","nested_range;decades","csws",,0,"1912","1929","1912-01-01","1929-12-31",,"1912-1980's",,"Interpreting pluralized year as decade",,
+"2004-06%","####-@@%","edtf;edtf1;uncertain_and_approximate",,,0,,,"2004-06-01","2004-06-30",,"2004-06%",,,,
+"2004-06~","####-@@~","approximate;edtf;edtf1",,,0,,,"2004-06-01","2004-06-30",,"2004-06~",,,,
 "2004-06~-11","####-##~-##","edtf;edtf2;year_and_month_approximate",,,0,,,"2004-06-01","2004-06-01",,"2004-06~-11",,,,
-"1984-1X","####-#x","edtf;edtf2;uncertainty_digits_month",,,0,,,"1984-10-01","1984-12-31",,"1984-1X",,,,
-"2004-%06-11","####-%##-##","edtf;edtf2;month_uncertain_and_approximate",,,0,,,"2004-06-01","2004-06-01",,"2004-%06-11",,,,
 "2004-XX","####-xx","edtf;edtf1;uncertainty_digits",,,0,,,"2004-01-01","2004-12-31",,"2004-XX",,,,
 "2004-XX-XX","####-xx-xx","edtf;edtf1;uncertainty_digits",,,0,,,"2004-01-01","2004-12-31",,"2004-XX-XX",,,,
-"1935, 1946-1947","####, ####-####","multi_date",,,0,,,"1935-01-01","1935-12-31",,"1935, 1946-1947",,,,
-"1935, 1946-1947","####, ####-####","multi_date",,,1,,,"1946-01-01","1947-12-31",,"1935, 1946-1947",,,,
-"2002?","####?","edtf;edtf1;uncertain;four_digit_year;year_granularity","ba",,0,"2002","2002","2002-01-01","2002-12-31",,"2002?",,,"2002 (uncertain)","2002?"
 "2004?-06-11","####?-##-##","edtf;edtf2;year_uncertain",,,0,,,"2004-06-01","2004-06-01",,"2004?-06-11",,,,
-"1915.0","####.0","weird_formatting;four_digit_year;year_granularity","ncm",,0,"1915","1915","1915-01-01","1915-12-31",,"1915.0",,,"1915","1915"
-"1800's","####'s","approximate;centuries","csws","pluralized_date_interpretation: :decade",0,"1800","1809","1800-01-01","1809-12-31",,"1800's",,"Interpreting pluralized year as decade","1800 - 1809 (exact year unspecified)","180X"
-"1985/","####/","after_before;edtf;edtf1;unknown_end",,,0,,,"1985-01-01","2999-12-31",,"1985/",,,,
-"1985/..","####/..","after_before;edtf;edtf1;open_end",,,0,,,"1985-01-01","2999-12-31",,"1985/..",,,,
-"1997/98","####/##",,,,0,,,"1997-01-01","1998-12-31",,"1997/98",,,,
+"2020 Feb 15","#### MON ##",,,,0,,,"2020-02-15","2020-02-15",,"2020 Feb 15",,,,
+"2020 February 15","#### MONTH ##",,,,0,,,"2020-02-15","2020-02-15",,"2020 February 15",,,,
+"2020 Mar","#### MON",,,,0,,,"2020-03-01","2020-03-31",,"2020 Mar",,,,
+"2020 Spring","#### SEASON","season",,,0,,,"2020-04-01","2020-06-30",,"2020 Spring",,,,
+"2020-02-15","####-##-##","edtf;edtf0",,,0,,,"2020-02-15","2020-02-15",,"2020-02-15",,,,
+"2020-03","####-##","edtf;edtf0","ba",,0,"2020-03","2020-03","2020-03-01","2020-03-31",,"2020-03",,,"2020-03","2020-03"
+"2020-21","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_year",0,,,"2020-01-01","2021-12-31",,"2020-21",,"Ambiguous year + month/season/year treated as_year",,
+"2020-21","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_month",0,,,"2020-04-01","2020-06-30",,"2020-21",,"Ambiguous year + month/season/year treated as_month",,
+"2020-3","####-#",,,,0,,,"2020-03-01","2020-03-31",,"2020-3",,,,
+"2020-34","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_month",0,,,"2020-01-01","2021-03-31",,"2020-34",,"Ambiguous year + month/season/year treated as_month",,
+"2020-34","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_year",0,,,"2020-01-01","2034-12-31",,"2020-34",,"Ambiguous year + month/season/year treated as_year",,
+"2020, Feb 15","####, MON ##",,"csws",,0,"2020","2020","2020-02-15","2020-02-15",,"2020, Feb 15",,,"2020-02-15","2020-02-15"
+"2020, Feb.","####, MON.",,"csws",,0,"2020","2020","2020-02-01","2020-02-29",,"2020, Feb.",,,"2020-02","2020-02"
+"2020, summer","####, SEASON","season;year_granularity","csws",,0,"2020","2020","2020-07-01","2020-09-30",,"2020, summer",,,,
 "2020/02/15","####/##/##",,,,0,,,"2020-02-15","2020-02-15",,"2020/02/15",,,,
-"1964/2008","####/####","edtf;edtf0",,,0,,,"1964-01-01","2008-12-31",,"1964/2008",,,,
 "20200215","########",,,,0,,,"2020-02-15","2020-02-15",,"20200215",,,,
-"1800s","####s","approximate;centuries","ba","pluralized_date_interpretation: :broad",0,"1800","1899","1800-01-01","1899-12-31",,,,"Interpreting pluralized year as century","1800 - 1899 (exact year unspecified)","18XX"
-"1800s","####s","approximate;centuries","ba","pluralized_date_interpretation: :decade",0,"1800","1809","1800-01-01","1809-12-31",,"1800s",,"Interpreting pluralized year as decade","1800 - 1809 (exact year unspecified)","180X"
-"1990s","####s","approximate;decades","ba","pluralized_date_interpretation: :broad",0,"1990","1999","1990-01-01","1999-12-31",,"1990s",,"Interpreting pluralized year as decade","1990 - 1999 (exact year unspecified)","199X"
-"1990s","####s","approximate;decades","ba","pluralized_date_interpretation: :decade",0,"1990","1999","1990-01-01","1999-12-31",,,,"Interpreting pluralized year as decade","1990 - 1999 (exact year unspecified)","199X"
-"1980s & 1990s","####s & ####s","alternate_dates;approximate;decades",,,0,,,"1980-01-01","1989-12-31",,"1980s",,"Interpreting pluralized year as decade",,
-"1980s & 1990s","####s & ####s","alternate_dates;approximate;decades",,,1,,,"1990-01-01","1999-12-31",,"1990s",,"Interpreting pluralized year as decade",,
-"1980s or 1990s","####s or ####s","alternate_dates;approximate;decades",,,0,,,"1980-01-01","1989-12-31",,"1980s",,"Interpreting pluralized year as decade",,
-"1980s or 1990s","####s or ####s","alternate_dates;approximate;decades",,,1,,,"1990-01-01","1999-12-31",,"1990s",,"Interpreting pluralized year as decade",,
-"1950S2","####s#","currently_unparseable;edtf;edtf2;significant_digits",,,0,,,"nilValue","nilValue",,"1950S2",,"Unprocessable string",,
-"199u","###u","approximate;decades",,,0,,,"1990-01-01","1999-12-31","one_of_set","199u",,,,
-"199X","###x","approximate;decades;edtf;edtf1",,,0,,,"1990-01-01","1999-12-31","one_of_set","199X",,,,
-"156X-12-25","###x-##-##","currently_unparseable;edtf;edtf2;specific_date_in_range_of_years",,,0,,,"nilValue","nilValue",,"156X-12-25",,"Unprocessable string",,
-"19th c.","##ORD c.","century","ba",,0,"1801","1900","1801-01-01","1900-12-31",,"19th c.",,,"1801 - 1900 (exact year unspecified)","[1801..1900]"
-"19th century","##ORD century","century",,,0,,,"1801-01-01","1900-12-31",,"19th century",,,,
-"19th century ?","##ORD century ?","century;uncertain",,,0,,,"1801-01-01","1900-12-31",,"19th century ?",,,,
-"19th century [?]","##ORD century [?]","century;uncertain",,,0,,,"1801-01-01","1900-12-31",,"19th century [?]",,,,
-"19th century, est.","##ORD century, est.","century;approximate","csws",,0,"1801","1900","1801-01-01","1900-12-31","approximate","19th century, est.",,,,
-"17th or 18th century","##ORD or ##ORD century","alternate_dates;century",,,0,,,"1601-01-01","1700-12-31",,"17th or 18th century",,,,
-"17th or 18th century","##ORD or ##ORD century","alternate_dates;century",,,1,,,"1701-01-01","1800-12-31",,"17th or 18th century",,,,
-"18uu","##uu","approximate;centuries",,,0,,,"1800-01-01","1899-12-31",,"18uu",,,,
-"18XX","##xx","approximate;centuries;edtf;edtf1",,,0,,,"1800-01-01","1899-12-31",,"18XX",,,,
-"15XX-12-25","##xx-##-##","currently_unparseable;edtf;edtf2;specific_date_in_range_of_years",,,0,,,"nilValue","nilValue",,"15XX-12-25",,"Unprocessable string",,
-"1uuu","#uuu","approximate;millennia",,,0,,,"1000-01-01","1999-12-31",,"1uuu",,,,
-"1XXX-12","#xxx-##","currently_unparseable;edtf;edtf2;in_specific_month_in_any_year",,,0,,,"nilValue","nilValue",,"1XXX-12",,"Unprocessable string",,
-"1XXX-XX","#xxx-xx","currently_unparseable;edtf;edtf2;in_specific_month_in_any_year",,,0,,,"nilValue","nilValue",,"1XXX-XX",,"Unprocessable string",,
+"3/2020","#/####",,"csws",,0,"2020","2020","2020-03-01","2020-03-31",,"3/2020",,,"2020-03","2020-03"
+"450 BCE - 200 BCE","### ERA - ### ERA","bce",,,0,"-0449","-0199","-0449-01-01","-0199-12-31",,"450 BCE - 200 BCE",,,,
+"450 BCE - 200 CE","### ERA - ### ERA","bce;cross_era",,,0,"-0449","0200","-0449-01-01","0200-12-31",,"450 BCE - 200 CE",,,,
+"450 to 200 BCE","### to ### ERA","bce",,,0,"-0449","-0199","-0449-01-01","-0199-12-31",,"450 to 200 BCE",,,,
 "about 2002","about ####","approximate;four_digit_year;year_granularity","csws",,0,"2002","2002","2002-01-01","2002-12-31","approximate","about 2002",,,,
 "after 1815","after ####","after_before","ba;opt","open_unknown_end_date: '2022-06-01'",0,"1816","2022","1816-01-01","2022-06-01",,"after 1815",,,"1816 or a later date","[1816..]"
+"approximately 1895","approximately ####","approximate","ccp",,0,"1895","1895","1895-01-01","1895-12-31","approximate","approximately 1895",,,"1895 (approximate)","1895~"
+"around 1917","around ####","approximate","ccp",,0,"1917","1917","1917-01-01","1917-12-31","approximate","around 1917",,,"1917 (approximate)","1917~"
 "before 1750","before ####","after_before","ba","open_unknown_start_date: '1600-02-15'",0,"1600","1749","1600-02-15","1749-12-31",,"before 1750",,,"1749 or an earlier date","[..1749]"
 "c 2002","c ####","approximate;four_digit_year;year_granularity",,,0,"2002","2002","2002-01-01","2002-12-31","approximate","c 2002",,,,
-"c. 2002","c. ####","approximate;four_digit_year;year_granularity",,,0,"2002","2002","2002-01-01","2002-12-31","approximate","c. 2002",,,,
 "c. 1997-1998","c. ####-####","approximate",,,0,,,"1997-01-01","1998-12-31","approximate","c. 1997-1998",,,,
+"c. 2002","c. ####","approximate;four_digit_year;year_granularity",,,0,"2002","2002","2002-01-01","2002-12-31","approximate","c. 2002",,,,
 "c2002","c####","approximate;four_digit_year;year_granularity","ba",,0,"2002","2002","2002-01-01","2002-12-31","approximate","c2002",,,"2002 (approximate)","2002~"
 "ca 2002","ca ####","approximate;four_digit_year;year_granularity",,,0,"2002","2002","2002-01-01","2002-12-31","approximate","ca 2002",,,,
-"ca. 2002","ca. ####","approximate;four_digit_year;year_granularity","ba",,0,"2002","2002","2002-01-01","2002-12-31","approximate","ca. 2002",,,"2002 (approximate)","2002~"
-"ca. 1997-1998","ca. ####-####","approximate",,,0,,,"1997-01-01","1998-12-31","approximate","ca. 1997-1998",,,,
 "ca. 1980s & 1990s","ca. ####s & ####s","approximate;decades;multi_date","ba","max_output_dates: 1",0,"1980","1989","1980-01-01","1989-12-31","approximate;all_of_set","ca. 1980s & 1990s",,"Interpreting pluralized year as decade","1980 - 1989 (exact year unspecified)","198X"
 "ca. 1980s & 1990s","ca. ####s & ####s","approximate;decades;multi_date","ba",,0,"1980","1989","1980-01-01","1989-12-31","approximate;all_of_set","ca. 1980s & 1990s",,"Interpreting pluralized year as decade","1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, and 1999","{1980..1989,1990..1999}"
 "ca. 1980s & 1990s","ca. ####s & ####s","approximate;decades;multi_date","ba","max_output_dates: 1",1,"1990","1999","1990-01-01","1999-12-31","approximate;all_of_set","ca. 1980s & 1990s",,"Interpreting pluralized year as decade","1980 - 1989 (exact year unspecified)","198X"
 "ca. 1980s & 1990s","ca. ####s & ####s","approximate;decades;multi_date","ba",,1,"1990","1999","1990-01-01","1999-12-31","approximate;all_of_set","ca. 1980s & 1990s",,"Interpreting pluralized year as decade","1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, and 1999","{1980..1989,1990..1999}"
+"ca. 1997-1998","ca. ####-####","approximate",,,0,,,"1997-01-01","1998-12-31","approximate","ca. 1997-1998",,,,
+"ca. 2002","ca. ####","approximate;four_digit_year;year_granularity","ba",,0,"2002","2002","2002-01-01","2002-12-31","approximate","ca. 2002",,,"2002 (approximate)","2002~"
 "circa 2002","circa ####","approximate;four_digit_year;year_granularity",,,0,"2002","2002","2002-01-01","2002-12-31","approximate","circa 2002",,,,
 "circa 2002, 1992","circa ####, ####","approximate","ncm","max_output_dates: 1",1,"1992","1992","1992-01-01","1992-12-31","approximate","1992",,,"2002 (approximate)","2002~"
 "circa 2002, 1992","circa ####, ####","approximate","ncm",,1,"1992","1992","1992-01-01","1992-12-31","approximate","1992",,,"2002 (approximate) and 1992","{2002~,1992}"
@@ -216,32 +224,33 @@
 "circa 2002, 1992","circa ####, ####","approximate","ncm",,0,"2002","2002","2002-01-01","2002-12-31","approximate","circa 2002",,,"2002 (approximate) and 1992","{2002~,1992}"
 "circa 2002?","circa ####?","approximate;uncertain;four_digit_year;year_granularity","ncm",,0,"2002","2002","2002-01-01","2002-12-31","approximate;uncertain","circa 2002?",,,"2002 (uncertain and approximate)","2002%"
 "circa2002","circa####","approximate;four_digit_year;year_granularity","ncm",,0,"2002","2002","2002-01-01","2002-12-31","approximate","circa2002",,,"2002 (approximate)","2002~"
+"Date Unknown","Date Unknown","indicates_no_date","csws",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","Date Unknown",,,"not dated","XXXX"
 "Early 1990","early ####","approximate;partial",,,0,,,"1990-01-01","1990-04-30",,"Early 1990",,,,
 "Early 1990s","early ####s","approximate;decades;partial",,,0,,,"1990-01-01","1995-12-31",,"Early 1990s",,,,
 "early 19th century","early ##ORD century","century;partial","ba",,0,"1801","1834","1801-01-01","1834-12-31",,"early 19th century",,,"1801 - 1834 (exact year unspecified)","[1801..1834]"
 "early to mid-19th century","early to mid-##ORD century","unparseable","ba",,0,"1801","nilValue","1801-01-01","nilValue",,"early to mid-19th century",,"Currently unparseable",,
-"Late 1990","late ####","approximate;partial",,,0,,,"1990-09-01","1990-12-31",,"Late 1990",,,,
-"late 1800s","late ####s","approximate;centuries;partial",,,0,,,"1867-01-01","1899-12-31",,"late 1800s",,,,
-"Late 1990s","late ####s","approximate;decades;partial",,,0,,,"1995-01-01","1999-12-31",,"Late 1990s",,,,
-"late 19th c.","late ##ORD c.","century;partial","ba",,0,"1867","1900","1867-01-01","1900-12-31",,"late 19th c.",,,"1867 - 1900 (exact year unspecified)","[1867..1900]"
-"late 19th century","late ##ORD century","century;partial","ba",,0,"1867","1900","1867-01-01","1900-12-31",,"late 19th century",,,"1867 - 1900 (exact year unspecified)","[1867..1900]"
-"late 19th to early 20th century","late ##ORD to early ##ORD century","century;partial","ba",,0,"1867","1934","1867-01-01","1934-12-31",,"late 19th to early 20th century",,,"1867 - 1934 (exact year unspecified)","[1867..1934]"
-"late 19th-early 20th c.","late ##ORD-early ##ORD century","century;partial","ba",,0,"1867","1934","1867-01-01","1934-12-31",,"late 19th-early 20th c.",,,"1867 - 1934 (exact year unspecified)","[1867..1934]"
-"Mid 1990","mid ####","approximate;partial",,,0,,,"1990-05-01","1990-08-31",,"Mid 1990",,,,
-"Mid 1990s","mid ####s","approximate;decades;partial",,,0,,,"1993-01-01","1998-12-31",,"Mid 1990s",,,,
-"mid-19th century","mid-##ORD century","century;partial",,,0,,,"1834-01-01","1867-12-31",,"mid-19th century",,,,
 "Feb 15 2020","MON ## ####",,,,0,"2020","2020","2020-02-15","2020-02-15",,"Feb 15 2020",,,"2020-02-15","2020-02-15"
 "Feb 15, 2020","MON ##, ####",,,,0,"2020","2020","2020-02-15","2020-02-15",,"Feb 15, 2020",,,"2020-02-15","2020-02-15"
 "Feb. 15 2020","MON. ## ####",,,,0,"2020","2020","2020-02-15","2020-02-15",,"Feb. 15 2020",,,"2020-02-15","2020-02-15"
 "Feb. 15, 2020","MON. ##, ####",,,,0,"2020","2020","2020-02-15","2020-02-15",,"Feb. 15, 2020",,,"2020-02-15","2020-02-15"
-"May - June 2000","MONTH - MONTH ####",,,,0,,,"2000-05-01","2000-06-30",,"May - June 2000",,,"2000-05 - 2000-06","2000-05/2000-06"
-"June 3 -15, 2000","MONTH # -##, ####",,,,0,,,"2020-06-03","2020-06-15",,"June 3 -15, 2000",,,"2000-06-03 - 2000-06-15","2000-06-03/2000-06-15"
-"June 1- July 4, 2000","MONTH #- MONTH #, ####",,,,0,,,"2000-06-01","2000-07-04",,"June 1- July 4, 2000",,,"2000-06-01 - 2000-07-04","2000-06-01/2000-07-04"
-"June 3-15, 2000","MONTH #-##, ####",,,,0,,,"2020-06-03","2020-06-15",,"June 3-15, 2000",,,"2000-06-03 - 2000-06-15","2000-06-03/2000-06-15"
 "February 15 2020","MONTH ## ####",,,,0,"2020","2020","2020-02-15","2020-02-15",,"February 15 2020",,,"2020-02-15","2020-02-15"
 "February 15, 2020","MONTH ##, ####",,,,0,"2020","2020","2020-02-15","2020-02-15",,"February 15, 2020",,,"2020-02-15","2020-02-15"
+"June 1- July 4, 2000","MONTH #- MONTH #, ####",,,,0,,,"2000-06-01","2000-07-04",,"June 1- July 4, 2000",,,"2000-06-01 - 2000-07-04","2000-06-01/2000-07-04"
+"June 3 -15, 2000","MONTH # -##, ####",,,,0,,,"2020-06-03","2020-06-15",,"June 3 -15, 2000",,,"2000-06-03 - 2000-06-15","2000-06-03/2000-06-15"
+"June 3-15, 2000","MONTH #-##, ####",,,,0,,,"2020-06-03","2020-06-15",,"June 3-15, 2000",,,"2000-06-03 - 2000-06-15","2000-06-03/2000-06-15"
+"late 1800s","late ####s","approximate;centuries;partial",,,0,"1807","1809","1807-01-01","1809-12-31",,"late 1800s",,,,
+"late 1800s","late ####s","approximate;centuries;partial",,"pluralized_date_interpretation: :broad",0,"1867","1899","1867-01-01","1899-12-31",,"late 1800s",,,,
+"Late 1990","late ####","approximate;partial",,,0,,,"1990-09-01","1990-12-31",,"Late 1990",,,,
+"Late 1990s","late ####s","approximate;decades;partial",,,0,"1997","1999","1997-01-01","1999-12-31",,"Late 1990s",,,,
+"late 19th c.","late ##ORD c.","century;partial","ba",,0,"1867","1900","1867-01-01","1900-12-31",,"late 19th c.",,,"1867 - 1900 (exact year unspecified)","[1867..1900]"
+"late 19th century","late ##ORD century","century;partial","ba",,0,"1867","1900","1867-01-01","1900-12-31",,"late 19th century",,,"1867 - 1900 (exact year unspecified)","[1867..1900]"
+"late 19th to early 20th century","late ##ORD to early ##ORD century","century;partial","ba",,0,"1867","1934","1867-01-01","1934-12-31",,"late 19th to early 20th century",,,"1867 - 1934 (exact year unspecified)","[1867..1934]"
+"late 19th-early 20th c.","late ##ORD-early ##ORD century","century;partial","ba",,0,"1867","1934","1867-01-01","1934-12-31",,"late 19th-early 20th c.",,,"1867 - 1934 (exact year unspecified)","[1867..1934]"
 "March 2020","MONTH ####",,,,0,,,"2020-03-01","2020-03-31",,"March 2020",,,"2020-03","2020-03"
-"Date Unknown","Date Unknown","indicates_no_date","csws",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","Date Unknown",,,"not dated","XXXX"
+"May - June 2000","MONTH - MONTH ####",,,,0,,,"2000-05-01","2000-06-30",,"May - June 2000",,,"2000-05 - 2000-06","2000-05/2000-06"
+"Mid 1990","mid ####","approximate;partial",,,0,,,"1990-05-01","1990-08-31",,"Mid 1990",,,,
+"Mid 1990s","mid ####s","approximate;decades;partial",,,0,,,"1993-01-01","1998-12-31",,"Mid 1990s",,,,
+"mid-19th century","mid-##ORD century","century;partial",,,0,,,"1834-01-01","1867-12-31",,"mid-19th century",,,,
 "n.d.","n.d.","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","n.d.",,,"not dated","XXXX"
 "nd","nd","indicates_no_date",,,0,,,"nilValue","nilValue","known_unknown","nd",,,"not dated","XXXX"
 "not dated","not dated","indicates_no_date","ncm",,0,"nilValue","nilValue","nilValue","nilValue","known_unknown","not dated",,,"not dated","XXXX"
@@ -261,11 +270,4 @@
 "Y170002","y######","edtf;edtf1;letter_prefixed_year",,,0,,,"170002-01-01","170002-12-31",,"Y170002",,,,
 "Y171010000S3","y#########s#","currently_unparseable;edtf;edtf2;letter_prefixed_year;significant_digits",,,0,,,"nilValue","nilValue",,"Y171010000S3",,"Untokenizable sequences: 171010000",,
 "Y3388E2S3","y####e#s#","currently_unparseable;edtf;edtf2;exponential_year;letter_prefixed_year;significant_digits",,,0,,,"nilValue","nilValue",,"Y3388E2S3",,,,
-"2020, Feb 15","####, MON ##",,"csws",,0,"2020","2020","2020-02-15","2020-02-15",,"2020, Feb 15",,,"2020-02-15","2020-02-15"
-"2020, Feb.","####, MON.",,"csws",,0,"2020","2020","2020-02-01","2020-02-29",,"2020, Feb.",,,"2020-02","2020-02"
-"2020, summer","####, SEASON","season;year_granularity","csws",,0,"2020","2020","2020-07-01","2020-09-30",,"2020, summer",,,,
-"1880s-1990s","####s-####s","nested_ranges;decades","csws",,0,"1880","1999","1880-01-01","1999-12-31",,"1880s-1990s",,,,
-"1968-Mar","####-MON",,"ccp",,0,"1968-03","1968-03","1968-03-01","1968-03-31",,"1968-Mar",,,"1968-03","1968-03"
-"approximately 1895","approximately ####","approximate","ccp",,0,"1895","1895","1895-01-01","1895-12-31","approximate","approximately 1895",,,"1895 (approximate)","1895~"
-"1844 Jun 31","#### MON ##","invalid","ccp",,0,"nilValue","nilValue","nilValue","nilValue",,"1844 Jun 31","invalid date",,"nilValue","nilValue"
-"around 1917","around ####","approximate","ccp",,0,"1917","1917","1917-01-01","1917-12-31","approximate","around 1917",,,"1917 (approximate)","1917~"
+"2002 B.C.","#### ERA","bce;era;four_digit_year;year_granularity",,,0,"-2001","-2001","-2001-01-01","-2001-12-31",,"2002 B.C.",,,,
