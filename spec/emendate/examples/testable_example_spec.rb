@@ -14,7 +14,7 @@ RSpec.describe Emendate::Examples::TestableExample do
       expect{ klass }.to raise_error(Emendate::Examples::TestableExample::EmptyTestSetError)
     end
   end
-  
+
   describe '#runnable_tests' do
     let(:result){ klass.runnable_tests }
 
@@ -49,7 +49,7 @@ RSpec.describe Emendate::Examples::TestableExample do
   describe '#testable?' do
     let(:result){ klass.testable? }
 
-    context 'with bad options' do 
+    context 'with bad options' do
       let(:str){ '2002' }
       let(:opt){ 'unknown_opt: :foo' }
 
@@ -65,10 +65,9 @@ RSpec.describe Emendate::Examples::TestableExample do
 
       it 'returns as expected', :aggregate_failures do
         expect(result).to eq(true)
-        expect(klass.processed).to be_a(Emendate::ProcessingManager)
+        expect(klass.processed).to be_a(Emendate::OldProcessingManager)
       end
     end
   end
 
 end
-

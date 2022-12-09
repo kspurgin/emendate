@@ -22,7 +22,7 @@ module Emendate
       end
 
       def translate
-        pm = Emendate::ProcessingManager.new(example.test_string, **translate_options)
+        pm = Emendate::OldProcessingManager.new(example.test_string, **translate_options)
         pm.process
         result = Emendate::Translator.new(pm).translate
       rescue StandardError => err
@@ -31,7 +31,7 @@ module Emendate
       else
         result
       end
-      
+
       def translate_options
         translate_opt = {target_dialect: name.delete_prefix('translation_').to_sym}
         example.test_options ? instance_eval("{#{example.test_options}}").merge(translate_opt) : translate_opt

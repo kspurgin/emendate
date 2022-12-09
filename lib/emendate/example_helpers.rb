@@ -51,7 +51,7 @@ module ExampleHelpers
       puts "No matching rows"
       exit
     end
-    
+
     Emendate::Examples::ExampleSet.new(rows: rows)
   end
 
@@ -114,7 +114,7 @@ module ExampleHelpers
 
     failed = failed_to_parse(examples: examples)
     return if failed.empty?
-    
+
     puts "\n\n PARSING FAILURES"
     puts failed
   end
