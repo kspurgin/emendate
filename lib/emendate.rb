@@ -66,6 +66,23 @@ module Emendate
       reader: true
   end
 
+  # @param orig [String]
+  # @return [String]
+  def normalize_orig(orig)
+    orig.downcase.sub('[?]', '?')
+      .sub('(?)', '?')
+      .sub(/^c([^a-z])/, 'circa\1') # initial c followed by non-letter
+      .gsub(/b\.?c\.?(e\.?|)/, 'bce') # cleanup bc, bce
+      .gsub(/(a\.?d\.?|c\.?e\.?)/, 'ce') # cleanup ad, ce
+      .gsub(/b\.?p\.?/, 'bp') # cleanup bp
+      .sub(/^n\.? ?d\.?$/, 'nodate') # cleanup nd
+      .sub(/^ *not dated *$/, 'notdated') # cleanup not dated
+      .sub(/^ *unkn?\.? *$/, 'unk') # cleanup unk.
+      .sub(/^ *date unknown?\.? *$/, 'dateunknown')
+      .sub(/^ *unknown date?\.? *$/, 'unknowndate')
+      .sub(/(st|nd|rd|th) c\.?$/, '\1 century') # ending c after ordinal
+  end
+
   # str = String to process
   # sym = Symbol of aasm event for which you would use the results as input.
   # For example, running :tag_date_parts requires successful format standardization
