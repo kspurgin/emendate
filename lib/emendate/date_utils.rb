@@ -7,13 +7,21 @@ module Emendate
     include Emendate::NumberUtils
     extend self
 
-    # returns 2010 for 2020-10; returns 1999 for 1998-9
+    # @param year [String] the known full year
+    # @param digits [String] the following shorter digit string to be
+    #   expanded
+    # @return [String] the shorter digits, expanded to follow the pattern
+    #   of the given `year` value. Examples: returns 2010 for 2020-10; returns
+    #   1999 for 1998-9
     def expand_shorter_digits(year, digits)
       diff = year.length - digits.length - 1
       "#{year[0..diff]}#{digits}"
     end
 
-    # returns true if it's a possible range and it can't be month/season
+    # @param year [String] the known full year
+    # @param digits [String] the shorter digit segment following year
+    # @return [Boolean] true if it's a possible range and it can't be a
+    #   month/season
     def is_range?(year, digits)
       possible_range?(year, digits) && !valid_month_or_season?(digits) ? true : false
     end
