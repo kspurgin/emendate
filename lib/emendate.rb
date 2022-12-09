@@ -54,7 +54,7 @@ module Emendate
     setting :unknown_date_output, default: :orig, reader: true
     setting :unknown_date_output_string, default: '', reader: true
   end
-  
+
   setting :examples, reader: true do
     setting :dir, default: ->{ File.join(Emendate.basedir, 'spec', 'support') }, reader: true
     setting :file_name, default: 'examples.csv', reader: true
@@ -65,25 +65,25 @@ module Emendate
          translation_lyrasis_pseudo_edtf],
       reader: true
   end
-  
+
   # str = String to process
   # sym = Symbol of aasm event for which you would use the results as input.
   # For example, running :tag_date_parts requires successful format standardization
   #   To test date part tagging, you can use the results of prep_for(str, :tag_date_parts)
   def prep_for(str, sym, options = {})
-    pm = Emendate::ProcessingManager.new(str, options)
+    pm = Emendate::OldProcessingManager.new(str, options)
     pm.prep_for(sym)
     pm
   end
 
   def parse(str, options = {})
-    pm = Emendate::ProcessingManager.new(str, options)
+    pm = Emendate::OldProcessingManager.new(str, options)
     pm.process
     pm.result
   end
 
   def process(str, options = {})
-    pm = Emendate::ProcessingManager.new(str, options)
+    pm = Emendate::OldProcessingManager.new(str, options)
     pm.process
     pm
   end
@@ -95,7 +95,7 @@ module Emendate
   end
 
   def translate(str, options = {})
-    pm = Emendate::ProcessingManager.new(str, options)
+    pm = Emendate::OldProcessingManager.new(str, options)
     pm.process
     translator = Emendate::Translator.new(pm)
     translator.translate
@@ -104,5 +104,5 @@ module Emendate
   def tokenize(str)
     tokens = lex(str).map(&:type)
     puts "#{str}\t\t#{tokens.inspect}"
-  end  
+  end
 end
