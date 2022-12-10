@@ -13,33 +13,24 @@ module Emendate
       end
     end
 
-    attr_reader :orig_string, :options, :norm_string, :tokens, :orig_tokens,
-      :tagged_untokenizable,
-      :tagged_unprocessable,
-      :tagged_known_unknown,
-      :collapsed_tokens,
-      :converted_months,
-      :translated_ordinals,
-      :certainty_checked,
-      :standardized_formats,
-      :tagged_date_parts,
-      :segmented_dates,
-      :ranges_indicated,
-      :errors, :warnings
+    attr_reader :orig_string, :tokens, :state, :errors, :warnings
 
     def initialize(string, options = {})
       @orig_string = string
       Emendate::Options.new(options) unless options.empty?
-      @options = options
-      @norm_string = Emendate.normalize_orig(orig_string)
       @tokens = Emendate::SegmentSets::TokenSet.new
+      @state = :initialized
       @errors = []
       @warnings = []
     end
 
     def call
-      @norm_string = yield Emendate.normalize(orig_string)
+      norm = yield Emendate.normalize(orig_string)
+      lexed = yield Emendate::Lexer.call(norm)
+      @tokens = lexed.tokens
+      @state = :lexed
 
+      Success(self)
     end
 
     def process
@@ -59,10 +50,6 @@ module Emendate
       segment_dates if may_segment_dates?
       indicate_ranges if may_indicate_ranges?
       finalize if may_finalize?
-    end
-
-    def state
-      aasm.current_state
     end
 
     def to_s
