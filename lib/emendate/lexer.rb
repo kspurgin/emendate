@@ -104,10 +104,7 @@ module Emendate
           letter
         end
 
-      return if token.nil? && c == DOT
-
       token = Token.new(lexeme: c, type: :unknown, location: current_location) if token.nil?
-
 
       tokens << token
     end
