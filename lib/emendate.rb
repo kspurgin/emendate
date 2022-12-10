@@ -130,7 +130,7 @@ module Emendate
   end
 
   def lex(str)
-    lexed = Emendate::Lexer.new(Emendate.normalize_orig(str))
+    lexed = Emendate::OldLexer.new(Emendate.normalize_orig(str))
     lexed.tokenize
     lexed
   end

@@ -208,16 +208,11 @@ module Emendate
     end
 
     def perform_lex
-      l = Emendate::Lexer.new(norm_string)
-      begin
-        l.tokenize
-      rescue Emendate::UntokenizableError => e
-        errors << e
-      else
-        @norm_string = l.norm
-        @tokens = l.tokens
-        @orig_tokens = tokens.class.new.copy(tokens)
-      end
+      l = Emendate::OldLexer.new(norm_string)
+      l.tokenize
+      @norm_string = l.norm
+      @tokens = l.tokens
+      @orig_tokens = tokens.class.new.copy(tokens)
     end
 
     def perform_collapse_tokens
