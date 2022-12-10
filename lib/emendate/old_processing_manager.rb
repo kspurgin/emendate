@@ -216,7 +216,7 @@ module Emendate
     end
 
     def perform_collapse_tokens
-      c = Emendate::TokenCollapser.new(tokens: tokens)
+      c = Emendate::OldTokenCollapser.new(tokens: tokens)
       c.collapse
       @tokens = c.result
       @collapsed_tokens = tokens.class.new.copy(tokens)
