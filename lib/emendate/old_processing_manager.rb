@@ -290,7 +290,7 @@ module Emendate
     end
 
     def perform_tag_untokenizable
-      t = Emendate::UntokenizableTagger.new(tokens: tokens, str: orig_string)
+      t = Emendate::OldUntokenizableTagger.new(tokens: tokens, str: orig_string)
       begin
         t.tag
       rescue StandardError => e
