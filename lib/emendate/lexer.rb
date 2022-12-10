@@ -5,7 +5,15 @@ require 'emendate/location'
 
 module Emendate
   class Lexer
+    include Dry::Monads[:result]
+    include Dry::Monads::Do.for(:call)
     include DateUtils
+
+    class << self
+      def call(...)
+        self.new(...).call
+      end
+    end
 
     # ambiguous things
     # c - at beginning = circa, at end = century
@@ -43,24 +51,36 @@ module Emendate
     TILDE = '~'
     UNKNOWN_DATE = ['dateunknown', 'nodate', 'notdated', 'undated', 'unk', 'unknown', 'unknowndate'].freeze
 
-    attr_reader :norm, :tokens
-    attr_accessor :next_p, :lexeme_start_p
+    attr_reader :orig, :norm, :tokens
 
-    def initialize(norm_string)
-      @norm = norm_string
+    def initialize(string)
+      @orig = string
+      @norm = string
       @tokens = Emendate::SegmentSets::TokenSet.new
       @next_p = 0
       @lexeme_start_p = 0
     end
 
+    def call
+      @norm = yield Emendate.normalize(orig)
+      _tokenized = yield tokenize
+
+      Success(self)
+    end
+
+    private
+
+    attr_accessor :next_p, :lexeme_start_p
+
     def tokenize
       while norm_uncompleted?
         tokenization
       end
-      self
+    rescue StandardError => err
+      Failure(err)
+    else
+      Success()
     end
-
-    private
 
     def tokenization
       self.lexeme_start_p = next_p
@@ -105,6 +125,7 @@ module Emendate
         end
 
       token = Token.new(lexeme: c, type: :unknown, location: current_location) if token.nil?
+
 
       tokens << token
     end
