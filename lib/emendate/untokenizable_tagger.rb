@@ -4,6 +4,12 @@ module Emendate
   class UntokenizableTagger
     attr_reader :str, :result
 
+    class << self
+      def call(...)
+        self.initialize(...).call
+      end
+    end
+
     def initialize(tokens:, str:)
       @tokens = tokens
       @str = str
@@ -32,7 +38,7 @@ module Emendate
     def untokenizable_strings
       @tokens.select{ |token| token.type == :unknown }.segments.map(&:lexeme)
     end
-    
+
     def untokenizable?
       @tokens.types.any?(:unknown)
     end
