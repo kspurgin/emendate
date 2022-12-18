@@ -15,9 +15,12 @@ module Emendate
         passthrough
         return
       end
-      
-      result << Emendate::DateTypes::Untokenizable.new(children: @tokens.segments, literal: str)
-      result.warnings << "Untokenizable sequences: #{untokenizable_strings.join('; ')}"
+
+      result << Emendate::DateTypes::Untokenizable.new(
+        children: @tokens.segments, literal: str
+      )
+      result.warnings << "Untokenizable sequences: "\
+        "#{untokenizable_strings.join('; ')}"
     end
 
     private
