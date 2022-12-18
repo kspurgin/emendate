@@ -8,20 +8,6 @@ require 'emendate/short_year_handler'
 
 module Emendate
   class AllShortMdyAnalyzer
-    class MonthDayYearError < Emendate::Error
-      def initialize(tokens)
-        m = "Cannot determine any valid month/day/year combination for #{tokens.map(&:lexeme).join('-')}"
-        super(m)
-      end
-    end
-
-    class PreferredMdyOrderInvalidError < Emendate::Error
-      def initialize(tokens)
-        m = "Using ambiguous MDY order #{Emendate.options.ambiguous_month_day_year} results in invalid date for: #{tokens.map(&:lexeme).join('-')}"
-        super(m)
-      end
-    end
-    
     include DateUtils
     include ResultEditable
 
@@ -32,7 +18,7 @@ module Emendate
     end
 
     attr_reader :datetype, :warnings
-    
+
     # @param tokens [Array<Emendate::Segment>] (or subclasses)
     def initialize(tokens)
       @result = Emendate::SegmentSets::SegmentSet.new.copy(tokens)
@@ -53,7 +39,7 @@ module Emendate
     def analyze
       case valid_permutations.length
       when 0
-        fail(MonthDayYearError.new(numbers))  
+        fail(MonthDayYearError.new(numbers))
       when 1
         transform_unambiguous(valid_permutations[0])
       when 2
@@ -69,7 +55,7 @@ module Emendate
 
     def collapse_hyphen(part)
       return part if result[-1] == part
-      
+
       ind = result.find_index(part)
       to_collapse = [result[ind], result[ind + 1]]
       collapse_token_pair_backward(*to_collapse)
@@ -80,14 +66,14 @@ module Emendate
       year = result.when_type(:year)[0]
       month = result.when_type(:month)[0]
       day = result.when_type(:day)[0]
-      
+
       @datetype = Emendate::DateTypes::YearMonthDay.new(year: year.literal,
                                             month: month.literal,
                                             day: day.literal,
                                             children: [year, month, day])
 
     end
-    
+
     def expand_year(n)
       Emendate::ShortYearHandler.call(n).lexeme
     end
@@ -108,7 +94,7 @@ module Emendate
         .split('_')
         .map(&:to_sym)
     end
-    
+
     def transform_all_ambiguous
       numbers.each_with_index{ |part, ind| transform_part(part, preferred_order[ind]) }
       parts = %i[year month day].map{ |type| result.when_type(type)[0] }
@@ -135,7 +121,7 @@ module Emendate
       analyzer.warnings.each{ |warn| @warnings << warn }
       derive_datetype
     end
-    
+
     def transform_unambiguous(parts)
       transform_part(parts[0], :year)
       transform_part(parts[1], :month)
@@ -160,7 +146,7 @@ module Emendate
                                   source_tokens: [part])
       replace_x_with_new(x: part, new: yr)
     end
-    
+
     def valid_permutations
       numbers.permutation(3)
         .map{ |per| permutation_valid?(per) }
