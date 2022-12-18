@@ -7,14 +7,12 @@ require_relative 'tester'
 module Emendate
   module Examples
     class TestableExample
-      class EmptyTestSetError < Emendate::Error; end
-      
       attr_reader :rows, :fingerprint, :test_string, :test_options, :test_pattern, :processed, :errors
       def initialize(rows)
         @rows = rows
 
         fail(EmptyTestSetError.new) if rows.empty?
-        
+
         @fingerprint = rows.first.test_fingerprint
         @test_string = rows.first.test_string
         @test_options = rows.first.test_options
@@ -35,11 +33,11 @@ module Emendate
       def all_tags
         [tags('data_set'), tags('date_type')].flatten.sort.uniq
       end
-      
+
       def report_error(err)
         puts err.map{ |line| "    #{line}" }
       end
-      
+
       def report_failure
         puts "string: #{test_string} -- opts: #{test_options}"
         errors.each do |test, err|
@@ -47,7 +45,7 @@ module Emendate
           report_error(err)
         end
       end
-      
+
       def run_tests(tests: nil, fail_fast: false, mode: :normal)
         reset_test_data unless test_results.empty?
         puts "Testing: #{fingerprint}" if mode == :verbose
@@ -77,13 +75,13 @@ module Emendate
           .reject{ |val| val.blank? }
           .map{ |val| "#{val} (#{meth})" }
       end
-      
+
       def test_status
         return :no_tests_run if test_results.empty?
-        
+
         test_results.values.any?(:failure) ? :failure : :success
       end
-      
+
       def testable?
         @processed ? true : check_testable
       end
@@ -103,14 +101,14 @@ module Emendate
 
       def type_pattern(date_only: false, stage: :tokens)
         return [:date_string_not_processed] unless testable?
-        
+
         date_only ? processed.send(stage).date_part_types : processed.send(stage).types
       end
-      
+
       private
 
       attr_reader :test_results
-      
+
       def check_testable
         validated_opt = options_valid?
         return false unless validated_opt

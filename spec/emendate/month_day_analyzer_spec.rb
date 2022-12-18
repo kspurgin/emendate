@@ -59,7 +59,7 @@ RSpec.describe Emendate::MonthDayAnalyzer do
         let(:str){ '31-29-2020' }
 
         it 'raises error' do
-          expect{ result }.to raise_error(Emendate::MonthDayAnalyzer::MonthDayError)
+          expect{ result }.to raise_error(Emendate::MonthDayError)
         end
       end
     end

@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe Emendate::AllShortMdyAnalyzer do
   subject(:analyzer){ described_class.new(tokens) }
-  
+
   let(:tokens){ Emendate.prep_for(str, :tag_date_parts).standardized_formats }
 
   describe '#call' do
@@ -14,7 +14,7 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
 
     context 'with 87-04-13 (all unambiguous)' do
       let(:str){ '87-04-13' }
-      
+
       it 'converts to date types' do
         expect(ymd).to eq('1987 4 13')
         expect(wct).to eq(0)
@@ -71,9 +71,8 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
       let(:str){ '90-31-29' }
 
       it 'raises error' do
-        expect{ result }.to raise_error(Emendate::AllShortMdyAnalyzer::MonthDayYearError)
+        expect{ result }.to raise_error(Emendate::MonthDayYearError)
       end
     end
   end
 end
-

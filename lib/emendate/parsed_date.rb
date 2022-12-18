@@ -4,9 +4,6 @@ require 'json'
 
 module Emendate
   class ParsedDate
-
-    class NonDateTypeError < Emendate::Error; end
-    
     attr_reader :original_string, :index_dates,
       :date_start, :date_end,
       :date_start_full, :date_end_full,
@@ -14,7 +11,7 @@ module Emendate
 
     def initialize(datetype, whole_certainty = [], orig)
       fail(NonDateTypeError) unless datetype.is_a?(Emendate::DateTypes::DateType)
-      
+
       @original_string = get_original_string(datetype, orig)
       @index_dates = []
       @date_start = nil

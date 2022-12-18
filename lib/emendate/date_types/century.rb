@@ -2,20 +2,6 @@
 
 module Emendate
   module DateTypes
-    class MissingCenturyTypeError < Emendate::Error
-      def initialize(types)
-        m = "A century_type option with is required. Value must be one of the following: #{types.join(', ')}"
-        super(m)
-      end
-    end
-
-    class CenturyTypeValueError < Emendate::Error
-      def initialize(types)
-        m = "The century_type option must have one of the following values: #{types.join(', ')}"
-        super(m)
-      end
-    end
-
     class Century < Emendate::DateTypes::DateType
       attr_reader :literal, :century_type
 

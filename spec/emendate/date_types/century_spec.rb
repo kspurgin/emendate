@@ -4,27 +4,27 @@ require 'spec_helper'
 
 RSpec.describe Emendate::DateTypes::Century do
   subject(:century){ described_class.new(**args) }
-  
+
   context 'when called without century_type' do
     let(:args){ {literal: 19} }
-    
+
     it 'raises error' do
-      expect{ subject }.to raise_error(Emendate::DateTypes::MissingCenturyTypeError)
+      expect{ subject }.to raise_error(Emendate::MissingCenturyTypeError)
     end
   end
 
   context 'when called with unsupported century_type value' do
     let(:args) { {} }
-    
+
     it 'raises error' do
-      err = Emendate::DateTypes::CenturyTypeValueError
+      err = Emendate::CenturyTypeValueError
       expect{described_class.new(literal: 19, century_type: :misc) }.to raise_error(err)
     end
   end
 
   context 'with textual century name (19th)' do
     let(:args) { {literal: 19, century_type: :name} }
-    
+
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
       expect(subject.earliest).to eq(Date.new(1801, 1, 1))
@@ -38,7 +38,7 @@ RSpec.describe Emendate::DateTypes::Century do
 
   context 'with textual century name (19th) and partial indicator: early' do
     let(:args) { {literal: 19, century_type: :name, partial_indicator: 'early'} }
-    
+
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
       expect(subject.earliest).to eq(Date.new(1801, 1, 1))
@@ -52,7 +52,7 @@ RSpec.describe Emendate::DateTypes::Century do
 
   context 'with textual century name (19th) and partial indicator: mid' do
     let(:args) { {literal: 19, century_type: :name, partial_indicator: 'mid'} }
-    
+
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
       expect(subject.earliest).to eq(Date.new(1834, 1, 1))
@@ -66,7 +66,7 @@ RSpec.describe Emendate::DateTypes::Century do
 
   context 'with textual century name (19th) and partial indicator: late' do
     let(:args) { {literal: 19, century_type: :name, partial_indicator: 'late'} }
-    
+
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
       expect(subject.earliest).to eq(Date.new(1867, 1, 1))
@@ -80,7 +80,7 @@ RSpec.describe Emendate::DateTypes::Century do
 
   context 'with plural century name (1900s)' do
     let(:args) { {literal: 19, century_type: :plural} }
-    
+
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
       expect(subject.earliest).to eq(Date.new(1900, 1, 1))
@@ -94,7 +94,7 @@ RSpec.describe Emendate::DateTypes::Century do
 
   context 'with plural century name (1900s) and partial indicator: early' do
     let(:args) { {literal: 19, century_type: :plural, partial_indicator: 'early'} }
-    
+
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
       expect(subject.earliest).to eq(Date.new(1900, 1, 1))
@@ -108,7 +108,7 @@ RSpec.describe Emendate::DateTypes::Century do
 
   context 'with plural century name (1900s) and partial indicator: mid' do
     let(:args) { {literal: 19, century_type: :plural, partial_indicator: 'mid'} }
-    
+
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
       expect(subject.earliest).to eq(Date.new(1933, 1, 1))
@@ -122,7 +122,7 @@ RSpec.describe Emendate::DateTypes::Century do
 
   context 'with plural century name (1900s) and partial indicator: late' do
     let(:args) { {literal: 19, century_type: :plural, partial_indicator: 'late'} }
-    
+
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
       expect(subject.earliest).to eq(Date.new(1966, 1, 1))
@@ -136,7 +136,7 @@ RSpec.describe Emendate::DateTypes::Century do
 
   context 'with uncertainty_digit century (19uu)' do
     let(:args) { {literal: 19, century_type: :uncertainty_digits} }
-    
+
     it 'returns expected values' do
       expect(century.earliest).to eq(Date.new(1900, 1, 1))
       expect(century.latest).to eq(Date.new(1999, 12, 31))

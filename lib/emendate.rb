@@ -12,7 +12,7 @@ require 'dry-configurable'
 require 'dry/monads'
 require 'dry/monads/do'
 
-require 'emendate/error'
+require 'emendate/errors'
 require 'emendate/date_types/date_type'
 # require 'emendate/segment/segment'
 

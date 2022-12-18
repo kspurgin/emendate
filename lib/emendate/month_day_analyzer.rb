@@ -4,13 +4,6 @@ require 'emendate/date_utils'
 
 module Emendate
   class MonthDayAnalyzer
-    class MonthDayError < Emendate::Error
-      def initialize(n1, n2, y)
-        m = "Cannot determine valid month/date assignment for #{n1.lexeme}-#{n2.lexeme}-#{y.lexeme}"
-        super(m)
-      end
-    end
-
     include DateUtils
 
     attr_reader :month, :day, :warnings
@@ -20,7 +13,7 @@ module Emendate
         self.new(...).call
       end
     end
-    
+
     def initialize(n1, n2, y)
       @n1 = n1
       @n2 = n2
@@ -33,7 +26,7 @@ module Emendate
       analyze
       self
     end
-    
+
 
     private
 
@@ -42,7 +35,7 @@ module Emendate
     def add_warning
       @warnings << "Ambiguous month/day treated #{Emendate.options.ambiguous_month_day}"
     end
-    
+
     def analyze
       if !valid_month?(n1.lexeme) && valid_month?(n2.lexeme)
         @month = n2

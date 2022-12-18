@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'error'
 require_relative 'options_contract'
 
 module Emendate
@@ -60,7 +59,7 @@ module Emendate
        unknown_date_output_string: ""
       }
     end
-    
+
     def report_errors_and_exit(errs)
       errs.each{ |key, errs| puts ":#{key} option #{errs.join('; ')}" }
       puts 'Exiting...'
@@ -70,15 +69,15 @@ module Emendate
     def map_errors(errs)
       errs.map{ |err| map_error(err) }
     end
-    
+
     def map_error(err)
       return err if err.is_a?(String)
-      
+
       err.map do |errval|
         binding.pry
       end
     end
-    
+
     def set_options(opts = opthash)
       opts.each{ |key, val| Emendate.config.options.send("#{key}=".to_sym, val) }
     end
@@ -100,7 +99,7 @@ module Emendate
         opthash[key] = convert_date(val, key)
       end
     end
-    
+
     def convert_date(str, key)
       parts = str.split('-').map(&:to_i)
       date = Date.new(parts[0], parts[1], parts[2])

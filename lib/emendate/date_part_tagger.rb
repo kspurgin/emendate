@@ -6,33 +6,11 @@ require 'emendate/result_editable'
 
 module Emendate
   class DatePartTagger
-    class UntaggableDatePartError < Emendate::Error
-      attr_reader :date_part, :reason
-
-      def initialize(date_part, reason)
-        @date_part = date_part
-        @reason = reason
-        msg = "type: #{date_part.type}; value: #{date_part.lexeme}; reason: #{reason}"
-        super(msg)
-      end
-    end
-
-    class UntaggableDatePatternError < Emendate::Error
-      attr_reader :date_parts, :reason
-
-      def initialize(date_parts, reason)
-        @date_parts = date_parts
-        @reason = reason
-        msg = "value: #{date_parts.map(&:lexeme).join}; reason: #{reason}"
-        super(msg)
-      end
-    end
-
     attr_reader :result, :taggable
 
     include DateUtils
     include ResultEditable
-    
+
     def initialize(tokens:)
       @result = Emendate::SegmentSets::MixedSet.new.copy(tokens)
       @taggable = true
@@ -114,7 +92,7 @@ module Emendate
       source = result.extract([:number1or2]).segments.first
       replace_x_with_date_part_type(x: source, date_part_type: :month)
     end
-    
+
     def tag_century_num
       collapse_pair(%i[number1or2 century], :century)
     end

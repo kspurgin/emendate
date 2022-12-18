@@ -128,7 +128,7 @@ RSpec.describe Emendate::DatePartTagger do
       let(:str){ 'February 30, 2020' }
 
       it 'returns error' do
-        expect{ result }.to raise_error(Emendate::DatePartTagger::UntaggableDatePartError)
+        expect{ result }.to raise_error(Emendate::UntaggableDatePartError)
       end
     end
 

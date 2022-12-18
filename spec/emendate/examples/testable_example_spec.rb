@@ -11,7 +11,7 @@ RSpec.describe Emendate::Examples::TestableExample do
     let(:str){ 'nomatchingstrings' }
 
     it 'raises error' do
-      expect{ klass }.to raise_error(Emendate::Examples::TestableExample::EmptyTestSetError)
+      expect{ klass }.to raise_error(Emendate::EmptyTestSetError)
     end
   end
 
