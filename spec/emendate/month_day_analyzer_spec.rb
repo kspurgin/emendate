@@ -15,10 +15,10 @@ RSpec.describe Emendate::MonthDayAnalyzer do
     let(:month){ result.month.lexeme }
     let(:day){ result.day.lexeme }
     let(:warnings){ result.warnings }
-    
+
     context 'with unambiguous month day - 12-31-2020' do
       let(:str){ '12-31-2020' }
-      
+
       it 'returns expected' do
         expect(month).to eq('12')
         expect(day).to eq('31')
@@ -28,7 +28,7 @@ RSpec.describe Emendate::MonthDayAnalyzer do
 
     context 'with unambiguous day month - 31-12-2020' do
       let(:str){ '31-12-2020' }
-      
+
       it 'returns expected' do
         expect(month).to eq('12')
         expect(day).to eq('31')
@@ -38,7 +38,7 @@ RSpec.describe Emendate::MonthDayAnalyzer do
 
     context 'with ambiguous - 02-03-2020' do
       let(:str){ '02-03-2020' }
-      
+
       it 'returns expected' do
         expect(month).to eq('02')
         expect(day).to eq('03')
@@ -47,7 +47,7 @@ RSpec.describe Emendate::MonthDayAnalyzer do
 
       context 'when as_day_month' do
         before{ Emendate.options.ambiguous_month_day = :as_day_month }
-        
+
       it 'returns expected' do
         expect(month).to eq('03')
         expect(day).to eq('02')
@@ -57,7 +57,7 @@ RSpec.describe Emendate::MonthDayAnalyzer do
 
       context 'with invalid - 31-29-2020' do
         let(:str){ '31-29-2020' }
-        
+
         it 'raises error' do
           expect{ result }.to raise_error(Emendate::MonthDayAnalyzer::MonthDayError)
         end
