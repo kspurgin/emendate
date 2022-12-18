@@ -25,8 +25,10 @@ module Helpers
     keys[0..(target_idx - 1)]
   end
 
-  def prepped_for(string, step)
-    to_prep =  prep_steps(step)
+  # @param string [String] original date string
+  # @param target [Class] class you need input for
+  def prepped_for(string:, target:)
+    to_prep =  prep_steps(target)
     return string unless to_prep
 
     tokens = to_prep.first

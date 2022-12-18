@@ -6,7 +6,7 @@ RSpec.describe Emendate::UntokenizableTagger do
   subject(:tagger){ described_class }
 
   describe '.call' do
-    let(:tokens){ prepped_for(string, tagger) }
+    let(:tokens){ prepped_for(string: string, target: tagger) }
     let(:result){ tagger.call(tokens: tokens) }
 
     context 'when all tokenizable' do
