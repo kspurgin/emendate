@@ -34,7 +34,6 @@ module Helpers
     tokens = to_prep.first
       .call(string)
       .value!
-      .tokens
 
     return tokens if to_prep.length == 1
 

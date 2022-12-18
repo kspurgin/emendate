@@ -54,7 +54,6 @@ RSpec.describe Emendate::Lexer do
             str,
             lexer.call(str)
               .value!
-              .tokens
               .map(&:type)
           ]
         end
