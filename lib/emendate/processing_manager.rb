@@ -30,6 +30,11 @@ module Emendate
       @tokens = lexed.tokens
       @state = :lexed
 
+      untokenizeable = yield Emendate::UntokenizableTagger.call(
+        tokens: tokens,
+        str: orig_string
+      )
+
       Success(self)
     end
 
