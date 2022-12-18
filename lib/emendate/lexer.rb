@@ -51,11 +51,8 @@ module Emendate
     TILDE = '~'
     UNKNOWN_DATE = ['dateunknown', 'nodate', 'notdated', 'undated', 'unk', 'unknown', 'unknowndate'].freeze
 
-    attr_reader :orig, :norm, :tokens
-
     def initialize(string)
       @orig = string
-      @norm = string
       @tokens = Emendate::SegmentSets::TokenSet.new
       @next_p = 0
       @lexeme_start_p = 0
@@ -65,11 +62,12 @@ module Emendate
       @norm = yield Emendate.normalize(orig)
       _tokenized = yield tokenize
 
-      Success(self)
+      Success(tokens)
     end
 
     private
 
+    attr_reader :orig, :norm, :tokens
     attr_accessor :next_p, :lexeme_start_p
 
     def tokenize
