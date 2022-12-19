@@ -20,5 +20,17 @@ RSpec.describe Emendate::ProcessingManager do
         expect(res.errors.length).to eq(1)
       end
     end
+
+    context 'with unprocessable' do
+      let(:string){ '1XXX-XX' }
+
+      it 'returns as expected' do
+        expect(result).to be_a(Dry::Monads::Failure)
+        res = result.failure
+        expect(res.state).to eq(:unprocessable_tagged_failure)
+        expect(res.warnings.length).to eq(1)
+        expect(res.errors.length).to eq(1)
+      end
+    end
   end
 end
