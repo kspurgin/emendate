@@ -33,13 +33,15 @@ module Emendate
         state: :untokenizable_tagged,
         proc: ->{ Emendate::UntokenizableTagger.call(tokens) }
       )
+      _unprocessable_tagged = yield handle_step(
+        state: :unprocessable_tagged,
+        proc: ->{ Emendate::UnprocessableTagger.call(tokens) }
+      )
 
       Success(self)
     end
 
     # def process
-    #   tag_unprocessable if may_tag_unprocessable?
-    #   exit_if_unprocessable if may_exit_if_unprocessable?
     #   tag_known_unknown if may_tag_known_unknown?
     #   exit_if_known_unknown if may_exit_if_known_unknown?
     #   collapse_tokens if may_collapse_tokens?
@@ -99,10 +101,6 @@ module Emendate
 
     def no_errors?
       errors.empty?
-    end
-
-    def unprocessable?
-      tokens.types == [:unprocessable_date_type]
     end
 
     def known_unknown?
