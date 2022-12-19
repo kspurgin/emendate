@@ -10,9 +10,9 @@ module Helpers
       Emendate::Lexer =>
         ->(string){ Emendate::Lexer.call(string) },
       Emendate::UntokenizableTagger =>
-        ->(lexed, string) do
-        Emendate::UntokenizableTagger.call(tokens: lexed, str: string)
-      end
+        ->(tokens){ Emendate::UntokenizableTagger.call(tokens) },
+      Emendate::UnprocessableTagger =>
+        ->(tokens){ Emendate::UnprocessableTagger.call(tokens) }
     }
   end
 
@@ -37,7 +37,13 @@ module Helpers
 
     return tokens if to_prep.length == 1
 
-    fail(StandardError, 'finish me')
+    to_prep.shift
+    to_prep.each do |step|
+      tokens = step.call(tokens)
+        .value!
+    end
+
+    tokens
   end
 
   def test_rows(str, opt)
