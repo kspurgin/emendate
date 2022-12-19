@@ -278,7 +278,7 @@ module Emendate
     end
 
     def perform_tag_unprocessable
-      t = Emendate::UnprocessableTagger.new(tokens: tagged_untokenizable, str: orig_string)
+      t = Emendate::OldUnprocessableTagger.new(tokens: tagged_untokenizable, str: orig_string)
       begin
         t.tag
       rescue StandardError => e
