@@ -4,41 +4,31 @@ module Emendate
   class UntokenizableTagger
     include Dry::Monads[:result]
 
-    attr_reader :result
-
     class << self
       def call(...)
         self.new(...).call
       end
     end
 
-    def initialize(tokens:)
+    def initialize(tokens)
       @tokens = tokens
     end
 
     def call
-      unless untokenizable?
-        passthrough
-        return Success(result)
-      end
+      return Success(tokens) unless untokenizable?
 
-      @result = Emendate::SegmentSets::MixedSet.new
+      result = Emendate::SegmentSets::MixedSet.new
       result << Emendate::DateTypes::Untokenizable.new(
-        children: tokens.segments,
-        lexeme: tokens.segments.map(&:lexeme).join
+        children: tokens.segments
       )
       result.warnings << "Untokenizable sequences: "\
         "#{untokenizable_strings.join('; ')}"
-      Success(result)
+      Failure(result)
     end
 
     private
 
     attr_reader :tokens
-
-    def passthrough
-      @result = tokens
-    end
 
     def untokenizable_strings
       tokens.select{ |token| token.type == :unknown }.segments.map(&:lexeme)

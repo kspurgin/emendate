@@ -7,7 +7,7 @@ RSpec.describe Emendate::UntokenizableTagger do
 
   describe '.call' do
     let(:tokens){ prepped_for(string: string, target: tagger) }
-    let(:result){ tagger.call(tokens: tokens) }
+    let(:result){ tagger.call(tokens) }
 
     context 'when all tokenizable' do
       let(:string){ '1985' }
@@ -22,8 +22,8 @@ RSpec.describe Emendate::UntokenizableTagger do
       let(:string){ 'Sometime in 1985' }
 
       it 'returns untokenizable' do
-        expect(result).to be_a(Dry::Monads::Success)
-        res = result.value!
+        expect(result).to be_a(Dry::Monads::Failure)
+        res = result.failure
         expect(res.types).to eq([:untokenizable_date_type])
         warnings = ["Untokenizable sequences: sometime; in"]
         expect(res.warnings).to eq(warnings)
