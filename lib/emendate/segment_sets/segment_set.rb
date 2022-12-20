@@ -9,14 +9,16 @@ module Emendate
     class SegmentSet
       include Emendate::SegmentSets::CertaintyHelpers
       extend Forwardable
-      attr_reader :segments, :inferred_date, :warnings
+      attr_reader :orig_string, :segments,
+        :certainty, :inferred_date, :warnings
 
       def_delegator :@segments, :[], :[]
-      def_delegators :@segments, :clear, :delete, :delete_at, :empty?, :find_index, :first, :insert, :length,
-        :pop, :shift, :unshift
+      def_delegators :@segments, :clear, :delete, :delete_at, :empty?,
+        :find_index, :first, :insert, :length, :pop, :shift, :unshift
 
-      def initialize(*args)
-        @segments = Array.new(*args)
+      def initialize(string: nil, segments: nil)
+        @orig_string = string
+        @segments = segments ? Array.new(segments) : Array.new
         @certainty = []
         @inferred_date = false
         @warnings = []
@@ -26,15 +28,13 @@ module Emendate
         segments << segment
       end
 
-      def certainty
-        @certainty.flatten.uniq.sort
-      end
-
       def add_certainty(val)
         @certainty << val
+        @certainty = certainty.flatten.uniq.sort
       end
 
       def copy(other_set)
+        @orig_string = other_set.orig_string
         other_set.segments.each{ |s| segments << s.dup }
         other_set.certainty.each{ |c| @certainty << c.dup }
         other_set.warnings.each{ |w| warnings << w.dup }
@@ -65,19 +65,20 @@ module Emendate
       def lexeme
         return '' if @segments.empty?
 
-        @segments.map(&:lexeme).join('')
+        @segments.map(&:lexeme).join
       end
 
       def location
         return Emendate::Location.new(0, 0) if @segments.empty?
-        
+
         locs = @segments.map(&:location).sort_by(&:col)
         col = locs.first.col
         length = locs.map(&:length).sum
         Emendate::Location.new(col, length)
       end
-      
-      # returns the first sequence of segments matching the pattern of types passed in as an Array
+
+      # returns the first sequence of segments matching the pattern of types
+      #   passed in as an Array
       def extract(*args)
         args.flatten!
         segsize = args.length
@@ -85,7 +86,7 @@ module Emendate
         return self.class.new if segments.length < segsize
 
         if segments.length == segsize
-          result = self.class.new(segments)
+          result = self.class.new(segments: segments)
           return result
         end
 
@@ -97,7 +98,7 @@ module Emendate
           if segment.empty?
             tail_i = segments.find_index(tail)
             head_i = tail_i - segsize + 1
-            seg = self.class.new(segments[head_i..tail_i])
+            seg = self.class.new(segments: segments[head_i..tail_i])
             segment = seg.types == args ? seg : []
           end
         end
@@ -109,7 +110,7 @@ module Emendate
       def map(*args, &block)
         results = segments.map(*args, &block)
         if results.any?{ |s| s.kind_of?(Emendate::Segment) }
-          self.class.new(results)
+          self.class.new(segments: results)
         else
           results
         end
@@ -118,7 +119,7 @@ module Emendate
       def select(*args, &block)
         results = segments.select(*args, &block)
         if results.any?{ |s| s.kind_of?(Emendate::Segment) }
-          self.class.new(results)
+          self.class.new(segments: results)
         else
           results
         end

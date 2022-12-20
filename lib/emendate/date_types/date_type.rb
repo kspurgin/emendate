@@ -15,13 +15,19 @@ module Emendate
       attr_accessor :partial_indicator, :range_switch, :source_tokens
 
       def initialize(**opts)
-        @source_tokens = opts[:children].nil? ? Emendate::SegmentSets::MixedSet.new : Emendate::SegmentSets::MixedSet.new(opts[:children])
+        @source_tokens = if opts[:children].nil?
+                           Emendate::SegmentSets::MixedSet.new
+                         else
+                           Emendate::SegmentSets::MixedSet.new(
+                             segments: opts[:children]
+                           )
+                         end
         @partial_indicator = opts[:partial_indicator]
         @range_switch = opts[:range_switch]
         @certainty = opts[:certainty].nil? ? [] : opts[:certainty]
         @location = location
       end
-      
+
       def date_part?
         true
       end
@@ -60,7 +66,7 @@ module Emendate
         @source_tokens.unshift(token)
         self
       end
-            
+
       def range?
         raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
