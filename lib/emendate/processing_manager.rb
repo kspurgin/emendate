@@ -41,12 +41,15 @@ module Emendate
         state: :known_unknown_tagged,
         proc: ->{ Emendate::KnownUnknownTagger.call(tokens) }
       )
+      _tokens_collapsed = yield handle_step(
+        state: :tokens_collapsed,
+        proc: ->{ Emendate::TokenCollapser.call(tokens) }
+      )
 
       Success(self)
     end
 
     # def process
-    #   collapse_tokens if may_collapse_tokens?
     #   convert_months if may_convert_months?
     #   translate_ordinals if may_translate_ordinals?
     #   certainty_check if may_certainty_check?

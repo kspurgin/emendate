@@ -5,53 +5,37 @@ require 'emendate/result_editable'
 
 module Emendate
   class TokenCollapser
+    include Dry::Monads[:result]
     include ResultEditable
-    attr_reader :result
 
-    def initialize(tokens:)
+    class << self
+      def call(...)
+        self.new(...).call
+      end
+    end
+
+    def initialize(tokens)
       @result = Emendate::SegmentSets::TokenSet.new.copy(tokens)
     end
 
-    def collapse
+    def call
       while collapsible?
         action = determine_action
         break if action.nil?
 
         action.is_a?(Symbol) ? send(action) : send(action.shift, action)
       end
-      result
+      Success(result)
     end
 
     private
 
-    def collapse_backward
-      to_collapse = result.segments.select(&:collapsible?).last
-      prev = result[result.find_index(to_collapse) - 1]
-      collapse_token_pair_backward(prev, to_collapse)
-    end
-    
-    def collapse_forward
-      collapse_token_pair_forward(result[0], result[1])
-    end
-    
+    attr_reader :result
+
     def collapsible?
       return true if full_match_collapsers || partial_match_collapsers
 
       result.type_string.match?(/space|single_dot|standalone_zero/)
-    end
-
-    def determine_action
-      actions = full_match_collapsers
-      return actions unless actions.nil?
-
-      actions = partial_match_collapsers
-      return actions unless actions.nil?
-      
-      if result[0].collapsible?
-        :collapse_forward
-      else
-        :collapse_backward
-      end
     end
 
     def full_match_collapsers
@@ -60,7 +44,7 @@ module Emendate
         [:collapse_segments_backward, :number1or2, :slash]
       end
     end
-    
+
     def partial_match_collapsers
       case result.type_string
       when /.*apostrophe letter_s.*/
@@ -72,6 +56,30 @@ module Emendate
       when /.*month_abbr_alpha single_dot space.*/
         %i[collapse_segments_backward month_abbr_alpha single_dot space]
       end
+    end
+
+    def determine_action
+      actions = full_match_collapsers
+      return actions unless actions.nil?
+
+      actions = partial_match_collapsers
+      return actions unless actions.nil?
+
+      if result[0].collapsible?
+        :collapse_forward
+      else
+        :collapse_backward
+      end
+    end
+
+    def collapse_backward
+      to_collapse = result.segments.select(&:collapsible?).last
+      prev = result[result.find_index(to_collapse) - 1]
+      collapse_token_pair_backward(prev, to_collapse)
+    end
+
+    def collapse_forward
+      collapse_token_pair_forward(result[0], result[1])
     end
   end
 end
