@@ -53,7 +53,7 @@ module Emendate
 
     def initialize(string)
       @orig = string
-      @tokens = Emendate::SegmentSets::TokenSet.new
+      @tokens = Emendate::SegmentSets::TokenSet.new(string: string)
       @next_p = 0
       @lexeme_start_p = 0
     end
