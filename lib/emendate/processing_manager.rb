@@ -37,13 +37,15 @@ module Emendate
         state: :unprocessable_tagged,
         proc: ->{ Emendate::UnprocessableTagger.call(tokens) }
       )
+      _known_unknown_tagged = yield handle_step(
+        state: :known_unknown_tagged,
+        proc: ->{ Emendate::KnownUnknownTagger.call(tokens) }
+      )
 
       Success(self)
     end
 
     # def process
-    #   tag_known_unknown if may_tag_known_unknown?
-    #   exit_if_known_unknown if may_exit_if_known_unknown?
     #   collapse_tokens if may_collapse_tokens?
     #   convert_months if may_convert_months?
     #   translate_ordinals if may_translate_ordinals?
@@ -70,8 +72,19 @@ module Emendate
 
     private
 
+    def call_step(step)
+      step.call
+    rescue StandardError => err
+      Failure(err)
+    end
+
+    def add_error?
+      no_error_states = %i[known_unknown_tagged_failure]
+      true unless no_error_states.any?(state)
+    end
+
     def handle_step(state:, proc:)
-      proc.call.either(
+      call_step(proc).either(
         ->(success) do
           @tokens = success
           @state = state
@@ -79,8 +92,8 @@ module Emendate
           Success()
         end,
         ->(failure) do
-          errors << failure
           @state = "#{state}_failure".to_sym
+          errors << failure if add_error?
           add_warnings(failure.warnings)
           Failure(self)
         end

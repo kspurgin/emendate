@@ -32,5 +32,17 @@ RSpec.describe Emendate::ProcessingManager do
         expect(res.errors.length).to eq(1)
       end
     end
+
+    context 'with known_unknown' do
+      let(:string){ 'n.d.' }
+
+      it 'returns as expected' do
+        expect(result).to be_a(Dry::Monads::Failure)
+        res = result.failure
+        expect(res.state).to eq(:known_unknown_tagged_failure)
+        expect(res.warnings.length).to eq(0)
+        expect(res.errors.length).to eq(0)
+      end
+    end
   end
 end

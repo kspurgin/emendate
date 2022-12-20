@@ -2,38 +2,40 @@
 
 module Emendate
   class KnownUnknownTagger
-    attr_reader :result
+    include Dry::Monads[:result]
 
-    def initialize(tokens:, str:)
-      @tokens = tokens
-      @str = str
-      @result = Emendate::SegmentSets::MixedSet.new
+    class << self
+      def call(...)
+        self.new(...).call
+      end
     end
 
-    def tag
-      unless known_unknown?
-        passthrough
-        return
-      end
-      
-      result << Emendate::DateTypes::KnownUnknown.new(lexeme: known_unknown_date_value)
-      result
+    def initialize(tokens)
+      @tokens = tokens
+    end
+
+    def call
+      return Success(tokens) unless known_unknown?
+
+      result = Emendate::SegmentSets::MixedSet.new(
+        string: tokens.orig_string
+      )
+      result << Emendate::DateTypes::KnownUnknown.new(
+        lexeme: known_unknown_date_value
+      )
+      Failure(result)
     end
 
     private
 
-    attr_reader :tokens, :str
-    
+    attr_reader :tokens
+
     def known_unknown_date_value
-      return str if Emendate.options.unknown_date_output == :orig
+      return tokens.orig_string if Emendate.options.unknown_date_output == :orig
 
       Emendate.options.unknown_date_output_string
     end
-    
-    def passthrough
-      @result = Emendate::SegmentSets::MixedSet.new.copy(tokens)
-    end
-    
+
     def known_unknown?
       tokens.types == [:unknown_date]
     end
