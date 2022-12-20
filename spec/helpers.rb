@@ -14,7 +14,9 @@ module Helpers
       Emendate::UnprocessableTagger =>
         ->(tokens){ Emendate::UnprocessableTagger.call(tokens) },
       Emendate::KnownUnknownTagger =>
-        ->(tokens){ Emendate::KnownUnknownTagger.call(tokens) }
+        ->(tokens){ Emendate::KnownUnknownTagger.call(tokens) },
+      Emendate::TokenCollapser =>
+        ->(tokens){ Emendate::TokenCollapser.call(tokens) }
     }
   end
 

@@ -3,52 +3,62 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::TokenCollapser do
-  def collapse(str, options = {})
-    pm = Emendate.prep_for(str, :collapse_tokens, options)
-    tc = described_class.new(tokens: pm.tokens)
-    tc.collapse
-  end
+  subject(:step){ described_class }
 
-  describe '#collapse' do
-    context 'with "Jan. 21, 2014"' do
-      it 'collapses space and single dot' do
-        c = collapse('Jan. 21, 2014')
-        expect(c.type_string).to eq('month_abbr_alpha number1or2 comma number4')
+  describe '.call' do
+    let(:tokens){ prepped_for(string: string, target: step) }
+    let(:result) do
+      step.call(tokens)
+        .value!
+        .type_string
+    end
+
+    context 'with Jan. 21, 2014' do
+      let(:string){ 'Jan. 21, 2014' }
+
+
+      it 'collapses spaces after single dot, comma' do
+        expect(result).to eq('month_abbr_alpha number1or2 comma number4')
       end
     end
 
-    context 'with "2014.0"' do
+    context 'with 2014.0' do
+      let(:string){ '2014.0' }
+
       it 'drops `.0` at end' do
-        c = collapse('2014.0')
-        expect(c.type_string).to eq('number4')
+        expect(result).to eq('number4')
       end
     end
 
-    context 'with "3/2020"' do
+    context 'with 3/2020' do
+      let(:string){ '3/2020' }
+
       it 'collapse slash into 3' do
-        c = collapse('3/2020')
-        expect(c.type_string).to eq('number1or2 number4')
+        expect(result).to eq('number1or2 number4')
       end
     end
 
     context 'with "pre-1750"' do
+      let(:string){ 'pre-1750' }
+
       it 'collapses - into pre' do
-        c = collapse('pre-1750')
-        expect(c.type_string).to eq('before number4')
+        expect(result).to eq('before number4')
       end
     end
 
     context 'with "mid-1750"' do
+      let(:string){ 'mid-1750' }
+
       it 'collapses - into mid' do
-        c = collapse('mid-1750')
-        expect(c.type_string).to eq('partial number4')
+        expect(result).to eq('partial number4')
       end
     end
 
     context "with `1800's`" do
+      let(:string){ %{1800's} }
+
       it 'collapses apostrophe into s' do
-        c = collapse(%{1800's})
-        expect(c.type_string).to eq('number4 letter_s')
+        expect(result).to eq('number4 letter_s')
       end
     end
   end
