@@ -7,16 +7,21 @@ require 'emendate/segment/derived_token'
 module Emendate
 
   class AlphaMonthConverter
-    attr_reader :result
-
     include DateUtils
+    include Dry::Monads[:result]
     include ResultEditable
-    
-    def initialize(tokens:)
+
+    class << self
+      def call(...)
+        self.new(...).call
+      end
+    end
+
+    def initialize(tokens)
       @result = Emendate::SegmentSets::TokenSet.new.copy(tokens)
     end
 
-    def convert
+    def call
       result.each do |t|
         case t.type
         when :month_alpha
@@ -29,10 +34,12 @@ module Emendate
           next
         end
       end
-      result
+      Success(result)
     end
 
     private
+
+    attr_reader :result
 
     def convert_month(token)
       Emendate::DatePart.new(type: :month,
@@ -52,7 +59,7 @@ module Emendate
 
       lookup[token.lexeme.downcase]
     end
-    
+
     def season_token_with_literal(token)
       literal = get_season_literal(token)
       Emendate::DatePart.new(type: :season,

@@ -3,38 +3,49 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::AlphaMonthConverter do
-  def convert(str, options = {})
-    pm = Emendate.prep_for(str, :convert_months, options)
-    fs = Emendate::AlphaMonthConverter.new(tokens: pm.tokens)
-    fs.convert
-  end
+  subject(:step){ described_class }
 
-  describe '#convert' do
+  describe '.call' do
+    let(:tokens){ prepped_for(string: string, target: step) }
+    let(:result) do
+      step.call(tokens)
+        .value!
+    end
+
     context 'with month abbreviation' do
+      let(:string){ 'Jan 2021' }
+
       it 'tags as expected' do
-        c = convert('Jan 2021')
-        result = "#{c.first.type} #{c.first.lexeme}"
-        expect(result).to eq('month jan')
-        expect(c.first.location.col).to eq(0)
-        expect(c.first.location.length).to eq(4)
+        segment = result.first
+        expect(segment.type).to eq(:month)
+        expect(segment.lexeme).to eq('jan')
+        expect(segment.literal).to eq(1)
+        expect(segment.location.col).to eq(0)
+        expect(segment.location.length).to eq(4)
       end
     end
 
     context 'with month full' do
+      let(:string){ 'October 2021' }
+
       it 'tags as expected' do
-        c = convert('October 2021')
-        result = "#{c.first.type} #{c.first.lexeme}"
-        expect(result).to eq('month october')
+        segment = result.first
+        expect(segment.type).to eq(:month)
+        expect(segment.lexeme).to eq('october')
+        expect(segment.literal).to eq(10)
+        expect(segment.location.col).to eq(0)
+        expect(segment.location.length).to eq(8)
       end
     end
 
     context 'with 2020, summer' do
+      let(:string){ '2020, summer' }
+
       it 'tags as expected' do
-        c = convert('2020, summer')
-        result = c[-1]
-        expect(result.type).to eq(:season)
-        expect(result.lexeme).to eq('summer')
-        expect(result.literal).to eq(22)
+        segment = result.last
+        expect(segment.type).to eq(:season)
+        expect(segment.lexeme).to eq('summer')
+        expect(segment.literal).to eq(22)
       end
     end
   end

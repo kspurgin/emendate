@@ -16,7 +16,9 @@ module Helpers
       Emendate::KnownUnknownTagger =>
         ->(tokens){ Emendate::KnownUnknownTagger.call(tokens) },
       Emendate::TokenCollapser =>
-        ->(tokens){ Emendate::TokenCollapser.call(tokens) }
+        ->(tokens){ Emendate::TokenCollapser.call(tokens) },
+      Emendate::AlphaMonthConverter =>
+        ->(tokens){ Emendate::AlphaMonthConverter.call(tokens) }
     }
   end
 
