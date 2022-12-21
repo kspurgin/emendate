@@ -230,7 +230,7 @@ module Emendate
     end
 
     def perform_translate_ordinals
-      t = Emendate::OrdinalTranslator.new(tokens: converted_months)
+      t = Emendate::OldOrdinalTranslator.new(tokens: converted_months)
       begin
         t.translate
       rescue StandardError => e
