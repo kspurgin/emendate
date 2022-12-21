@@ -1,22 +1,16 @@
 # frozen_string_literal: true
 
 module Emendate
-  class OrdinalTranslator
-    include Dry::Monads[:result]
+  class OldOrdinalTranslator
+    attr_reader :result
 
-    class << self
-      def call(...)
-        self.new(...).call
-      end
-    end
-
-    def initialize(tokens)
+    def initialize(tokens:)
       @result = Emendate::SegmentSets::TokenSet.new.copy(tokens)
     end
 
-    def call
+    def translate
       ois = result.when_type(:ordinal_indicator)
-      return Success(result) if ois.empty?
+      return result if ois.empty?
 
       if result[0].type == :ordinal_indicator
         result.warnings << 'Ordinal indicator unexpectedly appears at beginning of date string'
@@ -24,7 +18,7 @@ module Emendate
         ois.shift
       end
 
-      return Success(result) if ois.empty?
+      return result if ois.empty?
 
       ois.each do |oi|
         prev = previous(oi)
@@ -34,12 +28,10 @@ module Emendate
         result.delete(oi)
       end
 
-      Success(result)
+      result
     end
 
     private
-
-    attr_reader :result
 
     def previous(ord_ind)
       oi_ind = result.find_index(ord_ind)

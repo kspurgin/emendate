@@ -44,5 +44,17 @@ RSpec.describe Emendate::ProcessingManager do
         expect(res.errors.length).to eq(0)
       end
     end
+
+    context 'with weird ordinal pattern' do
+      let(:string){ 'th20 century' }
+
+      it 'returns as expected' do
+        expect(result).to be_a(Dry::Monads::Success)
+        res = result.value!
+        expect(res.state).to eq(:ordinals_translated)
+        expect(res.warnings.length).to eq(1)
+        expect(res.errors.length).to eq(0)
+      end
+    end
   end
 end

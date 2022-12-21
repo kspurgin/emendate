@@ -49,12 +49,15 @@ module Emendate
         state: :months_converted,
         proc: ->{ Emendate::AlphaMonthConverter.call(tokens) }
       )
+      _ordinals_translated = yield handle_step(
+        state: :ordinals_translated,
+        proc: ->{ Emendate::OrdinalTranslator.call(tokens) }
+      )
 
       Success(self)
     end
 
     # def process
-    #   translate_ordinals if may_translate_ordinals?
     #   certainty_check if may_certainty_check?
     #   standardize_formats if may_standardize_formats?
     #   tag_date_parts if may_tag_date_parts?

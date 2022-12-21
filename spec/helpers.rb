@@ -18,7 +18,9 @@ module Helpers
       Emendate::TokenCollapser =>
         ->(tokens){ Emendate::TokenCollapser.call(tokens) },
       Emendate::AlphaMonthConverter =>
-        ->(tokens){ Emendate::AlphaMonthConverter.call(tokens) }
+        ->(tokens){ Emendate::AlphaMonthConverter.call(tokens) },
+      Emendate::OrdinalTranslator =>
+        ->(tokens){ Emendate::OrdinalTranslator.call(tokens) }
     }
   end
 
