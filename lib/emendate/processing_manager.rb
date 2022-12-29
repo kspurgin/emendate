@@ -61,12 +61,15 @@ module Emendate
         state: :format_standardized,
         proc: ->{ Emendate::FormatStandardizer.call(tokens) }
       )
+      _date_parts_tagged = yield handle_step(
+        state: :date_parts_tagged,
+        proc: ->{ Emendate::DatePartTagger.call(tokens) }
+      )
 
       Success(self)
     end
 
     # def process
-    #   tag_date_parts if may_tag_date_parts?
     #   segment_dates if may_segment_dates?
     #   indicate_ranges if may_indicate_ranges?
     #   finalize if may_finalize?
@@ -109,7 +112,7 @@ module Emendate
         ->(failure) do
           @state = "#{state}_failure".to_sym
           errors << failure if add_error?
-          add_warnings(failure.warnings)
+          add_warnings(failure.warnings) if failure.respond_to?(:warnings)
           Failure(self)
         end
       )
