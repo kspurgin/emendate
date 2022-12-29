@@ -24,7 +24,9 @@ module Helpers
       Emendate::CertaintyChecker =>
         ->(tokens){ Emendate::CertaintyChecker.call(tokens) },
       Emendate::FormatStandardizer =>
-        ->(tokens){ Emendate::FormatStandardizer.call(tokens) }
+        ->(tokens){ Emendate::FormatStandardizer.call(tokens) },
+      Emendate::DatePartTagger =>
+        ->(tokens){ Emendate::DatePartTagger.call(tokens) }
     }
   end
 

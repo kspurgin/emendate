@@ -5,46 +5,30 @@ require 'emendate/date_utils'
 require 'emendate/result_editable'
 
 module Emendate
-  class DatePartTagger
+  class OldDatePartTagger
+    attr_reader :result, :taggable
+
     include DateUtils
-    include Dry::Monads[:result]
-    include Dry::Monads::Do.for(:call)
     include ResultEditable
 
-    class << self
-      def call(...)
-        self.new(...).call
-      end
-    end
-
-    def initialize(tokens)
+    def initialize(tokens:)
       @result = Emendate::SegmentSets::MixedSet.new.copy(tokens)
       @taggable = true
     end
 
-    def call
-      _years_tagged = yield tag_years
-      _tagged = yield tag
-
-      Success(result)
-    end
-
-    private
-
-    attr_reader :result, :taggable
-
     def tag
+      tag_years if result.types.include?(:number4)
+
       while taggable
         t = determine_tagger
         break if t.nil?
 
         t.is_a?(Symbol) ? send(t) : send(t.shift, *t)
       end
-    rescue Emendate::Error => err
-      Failure(err)
-    else
-      Success()
+      result
     end
+
+    private
 
     def determine_tagger
       t = full_match_tagger
@@ -245,10 +229,6 @@ module Emendate
 
         replace_x_with_date_part_type(x: t, date_part_type: :year)
       end
-    rescue Emendate::Error => err
-      Failure(err)
-    else
-      Success()
     end
   end
 end

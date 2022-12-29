@@ -55,5 +55,15 @@ RSpec.describe Emendate::ProcessingManager do
         expect(res.errors.length).to eq(0)
       end
     end
+
+    context 'with untaggable date (Feb. 30)' do
+      let(:string){ 'February 30, 2020' }
+
+      it 'returns as expected' do
+        expect(result).to be_a(Dry::Monads::Failure)
+        res = result.failure
+        expect(res.errors.length).to eq(1)
+      end
+    end
   end
 end
