@@ -57,12 +57,15 @@ module Emendate
         state: :certainty_checked,
         proc: ->{ Emendate::CertaintyChecker.call(tokens) }
       )
+      _format_standardized = yield handle_step(
+        state: :format_standardized,
+        proc: ->{ Emendate::FormatStandardizer.call(tokens) }
+      )
 
       Success(self)
     end
 
     # def process
-    #   standardize_formats if may_standardize_formats?
     #   tag_date_parts if may_tag_date_parts?
     #   segment_dates if may_segment_dates?
     #   indicate_ranges if may_indicate_ranges?
