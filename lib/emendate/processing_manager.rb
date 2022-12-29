@@ -53,12 +53,15 @@ module Emendate
         state: :ordinals_translated,
         proc: ->{ Emendate::OrdinalTranslator.call(tokens) }
       )
+      _certainty_checked = yield handle_step(
+        state: :certainty_checked,
+        proc: ->{ Emendate::CertaintyChecker.call(tokens) }
+      )
 
       Success(self)
     end
 
     # def process
-    #   certainty_check if may_certainty_check?
     #   standardize_formats if may_standardize_formats?
     #   tag_date_parts if may_tag_date_parts?
     #   segment_dates if may_segment_dates?
