@@ -1,32 +1,12 @@
 # frozen_string_literal: true
 
 module Emendate
-  class CertaintyChecker
-    include Dry::Monads[:result]
+  class OldCertaintyChecker
 
-    class << self
-      def call(...)
-        self.new(...).call
-      end
-    end
+    attr_reader :result, :working
 
-    def initialize(tokens)
+    def initialize(tokens:)
       @result = tokens.class.new.copy(tokens)
-    end
-
-    def call
-      until whole_done? do
-        process_whole_certainty
-      end
-
-      @working = result.class.new.copy(result)
-      result.clear
-
-      until working.empty? do
-        process_part_certainty
-      end
-
-      Success(result)
     end
 
     def check
@@ -45,8 +25,6 @@ module Emendate
     end
 
     private
-
-    attr_reader :result, :working
 
     def process_part_certainty
       return if working.empty?
@@ -70,6 +48,10 @@ module Emendate
         :passthrough
       end
     end
+
+    # def set_indicator?(n = 0)
+    #   %i[and or].include?(working[n].type)
+    # end
 
     def set_indicator?(n = 0)
       %i[and or].include?(working[n].type)

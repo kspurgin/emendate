@@ -20,7 +20,9 @@ module Helpers
       Emendate::AlphaMonthConverter =>
         ->(tokens){ Emendate::AlphaMonthConverter.call(tokens) },
       Emendate::OrdinalTranslator =>
-        ->(tokens){ Emendate::OrdinalTranslator.call(tokens) }
+        ->(tokens){ Emendate::OrdinalTranslator.call(tokens) },
+      Emendate::CertaintyChecker =>
+        ->(tokens){ Emendate::CertaintyChecker.call(tokens) }
     }
   end
 

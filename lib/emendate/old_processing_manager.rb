@@ -242,7 +242,7 @@ module Emendate
     end
 
     def perform_certainty_check
-      c = Emendate::CertaintyChecker.new(tokens: translated_ordinals)
+      c = Emendate::OldCertaintyChecker.new(tokens: translated_ordinals)
       begin
         c.check
       rescue StandardError => e
