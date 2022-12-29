@@ -4,23 +4,18 @@ require_relative './complex_sendable'
 require_relative './result_editable'
 
 module Emendate
-  class FormatStandardizer
+
+  class OldFormatStandardizer
     include ComplexSendable
-    include Dry::Monads[:result]
     include ResultEditable
+    attr_reader :result, :standardizable
 
-    class << self
-      def call(...)
-        self.new(...).call
-      end
-    end
-
-    def initialize(tokens)
+    def initialize(tokens:)
       @result = tokens.class.new.copy(tokens)
       @standardizable = true
     end
 
-    def call
+    def standardize
       while standardizable
         functions = determine_standardizers
         break if functions.nil?
@@ -33,12 +28,10 @@ module Emendate
           end
         end
       end
-      Success(result)
+      result
     end
 
     private
-
-    attr_reader :result, :standardizable
 
     def determine_standardizers
       fms = full_match_standardizers
@@ -227,23 +220,15 @@ module Emendate
     def time_parts
       case result.type_string
       when /.*letter_t number1or2 colon number1or2 colon number1or2 hyphen number1or2.*/
-        result.extract(
-          %i[letter_t number1or2 colon number1or2 colon number1or2 hyphen
-             number1or2]
-        ).segments
+        result.extract(%i[letter_t number1or2 colon number1or2 colon number1or2 hyphen number1or2]).segments
       when /.*letter_t number1or2 colon number1or2 colon number1or2 letter_z.*/
-        result.extract(
-          %i[letter_t number1or2 colon number1or2 colon number1or2 letter_z]
-        ).segments
+        result.extract(%i[letter_t number1or2 colon number1or2 colon number1or2 letter_z]).segments
       when /.*letter_t number1or2 colon number1or2 colon number1or2 plus number1or2 colon number1or2.*/
-        pattern = %i[letter_t number1or2 colon number1or2 colon number1or2 plus
-                     number1or2 colon number1or2]
+        pattern = %i[letter_t number1or2 colon number1or2 colon number1or2 plus number1or2 colon number1or2]
         result.extract(pattern).segments
         # the following must come last as it is a substring of the previous
       when /.*letter_t number1or2 colon number1or2 colon number1or2.*/
-        result.extract(
-          %i[letter_t number1or2 colon number1or2 colon number1or2]
-        ).segments
+        result.extract(%i[letter_t number1or2 colon number1or2 colon number1or2]).segments
       end
     end
 
@@ -288,10 +273,7 @@ module Emendate
       zero = result.segments[-1]
       dot = result.segments[-2]
       previous = result.segments[-3]
-      derived = Emendate::DerivedToken.new(
-        type: previous.type,
-        sources: [previous, dot, zero]
-      )
+      derived = Emendate::DerivedToken.new(type: previous.type, sources: [previous, dot, zero])
       replace_segments_with_new(segments: [previous, dot, zero], new: derived)
     end
 

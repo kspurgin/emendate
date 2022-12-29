@@ -22,7 +22,9 @@ module Helpers
       Emendate::OrdinalTranslator =>
         ->(tokens){ Emendate::OrdinalTranslator.call(tokens) },
       Emendate::CertaintyChecker =>
-        ->(tokens){ Emendate::CertaintyChecker.call(tokens) }
+        ->(tokens){ Emendate::CertaintyChecker.call(tokens) },
+      Emendate::FormatStandardizer =>
+        ->(tokens){ Emendate::FormatStandardizer.call(tokens) }
     }
   end
 
