@@ -314,7 +314,7 @@ module Emendate
     end
 
     def perform_segment_dates
-      s = Emendate::DateSegmenter.new(tokens: tagged_date_parts)
+      s = Emendate::OldDateSegmenter.new(tokens: tagged_date_parts)
       begin
         s.segment
       rescue StandardError => e

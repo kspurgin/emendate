@@ -26,7 +26,9 @@ module Helpers
       Emendate::FormatStandardizer =>
         ->(tokens){ Emendate::FormatStandardizer.call(tokens) },
       Emendate::DatePartTagger =>
-        ->(tokens){ Emendate::DatePartTagger.call(tokens) }
+        ->(tokens){ Emendate::DatePartTagger.call(tokens) },
+      Emendate::DateSegmenter =>
+        ->(tokens){ Emendate::DateSegmenter.call(tokens) }
     }
   end
 

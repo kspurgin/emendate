@@ -1,23 +1,20 @@
 # frozen_string_literal: true
 
 module Emendate
-  class DateSegmenter
+
+  class OldDateSegmenter
     include DateUtils
-    include Dry::Monads[:result]
 
-    class << self
-      def call(...)
-        self.new(...).call
-      end
-    end
+    attr_reader :result
+    attr_accessor :working
 
-    def initialize(tokens)
-      @working = tokens.class.new.copy(tokens)
-      @result = tokens.class.new.copy(tokens)
+    def initialize(tokens:)
+      @working = Emendate::SegmentSets::MixedSet.new.copy(tokens)
+      @result = Emendate::SegmentSets::MixedSet.new.copy(tokens)
       result.clear
     end
 
-    def call
+    def segment
       until working.empty?
         recursive_parse
       end
@@ -33,12 +30,10 @@ module Emendate
       until working.empty?
         apply_switch_modifiers
       end
-      Success(result)
+      result
     end
 
     private
-
-    attr_reader :working, :result
 
     def apply_switch_modifiers
       return if working.empty?
