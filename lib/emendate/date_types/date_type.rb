@@ -36,6 +36,10 @@ module Emendate
         true
       end
 
+      def processed?
+        true
+      end
+
       def earliest
         raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
