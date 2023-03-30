@@ -28,7 +28,9 @@ module Helpers
       Emendate::DatePartTagger =>
         ->(tokens){ Emendate::DatePartTagger.call(tokens) },
       Emendate::DateSegmenter =>
-        ->(tokens){ Emendate::DateSegmenter.call(tokens) }
+        ->(tokens){ Emendate::DateSegmenter.call(tokens) },
+      Emendate::RangeIndicator =>
+        ->(tokens){ Emendate::RangeIndicator.call(tokens) }
     }
   end
 

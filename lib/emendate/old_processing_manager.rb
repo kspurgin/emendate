@@ -326,7 +326,7 @@ module Emendate
     end
 
     def perform_indicate_ranges
-      i = Emendate::RangeIndicator.new(tokens: segmented_dates)
+      i = Emendate::OldRangeIndicator.new(tokens: segmented_dates)
       begin
         i.indicate
       rescue StandardError => e

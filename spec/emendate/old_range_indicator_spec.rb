@@ -2,16 +2,14 @@
 
 require 'spec_helper'
 
-RSpec.describe Emendate::RangeIndicator do
-  subject(:step){ described_class }
+RSpec.describe Emendate::OldRangeIndicator do
+  subject(:indicator){ described_class.new(tokens: tokens) }
 
-  let(:tokens){ prepped_for(string: str, target: step) }
+  let(:tokens){ Emendate.prep_for(str, :indicate_ranges, options).tokens }
+  let(:options){ {} }
 
-  describe '.call' do
-    let(:result) do
-      step.call(tokens)
-        .value!
-    end
+  describe '#indicate' do
+    let(:result) { indicator.indicate }
     let(:type_string){ result.type_string }
 
     context 'without range present (circa 202127)' do
@@ -43,7 +41,7 @@ RSpec.describe Emendate::RangeIndicator do
 
       it 'returns range_date_type' do
         expect(type_string).to eq('range_date_type')
-        expect(result.warnings.length).to eq(1)
+        expect(indicator.warnings.length).to eq(1)
       end
     end
   end
