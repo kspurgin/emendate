@@ -6,7 +6,10 @@ RSpec.describe Emendate::MonthDayAnalyzer do
   subject(:analyzer){ described_class.new(*args) }
 
   let(:args) do
-    t = Emendate.prep_for(str, :tag_date_parts).standardized_formats
+    t = Emendate.prepped_for(
+      string: str,
+      target: Emendate::DatePartTagger
+    )
     [t[0], t[2], t[4]]
   end
 

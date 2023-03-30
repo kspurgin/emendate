@@ -5,11 +5,17 @@ require 'spec_helper'
 RSpec.describe Emendate::AllShortMdyAnalyzer do
   subject(:analyzer){ described_class.new(tokens) }
 
-  let(:tokens){ Emendate.prep_for(str, :tag_date_parts).standardized_formats }
+  let(:tokens) do
+    Emendate.prepped_for(
+      string: str,
+      target: Emendate::DatePartTagger)
+  end
 
   describe '#call' do
     let(:result){ analyzer.call }
-    let(:ymd){ "#{result.datetype.year} #{result.datetype.month} #{result.datetype.day}" }
+    let(:ymd) do
+      "#{result.datetype.year} #{result.datetype.month} #{result.datetype.day}"
+    end
     let(:wct){ result.warnings.length }
 
     context 'with 87-04-13 (all unambiguous)' do

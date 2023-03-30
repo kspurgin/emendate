@@ -64,8 +64,8 @@ module Emendate
     setting :file_path, default: ->{ "#{Emendate.examples.dir.call}/#{Emendate.examples.file_name}" }, reader: true
     setting :tests,
       default: %w[date_start_full date_end_full
-         result_warnings
-         translation_lyrasis_pseudo_edtf],
+                  result_warnings
+                  translation_lyrasis_pseudo_edtf],
       reader: true
   end
 
@@ -107,14 +107,28 @@ module Emendate
     Success(result)
   end
 
-  # str = String to process
-  # sym = Symbol of aasm event for which you would use the results as input.
-  # For example, running :tag_date_parts requires successful format standardization
-  #   To test date part tagging, you can use the results of prep_for(str, :tag_date_parts)
-  def prep_for(str, sym, options = {})
-    pm = Emendate::OldProcessingManager.new(str, options)
-    pm.prep_for(sym)
-    pm
+  # @param string [String] original date string
+  # @param target [Class] class you need input for
+  # @param options [Hash]
+  def prepped_for(string:, target:, options: nil)
+    Emendate::Options.new(options) if options
+
+    to_prep =  prep_steps(target)
+    return string unless to_prep
+
+    tokens = to_prep.first
+      .call(string)
+      .value!
+
+    return tokens if to_prep.length == 1
+
+    to_prep.shift
+    to_prep.each do |step|
+      tokens = step.call(tokens)
+        .value!
+    end
+
+    tokens
   end
 
   def parse(str, options = {})
@@ -145,5 +159,39 @@ module Emendate
   def tokenize(str)
     tokens = lex(str).map(&:type)
     puts "#{str}\t\t#{tokens.inspect}"
+  end
+
+  private
+
+  def processing_steps
+    base = {
+      Emendate::Lexer =>
+        ->(string){ Emendate::Lexer.call(string) },
+    }
+    steps = [
+      Emendate::UntokenizableTagger,
+      Emendate::UnprocessableTagger,
+      Emendate::KnownUnknownTagger,
+      Emendate::TokenCollapser,
+      Emendate::AlphaMonthConverter,
+      Emendate::OrdinalTranslator,
+      Emendate::CertaintyChecker,
+      Emendate::FormatStandardizer,
+      Emendate::DatePartTagger,
+      Emendate::DateSegmenter,
+      Emendate::RangeIndicator
+    ].map{ |klass| [klass, ->(tokens){ klass.send(:call, tokens) }] }
+     .to_h
+    base.merge(steps)
+  end
+
+  # @param step [Class] class you are preparing input for
+  def prep_steps(step)
+    keys = processing_steps.keys
+    target_idx = keys.find_index(step)
+    return unless target_idx
+    return if target_idx == 0
+
+    keys[0..(target_idx - 1)]
   end
 end
