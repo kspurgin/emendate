@@ -1,29 +1,25 @@
 # frozen_string_literal: true
 
 module Emendate
-  class RangeIndicator
-    include Dry::Monads[:result]
 
-    class << self
-      def call(...)
-        self.new(...).call
-      end
-    end
+  class OldRangeIndicator
+    attr_reader :result, :warnings
 
-    def initialize(tokens)
-      @working = tokens.class.new.copy(tokens)
-      @result = tokens.class.new.copy(tokens)
+    def initialize(tokens:)
+      @working = Emendate::SegmentSets::MixedSet.new.copy(tokens)
+      @result = Emendate::SegmentSets::MixedSet.new.copy(tokens)
       result.clear
+      @warnings = []
     end
 
-    def call
+    def indicate
       has_range_indicator? ? handle_range : passthrough_all
-      Success(result)
+      result
     end
 
     private
 
-    attr_reader :result, :working
+    attr_reader :working
 
     def before_range_indicator?
       nxt.type == :range_indicator
@@ -57,7 +53,9 @@ module Emendate
     end
 
     def handle_range
+
       collapse_range until working.empty?
+
 
       validate
     end
@@ -83,7 +81,7 @@ module Emendate
         next unless part.type == :range_date_type
         next if part.latest > part.earliest
 
-        result.warnings << "Not a valid range: #{part.lexeme}"
+        @warnings << "Not a valid range: #{part.lexeme}"
       end
     end
   end

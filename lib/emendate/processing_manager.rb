@@ -69,6 +69,10 @@ module Emendate
         state: :dates_segmented,
         proc: ->{ Emendate::DateSegmenter.call(tokens) }
       )
+      _ranges_indicated = yield handle_step(
+        state: :ranges_indicated,
+        proc: ->{ Emendate::RangeIndicator.call(tokens) }
+      )
 
       Success(self)
     end
