@@ -4,21 +4,24 @@ require 'spec_helper'
 
 RSpec.describe Emendate::MonthSeasonYearAnalyzer do
   subject(:analyzer){ described_class.new(*tokens) }
-  
+
   let(:tokens) do
-    t = Emendate.prep_for(str, :tag_date_parts).standardized_formats
+    t = Emendate.prepped_for(
+      string: str,
+      target: Emendate::DatePartTagger
+    )
     [t[2], t[0]]
   end
-  
+
   describe '#call' do
     let(:result){ analyzer.call }
     let(:type){ result.result.type }
     let(:lexeme){ result.result.lexeme }
     let(:warnings){ result.warnings.first }
-    
+
     context 'with 2020-03 (unambiguous year-number - second less than first - MONTH)' do
       let(:str){ '2020-03' }
-      
+
       it 'returns month' do
         expect(type).to eq(:month)
         expect(lexeme).to eq('03')
@@ -28,7 +31,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
 
     context 'with 1995-28 (unambiguous year-number - second less than first - SEASON)' do
       let(:str){ '1995-28' }
-      
+
       it 'returns year (default treatment for ambiguous month/year -- default month max, invalid range)' do
         expect(type).to eq(:year)
         expect(lexeme).to eq('1928')
@@ -37,7 +40,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
 
       context 'with max_month_number_handling: :edtf_level_2' do
         before{ Emendate.config.options.max_month_number_handling = :edtf_level_2 }
-        
+
         it 'returns season' do
           expect(type).to eq(:season)
           expect(lexeme).to eq('28')

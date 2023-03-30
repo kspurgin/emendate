@@ -9,7 +9,7 @@ RSpec.describe Emendate::DateUtils do
     def result(yr, digits)
       dateutils.expand_shorter_digits(yr, digits)
     end
-    
+
     it 'expands to match years as expected' do
       expect(result('2020', '10')).to eq('2010')
       expect(result('2020', '40')).to eq('2040')
@@ -22,7 +22,7 @@ RSpec.describe Emendate::DateUtils do
     def result(yr, digits)
       dateutils.is_range?(yr, digits)
     end
-    
+
     it 'expands to match years as expected' do
       expect(result('1910', '11')).to be false
       expect(result('1950', '52')).to be true
@@ -40,7 +40,7 @@ RSpec.describe Emendate::DateUtils do
       expect(result('September')).to be_nil
     end
   end
-  
+
   describe '#month_literal' do
     def result(month)
       dateutils.month_literal(month)
@@ -51,13 +51,13 @@ RSpec.describe Emendate::DateUtils do
       expect(result('Sept.')).to be_nil
     end
   end
-  
+
   describe '#possible_range' do
     let(:result){ dateutils.possible_range?(*args) }
-    
+
     context 'with 2020-10 (10 must be October)' do
       let(:args){ ['2020', '10'] }
-      
+
       it 'returns false' do
         expect(result).to be false
       end
@@ -65,7 +65,7 @@ RSpec.describe Emendate::DateUtils do
 
     context 'with 2020-40 (2040 not a valid year)' do
       let(:args){ ['2020', '40'] }
-      
+
       it 'returns false' do
         expect(result).to be false
       end
@@ -73,7 +73,7 @@ RSpec.describe Emendate::DateUtils do
 
     context 'with 2020-21' do
       let(:args){ ['2020', '21'] }
-      
+
       it 'returns true (may be range or Spring 2020)' do
         expect(result).to be true
       end
@@ -81,13 +81,17 @@ RSpec.describe Emendate::DateUtils do
   end
 
   describe '#valid_date?' do
-    let(:tokens){ Emendate.prep_for(str, :tag_date_parts).standardized_formats }
+    let(:tokens){ Emendate.prepped_for(
+      string: str,
+      target: Emendate::DatePartTagger
+    )
+    }
     let(:args){ [tokens[0], tokens[2], tokens[4]] }
     let(:result){ dateutils.valid_date?(*args) }
-    
+
     context 'with valid date - 2020-02-29' do
       let(:str){ '2020-02-29' }
-      
+
       it 'returns true' do
         expect(result).to be true
       end
@@ -95,7 +99,7 @@ RSpec.describe Emendate::DateUtils do
 
     context 'with invalid date - 2020-02-92' do
       let(:str){ '2020-02-92' }
-      
+
       it 'returns false' do
         expect(result).to be false
       end
@@ -105,7 +109,7 @@ RSpec.describe Emendate::DateUtils do
     #  (Italian) Gregorian date adoption assumptions.
     context 'with date invalid in Italy, valid in England - 1582-10-14' do
       let(:str){ '1582-10-14' }
-      
+
       it 'returns true' do
         expect(result).to be true
       end
