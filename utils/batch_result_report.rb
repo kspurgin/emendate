@@ -25,7 +25,7 @@ OptionParser.new{ |opts|
 }.parse!
 
 outfile = options[:input].sub('.csv', '_report.csv')
-headers = %i[orig errs warnings date_ct start_full end_full certainty range]
+headers = %i[orig errs warnings date_ct start_full end_full certainty range types]
 
 CSV.open(outfile, 'wb') do |csvout|
   csvout << headers
@@ -47,10 +47,10 @@ CSV.open(outfile, 'wb') do |csvout|
         prep[:start_full] = processor.result.compile_date_info(method: :date_start_full, delim: '; ')
         prep[:end_full] = processor.result.compile_date_info(method: :date_end_full, delim: '; ')
         prep[:range] = processor.result.compile_date_info(method: :inclusive_range, delim: '; ')
+        prep[:types] = processor.tokens.map(&:type).join(' ')
       end
     end
 
     csvout << prep.values_at(*headers)
   end
 end
-
