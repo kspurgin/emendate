@@ -6,7 +6,7 @@ module Emendate
   class OptionsContract < Dry::Validation::Contract
     schema do
       config.validate_keys = true
-      
+
       optional(:ambiguous_month_day).value(:symbol)
       optional(:ambiguous_month_day_year).value(:symbol)
       optional(:ambiguous_month_year).value(:symbol)
@@ -108,7 +108,7 @@ module Emendate
 
     rule(:target_dialect) do
       if key?
-        allowed = %i[lyrasis_pseudo_edtf edtf collectionspace_structured_date_xml]
+        allowed = %i[lyrasis_pseudo_edtf edtf collectionspace]
         val = values[:target_dialect]
         key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
       end
@@ -129,7 +129,7 @@ module Emendate
         key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
       end
     end
-    
+
     private
 
     def unknown_val_msg(val, allowed)
