@@ -3,9 +3,9 @@
 module Emendate
   module Translators
     # namespace for CollectionSpace structured date XML translators
-    module CollectionspaceStructuredDateXml
+    module Collectionspace
       SUFFIX = 'T00:00:00.000Z'
-      
+
       def base_value
         {
           dateDisplayDate: processed.orig_string,
@@ -16,11 +16,11 @@ module Emendate
       def date
         processed.result.dates.first
       end
-      
+
       def nil_value
         base_value
       end
-      
+
       def empty_value
         base_value
       end
@@ -57,4 +57,3 @@ module Emendate
     end
   end
 end
-

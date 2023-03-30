@@ -2,10 +2,10 @@
 
 require 'spec_helper'
 
-RSpec.describe Emendate::Translators::CollectionspaceStructuredDateXml::KnownUnknown do
+RSpec.describe Emendate::Translators::Collectionspace::KnownUnknown do
   let(:options) do
     {
-      target_dialect: :collectionspace_structured_date_xml
+      target_dialect: :collectionspace
     }
   end
   let(:translation){ Emendate.translate(str, options) }
