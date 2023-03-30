@@ -24,9 +24,13 @@ module Emendate
     def collapsible?
       false
     end
-    
+
     def date_type?
       false
+    end
+
+    def processed?
+      true if date_type? || type == :or || type == :and
     end
 
     def to_s

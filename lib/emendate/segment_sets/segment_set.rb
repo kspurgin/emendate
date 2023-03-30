@@ -13,7 +13,7 @@ module Emendate
         :certainty, :inferred_date, :warnings
 
       def_delegator :@segments, :[], :[]
-      def_delegators :@segments, :clear, :delete, :delete_at, :empty?,
+      def_delegators :@segments, :any?, :clear, :delete, :delete_at, :empty?,
         :find_index, :first, :insert, :last, :length, :pop, :shift, :unshift
 
       def initialize(string: nil, segments: nil)

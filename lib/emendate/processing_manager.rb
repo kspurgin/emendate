@@ -73,7 +73,7 @@ module Emendate
         state: :ranges_indicated,
         proc: ->{ Emendate::RangeIndicator.call(tokens) }
       )
-
+      _final_checked = yield final_check
       Success(self)
     end
 
@@ -104,6 +104,15 @@ module Emendate
       Failure(err)
     end
 
+    def final_check
+      if !errors.empty? || tokens.any?{ |token| !token.processed? }
+        errors << "Unhandled segment still present"
+        Failure(errors)
+      else
+        Success()
+      end
+    end
+
     def add_error?
       no_error_states = %i[known_unknown_tagged_failure]
       true unless no_error_states.any?(state)
@@ -114,7 +123,7 @@ module Emendate
         ->(success) do
           @tokens = success
           @state = state
-          add_warnings(success.warnings)
+          add_warnings(success.warnings) if success.respond_to?(:warnings)
           Success()
         end,
         ->(failure) do
