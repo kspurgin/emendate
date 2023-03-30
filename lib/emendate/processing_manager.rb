@@ -65,6 +65,10 @@ module Emendate
         state: :date_parts_tagged,
         proc: ->{ Emendate::DatePartTagger.call(tokens) }
       )
+      _dates_segmented = yield handle_step(
+        state: :dates_segmented,
+        proc: ->{ Emendate::DateSegmenter.call(tokens) }
+      )
 
       Success(self)
     end

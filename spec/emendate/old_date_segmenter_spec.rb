@@ -2,15 +2,13 @@
 
 require 'spec_helper'
 
-RSpec.describe Emendate::DateSegmenter do
-  subject(:step){ described_class }
+RSpec.describe Emendate::OldDateSegmenter do
+  subject(:segmenter){ described_class.new(tokens: tokens) }
+  let(:tokens){ Emendate.prep_for(str, :segment_dates, options).tokens }
+  let(:options){ {} }
 
-  describe '.call' do
-    let(:tokens){ prepped_for(string: str, target: step) }
-    let(:result) do
-      step.call(tokens)
-        .value!
-    end
+  describe '#segment' do
+    let(:result){ segmenter.segment }
     let(:types){ result.types }
     let(:certainty){ result.certainty }
     let(:warnings){ result.warnings }
