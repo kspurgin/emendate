@@ -45,7 +45,8 @@ RSpec.describe Emendate::Lexer do
         'Spring Winter Fall'=>%i[season space season space season],
         '+%~{}:'=>%i[plus percent tilde curly_bracket_open curly_bracket_close
                      colon],
-        'to'=>[:range_indicator]
+        'to'=>[:range_indicator],
+        '1974-present'=>%i[number4 hyphen present]
       }
 
       results = examples.keys

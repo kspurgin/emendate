@@ -17,8 +17,8 @@ module Emendate
 
     # ambiguous things
     # c - at beginning = circa, at end = century
-    # nd - if directly after number, ordinal indicator; otherwise unknown date. normalize_orig attempts
-    #      to clear this up for most cases.
+    # nd - if directly after number, ordinal indicator; otherwise unknown date.
+    #   StringNormalizer attempts to clear this up for most cases.
     AFTER = %w[after post].freeze
     AND = ['&', 'and'].freeze
     APOSTROPHE = "'"
@@ -41,8 +41,10 @@ module Emendate
     PERCENT = '%'
     PARTIAL = %w[early late middle mid].freeze
     PLUS = '+'
+    PRESENT = ['present'].freeze
     RANGE_INDICATOR = %w[to]
-    # If additional seasons are added, make sure to update the mapping to literals in AlphaMonthConverter
+    # If additional seasons are added, make sure to update the mapping to
+    #   literals in AlphaMonthConverter
     SEASONS = %w[winter spring summer fall autumn]
     SLASH = '/'
     SPACE = ' '
@@ -202,6 +204,8 @@ module Emendate
         :era
       elsif PARTIAL.include?(lexeme)
         :partial
+      elsif PRESENT.include?(lexeme)
+        :present
       elsif MONTHS.include?(lexeme)
         :month_alpha
       elsif MONTH_ABBREVS.include?(lexeme)

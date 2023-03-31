@@ -66,6 +66,8 @@ module Emendate
         :parse_yyyymm
       when :number8
         :parse_yyyymmdd
+      when :present
+        :parse_present
       when :season
         :parse_date_parts
       when :year
@@ -258,8 +260,8 @@ module Emendate
       month = pieces.when_type(:season)[0]
       year = pieces.when_type(:year)[0]
       Emendate::DateTypes::YearSeason.new(year: year.literal,
-                                         month: month.literal,
-                                         children: pieces.segments)
+                                          month: month.literal,
+                                          children: pieces.segments)
     end
 
     def create_year_datetype(pieces)
@@ -317,6 +319,19 @@ module Emendate
       end
       working.delete(current)
 
+      recursive_parse
+    end
+
+    def parse_present
+      now = DateTime.now
+      year = now.year
+      month = now.month
+      day = now.day
+
+      result << Emendate::DateTypes::YearMonthDay.new(
+        year: year, month: month, day: day, children: [current]
+      )
+      working.delete(current)
       recursive_parse
     end
 
