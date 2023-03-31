@@ -111,8 +111,8 @@ module Emendate
   end
 
   def parse(str, options = {})
-    pm = Emendate::OldProcessingManager.new(str, options)
-    pm.process
+    pm = Emendate::ProcessingManager.new(str, options)
+    pm.call
     pm.result
   end
 

@@ -80,6 +80,8 @@ module Emendate
         proc: ->{ Emendate::RangeIndicator.call(tokens) }
       )
       _final_checked = yield final_check
+
+      @history[:done] = nil
       Success(self)
     end
 
