@@ -62,6 +62,17 @@ module Emendate
     end
   end
 
+  class UnsegmentableDatePatternError < StandardError
+    include Emendate::Error
+    attr_reader :pieces
+
+    def initialize(pieces)
+      @pieces = pieces
+      msg = pieces.types.join(', ')
+      super(msg)
+    end
+  end
+
   class UntaggableDatePartError < StandardError
     include Emendate::Error
     attr_reader :date_part, :reason
