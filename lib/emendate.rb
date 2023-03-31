@@ -5,7 +5,6 @@ require 'date'
 require 'fileutils'
 
 # external gems
-require 'aasm'
 require 'active_support'
 require 'active_support/core_ext/object'
 require 'dry-configurable'
