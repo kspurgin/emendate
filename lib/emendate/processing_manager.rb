@@ -79,6 +79,10 @@ module Emendate
         state: :ranges_indicated,
         proc: ->{ Emendate::RangeIndicator.call(tokens) }
       )
+      _cleaned = yield handle_step(
+        state: :tokens_cleaned,
+        proc: ->{ Emendate::TokenCleaner.call(tokens) }
+      )
       _final_checked = yield final_check
 
       @history[:done] = nil

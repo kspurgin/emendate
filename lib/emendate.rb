@@ -136,7 +136,8 @@ module Emendate
       Emendate::FormatStandardizer,
       Emendate::DatePartTagger,
       Emendate::DateSegmenter,
-      Emendate::RangeIndicator
+      Emendate::RangeIndicator,
+      Emendate::TokenCleaner
     ].map{ |klass| [klass, ->(tokens){ klass.send(:call, tokens) }] }
      .to_h
   end
