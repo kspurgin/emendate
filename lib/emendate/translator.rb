@@ -7,7 +7,7 @@ require_relative 'translation'
 module Emendate
   class Translator
     attr_reader :dialect, :processed, :date_type, :tokens
-    
+
     def initialize(processed)
       @processed = processed
       @dialect = Emendate.options.target_dialect
@@ -29,7 +29,7 @@ module Emendate
                                          value: nil_value,
                                          warnings: [warn])
       end
-      
+
       unless date_type
         warn = "Translator cannot determine a translation date type for #{processed.tokens.types.join(' ')}"
         puts "WARNING: #{warn}"
@@ -72,10 +72,13 @@ module Emendate
         'YearMonthDay'
       when 'range_date_type'
         'Range'
-      when 'knownunknown_date_type'
-        'KnownUnknown'
       else
-        nil
+        case processed.state
+        when :known_unknown_tagged_failure
+          'KnownUnknown'
+        else
+          nil
+        end
       end
     end
 
@@ -94,7 +97,7 @@ module Emendate
     def nil_value
       nil
     end
-    
+
     def truncate_tokens
       existing = processed.tokens
       max = Emendate.options.max_output_dates

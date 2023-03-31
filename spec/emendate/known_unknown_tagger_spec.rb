@@ -9,7 +9,7 @@ RSpec.describe Emendate::KnownUnknownTagger do
     let(:tokens){ prepped_for(string: string, target: tagger) }
     let(:result){ tagger.call(tokens) }
 
-    context 'without unknown' do
+    context 'without unknown known value' do
       let(:string){ '1984' }
 
       it 'passes through as expected' do
@@ -17,7 +17,7 @@ RSpec.describe Emendate::KnownUnknownTagger do
       end
     end
 
-    context 'with default options (orig unknowndate output) and `n.d.`' do
+    context 'with `n.d.`' do
       let(:string){ 'n.d.' }
 
       it 'tags as expected' do
@@ -43,13 +43,23 @@ RSpec.describe Emendate::KnownUnknownTagger do
       end
     end
 
-    context 'with default options (orig unknowndate output) and `Date Unknown`' do
+    context 'with `Date Unknown`' do
       let(:string){ 'Date Unknown' }
 
       it 'tags as expected' do
         failure = result.failure
         expect(failure.types).to eq(%i[knownunknown_date_type])
         expect(failure[0].lexeme).to eq('Date Unknown')
+      end
+    end
+
+    context 'with `unknown`' do
+      let(:string){ 'unknown' }
+
+      it 'tags as expected' do
+        failure = result.failure
+        expect(failure.types).to eq(%i[knownunknown_date_type])
+        expect(failure[0].lexeme).to eq('unknown')
       end
     end
   end
