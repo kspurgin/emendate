@@ -273,3 +273,4 @@
 "Y171010000S3","y#########s#","currently_unparseable;edtf;edtf2;letter_prefixed_year;significant_digits",,,"0",,,"nilValue","nilValue",,"Y171010000S3",,"Untokenizable sequences: 171010000",,
 "Y3388E2S3","y####e#s#","currently_unparseable;edtf;edtf2;exponential_year;letter_prefixed_year;significant_digits",,,"0",,,"nilValue","nilValue",,"Y3388E2S3",,,,
 "2002 B.C.","#### ERA","bce;era;four_digit_year;year_granularity",,,"0","-2001","-2001","-2001-01-01","-2001-12-31",,"2002 B.C.",,,,
+"1974-present","####-present","present","mmm",,"0","1974","DateTime.now.year","1974-01-01","DateTime.now.iso8601[0..9]",,"1974-present",,,,
