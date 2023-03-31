@@ -22,8 +22,8 @@ module Emendate
       end
 
       def translate
-        pm = Emendate::OldProcessingManager.new(example.test_string, **translate_options)
-        pm.process
+        pm = Emendate::ProcessingManager.new(example.test_string, **translate_options)
+        pm.call
         result = Emendate::Translator.new(pm).translate
       rescue StandardError => err
         example.add_error(name.to_sym, Emendate::ErrorUtil.msg(err))

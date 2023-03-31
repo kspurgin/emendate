@@ -5,16 +5,18 @@ require_relative '../abstract'
 module Emendate
   module Translators
     module LyrasisPseudoEdtf
-    # EDTF translator
       class KnownUnknown  < Emendate::Translators::Abstract
         private
 
         attr_reader :base
-        
-        def translate_value
-          @base = tokens[0].lexeme
 
-          return base
+        def translate_value
+          case Emendate.options.unknown_date_output
+          when :custom
+            Emendate.options.unknown_date_output_string
+          else
+            orig
+          end
         end
       end
     end

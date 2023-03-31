@@ -4,6 +4,7 @@ require 'spec_helper'
 
 RSpec.describe Emendate::MonthSeasonYearAnalyzer do
   subject(:analyzer){ described_class.new(*tokens) }
+  after(:each){ Emendate.reset_config }
 
   let(:tokens) do
     t = Emendate.prepped_for(

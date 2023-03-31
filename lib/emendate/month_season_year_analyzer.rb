@@ -24,11 +24,11 @@ module Emendate
       @type = result.type
       self
     end
-    
+
     private
 
     attr_reader :n, :year
-    
+
     def analyze
       if is_range?(year.lexeme, n.lexeme)
         @result = new_date_part(type: :year, lexeme: expand_year)
