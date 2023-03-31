@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::DateTypes::KnownUnknown do
-  let(:children){ Emendate.lex(str).tokens.segments }
+  let(:children){ Emendate.lex(str).segments }
   let(:klass){ described_class.new(lexeme: str, children: children) }
 
   context 'with n.d.' do
@@ -18,5 +18,5 @@ RSpec.describe Emendate::DateTypes::KnownUnknown do
       expect(klass.location.col).to eq(0)
       expect(klass.location.length).to eq(6)
     end
-  end    
+  end
 end

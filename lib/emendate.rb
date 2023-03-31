@@ -123,9 +123,7 @@ module Emendate
   end
 
   def lex(str)
-    lexed = Emendate::OldLexer.new(Emendate.normalize_orig(str))
-    lexed.tokenize
-    lexed
+    prepped_for(string: str, target: Emendate::UntokenizableTagger)
   end
 
   def translate(str, options = {})
