@@ -15,6 +15,20 @@ RSpec.describe Emendate::DateSegmenter do
     let(:certainty){ result.certainty }
     let(:warnings){ result.warnings }
 
+    context 'with 1932-1942 or 1948-1949' do
+      let(:str){ '1932-1942 or 1948-1949' }
+
+      it 'segments as expected' do
+        expect(types).to eq(
+          %i[year_date_type range_indicator year_date_type
+             date_separator
+             year_date_type range_indicator year_date_type]
+        )
+        expect(certainty).to eq([:one_of_set])
+        expect(warnings.length).to eq(0)
+      end
+    end
+
     context 'with circa 202127' do
       let(:str){ 'circa 202127' }
 
@@ -119,7 +133,7 @@ RSpec.describe Emendate::DateSegmenter do
       let(:str){ '17th or 18th century' }
 
       it 'segments as expected' do
-        e = %i[century_date_type century_date_type]
+        e = %i[century_date_type date_separator century_date_type]
         expect(types).to eq(e)
       end
     end
