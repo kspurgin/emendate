@@ -9,15 +9,16 @@ module Emendate
     class SegmentSet
       include Emendate::SegmentSets::CertaintyHelpers
       extend Forwardable
-      attr_reader :orig_string, :segments,
+      attr_reader :orig_string, :norm, :segments,
         :certainty, :inferred_date, :warnings
 
       def_delegator :@segments, :[], :[]
       def_delegators :@segments, :any?, :clear, :delete, :delete_at, :empty?,
         :find_index, :first, :insert, :last, :length, :pop, :shift, :unshift
 
-      def initialize(string: nil, segments: nil)
+      def initialize(string: nil, norm: nil, segments: nil)
         @orig_string = string
+        @norm = norm
         @segments = segments ? Array.new(segments) : Array.new
         @certainty = []
         @inferred_date = false
@@ -35,6 +36,7 @@ module Emendate
 
       def copy(other_set)
         @orig_string = other_set.orig_string
+        @norm = other_set.norm
         other_set.segments.each{ |s| segments << s.dup }
         other_set.certainty.each{ |c| @certainty << c.dup }
         other_set.warnings.each{ |w| warnings << w.dup }
