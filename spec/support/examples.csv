@@ -275,3 +275,4 @@
 "2002 B.C.","#### ERA","bce;era;four_digit_year;year_granularity",,,"0","-2001","-2001","-2001-01-01","-2001-12-31",,"2002 B.C.",,,,
 "1974-present","####-present","present","mmm",,"0","1974","DateTime.now.year","1974-01-01","DateTime.now.iso8601[0..9]",,"1974-present",,,,
 "mid to late 1930s","mid to late ####s","partial_range;decade","mmm",,"0","1934","1939","1934-01-01","1939-12-31",,"mid to late 1930s",,,,
+"1920 ca","#### ca","approximate","mmm",,"0","1920","1920","1920-01-01","1920-12-31","approximate","1920 ca",,,"1920 (approximate)","1920~"
