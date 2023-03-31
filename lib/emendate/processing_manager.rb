@@ -112,9 +112,12 @@ module Emendate
 
     def final_check
       if !errors.empty? || tokens.any?{ |token| !token.processed? }
-        errors << "Unhandled segment still present"
+        message = "Unhandled segment still present"
+        errors << message
+        history[:final_check_failed] = message
         Failure(errors)
       else
+        history[:final_check_passed] = nil
         Success()
       end
     end
