@@ -10,7 +10,7 @@ module Emendate
     class Tester
       class << self
         # @param test [String] test name
-        # @param example [Emendate::Examples::TestableExample] 
+        # @param example [Emendate::Examples::TestableExample]
         def build(test:, example:)
           split_test = test.split('_')
           type = split_test.shift
@@ -21,12 +21,12 @@ module Emendate
       end
 
       MIXEDIN_METHODS = %i[test]
-      
+
       attr_reader :name
 
       # @param type [Constant] Module that will be mixed in to run test. Set by Tester.build from first part of test name
       # @param name [String] test name
-      # @param example [Emendate::Examples::TestableExample] 
+      # @param example [Emendate::Examples::TestableExample]
       def initialize(type:, name:, example:)
         @type = type
         extend type
@@ -69,12 +69,12 @@ module Emendate
       def run_test
         test_passed? ? handle_test_success : handle_test_fail
       end
-      
+
       def test_fail_mismatch
         ["EXPECTED: #{expected_result}",
          "RESULT:   #{tested_result}"]
       end
-      
+
       def test_passed?
         expected_result == tested_result
       end

@@ -3,6 +3,7 @@
 require 'json'
 
 module Emendate
+  # Wrapper around a DateType segment, used as part of Result
   class ParsedDate
     attr_reader :original_string, :index_dates,
       :date_start, :date_end,

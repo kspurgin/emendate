@@ -81,10 +81,12 @@ RSpec.describe Emendate::Examples::Tester do
 
       context 'with testable example' do
         context 'with single row example' do
-          let(:str){ 'b' }
+          let(:str){ '2010-12' }
 
           it 'returns expected' do
-            expect(result).to eq('Untokenizable sequences: b')
+            expect(result).to eq(
+              'Ambiguous year + month/season/year treated as_year'
+            )
           end
         end
       end
@@ -104,10 +106,12 @@ RSpec.describe Emendate::Examples::Tester do
 
       context 'with testable example' do
         context 'with single row example' do
-          let(:str){ 'b' }
+          let(:str){ '2010-12' }
 
           it 'returns expected' do
-            expect(result).to eq('Untokenizable sequences: b')
+            expect(result).to eq(
+              'Ambiguous year + month/season/year treated as_year'
+            )
           end
         end
       end
@@ -173,4 +177,3 @@ RSpec.describe Emendate::Examples::Tester do
     end
   end
 end
-

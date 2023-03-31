@@ -1,13 +1,14 @@
 "test_string","test_pattern","tags_date_type","tags_data_set","test_options","dateval_occurrence","date_start","date_end","date_start_full","date_end_full","date_certainty","date_originalstring","result_warnings","translation_lyrasis_pseudo_edtf","translation_edtf"
-"a","a",,,"aaa",0,"a","a","a","a","a","a","a","a","a"
-"a","a",,,"aaa",1,,,,"aa","aa","aa","aa","aa","aa"
-"a","a",,,"aaa",2,,,"aaa","aaa","aaa","aaa","aaa",,"aaa"
-"b","b",,,,0,,,,"nilValue","nilValue",,"Untokenizable sequences: b","b",
-"c","c","c","c",,0,"c","c","c","c","c","c","c","c","c"
-"2002","####","edtf;edtf0","ba;ncm",,0,"2002","2002","2002-01-01","2002-12-31",,"2002",,"2002","2002"
-"2002","####","edtf;edtf0","ba;ncm","unknown_opt: :foo",0,"2002","2002","2002-01-01","2002-12-31",,"2002",,"2002","2002"
-"1997, 1999","#### & ####","alternate_dates",,,0,,,"1997-01-01","1997-12-31",,"1997",,,
-"1997, 1999","#### & ####","alternate_dates",,,1,,,"1999-01-01","1999-12-31",,"1999",,,
-"[1997 or 1999]","[#### or ####]","alternate_dates;inferred","ba","square_bracket_interpretation: :edtf_set",0,"1997","1997","1997-01-01","1997-12-31","one_of_set","1997",,"1997 or 1999","[1997,1999]"
-"[1997 or 1999]","[#### or ####]","alternate_dates;inferred","ba","square_bracket_interpretation: :edtf_set",1,"1999","1999","1999-01-01","1999-12-31","one_of_set","1999",,"1997 or 1999","[1997,1999]"
-"2002 (?)","#### (?)","uncertain;four_digit_year;year_granularity","ba",,0,"2002","2002","2002-01-01","2002-12-31","uncertain","2002 (?)",,"2002 (uncertain)","2002?"
+"a","a",,,"aaa","0","a","a","a","a","a","a","a","a","a"
+"a","a",,,"aaa","1",,,,"aa","aa","aa","aa","aa","aa"
+"a","a",,,"aaa","2",,,"aaa","aaa","aaa","aaa","aaa",,"aaa"
+"b","b",,,,"0",,,,"nilValue","nilValue",,"Untokenizable sequences: b","b",
+"c","c","c","c",,"0","c","c","c","c","c","c","c","c","c"
+"2002","####","edtf;edtf0","ba;ncm",,"0","2002","2002","2002-01-01","2002-12-31",,"2002",,"2002","2002"
+"2002","####","edtf;edtf0","ba;ncm","unknown_opt: :foo","0","2002","2002","2002-01-01","2002-12-31",,"2002",,"2002","2002"
+"1997, 1999","#### & ####","alternate_dates",,,"0",,,"1997-01-01","1997-12-31",,"1997",,,
+"1997, 1999","#### & ####","alternate_dates",,,"1",,,"1999-01-01","1999-12-31",,"1999",,,
+"[1997 or 1999]","[#### or ####]","alternate_dates;inferred","ba","square_bracket_interpretation: :edtf_set","0","1997","1997","1997-01-01","1997-12-31","one_of_set","1997",,"1997 or 1999","[1997,1999]"
+"[1997 or 1999]","[#### or ####]","alternate_dates;inferred","ba","square_bracket_interpretation: :edtf_set","1","1999","1999","1999-01-01","1999-12-31","one_of_set","1999",,"1997 or 1999","[1997,1999]"
+"2002 (?)","#### (?)","uncertain;four_digit_year;year_granularity","ba",,"0","2002","2002","2002-01-01","2002-12-31","uncertain","2002 (?)",,"2002 (uncertain)","2002?"
+"2010-12","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,,"0","2010","2012","2010-01-01","2012-12-31",,"2010-12","Ambiguous year + month/season/year treated as_year",,
