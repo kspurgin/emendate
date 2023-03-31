@@ -117,8 +117,8 @@ module Emendate
   end
 
   def process(str, options = {})
-    pm = Emendate::OldProcessingManager.new(str, options)
-    pm.process
+    pm = Emendate::ProcessingManager.new(str, options)
+    pm.call
     pm
   end
 
@@ -127,8 +127,8 @@ module Emendate
   end
 
   def translate(str, options = {})
-    pm = Emendate::OldProcessingManager.new(str, options)
-    pm.process
+    pm = Emendate::ProcessingManager.new(str, options)
+    pm.call
     translator = Emendate::Translator.new(pm)
     translator.translate
   end
