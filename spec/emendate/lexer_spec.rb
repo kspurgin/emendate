@@ -46,13 +46,14 @@ RSpec.describe Emendate::Lexer do
         '+%~{}:'=>%i[plus percent tilde curly_bracket_open curly_bracket_close
                      colon],
         'to'=>[:range_indicator]
-      }.transform_keys!{ |key| Emendate.normalize(key).value!}
+      }
 
       results = examples.keys
         .map do |str|
+          norm = Emendate.prepped_for(string: str, target: lexer)
           [
             str,
-            lexer.call(str)
+            lexer.call(norm)
               .value!
               .map(&:type)
           ]

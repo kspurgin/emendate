@@ -18,16 +18,22 @@ module Emendate
     def initialize(string, options = {})
       @orig_string = string
       Emendate::Options.new(options) unless options.empty?
-      @tokens = Emendate::SegmentSets::TokenSet.new
-      @state = :initialized
+      @history = {initialized: orig_string}
+      @tokens = Emendate::SegmentSets::TokenSet.new(
+        string: orig_string
+      )
       @errors = []
       @warnings = []
     end
 
     def call
+      _normalized = yield handle_step(
+        state: :normalized,
+        proc: ->{ Emendate::StringNormalizer.call(orig_string) }
+      )
       _lexed = yield handle_step(
         state: :lexed,
-        proc: ->{ Emendate::Lexer.call(orig_string) }
+        proc: ->{ Emendate::Lexer.call(tokens) }
       )
       _untokenizable_tagged = yield handle_step(
         state: :untokenizable_tagged,
@@ -77,16 +83,14 @@ module Emendate
       Success(self)
     end
 
-    # def process
-    #   segment_dates if may_segment_dates?
-    #   indicate_ranges if may_indicate_ranges?
-    #   finalize if may_finalize?
-    # end
+    def state
+      history.keys.last
+    end
 
     def to_s
       <<~OBJ
       #<#{self.class.name}:#{self.object_id}
-        @state=#{state},
+        state=#{state},
         token_type_pattern: #{tokens.types.inspect}>
       OBJ
     end
@@ -97,6 +101,8 @@ module Emendate
     end
 
     private
+
+    attr_reader :history
 
     def call_step(step)
       step.call
@@ -115,19 +121,19 @@ module Emendate
 
     def add_error?
       no_error_states = %i[known_unknown_tagged_failure]
-      true unless no_error_states.any?(state)
+      true unless no_error_states.any?{ |nes| state.to_s.start_with?(nes.to_s) }
     end
 
     def handle_step(state:, proc:)
       call_step(proc).either(
         ->(success) do
           @tokens = success
-          @state = state
+          @history[state] = success
           add_warnings(success.warnings) if success.respond_to?(:warnings)
           Success()
         end,
         ->(failure) do
-          @state = "#{state}_failure".to_sym
+          @history["#{state}_failure".to_sym] = nil
           errors << failure if add_error?
           add_warnings(failure.warnings) if failure.respond_to?(:warnings)
           Failure(self)
