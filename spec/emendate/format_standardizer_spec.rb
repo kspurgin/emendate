@@ -13,6 +13,18 @@ RSpec.describe Emendate::FormatStandardizer do
         .types
     end
 
+    context 'with mid to late 1980s' do
+      let(:string){ 'mid to late 1980s' }
+
+      it 'adds after first partial' do
+        expect(result).to eq(
+          %i[partial number4 letter_s
+             range_indicator
+             partial number4 letter_s]
+        )
+      end
+    end
+
     context 'with 1997/98' do
       let(:string){ '1997/98' }
 
