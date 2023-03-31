@@ -230,6 +230,8 @@ module Emendate
         result << create_year_season_datetype(pieces)
       elsif pieces.types.sort == %i[year]
         result << create_year_datetype(pieces)
+      else
+        fail(Emendate::UnsegmentableDatePatternError.new(pieces))
       end
 
       recursive_parse
