@@ -93,6 +93,23 @@ module Emendate
       history.keys.last
     end
 
+    def historical_record
+      history.each do |state, val|
+        puts state
+        outval = if val.is_a?(String)
+                   val
+                 elsif val.respond_to?(:segments) && val.empty?
+                   val.norm
+                 elsif val.respond_to?(:types)
+                   val.types.inspect
+                 else
+                   nil
+                 end
+        puts "  #{outval}" if outval
+      end
+      nil
+    end
+
     def to_s
       <<~OBJ
       #<#{self.class.name}:#{self.object_id}
