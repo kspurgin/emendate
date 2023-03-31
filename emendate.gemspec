@@ -29,7 +29,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'activesupport', '~> 6'
-  spec.add_dependency 'aasm'
   spec.add_dependency 'dry-configurable'
   spec.add_dependency 'dry-monads'
   spec.add_dependency 'dry-validation'
