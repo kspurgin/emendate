@@ -122,7 +122,7 @@ RSpec.describe Emendate::CertaintyChecker do
           end
 
           it 'removes square brackets from result' do
-            expected = 'number4 number4'
+            expected = 'number4 date_separator number4'
             expect(result.type_string).to eq(expected)
           end
         end
@@ -155,7 +155,7 @@ RSpec.describe Emendate::CertaintyChecker do
         end
 
         it 'removes square brackets from result' do
-          expected = 'number4 number4'
+          expected = 'number4 date_separator number4'
           expect(result.type_string).to eq(expected)
         end
       end

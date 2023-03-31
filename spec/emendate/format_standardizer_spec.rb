@@ -65,7 +65,9 @@ RSpec.describe Emendate::FormatStandardizer do
       let(:string){ '18th or 19th century' }
 
       it 'adds century after 18th' do
-        expect(result).to eq(%i[number1or2 century number1or2 century])
+        expect(result).to eq(
+          %i[number1or2 century date_separator number1or2 century]
+        )
       end
     end
 

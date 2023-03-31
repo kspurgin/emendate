@@ -136,6 +136,10 @@ module Emendate
         passthrough
       else
         result.add_certainty(certainty)
+        result << Emendate::DerivedToken.new(
+          type: :date_separator,
+          sources: [working[0]]
+        )
         working.shift
         passthrough
       end
