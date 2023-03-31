@@ -122,6 +122,8 @@ module Emendate
           ]
       when %i[partial range_indicator partial number1or2 century]
         %i[copy_number_century_after_first_partial]
+      when %i[partial range_indicator partial number4 letter_s]
+        %i[copy_number_s_after_first_partial]
       end
     end
 
@@ -165,6 +167,16 @@ module Emendate
       p = result.extract(%i[partial]).segments[0]
       ins_pt = result.find_index(p) + 1
       cent.each do |c|
+        result.insert(ins_pt, c.dup)
+        ins_pt += 1
+      end
+    end
+
+    def copy_number_s_after_first_partial
+      decade = result.extract(%i[number4 letter_s]).segments
+      p = result.extract(%i[partial]).segments[0]
+      ins_pt = result.find_index(p) + 1
+      decade.each do |c|
         result.insert(ins_pt, c.dup)
         ins_pt += 1
       end

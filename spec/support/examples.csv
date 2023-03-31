@@ -230,7 +230,7 @@
 "Early 1990","early ####","approximate;partial",,,"0",,,"1990-01-01","1990-04-30",,"Early 1990",,,,
 "Early 1990s","early ####s","approximate;decades;partial",,,"0",,,"1990-01-01","1995-12-31",,"Early 1990s",,,,
 "early 19th century","early ##ORD century","century;partial","ba",,"0","1801","1834","1801-01-01","1834-12-31",,"early 19th century",,,"1801 - 1834 (exact year unspecified)","[1801..1834]"
-"early to mid-19th century","early to mid-##ORD century","unparseable","ba",,"0","1801","nilValue","1801-01-01","nilValue",,"early to mid-19th century",,"Currently unparseable",,
+"early to mid-19th century","early to mid-##ORD century","partial_range;century","ba",,"0","1801","1867","1801-01-01","1867-12-31",,"early to mid-19th century",,,"1801 - 1867 (exact year unspecified)","[1801..1867]"
 "Feb 15 2020","MON ## ####",,,,"0","2020","2020","2020-02-15","2020-02-15",,"Feb 15 2020",,,"2020-02-15","2020-02-15"
 "Feb 15, 2020","MON ##, ####",,,,"0","2020","2020","2020-02-15","2020-02-15",,"Feb 15, 2020",,,"2020-02-15","2020-02-15"
 "Feb. 15 2020","MON. ## ####",,,,"0","2020","2020","2020-02-15","2020-02-15",,"Feb. 15 2020",,,"2020-02-15","2020-02-15"
@@ -274,3 +274,4 @@
 "Y3388E2S3","y####e#s#","currently_unparseable;edtf;edtf2;exponential_year;letter_prefixed_year;significant_digits",,,"0",,,"nilValue","nilValue",,"Y3388E2S3",,,,
 "2002 B.C.","#### ERA","bce;era;four_digit_year;year_granularity",,,"0","-2001","-2001","-2001-01-01","-2001-12-31",,"2002 B.C.",,,,
 "1974-present","####-present","present","mmm",,"0","1974","DateTime.now.year","1974-01-01","DateTime.now.iso8601[0..9]",,"1974-present",,,,
+"mid to late 1930s","mid to late ####s","partial_range;decade","mmm",,"0","1934","1939","1934-01-01","1939-12-31",,"mid to late 1930s",,,,
