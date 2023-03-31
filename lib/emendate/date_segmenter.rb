@@ -21,7 +21,6 @@ module Emendate
       until working.empty?
         recursive_parse
       end
-
       working.copy(result)
       result.clear
       until working.empty?
@@ -39,82 +38,6 @@ module Emendate
     private
 
     attr_reader :working, :result
-
-    def apply_switch_modifiers
-      return if working.empty?
-
-      mod = switch_mod_function
-      return if mod.nil?
-
-      send(mod)
-    end
-
-    def apply_partial_modifiers
-      return if working.empty?
-
-      mod = partial_mod_function
-      return if mod.nil?
-
-      send(mod)
-    end
-
-    def switch_mod_function
-      return nil if working.empty?
-
-      case working.types.first
-      when :after
-        :mod_switch
-      when :before
-        :mod_switch
-      else
-        :passthrough_switch_mod
-      end
-    end
-
-    def partial_mod_function
-      return nil if working.empty?
-
-      case working.types.first
-      when :partial
-        :mod_partial
-      else
-        :passthrough_partial_mod
-      end
-    end
-
-    def mod_switch
-      switch = working.shift
-      if current.kind_of?(Emendate::DateTypes::DateType)
-        current.range_switch = switch.type.to_s
-        result << current.prepend_source_token(switch)
-        working.shift
-      else
-        result << switch
-      end
-      apply_switch_modifiers
-    end
-
-    def mod_partial
-      partial = working.shift
-      if current.kind_of?(Emendate::DateTypes::DateType)
-        current.partial_indicator = partial.lexeme.strip.delete_suffix('-')
-        result << current.prepend_source_token(partial)
-        working.shift
-      else
-        result << partial
-      end
-      apply_partial_modifiers
-    end
-
-    def passthrough_partial_mod
-      transfer_token
-      apply_partial_modifiers
-    end
-
-    def passthrough_switch_mod
-      transfer_token
-      apply_switch_modifiers
-    end
 
     def recursive_parse
       return if working.empty?
@@ -150,6 +73,82 @@ module Emendate
       else
         :parse_non_date_part
       end
+    end
+
+    def apply_switch_modifiers
+      return if working.empty?
+
+      mod = switch_mod_function
+      return if mod.nil?
+
+      send(mod)
+    end
+
+    def switch_mod_function
+      return nil if working.empty?
+
+      case working.types.first
+      when :after
+        :mod_switch
+      when :before
+        :mod_switch
+      else
+        :passthrough_switch_mod
+      end
+    end
+
+    def mod_switch
+      switch = working.shift
+      if current.kind_of?(Emendate::DateTypes::DateType)
+        current.range_switch = switch.type.to_s
+        result << current.prepend_source_token(switch)
+        working.shift
+      else
+        result << switch
+      end
+      apply_switch_modifiers
+    end
+
+    def passthrough_switch_mod
+      transfer_token
+      apply_switch_modifiers
+    end
+
+    def apply_partial_modifiers
+      return if working.empty?
+
+      mod = partial_mod_function
+      return if mod.nil?
+
+      send(mod)
+    end
+
+    def partial_mod_function
+      return nil if working.empty?
+
+      case working.types.first
+      when :partial
+        :mod_partial
+      else
+        :passthrough_partial_mod
+      end
+    end
+
+    def mod_partial
+      partial = working.shift
+      if current.kind_of?(Emendate::DateTypes::DateType)
+        current.partial_indicator = partial.lexeme.strip.delete_suffix('-')
+        result << current.prepend_source_token(partial)
+        working.shift
+      else
+        result << partial
+      end
+      apply_partial_modifiers
+    end
+
+    def passthrough_partial_mod
+      transfer_token
+      apply_partial_modifiers
     end
 
     def parse_decade_date_part
