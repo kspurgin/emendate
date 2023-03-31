@@ -158,6 +158,8 @@ module Emendate
         process_curly_brackets(remain)
       in [:approximate, *]
         process_approximate
+      in [*, :approximate]
+        process_edtf_approximate
       in [:letter_c, *]
         process_approximate
       in [*, :question]
@@ -236,6 +238,8 @@ module Emendate
     def approximate_indicator?
       case result.types
       in [:approximate, *]
+        true
+      in [*, :approximate]
         true
       in [:letter_c, *]
         true

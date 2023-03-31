@@ -24,6 +24,18 @@ RSpec.describe Emendate::CertaintyChecker do
       end
     end
 
+    context 'with 1920 ca' do
+      let(:string){ '1920 ca' }
+
+      it 'values include: approximate' do
+        expect(result.certainty).to eq([:approximate])
+      end
+
+      it 'returns 1 token for 1920' do
+        expect(result.type_string).to eq('number4')
+      end
+    end
+
     context 'with 2004-06~' do
       let(:string){ '2004-06~' }
 
