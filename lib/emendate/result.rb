@@ -16,19 +16,25 @@ module Emendate
       if pm.state == :failed
         @dates = []
       else
-        @dates = pm.tokens.segments.select{ |t| t.date_type? }
-          .map{ |t| Emendate::ParsedDate.new(t, pm.tokens.certainty, original_string) }
+        @dates = pm.tokens.select{ |t| t.date_type? }
+          .map do |t|
+            Emendate::ParsedDate.new(
+              date: t,
+              certainty: pm.tokens.certainty,
+              orig: original_string
+            )
+          end
       end
     end
 
     def compile_date_info(method:, delim:)
       dates.map(&method).join(delim)
     end
-    
+
     def date_count
       dates.length
     end
-    
+
     def to_h
       {
         original_string: original_string,
@@ -41,7 +47,7 @@ module Emendate
     def to_json
       to_h.to_json
     end
-    
+
     private
 
     attr_reader :pm

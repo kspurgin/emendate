@@ -3,20 +3,25 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::ParsedDate do
-  subject(:parsed){ described_class.new(*args) }
+  subject(:parsed){ described_class.new(**args) }
 
   let(:pos){ 0 }
   let(:args) do
     pm = Emendate.process(str, options)
     dateparts = pm.tokens.segments.select{ |t| t.date_type? }
-    [dateparts[pos], pm.tokens.certainty, pm.orig_string]
+    {date: dateparts[pos],
+     certainty: pm.tokens.certainty,
+     orig: pm.orig_string}
   end
 
   let(:options){ {} }
 
   describe '#new' do
-    context 'with n.d.' do
-      let(:str){ 'n.d.' }
+    context 'with non-date type passed in' do
+      let(:args) do
+        token = Emendate::Token.new
+        {date: token, orig: 'token'}
+      end
 
       it 'raises error' do
         expect{ parsed }.to raise_error(Emendate::NonDateTypeError)
