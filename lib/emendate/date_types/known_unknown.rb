@@ -5,12 +5,8 @@ module Emendate
     class KnownUnknown < Emendate::DateTypes::DateType
       attr_reader :lexeme
 
-      # expect :lexeme, :children
-      def initialize(**opts)
-        super
-        @lexeme = opts[:lexeme]
-        @children = opts[:children]
-      end
+      # Expect to be initialized with:
+      #  sources: Emendate::SegmentSets::SegmentSet
 
       def earliest
         nil
@@ -18,6 +14,15 @@ module Emendate
 
       def latest
         nil
+      end
+
+      def lexeme
+        case Emendate.options.unknown_date_output
+        when :orig
+          sources.orig_string
+        else
+          Emendate.options.unknown_date_output_string
+        end
       end
 
       def literal

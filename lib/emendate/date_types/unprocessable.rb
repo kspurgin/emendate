@@ -2,35 +2,20 @@
 
 module Emendate
   module DateTypes
+    # Represents a date string that is successfully tokenized, but that is known
+    #  not to currently be processable by the application.
+    #
+    # The purpose of treating this as a date type is to fail fast, gracefully,
+    #   and informatively
+    #
+    # Created by {Emendate::UnprocessableTagger}, based on a list of regular
+    #   expressions for known unsupported date patterns
     class Unprocessable < Emendate::DateTypes::DateType
-      attr_reader :lexeme, :literal
 
-      def initialize(**opts)
-        super
-        @literal = opts[:literal].is_a?(Integer) ? opts[:literal] : opts[:literal].to_i
-        @lexeme = opts[:children].map(&:lexeme)
-          .join
-      end
+      # Expect to be initialized with:
+      #   sources: Emendate::SegmentSets::SegmentSet
 
-      def earliest
-        nil
-      end
-
-      def latest
-        nil
-      end
-
-      def earliest_at_granularity
-        nil
-      end
-
-      def latest_at_granularity
-        nil
-      end
-
-      def range?
-        false
-      end
+      include ErrorTypeable
     end
   end
 end

@@ -45,11 +45,15 @@ module Emendate
         return
       end
 
-      result << Emendate::DateTypes::Range.new(startdate: current,
-                                               range_indicator: nxt,
-                                               enddate: nxt(2))
+      sources = working.class.new.copy(working)
+      sources.clear
+      [current, nxt, nxt(2)].each do |segmt|
+        sources << segmt
+        working.delete(segmt)
+      end
 
-      [current, nxt, nxt(2)].each{ |s| working.delete(s) }
+      result << Emendate::DateTypes::Range.new(sources: sources)
+
     end
 
     def current

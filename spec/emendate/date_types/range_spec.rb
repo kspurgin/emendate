@@ -3,16 +3,13 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::DateTypes::Range do
-  subject(:range) do
-    described_class.new(
-      startdate: tokens[0],
-      range_indicator: tokens[1],
-      enddate: tokens[2]
-    )
-  end
+  subject(:range){ described_class.new(sources: tokens) }
+
   let(:tokens) do
-    Emendate.process(str)
-      .history[:dates_segmented]
+    Emendate.prepped_for(
+      string: str,
+      target: Emendate::RangeIndicator
+      )
   end
 
   context 'with 1900 to 1985' do

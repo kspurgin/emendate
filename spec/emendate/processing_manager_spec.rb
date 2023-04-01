@@ -17,7 +17,8 @@ RSpec.describe Emendate::ProcessingManager do
         res = result.failure
         expect(res.state).to eq(:untokenizable_tagged_failure)
         expect(res.warnings.length).to eq(1)
-        expect(res.errors.length).to eq(1)
+        expect(res.errors.length).to eq(0)
+        expect(res.tokens.type_string).to eq('untokenizable_date_type')
       end
     end
 

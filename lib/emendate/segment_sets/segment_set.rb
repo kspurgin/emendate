@@ -127,6 +127,19 @@ module Emendate
         end
       end
 
+      def to_s
+      <<~OBJ
+      #<#{self.class.name}:#{self.object_id}
+        @orig_string=#{orig_string.inspect},
+        @norm=#{norm.inspect},
+        segments: #{types.inspect},
+        @certainty: #{certainty.inspect},
+        @inferred_date: #{inferred_date},
+        @warnings: #{warnings.inspect}>
+      OBJ
+      end
+      alias_method :inspect, :to_s
+
       def types
         segments.map(&:type)
       end
