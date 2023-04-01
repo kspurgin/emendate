@@ -12,6 +12,8 @@ endif::[]
 
 = How Emendate processes date strings
 
+WARNING:: As of 2023-03-31, this is out of date. The overall flow of processing remains the same, but the way it is accomplished, and how you can access intermediate step data has all changed.
+
 toc::[]
 
 == Basic conceptual overview
@@ -28,7 +30,7 @@ Each more complex type of `Segment` has its own logic and functionality. For exa
 
 Once we are down to just ``DateType``s and separators, a final `ParsedDate` object can be derived from them.
 
-The `ParsedDate` object is modeled on the response returned by Timetwister. 
+The `ParsedDate` object is modeled on the response returned by Timetwister.
 
 == Processing stages
 
@@ -245,7 +247,7 @@ The only difference here is there is no warning in the result.
 
 This step simplifies the token type pattern by collapsing non-meaningful tokens. We used the term "collapse" instead of "delete" because the non-meaningful tokens are collapsed into a `DerivedToken`, not deleted.
 
-This step makes it simpler to process the patterns going forward, as we do not have to care about whether an abbreviated month had a period after it or not, or if there were any extra spaces. 
+This step makes it simpler to process the patterns going forward, as we do not have to care about whether an abbreviated month had a period after it or not, or if there were any extra spaces.
 
 We will start over on ex1:
 

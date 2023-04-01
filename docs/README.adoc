@@ -1,0 +1,23 @@
+:toc:
+:toc-placement!:
+:toclevels: 4
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Documentation
+
+toc::[]
+
+use:: How to use the application
+options:: Reference for the date parsing/processing options you can specify
+output:: Describes the `Emendate::Result` returned by `Emendate.parse`, describes errors and warnings that you may encounter, and begins to describe the function of `Emendate.translate`.
+
+processing:: Deep dive into how date strings are processed by the application.
+working_with_test_set:: There is a large test set of examples and expected processing results in CSV format. This documentation explains how to understand and run these examples.
+dev_notes:: Notes on development decisions, conceptual building blocks of the application, and code patterns
