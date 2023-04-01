@@ -4,22 +4,22 @@ require 'spec_helper'
 
 RSpec.describe Emendate::DateTypes::YearSeason do
   let(:subject){ described_class.new(**opts) }
-  
+
   context 'when created with month, year, and children' do
     let(:opts) do
       tokens = [
         Emendate::Token.new(type: :season, lexeme: 'summer', location: Emendate::Location.new(6, 6)),
         Emendate::Token.new(type: :year, lexeme: '2002, ', location: Emendate::Location.new(0, 6))
         ]
-      {year: '2020', month: 22, children: tokens}
+      {year: '2020', month: 22, sources: tokens}
     end
-    
+
     describe '#type' do
       it 'type = :yearseason_date_type' do
         expect(subject.type).to eq(:yearseason_date_type)
       end
     end
-    
+
     describe '#location' do
       it 'returns 0, 12' do
         expect(subject.location.col).to eq(0)

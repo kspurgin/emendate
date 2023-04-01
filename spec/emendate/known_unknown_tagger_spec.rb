@@ -24,22 +24,6 @@ RSpec.describe Emendate::KnownUnknownTagger do
         expect(result).to be_a(Dry::Monads::Failure)
         failure = result.failure
         expect(failure.types).to eq(%i[knownunknown_date_type])
-        expect(failure[0].lexeme).to eq('n.d.')
-      end
-
-      context 'with custom output' do
-        after{ Emendate.reset_config }
-
-        it 'tags as expected' do
-          opt = {
-            unknown_date_output: :custom,
-            unknown_date_output_string: 'unknown date'
-          }
-          Emendate::Options.new(opt)
-          failure = result.failure
-          expect(failure.types).to eq(%i[knownunknown_date_type])
-          expect(failure[0].lexeme).to eq('unknown date')
-        end
       end
     end
 
@@ -49,7 +33,6 @@ RSpec.describe Emendate::KnownUnknownTagger do
       it 'tags as expected' do
         failure = result.failure
         expect(failure.types).to eq(%i[knownunknown_date_type])
-        expect(failure[0].lexeme).to eq('Date Unknown')
       end
     end
 
@@ -59,7 +42,6 @@ RSpec.describe Emendate::KnownUnknownTagger do
       it 'tags as expected' do
         failure = result.failure
         expect(failure.types).to eq(%i[knownunknown_date_type])
-        expect(failure[0].lexeme).to eq('unknown')
       end
     end
 

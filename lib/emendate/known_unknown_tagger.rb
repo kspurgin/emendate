@@ -41,15 +41,9 @@ module Emendate
     def return_unknown_date_type
       result.clear
       result << Emendate::DateTypes::KnownUnknown.new(
-        lexeme: known_unknown_date_value
+        sources: tokens
       )
       Failure(result)
-    end
-
-    def known_unknown_date_value
-      return tokens.orig_string if Emendate.options.unknown_date_output == :orig
-
-      Emendate.options.unknown_date_output_string
     end
 
     def replace_question_with_unknown

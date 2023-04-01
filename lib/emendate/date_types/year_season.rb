@@ -11,7 +11,8 @@ module Emendate
 
       attr_reader :literal, :year, :month
 
-
+      # Expect to be initialized with:
+      #   sources: Emendate::SegmentSets::SegmentSet
       def initialize(**opts)
         super
         set_up_from_year_month_or_integer(opts)

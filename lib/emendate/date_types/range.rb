@@ -4,14 +4,16 @@ module Emendate
   module DateTypes
 
     class Range < Emendate::DateTypes::DateType
-      attr_reader :startdate, :enddate
+      attr_reader :startdate, :enddate, :indicator
 
+      # Expect to be initialized with:
+      #   sources: Emendate::SegmentSets::SegmentSet
+      # Where the segment set has 3 segments (start, indicator, end)
       def initialize(**opts)
         super
-        @startdate = opts[:startdate]
-        @enddate = opts[:enddate]
-        ri = opts[:range_indicator]
-        [startdate, ri, enddate].each{ |s| source_tokens << s }
+        @startdate = sources[0]
+        @indicator = sources[1]
+        @enddate = sources[2]
       end
 
       def earliest
@@ -34,6 +36,10 @@ module Emendate
         elsif latest
           "- #{latest.iso8601}"
         end
+      end
+
+      def orig
+        sources.orig_string
       end
 
       def range?

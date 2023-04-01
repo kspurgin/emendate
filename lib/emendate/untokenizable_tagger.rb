@@ -17,7 +17,8 @@ module Emendate
     def call
       return Success(tokens) unless untokenizable?
 
-      result = Emendate::SegmentSets::MixedSet.new
+      result = tokens.class.new.copy(tokens)
+      result.clear
       result << Emendate::DateTypes::Untokenizable.new(
         children: tokens.segments
       )

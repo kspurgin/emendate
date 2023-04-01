@@ -19,10 +19,10 @@ module Emendate
         @dates = pm.tokens.select{ |t| t.date_type? }
           .map do |t|
             Emendate::ParsedDate.new(
-              date: t,
-              certainty: pm.tokens.certainty,
-              orig: original_string
-            )
+            date: t,
+            certainty: pm.tokens.certainty,
+            orig: original_string
+          )
           end
       end
     end

@@ -144,7 +144,10 @@ module Emendate
     end
 
     def add_error?
-      no_error_states = %i[known_unknown_tagged_failure]
+      no_error_states = %i[
+                           known_unknown_tagged_failure
+                           untokenizable_tagged_failure
+                          ]
       true unless no_error_states.any?{ |nes| state.to_s.start_with?(nes.to_s) }
     end
 
@@ -158,7 +161,13 @@ module Emendate
         end,
         ->(failure) do
           @history["#{state}_failure".to_sym] = nil
-          errors << failure if add_error?
+          if add_error?
+            errors << failure
+          else
+            @tokens = failure if failure.kind_of?(
+              Emendate::SegmentSets::SegmentSet
+            )
+          end
           add_warnings(failure.warnings) if failure.respond_to?(:warnings)
           Failure(self)
         end

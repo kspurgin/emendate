@@ -27,7 +27,6 @@ RSpec.describe Emendate::UntokenizableTagger do
         expect(res.types).to eq([:untokenizable_date_type])
         warnings = ["Untokenizable sequences: sometime; in"]
         expect(res.warnings).to eq(warnings)
-        expect(res.lexeme).to eq(string.downcase)
       end
     end
   end

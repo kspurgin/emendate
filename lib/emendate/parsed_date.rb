@@ -52,11 +52,10 @@ module Emendate
     private
 
     def get_original_string(datetype, orig)
-      case datetype.type
-      when :knownunknown_date_type
-        datetype.lexeme
+      if datetype.respond_to?(:orig)
+        datetype.orig
       else
-        orig[datetype.location.col..datetype.location.length+1]
+        orig
       end
     end
 

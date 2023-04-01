@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Emendate
+  # Returns a single {Emendate::DateTypes::Unprocessable} if date string
+  #   matches a known unsupported pattern
   class UnprocessableTagger
     include Dry::Monads[:result]
 
@@ -24,17 +26,16 @@ module Emendate
 
     def initialize(tokens)
       @tokens = tokens
-      @str = tokens.segments
-        .map(&:lexeme)
-        .join
+      @str = tokens.norm
     end
 
     def call
       return(Success(tokens)) unless str.match?(Re)
 
-      result = Emendate::SegmentSets::MixedSet.new
+      result = tokens.class.new.copy(tokens)
+      result.clear
       result << Emendate::DateTypes::Unprocessable.new(
-        children: tokens.segments
+        sources: tokens
       )
       result.warnings << 'Unprocessable string'
       Failure(result)

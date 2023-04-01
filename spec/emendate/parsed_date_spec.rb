@@ -29,6 +29,18 @@ RSpec.describe Emendate::ParsedDate do
     end
   end
 
+  describe '#original_string' do
+    let(:result){ parsed.original_string }
+
+    context 'with `mid 1800s to 2/23/1921`' do
+      let(:str){ 'mid 1800s to 2/23/1921' }
+
+      it 'returns expected' do
+        expect(result).to eq(str)
+      end
+    end
+  end
+
   describe '#to_h' do
     let(:result){ parsed.to_h }
     context 'with 2/23/2021' do
