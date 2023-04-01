@@ -82,7 +82,7 @@ For more details on the returned result, see https://github.com/kspurgin/emendat
 
 == Passing in options
 
-See https://github.com/kspurgin/emendate/blob/main/docs/options.adoc[Emendate options] for details on the available options and what they do. The following is just to illustrate the use of options and their effect. 
+See https://github.com/kspurgin/emendate/blob/main/docs/options.adoc[Emendate options] for details on the available options and what they do. The following is just to illustrate the use of options and their effect.
 
 .Using default settings
 [source]
@@ -182,6 +182,8 @@ This script assumes:
 - there are no headers (if there is a header, it'll just try to parse it as a date, which will show up with an Emendate error in the report, but you can just ignore that row)
 
 == Working with `ProcessingManager` for development/debugging
+
+WARNING: Out of date/needs updating as of 2023-03-31
 
 The `Emendate.process` command returns a the ProcessingManager object, which represents the date at every stage of transformation, including the final result. It is big and difficult to visually parse all at once, so assign it to a variable when you call it:
 

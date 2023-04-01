@@ -32,6 +32,11 @@ Or install it yourself as:
 
 `$ gem install emendate`
 
+== Documentation
+Reference documentation for using and understanding the application: https://github.com/kspurgin/emendate/tree/main/docs
+
+Code/API documentation: coming soon
+
 == Basic use
 
 You can play with Emendate after installation by doing the following (assuming you cloned the repo into a folder called `emendate`):
@@ -79,7 +84,7 @@ Emendate.parse('mid 1990s').to_h
     :inclusive_range=>true,
     :certainty=>[]}],
  :errors=>[],
- :warnings=>["Interpreting pluralized year as decade"]} 
+ :warnings=>["Interpreting pluralized year as decade"]}
 ----
 
 Or, the following to return JSON:
@@ -180,9 +185,3 @@ I also have looked into the following libraries, none of which seemed to cover t
 
 - Does not attempt to deal with any unit of time more specific than day. If given a value such as 1985-04-12T23:20:30Z, it will extract 1985-04-12.
 - Only a subset of the test cases (those tagged `:ba`) will work in the initial iteration of this tool.
-
-
-
-
-
-

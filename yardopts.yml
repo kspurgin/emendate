@@ -1,0 +1,8 @@
+-o doc
+--readme README.md
+--title 'Emendate Documentation'
+--charset utf-8
+--markup markdown
+--markup-provider redcarpet
+-
+LICENSE.txt
