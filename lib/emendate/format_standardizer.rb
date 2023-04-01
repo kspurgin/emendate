@@ -60,6 +60,8 @@ module Emendate
         %i[open_start]
       when /.*double_dot$/
         %i[open_end]
+      when /.*(?:range_indicator|hyphen) unknown_date$/
+        %i[open_end]
       when /.*slash.*/
         %i[replace_slash_with_hyphen]
       when /.*era.*/
@@ -279,12 +281,13 @@ module Emendate
     end
 
     def open_end
-      doubledot = result.when_type(:double_dot)[-1]
+      lasttoken = result[-1]
       openend = Emendate::DateTypes::OpenRangeDate.new(
         use_date: Emendate.options.open_unknown_end_date,
-        usage: :end
+        usage: :end,
+        children: [lasttoken]
       )
-      replace_x_with_new(x: doubledot, new: openend)
+      replace_x_with_new(x: lasttoken, new: openend)
     end
 
     def replace_slash_with_hyphen

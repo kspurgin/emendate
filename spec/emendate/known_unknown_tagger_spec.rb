@@ -62,5 +62,16 @@ RSpec.describe Emendate::KnownUnknownTagger do
         expect(failure[0].lexeme).to eq('unknown')
       end
     end
+
+    context 'with `1924-?`' do
+      let(:string){ '1924-?' }
+
+      it 'tags as expected' do
+        success = result.value!
+        expect(success.types).to eq(
+          %i[number4 hyphen unknown_date]
+        )
+      end
+    end
   end
 end

@@ -12,23 +12,39 @@ module Emendate
 
     def initialize(tokens)
       @tokens = tokens
+      @result = tokens.class.new.copy(tokens)
     end
 
     def call
-      return Success(tokens) unless known_unknown?
+      if known_unknown?
+        return_unknown_date_type
+      elsif end_of_range_unknown?
+        replace_question_with_unknown
+      else
+        return Success(tokens)
+      end
+    end
 
-      result = Emendate::SegmentSets::MixedSet.new(
-        string: tokens.orig_string
-      )
+    private
+
+    attr_reader :tokens, :result
+
+    def known_unknown?
+      tokens.types == [:unknown_date]
+    end
+
+    def end_of_range_unknown?
+      tokens.type_string
+        .match?(/(?:range_indicator|hyphen) question$/)
+    end
+
+    def return_unknown_date_type
+      result.clear
       result << Emendate::DateTypes::KnownUnknown.new(
         lexeme: known_unknown_date_value
       )
       Failure(result)
     end
-
-    private
-
-    attr_reader :tokens
 
     def known_unknown_date_value
       return tokens.orig_string if Emendate.options.unknown_date_output == :orig
@@ -36,8 +52,13 @@ module Emendate
       Emendate.options.unknown_date_output_string
     end
 
-    def known_unknown?
-      tokens.types == [:unknown_date]
+    def replace_question_with_unknown
+      question = result.pop
+      result << Emendate::DerivedToken.new(
+        type: :unknown_date,
+        sources: [question]
+      )
+      return Success(result)
     end
   end
 end
