@@ -107,10 +107,14 @@
 "1985-04-12T23:20:30Z","####-##-##t##:##:##z","edtf;edtf0;time",,,"0",,,"1985-04-12","1985-04-12",,"1985-04-12T23:20:30Z",,,,
 "1985-04-12T23:20:30���:30","####-##-##t##:##:####:##","edtf;edtf0;time",,,"0",,,"1985-04-12","1985-04-12",,"1985-04-12T23:20:30���:30",,,,
 "1985-04-XX","####-##-xx","edtf;edtf1;uncertainty_digits",,,"0",,,"1985-04-01","1985-04-30",,"1985-04-XX",,,,
-"1985-04/","####-##/","after_before;edtf;edtf1;unknown_end",,,"0",,,"1985-04-01","2999-12-31",,"1985-04/",,,,
-"1985-04/..","####-##/..","after_before;edtf;edtf1;open_end",,,"0",,,"1985-04-01","2999-12-31",,"1985-04/..",,,,
-"1985/","####/","after_before;edtf;edtf1;unknown_end",,,"0",,,"1985-01-01","2999-12-31",,"1985/",,,,
-"1985/..","####/..","after_before;edtf;edtf1;open_end",,,"0",,,"1985-01-01","2999-12-31",,"1985/..",,,,
+"1985-04/","####-##/","after_before;edtf;edtf1;unknown_end",,,"0","1985","2999","1985-04-01","2999-12-31",,"1985-04/",,,,
+"1985-04/..","####-##/..","after_before;edtf;edtf1;open_end",,,"0","1985","2999","1985-04-01","2999-12-31",,"1985-04/..",,,,
+"1985/","####/","after_before;edtf;edtf1;unknown_end",,,"0","1985","2999","1985-01-01","2999-12-31",,"1985/",,,,
+"1985/..","####/..","after_before;edtf;edtf1;open_end",,,"0","1985","2999","1985-01-01","2999-12-31",,"1985/..",,,,
+"1985 to unknown","#### to unknown","after_before;unknown_end",,,"0","1985","2999","1985-01-01","2999-12-31",,"1985 to unknown",,,,"1985/"
+"1985-?","####-?","after_before;unknown_end","mmm",,"0","1985","2999","1985-01-01","2999-12-31",,"1985-?",,,,"1985/"
+"1985 to","#### to","after_before;open_end",,,"0","1985","2999","1985-01-01","2999-12-31",,"1985 to",,,,"1985/.."
+"1985-","####-","after_before;open_end",,,"0","1985","2999","1985-01-01","2999-12-31",,"1985-",,,,"1985/.."
 "1990s","####s","approximate;decades","ba","pluralized_date_interpretation: :broad","0","1990","1999","1990-01-01","1999-12-31",,"1990s",,"Interpreting pluralized year as decade","1990 - 1999 (exact year unspecified)","199X"
 "1990s","####s","approximate;decades","ba","pluralized_date_interpretation: :decade","0","1990","1999","1990-01-01","1999-12-31",,,,"Interpreting pluralized year as decade","1990 - 1999 (exact year unspecified)","199X"
 "1997 & 1999","#### & ####","alternate_dates",,,"0",,,"1997-01-01","1997-12-31",,"1997 & 1999",,,,
@@ -274,5 +278,5 @@
 "Y3388E2S3","y####e#s#","currently_unparseable;edtf;edtf2;exponential_year;letter_prefixed_year;significant_digits",,,"0",,,"nilValue","nilValue",,"Y3388E2S3",,,,
 "2002 B.C.","#### ERA","bce;era;four_digit_year;year_granularity",,,"0","-2001","-2001","-2001-01-01","-2001-12-31",,"2002 B.C.",,,,
 "1974-present","####-present","present","mmm",,"0","1974","DateTime.now.year","1974-01-01","DateTime.now.iso8601[0..9]",,"1974-present",,,,
-"mid to late 1930s","mid to late ####s","partial_range;decade","mmm",,"0","1934","1939","1934-01-01","1939-12-31",,"mid to late 1930s",,,,
 "1920 ca","#### ca","approximate","mmm",,"0","1920","1920","1920-01-01","1920-12-31","approximate","1920 ca",,,"1920 (approximate)","1920~"
+"mid to late 1930s","mid to late ####s","partial_range;decade","mmm",,"0","1934","1939","1934-01-01","1939-12-31",,"mid to late 1930s",,,,

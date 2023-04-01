@@ -206,6 +206,33 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
+    context 'with 1985/' do
+      let(:string){ '1985/' }
+
+      it 'appends open end date type' do
+        expect(result).to eq(%i[number4 range_indicator rangedateopen_date_type])
+      end
+
+      context 'with ending_slash: :unknown' do
+        before(:context) do
+          Emendate.config.options.ending_slash = :unknown
+        end
+        after(:context){ Emendate.reset_config }
+
+        it 'appends unknown end date type' do
+          expect(result).to eq(%i[number4 range_indicator rangedateunknown_date_type])
+        end
+      end
+    end
+
+    context 'with 1985-' do
+      let(:string){ '1985-' }
+
+      it 'appends open end date type' do
+        expect(result).to eq(%i[number4 range_indicator rangedateopen_date_type])
+      end
+    end
+
     context 'with 165X' do
       let(:string){ '165X' }
 
