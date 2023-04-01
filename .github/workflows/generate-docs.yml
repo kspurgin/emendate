@@ -18,6 +18,8 @@ jobs:
         run: gem install yard --no-document
       - name: Install redcarpet
         run: gem install redcarpet
+      - name: Install asciidoctor
+        run: gem install asciidoctor
       - name: Build YARD Ruby Documentation
         run: yardoc
       - name: Deploy
