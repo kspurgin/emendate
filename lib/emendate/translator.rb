@@ -8,6 +8,7 @@ module Emendate
   class Translator
     attr_reader :dialect, :processed, :date_type, :tokens
 
+    # @param processed [Emendate::ProcessingManager]
     def initialize(processed)
       @processed = processed
       @dialect = Emendate.options.target_dialect
