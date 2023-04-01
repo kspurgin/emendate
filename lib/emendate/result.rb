@@ -5,7 +5,14 @@ require 'json'
 module Emendate
   class Result
 
-    attr_reader :original_string, :errors, :warnings, :dates
+    # @return [String] the original parsed/processed string
+    attr_reader :original_string
+    # @return [Array]
+    attr_reader :errors
+    # @return [Array]
+    attr_reader :warnings
+    # @return [Array<Emendate::ParsedDate>]
+    attr_reader :dates
 
     # @param pm [Emendate::ProcessingManager]
     def initialize(pm)
