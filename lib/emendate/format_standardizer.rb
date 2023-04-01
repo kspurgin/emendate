@@ -272,18 +272,24 @@ module Emendate
     end
 
     def open_start
-      doubledot = result.when_type(:double_dot)[0]
-      openstart = Emendate::DateTypes::OpenRangeDate.new(
-        use_date: Emendate.options.open_unknown_start_date,
+      firsttoken = result[0]
+      openstart = Emendate::DateTypes::RangeDateOpen.new(
         usage: :start
       )
-      replace_x_with_new(x: doubledot, new: openstart)
+      replace_x_with_new(x: firsttoken, new: openstart)
     end
 
     def open_end
+      open_or_unknown_end(Emendate::DateTypes::RangeDateOpen)
+    end
+
+    def unknown_end
+      open_or_unknown_end(Emendate::DateTypes::RangeDateUnknown)
+    end
+
+    def open_or_unknown_end(klass)
       lasttoken = result[-1]
-      openend = Emendate::DateTypes::OpenRangeDate.new(
-        use_date: Emendate.options.open_unknown_end_date,
+      openend = klass.new(
         usage: :end,
         children: [lasttoken]
       )
