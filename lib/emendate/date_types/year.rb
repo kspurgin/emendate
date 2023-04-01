@@ -3,20 +3,33 @@
 module Emendate
   module DateTypes
     class Year < Emendate::DateTypes::DateType
-      attr_reader :literal
+      # @return [Integer]
+      attr_reader :orig_literal
+      # @return [:ce, :bce]
+      attr_reader :era
 
       def initialize(**opts)
         super
-        @literal = opts[:literal].is_a?(Integer) ? opts[:literal] : opts[:literal].to_i
+        @orig_literal = opts[:literal].to_i
+        @era = :ce
+      end
+
+      def bce
+        @era = :bce
       end
 
       def lexeme
-        literal.to_s
+        year_string
+      end
+
+      def literal
+        era == :bce ? (orig_literal - 1) * -1 : orig_literal
       end
 
       def range?
-        return false if range_switch == 'before' && Emendate.options.before_date_treatment == :point
-        
+        return false if range_switch == 'before' &&
+          Emendate.options.before_date_treatment == :point
+
         !(partial_indicator.nil? && range_switch.nil?)
       end
 
@@ -25,7 +38,7 @@ module Emendate
       end
 
       def earliest
-        return earliest_by_partial if range_switch.nil?
+        return earliest_by_partial unless range_switch
 
         case range_switch
         when 'before'
@@ -36,11 +49,16 @@ module Emendate
       end
 
       def earliest_at_granularity
-        earliest.year.to_s
+        return year_string unless range_switch
+
+        case range_switch
+        when 'before'
+          year_string(earliest.year)
+        end
       end
 
       def latest
-        return latest_by_partial if range_switch.nil?
+        return latest_by_partial unless range_switch
 
         case range_switch
         when 'before'
@@ -51,11 +69,27 @@ module Emendate
       end
 
       def latest_at_granularity
-        latest.year.to_s
+        return year_string unless range_switch
+
+        case range_switch
+        when 'before'
+          year_string(latest.year)
+        end
       end
 
       private
-      
+
+      def year_string(val = literal)
+        if val >= 0
+          val.to_s.rjust(4, '0')
+        else
+          base = val.to_s
+            .delete_prefix('-')
+            .rjust(4, '0')
+          "-#{base}"
+        end
+      end
+
       def earliest_by_partial
         case partial_indicator
         when nil

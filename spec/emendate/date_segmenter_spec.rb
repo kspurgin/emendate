@@ -166,6 +166,15 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
+    context 'with 231 BCE' do
+      let(:str){ '231 BCE' }
+
+      it 'returns ...' do
+        expect(types).to eq(%i[year_date_type])
+        expect(result[0].era).to eq(:bce)
+      end
+    end
+
     # context 'with 2 December 2020, 2020/02/15' do
     #   it 'returns yearmonthday_date_type comma yearmonthday_datetype' do
     #     s = segment('2 December 2020, 2020/02/15')

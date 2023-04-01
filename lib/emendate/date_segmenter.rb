@@ -32,12 +32,35 @@ module Emendate
       until working.empty?
         apply_switch_modifiers
       end
+
+      if bce?
+        apply_bce
+      end
+
       Success(result)
     end
 
     private
 
     attr_reader :working, :result
+
+    def bce?
+      result.type_string.match?(/(?:year_date_type bce|bce year_date_type)/)
+    end
+
+    def apply_bce
+      if result.type_string.match?(/year_date_type bce/)
+        segments = result.extract(:year_date_type, :bce)
+        year = segments[0]
+        bce = segments[1]
+      else
+        segments = result.extract(:bce, :year_date_type)
+        year = segments[1]
+        bce = segments[0]
+      end
+      year.bce
+      result.delete(bce)
+    end
 
     def recursive_parse
       return if working.empty?
