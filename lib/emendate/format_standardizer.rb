@@ -104,18 +104,18 @@ module Emendate
       case result.types
       when %i[number4 comma month]
         [
-           :remove_post_year_comma,
-           [:move_x_to_end, ->{ result[0] }]
+          :remove_post_year_comma,
+          [:move_x_to_end, ->{ result[0] }]
         ]
       when %i[number4 hyphen month]
         [
-           :remove_post_year_hyphen,
-           [:move_x_to_end, ->{ result[0] }]
+          :remove_post_year_hyphen,
+          [:move_x_to_end, ->{ result[0] }]
         ]
       when %i[number4 comma season]
         [
-           :remove_post_year_comma,
-           [:move_x_to_end, ->{ result[0] }]
+          :remove_post_year_comma,
+          [:move_x_to_end, ->{ result[0] }]
         ]
       when %i[number4 comma month number1or2]
         %i[
