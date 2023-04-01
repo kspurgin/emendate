@@ -13,6 +13,14 @@ RSpec.describe Emendate::FormatStandardizer do
         .types
     end
 
+    context 'with 1984-?' do
+      let(:string){ '1984-?' }
+
+      it 'replaces question with openrangedate_date_type' do
+        expect(result).to eq(%i[number4 hyphen openrangedate_date_type])
+      end
+    end
+
     context 'with mid to late 1980s' do
       let(:string){ 'mid to late 1980s' }
 
