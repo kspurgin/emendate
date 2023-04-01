@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.9.28
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "README";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Lexer, parser, and manipulator for messy date metadata values</p>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle" class="title">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_installation">Installation</a></li>
+<li><a href="#_documentation">Documentation</a></li>
+<li><a href="#_basic_use">Basic use</a></li>
+<li><a href="#_purpose">Purpose</a>
+<ul class="sectlevel2">
+<li><a href="#_my_use_cases">My use cases</a></li>
+<li><a href="#_relationship_withcomparison_to_other_tools">Relationship with/comparison to other tools</a>
+<ul class="sectlevel3">
+<li><a href="#_chronic">Chronic</a></li>
+<li><a href="#_timetwister">Timetwister</a></li>
+<li><a href="#_others">Others</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_limitations">Limitations</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation">Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add this line to your application&#8217;s Gemfile:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>emendate</span><span class='tstring_end'>&#39;</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And then execute:</p>
+</div>
+<div class="paragraph">
+<p><code>$ bundle install</code></p>
+</div>
+<div class="paragraph">
+<p>Or install it yourself as:</p>
+</div>
+<div class="paragraph">
+<p><code>$ gem install emendate</code></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_documentation">Documentation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Reference documentation for using and understanding the application: <a href="https://github.com/kspurgin/emendate/tree/main/docs" class="bare">https://github.com/kspurgin/emendate/tree/main/docs</a></p>
+</div>
+<div class="paragraph">
+<p>Code/API documentation: coming soon</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_use">Basic use</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can play with Emendate after installation by doing the following (assuming you cloned the repo into a folder called <code>emendate</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_cd'>cd</span> <span class='id identifier rubyid_emendate'>emendate</span>
+<span class='id identifier rubyid_bin'>bin</span><span class='op'>/</span><span class='id identifier rubyid_console'>console</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The main command is:</p>
+</div>
+<div class="paragraph">
+<p><code>Emendate.parse('early 19th c.')</code></p>
+</div>
+<div class="paragraph">
+<p>The parsed result is an <code>Emendate::Result</code> Ruby object:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="code ruby"><code class="ruby">#&lt;Emendate::Result:0x00007fbbdcbd5bd8
+ @dates=
+  [#&lt;Emendate::ParsedDate:0x00007fbbdcbd5e58
+    @certainty=[],
+    @date_end=nil,
+    @date_end_full=&quot;1834-12-31&quot;,
+    @date_start=nil,
+    @date_start_full=&quot;1801-01-01&quot;,
+    @inclusive_range=true,
+    @index_dates=[],
+    @original_string=nil&gt;],
+ @errors=[],
+ @original_string=&quot;early 19th c.&quot;,
+ @warnings=[]&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You may pass in the following to return a Ruby Hash:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="code ruby"><code class="ruby">Emendate.parse(&#39;mid 1990s&#39;).to_h
+=&gt; {:original_string=&gt;&quot;mid 1990s&quot;,
+ :dates=&gt;
+  [{:original_string=&gt;nil,
+    :index_dates=&gt;[],
+    :date_start=&gt;nil,
+    :date_end=&gt;nil,
+    :date_start_full=&gt;&quot;1994-01-01&quot;,
+    :date_end_full=&gt;&quot;1996-12-31&quot;,
+    :inclusive_range=&gt;true,
+    :certainty=&gt;[]}],
+ :errors=&gt;[],
+ :warnings=&gt;[&quot;Interpreting pluralized year as decade&quot;]}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or, the following to return JSON:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="code ruby"><code class="ruby">Emendate.parse(&#39;mid 1990s&#39;).to_json
+=&gt; &quot;{\&quot;original_string\&quot;:\&quot;mid 1990s\&quot;,\&quot;dates\&quot;:[{\&quot;original_string\&quot;:null,\&quot;index_dates\&quot;:[],\&quot;date_start\&quot;:null,\&quot;date_end\&quot;:null,\&quot;date_start_full\&quot;:\&quot;1994-01-01\&quot;,\&quot;date_end_full\&quot;:\&quot;1996-12-31\&quot;,\&quot;inclusive_range\&quot;:true,\&quot;certainty\&quot;:[]}],\&quot;errors\&quot;:[],\&quot;warnings\&quot;:[\&quot;Interpreting pluralized year as decade\&quot;]}&quot;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For more details on the returned result, see <a href="https://github.com/kspurgin/emendate/blob/main/docs/output.adoc">docs/output.adoc</a>.</p>
+</div>
+<div class="paragraph">
+<p>For extended use details see <a href="https://github.com/kspurgin/emendate/blob/main/docs/use.adoc">docs/use.adoc</a>. This includes information on:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>passing in date parsing options</p>
+</li>
+<li>
+<p>working with the example set to get an idea of what functionality is currently present</p>
+</li>
+<li>
+<p>using a utility script to bulk run date values in a CSV through Emendate, getting back a CSV report of Emendate&#8217;s output</p>
+</li>
+<li>
+<p>getting a more detailed result back to dig into how/why you are getting a given result (probably only useful for debugging/development)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_purpose">Purpose</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Legacy metadata contains date data encoded using various standard and semi-standard date-recording conventions, or without any consistent conventions.</p>
+</div>
+<div class="paragraph">
+<p>Emendate&#8217;s goal is to parse such date strings and return structured data objects that can be used by other applications to supply consistently formatted date values in metadata or indexes.</p>
+</div>
+<div class="paragraph">
+<p>The test set of date formats Emendate intends to support can be viewed <a href="https://github.com/kspurgin/emendate/blob/main/spec/support/examples.csv">here</a>. Note that formats with an <code>unparseable</code> tag are not expected to be supported in any realistic timeframe.</p>
+</div>
+<div class="sect2">
+<h3 id="_my_use_cases">My use cases</h3>
+<div class="paragraph">
+<p>I am responsible for migrating client data to new systems. The target systems vary in the way date data must be prepared:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Islandora 7 wants dates encoded in MODS XML</p>
+</li>
+<li>
+<p>Islandora 8 wants EDTF strings</p>
+</li>
+<li>
+<p>CollectionSpace wants XML like:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="code ruby"><code class="ruby">&lt;fieldCollectionDateGroup&gt;
+  &lt;scalarValuesComputed&gt;true&lt;/scalarValuesComputed&gt;
+  &lt;dateEarliestSingleCertainty/&gt;
+  &lt;dateEarliestSingleQualifierUnit/&gt;
+  &lt;dateDisplayDate&gt;8-11-09&lt;/dateDisplayDate&gt;
+  &lt;dateLatestScalarValue&gt;2009-08-12T00:00:00.000Z&lt;/dateLatestScalarValue&gt;
+  &lt;dateEarliestSingleQualifierValue/&gt;
+  &lt;datePeriod/&gt;
+  &lt;dateLatestEra/&gt;
+  &lt;dateEarliestSingleDay&gt;11&lt;/dateEarliestSingleDay&gt;
+  &lt;dateEarliestSingleQualifier/&gt;
+  &lt;dateEarliestSingleYear&gt;2009&lt;/dateEarliestSingleYear&gt;
+  &lt;dateLatestCertainty/&gt;
+  &lt;dateAssociation/&gt;
+  &lt;dateLatestDay/&gt;
+  &lt;dateEarliestSingleMonth&gt;8&lt;/dateEarliestSingleMonth&gt;
+  &lt;dateEarliestSingleEra&gt;urn:cspace:core.collectionspace.org:vocabularies:name(dateera):item:name(ce)&#39;CE&#39;&lt;/dateEarliestSingleEra&gt;
+  &lt;dateLatestYear/&gt;
+  &lt;dateLatestQualifierUnit/&gt;
+  &lt;dateNote/&gt;
+  &lt;dateLatestQualifierValue/&gt;
+  &lt;dateLatestQualifier/&gt;
+  &lt;dateEarliestScalarValue&gt;2009-08-11T00:00:00.000Z&lt;/dateEarliestScalarValue&gt;
+  &lt;dateLatestMonth/&gt;
+&lt;/fieldCollectionDateGroup&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>I kept running into the same patterns of messy date metadata in the data to be migrated, and found myself re-writing (or seeing that I would need to re-write) the same logic in the migration tooling for each tool I support. So I decided to encapsulate this in Emendate.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_relationship_withcomparison_to_other_tools">Relationship with/comparison to other tools</h3>
+<div class="sect3">
+<h4 id="_chronic">Chronic</h4>
+<div class="paragraph">
+<p>I was initially using <a href="https://github.com/mojombo/chronic">Chronic</a> in preparation of some date metadata, but it is not at all oriented to the kind of date formats typically found in cutural heritage institution data. Further, it returns just a Ruby <code>Time</code> object, which does not support the complex structured information I needed such as: certainty (approximate, uncertain, supplied/inferred date), inclusive ranges/intervals, and dealing with values like "early 19th century" or "before 1672."</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_timetwister">Timetwister</h4>
+<div class="paragraph">
+<p>When I discussed the issues I was facing with my colleague <a href="https://github.com/lorawoodford">Lora Woodford</a>, she pointed me to <a href="https://github.com/alexduryee/timetwister">Timetwister</a>, developed by New York Public Library. This looked very promising, as it has been developed specifically for cultural heritage institution date data, and it returns a structured data object with the types of data we typically need to represent complex date data in our systems.</p>
+</div>
+<div class="paragraph">
+<p>At that time, I had gathered 99 test examples of different date formats from client data. (At the time, the set did not include EDTF date patterns or some of the date conventions used in MARC records.</p>
+</div>
+<div class="paragraph">
+<p>When I ran my examples through Timetwister, 45 of the 99 examples weren&#8217;t handled as expected (or at all).</p>
+</div>
+<div class="paragraph">
+<p>At this point, I began to examine the Timetwister codebase, to see if I could contribute back to make it work for a wider range of date formats.</p>
+</div>
+<div class="paragraph">
+<p>I was discouraged from this approach by finding that much of the parsing is handled by long, complex regular expressions. I immediately saw how some of the stuff in my example set couldn&#8217;t reasonably be handled that way. I saw there is <a href="https://github.com/alexduryee/timetwister/issues/9">an issue from 2016</a> to add EDTF support, which was still open as of 2021-02-12. There are many reasons why this could still be open, but if you have built up your regexp matching based on some set of initial assumptions, something like EDTF or some of my examples could make it nearly impossible to include them without adding byzantine logical loops and more complexity to already complex and opaque regexes ( really hard to maintain and debug over time), or starting from scratch.</p>
+</div>
+<div class="paragraph">
+<p>Though the regex approach is common in tools trying to do things like this (I examined several), most of them seem to be attempting to handle a somewhat more standard universe of things than Emendate is.</p>
+</div>
+<div class="paragraph">
+<p>Faced with trying to contribute back to Timetwister and possibly ending up rewriting much of it, I opted to continue work on Emendate.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_others">Others</h4>
+<div class="paragraph">
+<p>I also have looked into the following libraries, none of which seemed to cover the entire problem I am trying to solve with Emendate, but all of which have informed the development of Emendate and helped me understand this problem space more fully.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/sul-dlss/parse_date">parse_date from Stanford Digital Library Systems and Services</a></p>
+</li>
+<li>
+<p><a href="https://github.com/inukshuk/edtf-ruby">edtf-ruby</a></p>
+</li>
+<li>
+<p><a href="https://github.com/duke-libraries/edtf-humanize">edtf-humanize from Duke University Libraries</a></p>
+</li>
+<li>
+<p><a href="https://github.com/collectionspace/services/tree/master/services/structureddate/structureddate/src">the structuredDate code and tests for CollectionSpace</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_limitations">Limitations</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Does not attempt to deal with any unit of time more specific than day. If given a value such as 1985-04-12T23:20:30Z, it will extract 1985-04-12.</p>
+</li>
+<li>
+<p>Only a subset of the test cases (those tagged <code>:ba</code>) will work in the initial iteration of this tool.</p>
+</li>
+</ul>
+</div>
+</div>
+</div></div></div>
+
+      <div id="footer">
+  Generated on Sat Apr  1 19:17:06 2023 by
+  <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.28 (ruby-2.7.8).
+</div>
+
+    </div>
+  </body>
+</html>
