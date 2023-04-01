@@ -12,16 +12,19 @@ module Emendate
     #   particular date
     class DateType
       attr_reader :certainty
-      attr_accessor :partial_indicator, :range_switch, :source_tokens
+      attr_accessor :partial_indicator, :range_switch, :sources
 
       def initialize(**opts)
-        @source_tokens = if opts[:children].nil?
-                           Emendate::SegmentSets::MixedSet.new
-                         else
-                           Emendate::SegmentSets::MixedSet.new(
-                             segments: opts[:children]
-                           )
-                         end
+        srcs = opts[:sources]
+        @sources = if srcs.nil?
+                     Emendate::SegmentSets::MixedSet.new
+                   elsif srcs.is_a?(Emendate::SegmentSets::SegmentSet)
+                     srcs.class.new.copy(srcs)
+                   else
+                     Emendate::SegmentSets::MixedSet.new(
+                       segments: srcs
+                     )
+                   end
         @partial_indicator = opts[:partial_indicator]
         @range_switch = opts[:range_switch]
         @certainty = opts[:certainty].nil? ? [] : opts[:certainty]
@@ -63,11 +66,11 @@ module Emendate
       end
 
       def location
-        @source_tokens.location
+        @sources.location
       end
 
       def prepend_source_token(token)
-        @source_tokens.unshift(token)
+        @sources.unshift(token)
         self
       end
 
