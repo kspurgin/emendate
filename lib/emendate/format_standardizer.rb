@@ -61,7 +61,7 @@ module Emendate
       when /.*double_dot$/
         %i[open_end]
       when /.*(?:range_indicator|hyphen) unknown_date$/
-        %i[open_end]
+        %i[unknown_end]
       when /.*slash.*/
         %i[replace_slash_with_hyphen]
       when /.*era.*/
