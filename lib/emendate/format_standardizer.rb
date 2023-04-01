@@ -54,6 +54,35 @@ module Emendate
       []
     end
 
+    def full_match_standardizers
+      case result.types
+      when %i[number4 comma month]
+        [
+          :remove_post_year_comma,
+          [:move_x_to_end, ->{ result[0] }]
+        ]
+      when %i[number4 hyphen month]
+        [
+          :remove_post_year_hyphen,
+          [:move_x_to_end, ->{ result[0] }]
+        ]
+      when %i[number4 comma season]
+        [
+          :remove_post_year_comma,
+          [:move_x_to_end, ->{ result[0] }]
+        ]
+      when %i[number4 comma month number1or2]
+        %i[
+           remove_post_year_comma
+           move_year_to_end_of_segment
+          ]
+      when %i[partial range_indicator partial number1or2 century]
+        %i[copy_number_century_after_first_partial]
+      when %i[partial range_indicator partial number4 letter_s]
+        %i[copy_number_s_after_first_partial]
+      end
+    end
+
     def partial_match_standardizers
       case result.type_string
       when /^double_dot.*/
@@ -97,35 +126,6 @@ module Emendate
       when %i[number4 month month]
         %i[move_year_after_first_month
            add_year_after_second_month]
-      end
-    end
-
-    def full_match_standardizers
-      case result.types
-      when %i[number4 comma month]
-        [
-          :remove_post_year_comma,
-          [:move_x_to_end, ->{ result[0] }]
-        ]
-      when %i[number4 hyphen month]
-        [
-          :remove_post_year_hyphen,
-          [:move_x_to_end, ->{ result[0] }]
-        ]
-      when %i[number4 comma season]
-        [
-          :remove_post_year_comma,
-          [:move_x_to_end, ->{ result[0] }]
-        ]
-      when %i[number4 comma month number1or2]
-        %i[
-           remove_post_year_comma
-           move_year_to_end_of_segment
-          ]
-      when %i[partial range_indicator partial number1or2 century]
-        %i[copy_number_century_after_first_partial]
-      when %i[partial range_indicator partial number4 letter_s]
-        %i[copy_number_s_after_first_partial]
       end
     end
 
