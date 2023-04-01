@@ -29,6 +29,10 @@ module Emendate
       false
     end
 
+    def segment?
+      true
+    end
+
     def processed?
       true if date_type? || type == :or || type == :and
     end

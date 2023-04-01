@@ -81,6 +81,11 @@ module Emendate
       when %i[partial range_indicator partial number4 letter_s]
         %i[copy_number_s_after_first_partial]
       end
+
+      # case result.type_string
+      # when /.*slash$/
+      #   %i[handle_ending_slash]
+      # end
     end
 
     def partial_match_standardizers
@@ -89,7 +94,11 @@ module Emendate
         %i[open_start]
       when /.*double_dot$/
         %i[open_end]
-      when /.*(?:range_indicator|hyphen) unknown_date$/
+      when /.*hyphen$/
+        %i[handle_ending_hyphen]
+      when /.*slash$/
+        %i[handle_ending_slash]
+      when /.*(?:range_indicator|hyphen|slash) unknown_date$/
         %i[unknown_end]
       when /.*slash.*/
         %i[replace_slash_with_hyphen]
@@ -182,6 +191,42 @@ module Emendate
         result.insert(ins_pt, c.dup)
         ins_pt += 1
       end
+    end
+
+    # @param indicator [#segment?] to be converted to range indicator type if
+    #   not already that type
+    # @param klass [Constant] target date_type class name
+    def convert_range_indicator_and_append_open_or_unknown_end_date(
+      indicator:, klass:
+    )
+      unless indicator.type == :range_indicator
+        new_ind = Emendate::DerivedToken.new(
+          type: :range_indicator,
+          sources: [indicator]
+        )
+        replace_x_with_new(x: indicator, new: new_ind)
+      end
+      result << klass.new(usage: :end)
+    end
+
+    def handle_ending_hyphen
+        convert_range_indicator_and_append_open_or_unknown_end_date(
+          indicator: result[-1],
+          klass: Emendate::DateTypes::RangeDateOpen
+        )
+    end
+
+    def handle_ending_slash
+      setting = Emendate.config.options.ending_slash
+      klass = if setting == :open
+                Emendate::DateTypes::RangeDateOpen
+              else
+                Emendate::DateTypes::RangeDateUnknown
+              end
+      convert_range_indicator_and_append_open_or_unknown_end_date(
+        indicator: result[-1],
+        klass: klass
+      )
     end
 
     def move_month_to_beginning_of_segment
