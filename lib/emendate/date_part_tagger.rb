@@ -93,8 +93,12 @@ module Emendate
 
     # types = Array with 2 Segment.type symbols
     # category = String that gets prepended to "date_part" to call DatePart building method
-    def collapse_pair(types_to_collapse, target_type)
-      sources = result.extract(*types_to_collapse).segments
+    def collapse_pair(to_collapse, target_type)
+      if to_collapse[0].is_a?(Symbol)
+        sources = result.extract(*to_collapse).segments
+      else
+        sources = to_collapse
+      end
       replace_multi_with_date_part_type(sources: sources, date_part_type: target_type)
     end
 
@@ -121,17 +125,18 @@ module Emendate
     end
 
     def tag_pluralized_year
-
       if Emendate.options.pluralized_date_interpretation == :decade
-        collapse_pair(%i[year letter_s], :decade)
-        result.warnings << 'Interpreting pluralized year as decade'
+        pair = result.extract(:year, :letter_s).segments
+        collapse_pair(pair, :decade)
+        if pair[0].lexeme.end_with?('00')
+          result.warnings << 'Interpreting pluralized year as decade'
+        end
       else
         year, _letter_s = result.extract(%i[year letter_s]).segments
         zeros = year.lexeme.match(/(0+)/)[1]
         case zeros.length
         when 1
           collapse_pair(%i[year letter_s], :decade)
-          result.warnings << 'Interpreting pluralized year as decade'
         when 2
           collapse_pair(%i[year letter_s], :century)
           result.warnings << 'Interpreting pluralized year as century'
@@ -142,8 +147,9 @@ module Emendate
           collapse_pair(%i[year letter_s], :millennium)
           result.warnings << 'Interpreting pluralized year as millennium'
         else
-          # there should be no other variations, as only 4-digit years are tagged as years at this point
-          #  (and 3-digit years that have been padded out to 4 digits to simplify the processing)
+          # there should be no other variations, as only 4-digit years are
+          #   tagged as years at this point (and 3-digit years that have been
+          #   padded out to 4 digits to simplify the processing)
         end
       end
     end
