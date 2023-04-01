@@ -103,6 +103,7 @@ Alternative value:: true
 If set to true, the following will be set:
 
 * `beginning_hyphen: :edtf`
+* `ending_slash: :unknown`
 * `square_bracket_interpretation: :edtf_set`
 * `max_month_number_handling: :edtf_level_2`
 
@@ -119,9 +120,19 @@ Default value:: `:open` ("known to have occurred from 2002 until now, and occurr
 
 Default value is `:open` because this form is frequently used to record the ongoing (still currenting happening, and expected to continue happening) publication of continuing resources.
 
+== ending_slash
+
+What is this?:: How to interpret a slash at the end of a date string (e.g. `2002/`)
+Default value:: `:open` ("known to have occurred from 2002 until now, and occurrence is ongoing"); set to `:unknown` if `edtf: true`
+
+**Alternate values**
+* `:unknown` ("occurrence ended some time after 2002 and now, but exact end date is unknown")
+
+Default value is `:open` because this form is frequently used to record the ongoing (still currenting happening, and expected to continue happening) publication of continuing resources.
+
 == max_output_dates
 
-What is this?:: Some strings will get parsed into multiple dates (`2002, 2004`). By default each individual date found will be returned. Some applications can only handle a single date, so you may want to limit the number of dates included in the output. 
+What is this?:: Some strings will get parsed into multiple dates (`2002, 2004`). By default each individual date found will be returned. Some applications can only handle a single date, so you may want to limit the number of dates included in the output.
 Default value:: `:all` ("known to have occurred from 2002 until now, and occurrence is ongoing")
 Alternate value:: any Integer
 
@@ -206,7 +217,7 @@ If you are using the default option (`:coerce`), also pay attention to the `ambi
 
 == unknown_date_output
 
-What is this?::  When a parsed string is determined to represent a known-to-be unknown date, what string should be output? 
+What is this?::  When a parsed string is determined to represent a known-to-be unknown date, what string should be output?
 Default value:: `:orig`, the original date string will be returned
 Alternate value:: `:custom`, indicates that you are providing a string to be used in outputting all ``KnownUnknownDateType``s
 
@@ -225,5 +236,3 @@ Alternate value:: any String value, which may be useful if you are trying to sta
 ====
 This setting is not used if `unknown_date_output: :orig`
 ====
-
-

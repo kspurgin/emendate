@@ -15,6 +15,7 @@ module Emendate
       optional(:beginning_hyphen).value(:symbol)
       optional(:edtf).value(:bool)
       optional(:ending_hyphen).value(:symbol)
+      optional(:ending_slash).value(:symbol)
       optional(:max_output_dates).value(:integer)
       optional(:max_month_number_handling).value(:symbol)
       optional(:open_unknown_end_date).value(:date)
@@ -78,6 +79,14 @@ module Emendate
       if key?
         allowed = %i[unknown open]
         val = values[:ending_hyphen]
+        key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
+      end
+    end
+
+    rule(:ending_slash) do
+      if key?
+        allowed = %i[open unknown]
+        val = values[:ending_slash]
         key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
       end
     end

@@ -86,6 +86,7 @@ module Emendate
       return unless opthash[:edtf]
 
       opthash[:beginning_hyphen] = :edtf
+      opthash[:ending_slash] = :unknown
       opthash[:square_bracket_interpretation] = :edtf_set
       opthash[:max_month_number_handling] = :edtf_level_2
     end

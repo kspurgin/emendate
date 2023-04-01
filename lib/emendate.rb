@@ -45,6 +45,7 @@ module Emendate
     setting :beginning_hyphen, default: :unknown, reader: true
     setting :edtf, default: false, reader: true
     setting :ending_hyphen, default: :open, reader: true
+    setting :ending_slash, default: :open, reader: true
     setting :max_output_dates, default: :all, reader: true
     setting :max_month_number_handling, default: :months, reader: true
     setting :open_unknown_end_date, default: Date.new(2999, 12, 31), reader: true
