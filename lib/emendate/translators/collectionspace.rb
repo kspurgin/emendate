@@ -25,6 +25,10 @@ module Emendate
         base_value
       end
 
+      def unknown_value
+        base_value.merge({dateEarliestSingleCertainty: 'no date'})
+      end
+
       def computed
         start_date = Date.parse(date.date_start_full)
         end_date = Date.parse(date.date_end_full)

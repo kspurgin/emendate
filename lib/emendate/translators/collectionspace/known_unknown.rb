@@ -9,7 +9,7 @@ module Emendate
         private
 
         def translate_value
-          nil_value
+          unknown_value
         end
       end
     end
