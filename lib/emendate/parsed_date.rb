@@ -10,20 +10,20 @@ module Emendate
       :date_start_full, :date_end_full,
       :inclusive_range, :certainty
 
-    def initialize(datetype, whole_certainty = [], orig)
-      fail(NonDateTypeError) unless datetype.is_a?(Emendate::DateTypes::DateType)
+    # @param date [Emendate::DateTypes::DateType]
+    # @param orig [String]
+    # @param certainty [Array<Symbol>]
+    def initialize(date:, orig:, certainty: [])
+      fail(NonDateTypeError) unless date.is_a?(Emendate::DateTypes::DateType)
 
-      @original_string = get_original_string(datetype, orig)
+      @original_string = get_original_string(date, orig)
       @index_dates = []
       @date_start = nil
       @date_end = nil
-      @date_start_full = datetype.earliest.nil? ? nil : datetype.earliest.iso8601
-      @date_end_full = datetype.latest.nil? ? nil : datetype.latest.iso8601
-      @inclusive_range = datetype.range? ? true : nil
-      @certainty = whole_certainty
-      datetype.certainty.each{ |c| certainty << c }
-      certainty.flatten!
-      certainty.uniq!
+      @date_start_full = date.earliest.nil? ? nil : date.earliest.iso8601
+      @date_end_full = date.latest.nil? ? nil : date.latest.iso8601
+      @inclusive_range = date.range? ? true : nil
+      @certainty = (certainty + date.certainty).flatten.uniq
       self
     end
 
