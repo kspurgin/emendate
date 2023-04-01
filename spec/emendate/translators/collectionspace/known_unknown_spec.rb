@@ -17,7 +17,8 @@ RSpec.describe Emendate::Translators::Collectionspace::KnownUnknown do
     let(:expected) do
       {
         dateDisplayDate: 'unknown',
-        scalarValuesComputed: 'false'
+        scalarValuesComputed: 'false',
+        dateEarliestSingleCertainty: 'no date'
       }
     end
     it 'translates as expected' do
