@@ -16,8 +16,8 @@ RSpec.describe Emendate::FormatStandardizer do
     context 'with 1984-?' do
       let(:string){ '1984-?' }
 
-      it 'replaces question with openrangedate_date_type' do
-        expect(result).to eq(%i[number4 hyphen openrangedate_date_type])
+      it 'replaces question with rangedateopen_date_type' do
+        expect(result).to eq(%i[number4 hyphen rangedateunknown_date_type])
       end
     end
 
@@ -194,7 +194,7 @@ RSpec.describe Emendate::FormatStandardizer do
       let(:string){ '../2021' }
 
       it 'replace double dot with open start date type' do
-        expect(result).to eq(%i[openrangedate_date_type hyphen number4])
+        expect(result).to eq(%i[rangedateopen_date_type hyphen number4])
       end
     end
 
@@ -202,7 +202,7 @@ RSpec.describe Emendate::FormatStandardizer do
       let(:string){ '1985/..' }
 
       it 'replace double dot with open end date type' do
-        expect(result).to eq(%i[number4 hyphen openrangedate_date_type])
+        expect(result).to eq(%i[number4 hyphen rangedateopen_date_type])
       end
     end
 
