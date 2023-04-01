@@ -49,6 +49,8 @@ RSpec.describe Emendate::Options do
       it 'sets other options as expected' do
         call_options
         expect(Emendate.options.beginning_hyphen).to eq(:edtf)
+        expect(Emendate.options.ending_slash).to eq(:unknown)
+        expect(Emendate.options.max_month_number_handling).to eq(:edtf_level_2)
         expect(Emendate.options.square_bracket_interpretation).to eq(:edtf_set)
       end
     end
