@@ -12,7 +12,18 @@ module Emendate
 
         def translate_value
           @base = computed
-          qualify
+          qualified = qualify
+
+          if processed.tokens[0].era == :bce
+            qualified.merge(
+              {
+                dateEarliestSingleEra: 'BCE',
+                dateLatestEra: 'BCE'
+              }
+            )
+          else
+            qualified
+          end
         end
       end
     end
