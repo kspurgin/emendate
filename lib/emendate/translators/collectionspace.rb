@@ -6,6 +6,10 @@ module Emendate
     module Collectionspace
       SUFFIX = 'T00:00:00.000Z'
 
+      def self.extended(mod)
+        Emendate.config.options.bce_handling = :naive
+      end
+
       def base_value
         {
           dateDisplayDate: processed.orig_string,
