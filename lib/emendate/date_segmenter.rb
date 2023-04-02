@@ -181,11 +181,11 @@ module Emendate
       if s_date?(decade)
         result << Emendate::DateTypes::Decade.new(literal: decade.literal,
                                                   decade_type: :plural,
-                                                  children: [decade])
+                                                  sources: [decade])
       elsif uncertainty_date?(decade)
         result << Emendate::DateTypes::Decade.new(literal: decade.literal,
                                                   decade_type: :uncertainty_digits,
-                                                  children: [decade])
+                                                  sources: [decade])
       end
       working.shift
       recursive_parse
@@ -204,11 +204,11 @@ module Emendate
       if s_date?(millennium)
         result << Emendate::DateTypes::Millennium.new(literal: millennium.literal,
                                                       millennium_type: :plural,
-                                                      children: [millennium])
+                                                      sources: [millennium])
       elsif uncertainty_date?(millennium)
         result << Emendate::DateTypes::Millennium.new(literal: millennium.literal,
                                                       millennium_type: :uncertainty_digits,
-                                                      children: [millennium])
+                                                      sources: [millennium])
       end
       working.shift
       recursive_parse
@@ -220,7 +220,7 @@ module Emendate
       result << Emendate::DateTypes::Century.new(
         literal: century_literal(cent),
         century_type: century_type(cent),
-        children: [cent]
+        sources: [cent]
       )
       working.shift
       recursive_parse
@@ -268,7 +268,7 @@ module Emendate
       Emendate::DateTypes::YearMonthDay.new(year: year.literal,
                                             month: month.literal,
                                             day: day.literal,
-                                            children: pieces.segments)
+                                            sources: pieces.segments)
     end
 
     def create_year_month_datetype(pieces)
@@ -276,7 +276,7 @@ module Emendate
       year = pieces.when_type(:year)[0]
       Emendate::DateTypes::YearMonth.new(year: year.literal,
                                          month: month.literal,
-                                         children: pieces.segments)
+                                         sources: pieces.segments)
     end
 
     def create_year_season_datetype(pieces)
@@ -290,7 +290,7 @@ module Emendate
     def create_year_datetype(pieces)
       year = pieces.when_type(:year)[0]
       Emendate::DateTypes::Year.new(literal: year.literal,
-                                    children: pieces.segments)
+                                    sources: pieces.segments)
     end
 
     def consume_date_parts
@@ -336,9 +336,13 @@ module Emendate
 
       case date_type
       when :long_year
-        result << Emendate::DateTypes::Year.new(literal: current.lexeme, children: pieces)
+        result << Emendate::DateTypes::Year.new(
+          literal: current.lexeme, sources: pieces
+        )
       when :ym
-        result << Emendate::DateTypes::YearMonth.new(year: year, month: month, children: pieces)
+        result << Emendate::DateTypes::YearMonth.new(
+          year: year, month: month, sources: pieces
+        )
       end
       working.delete(current)
 
@@ -352,7 +356,7 @@ module Emendate
       day = now.day
 
       result << Emendate::DateTypes::YearMonthDay.new(
-        year: year, month: month, day: day, children: [current]
+        year: year, month: month, day: day, sources: [current]
       )
       working.delete(current)
       recursive_parse
@@ -376,9 +380,13 @@ module Emendate
 
       case date_type
       when :ymd
-        result << Emendate::DateTypes::YearMonthDay.new(year: year, month: month, day: day, children: pieces)
+        result << Emendate::DateTypes::YearMonthDay.new(
+          year: year, month: month, day: day, sources: pieces
+        )
       when :long_year
-        result << Emendate::DateTypes::Year.new(literal: current.lexeme, children: pieces)
+        result << Emendate::DateTypes::Year.new(
+          literal: current.lexeme, sources: pieces
+        )
       end
       working.delete(current)
       recursive_parse

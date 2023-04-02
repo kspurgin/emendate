@@ -12,7 +12,7 @@ module Emendate
         self.new(year).call
       end
     end
-    
+
     def initialize(year)
       @orig = year
     end
@@ -21,7 +21,7 @@ module Emendate
       Emendate::DatePart.new(type: :year,
                              lexeme: full_year.to_s,
                              literal: full_year,
-                             source_tokens: [orig])
+                             sources: [orig])
     end
 
     private

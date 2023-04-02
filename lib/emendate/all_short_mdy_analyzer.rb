@@ -143,7 +143,7 @@ module Emendate
       yr = Emendate::DatePart.new(type: :year,
                                   lexeme: expanded,
                                   literal: expanded.to_i,
-                                  source_tokens: [part])
+                                  sources: [part])
       replace_x_with_new(x: part, new: yr)
     end
 
