@@ -41,6 +41,7 @@ module Emendate
     setting :ambiguous_month_day_year, default: :month_day_year, reader: true
     setting :ambiguous_month_year, default: :as_year, reader: true
     setting :ambiguous_year_rollback_threshold, default: Date.today.year.to_s[-2..-1].to_i, reader: true
+    setting :bce_handling, default: :precise, reader: true
     setting :before_date_treatment, default: :point, reader: true
     setting :beginning_hyphen, default: :unknown, reader: true
     setting :edtf, default: false, reader: true

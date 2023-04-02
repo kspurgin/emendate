@@ -73,6 +73,17 @@ If we are using the default and the current year is 2021...
 This option is irrelevant if you are using `two_digit_year_handling: :literal`
 ====
 
+== bce_handling
+
+What is this?:: Controls how `Emendate::DateType::Year` sets its attributes when `:era == :bce`.
+Default value:: `:precise` ("1223 BCE" will be parsed to -1222)
+
+**Alternate values**
+
+* `:naive` ("1223 BCE" will parsed to "1223")
+
+When `dialect: :collectionspace`, this is automatically set to `:naive`, so that translated values match what CollectionSpace internal date parser produces.
+
 == before_date_treatment
 
 What is this?:: Whether to treat a date like "before 1950" or "pre-1950" as a range
