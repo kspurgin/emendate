@@ -105,6 +105,18 @@ Default value:: `:unknown` ("beginning of range is unknown but was some point be
 
 Default is set to `:unknown` because I cannot actually imagine a case where the literal meaning of `:open` would be needed in a GLAM context, and needing to record BCE dates is comparatively rare. It is much more common to use this to mean "unknown beginning of range"
 
+== dialect
+
+What is this?:: date expression to return when you `translate` a date string
+Default value:: `:none`
+Alternate value:: `:lyrasis_pseudo_edtf`, `:edtf`, `collectionspace`
+
+IMPORTANT: Not fully implemented at all!
+
+By default `parse` will return an `Emendate::Result` that another script can use to do whatever is needed.
+
+By calling `translate`, you can get a simpler, pre-processed `Emendate::Translation` of your original string into another date format. See https://github.com/kspurgin/emendate/blob/main/docs/output.adoc[output documentation] for details.
+
 == edtf
 
 What is this?:: A shorthand option to indicate incoming date values should be interpreted using options for EDTF format
@@ -188,18 +200,6 @@ Alternate value:: Any year/month/day expressed as YYYY-MM-DD
 IMPORTANT: For dates like "before 1950" or "pre-1950", this option will have no effect if https://github.com/kspurgin/emendate/blob/main/docs/options.adoc#before_date_treatment[:before_date_treatment] is `:point`. You must set that option to `:range` for this value to be used as the earliest date.
 
 NOTE: See https://github.com/kspurgin/emendate/blob/main/docs/notes.adoc#iso8601-and-bce[note on ISO8601 and BCE] for rationale for default value.
-
-== dialect
-
-What is this?:: date expression to return when you `translate` a date string
-Default value:: `:none`
-Alternate value:: `:lyrasis_pseudo_edtf`, `:edtf`, `collectionspace`
-
-IMPORTANT: Not fully implemented at all!
-
-By default `parse` will return an `Emendate::Result` that another script can use to do whatever is needed.
-
-By calling `translate`, you can get a simpler, pre-processed `Emendate::Translation` of your original string into another date format. See https://github.com/kspurgin/emendate/blob/main/docs/output.adoc[output documentation] for details.
 
 == pluralized_date_interpretation
 
