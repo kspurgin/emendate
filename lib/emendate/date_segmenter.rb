@@ -124,7 +124,7 @@ module Emendate
 
     def mod_switch
       switch = working.shift
-      if current.kind_of?(Emendate::DateTypes::DateType)
+      if current.is_a?(Emendate::DateTypes::DateType)
         current.add_range_switch(switch.type.to_s)
         result << current.prepend_source_token(switch)
         working.shift
