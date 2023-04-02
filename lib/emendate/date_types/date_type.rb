@@ -11,8 +11,8 @@ module Emendate
     # range_switch (before, after) forces `earliest`/`latest` to reflect the range before or after this
     #   particular date
     class DateType
-      attr_reader :certainty
-      attr_accessor :partial_indicator, :range_switch, :sources
+      attr_reader :certainty, :range_switch
+      attr_accessor :partial_indicator, :sources
 
       def initialize(**opts)
         srcs = opts[:sources]
@@ -29,6 +29,10 @@ module Emendate
         @range_switch = opts[:range_switch]
         @certainty = opts[:certainty].nil? ? [] : opts[:certainty]
         @location = location
+      end
+
+      def add_range_switch(value)
+        @range_switch = value
       end
 
       def date_part?
