@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Emendate::Translators::Edtf::KnownUnknown do
   let(:options) do
     {
-      target_dialect: :edtf,
+      dialect: :edtf,
       unknown_date_output: :custom,
       unknown_date_output_string: 'not dated'
     }

@@ -73,7 +73,7 @@ The Emendate result `Hash` has the following keys:
 
 `:original_string`:: the full original string passed in for parsing
 `:errors`:: will only be present if `:result` is empty. Will give some indication why parsing failed.
-`:warnings`:: may be present if `:result` is populated.  
+`:warnings`:: may be present if `:result` is populated.
 `:dates`:: an `Array` of parsed date values
 
 === Comparison with TimeTwister result
@@ -118,7 +118,7 @@ Emendate.parse('[circa 1920?]')
 ----
 
 
-If the date cannot be parsed, Timetwister returns a date hash with all values empty or nil except `:original_string`. In this case Emendate will return an empty `Array` for `:result`, making it clearer whether a usable parsed date is returned. 
+If the date cannot be parsed, Timetwister returns a date hash with all values empty or nil except `:original_string`. In this case Emendate will return an empty `Array` for `:result`, making it clearer whether a usable parsed date is returned.
 
 ----
 Timetwister.parse('n.d.')
@@ -167,7 +167,7 @@ Recieving an `Emendate::Result` can be useful for integration with your custom d
 
 However, one of the purposes of Emendate is to translate from some (or no!) date format to another date format. For this purpose, a simpler, pre-processed result is more useful.
 
-For this use case, you can call `translate` (with `target_dialect` option set), and you will receive an `Emendate::Translation` object with the following attributes:
+For this use case, you can call `translate` (with `dialect` option set), and you will receive an `Emendate::Translation` object with the following attributes:
 
 `orig`:: the original String given
 `result`:: typically a String, but some dialects may return another object type.

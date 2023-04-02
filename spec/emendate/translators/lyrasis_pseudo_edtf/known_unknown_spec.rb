@@ -9,7 +9,7 @@ RSpec.describe Emendate::Translators::LyrasisPseudoEdtf::KnownUnknown do
 
   context 'with orig unknown date output' do
     let(:str){ 'n.d.' }
-    let(:options){ {target_dialect: :lyrasis_pseudo_edtf} }
+    let(:options){ {dialect: :lyrasis_pseudo_edtf} }
 
     it 'translates as expected' do
       expect(value).to eq(str)
@@ -23,7 +23,7 @@ RSpec.describe Emendate::Translators::LyrasisPseudoEdtf::KnownUnknown do
       let(:outstr){ 'not dated' }
       let(:options) do
         {
-          target_dialect: :lyrasis_pseudo_edtf,
+          dialect: :lyrasis_pseudo_edtf,
           unknown_date_output: :custom,
           unknown_date_output_string: outstr
         }

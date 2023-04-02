@@ -28,7 +28,7 @@ Rows with the same `test_string` and `test_options` value are said to have the s
 
 The examples are tagged with `tags_date_type` tags and `tags_data_set` tags. You can get information and run tests on subsets of the test set by selecting only examples having certain tags. There are two types of tags to facilitate building up a robust test set to support future development, while also focusing on immediately implementing only the patterns required for a given project. (I can add a bunch of examples I know will currently fail, to serve as a development roadmap. But then I can tag some of them with an active data set I'm working on, so I can test whether the app is ready for use converting project dates or not.)
 
-The remaining columns record expected values for use in tests. 
+The remaining columns record expected values for use in tests.
 
 See Tests and expectaions below for more info.
 
@@ -39,7 +39,7 @@ Columns beginning with `date_` test expectations about the value(s) that will be
 
 Columns beginning with `result_` test expectations about other parts of the `Emendate::Result` object.
 
-Columns beginning with `translation_` test expectations about the results of `Emendate.translate`, with the remainder of the column name passed in as the `target_dialect` option value.
+Columns beginning with `translation_` test expectations about the results of `Emendate.translate`, with the remainder of the column name passed in as the `dialect` option value.
 
 IMPORTANT: There are some columns and values for tests that are not yet implemented.
 
@@ -219,7 +219,7 @@ puts ex.runnable_tests
 
 By default:
 
-* An attempt will be made to process every example. If the example cannot be processed, the error will be shown in the failure report under `test: process`. No further tests will be run on the example. 
+* An attempt will be made to process every example. If the example cannot be processed, the error will be shown in the failure report under `test: process`. No further tests will be run on the example.
 * All runnable tests are run for every example that can be processed without errors
 
 You can also pass in the following options:
@@ -645,4 +645,3 @@ ex.report_type_patterns(stage: :orig_tokens, date_only: true)
 `ORD`:: alphabetical ordinal indication, such at st, rd, etc.
 lowercase letters:: themselves, literally
 `.,/-&?() []`:: themselves, literally (same for spaces)
-

@@ -11,9 +11,9 @@ module Emendate
     # @param processed [Emendate::ProcessingManager]
     def initialize(processed)
       @processed = processed
-      @dialect = Emendate.options.target_dialect
+      @dialect = Emendate.options.dialect
       unless dialect
-        puts "ERROR: You must pass in a `target_dialect` option when using `translate`"
+        puts "ERROR: You must pass in a `dialect` option when using `translate`"
         exit
       end
 

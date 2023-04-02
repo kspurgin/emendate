@@ -52,7 +52,7 @@ module Emendate
     setting :open_unknown_start_date, default: Date.new(1583, 1, 1), reader: true
     setting :pluralized_date_interpretation, default: :decade, reader: true
     setting :square_bracket_interpretation, default: :inferred_date, reader: true
-    setting :target_dialect, default: nil, reader: true
+    setting :dialect, default: nil, reader: true
     setting :two_digit_year_handling, default: :coerce, reader: true
     setting :unknown_date_output, default: :orig, reader: true
     setting :unknown_date_output_string, default: '', reader: true
