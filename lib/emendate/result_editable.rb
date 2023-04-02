@@ -43,7 +43,7 @@ module Emendate
       Emendate::DatePart.new(type: type,
                              lexeme: sources.map(&:lexeme).join,
                              literal: sources[0].literal,
-                             source_tokens: sources)
+                             sources: sources)
     end
 
     # given an array of segments and a new (derived) segment, replaces the former with the latter
@@ -52,7 +52,7 @@ module Emendate
       result.insert(ins_pt, new)
       segments.each{ |segment| result.delete(segment) }
     end
-    
+
     def replace_x_with_new(x:, new:)
       ins_pt = result.find_index(x) + 1
       result.insert(ins_pt, new)

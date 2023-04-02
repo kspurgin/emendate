@@ -61,7 +61,7 @@ module Emendate
       Emendate::DatePart.new(type: type,
                              lexeme: lexeme,
                              literal: lexeme.to_i,
-                             source_tokens: [n])
+                             sources: [n])
     end
 
     def expand_year

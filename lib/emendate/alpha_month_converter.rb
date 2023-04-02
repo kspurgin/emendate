@@ -45,7 +45,7 @@ module Emendate
       Emendate::DatePart.new(type: :month,
                              lexeme: token.lexeme,
                              literal: token.literal,
-                             source_tokens: [token])
+                             sources: [token])
     end
 
     def get_season_literal(token)
@@ -65,7 +65,7 @@ module Emendate
       Emendate::DatePart.new(type: :season,
                              lexeme: token.lexeme,
                              literal: literal,
-                             source_tokens: [token])
+                             sources: [token])
     end
   end
 end

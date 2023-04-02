@@ -9,7 +9,7 @@ module Emendate
   # Emendate::DatePart.new(type: Symbol,
   #                        lexeme: String,
   #                        literal: Integer,
-  #                        source_tokens: [array of tokens/segments])
+  #                        sources: [array of tokens/segments])
   class DatePart < Emendate::Segment
     include DerivedSegment
 
@@ -21,12 +21,10 @@ module Emendate
     def location
       @location
     end
-    
+
     private
 
     def post_initialize(opts)
-      # todo - refactor so you can take this duplicative reassignment out
-      opts[:sources] = opts[:source_tokens]
       derive(opts)
     end
   end
