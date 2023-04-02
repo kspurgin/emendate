@@ -11,6 +11,7 @@ module Emendate
       optional(:ambiguous_month_day_year).value(:symbol)
       optional(:ambiguous_month_year).value(:symbol)
       optional(:ambiguous_year_rollback_threshold).value(:integer)
+      optional(:bce_handling).value(:symbol)
       optional(:before_date_treatment).value(:symbol)
       optional(:beginning_hyphen).value(:symbol)
       optional(:edtf).value(:bool)
@@ -56,6 +57,14 @@ module Emendate
       if key?
         val = values[:ambiguous_year_rollback_threshold]
         key.failure('must be 0-99') unless val < 100
+      end
+    end
+
+    rule(:bce_handling) do
+      if key?
+        allowed = %i[naive precise]
+        val = values[:bce_handling]
+        key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
       end
     end
 
