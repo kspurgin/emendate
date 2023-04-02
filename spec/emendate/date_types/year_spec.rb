@@ -117,6 +117,22 @@ RSpec.describe Emendate::DateTypes::Year do
       expect(yr.latest).to eq(Date.new(-230, 12, 31))
       expect(yr.latest_at_granularity).to eq('-0230')
     end
+
+    context 'with naive bce_handling' do
+      before(:context){ Emendate.config.options.bce_handling = :naive }
+      after(:context){ Emendate.reset_config }
+
+      it 'returns expected' do
+        yr.bce
+        expect(yr.lexeme).to eq('0231')
+        expect(yr.literal).to eq(231)
+        expect(yr.range?).to be false
+        expect(yr.earliest).to eq(Date.new(231, 1, 1))
+        expect(yr.earliest_at_granularity).to eq('0231')
+        expect(yr.latest).to eq(Date.new(231, 12, 31))
+        expect(yr.latest_at_granularity).to eq('0231')
+      end
+    end
   end
 
   # describe '#earliest' do

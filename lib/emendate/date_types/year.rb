@@ -23,7 +23,12 @@ module Emendate
       end
 
       def literal
-        era == :bce ? (orig_literal - 1) * -1 : orig_literal
+        if era == :bce &&
+            Emendate.options.bce_handling == :precise
+          (orig_literal - 1) * -1
+        else
+          orig_literal
+        end
       end
 
       def range?
