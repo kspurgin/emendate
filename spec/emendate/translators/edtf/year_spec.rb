@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::Translators::Edtf::Year do
-  let(:options){ {target_dialect: :edtf} }
+  let(:options){ {dialect: :edtf} }
   let(:translation){ Emendate.translate(str, options) }
   let(:value){ translation.value }
   let(:warnings){ translation.warnings }

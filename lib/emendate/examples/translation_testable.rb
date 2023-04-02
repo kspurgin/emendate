@@ -33,7 +33,7 @@ module Emendate
       end
 
       def translate_options
-        translate_opt = {target_dialect: name.delete_prefix('translation_').to_sym}
+        translate_opt = {dialect: name.delete_prefix('translation_').to_sym}
         example.test_options ? instance_eval("{#{example.test_options}}").merge(translate_opt) : translate_opt
       end
     end

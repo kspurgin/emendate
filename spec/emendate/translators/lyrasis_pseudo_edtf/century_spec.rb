@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::Translators::LyrasisPseudoEdtf::Century do
-  let(:options){ {target_dialect: :lyrasis_pseudo_edtf} }
+  let(:options){ {dialect: :lyrasis_pseudo_edtf} }
   let(:translation){ Emendate.translate(str, options) }
   let(:value){ translation.value }
   let(:warnings){ translation.warnings }

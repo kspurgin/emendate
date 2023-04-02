@@ -22,7 +22,7 @@ module Emendate
       optional(:open_unknown_start_date).value(:date)
       optional(:pluralized_date_interpretation).value(:symbol)
       optional(:square_bracket_interpretation).value(:symbol)
-      optional(:target_dialect).value(:symbol)
+      optional(:dialect).value(:symbol)
       optional(:two_digit_year_handling).value(:symbol)
       optional(:unknown_date_output).value(:symbol)
       optional(:unknown_date_output_string).value(:string)
@@ -115,10 +115,10 @@ module Emendate
       end
     end
 
-    rule(:target_dialect) do
+    rule(:dialect) do
       if key?
         allowed = %i[lyrasis_pseudo_edtf edtf collectionspace]
-        val = values[:target_dialect]
+        val = values[:dialect]
         key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
       end
     end

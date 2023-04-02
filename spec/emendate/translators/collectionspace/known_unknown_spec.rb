@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Emendate::Translators::Collectionspace::KnownUnknown do
   let(:options) do
     {
-      target_dialect: :collectionspace
+      dialect: :collectionspace
     }
   end
   let(:translation){ Emendate.translate(str, options) }

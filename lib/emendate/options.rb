@@ -53,7 +53,7 @@ module Emendate
        open_unknown_start_date: Date.new(1583, 1, 1),
        pluralized_date_interpretation: :decade,
        square_bracket_interpretation: :inferred_date,
-       target_dialect: nil,
+       dialect: nil,
        two_digit_year_handling: :coerce,
        unknown_date_output: :orig,
        unknown_date_output_string: ""

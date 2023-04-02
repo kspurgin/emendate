@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::Translators::LyrasisPseudoEdtf::YearMonthDay do
-  let(:options){ {target_dialect: :lyrasis_pseudo_edtf, ambiguous_month_year: :as_month} }
+  let(:options){ {dialect: :lyrasis_pseudo_edtf, ambiguous_month_year: :as_month} }
   let(:translation){ Emendate.translate(str, options) }
   let(:value){ translation.value }
   let(:warnings){ translation.warnings }

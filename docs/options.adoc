@@ -178,7 +178,7 @@ IMPORTANT: For dates like "before 1950" or "pre-1950", this option will have no 
 
 NOTE: See https://github.com/kspurgin/emendate/blob/main/docs/notes.adoc#iso8601-and-bce[note on ISO8601 and BCE] for rationale for default value.
 
-== target_dialect
+== dialect
 
 What is this?:: date expression to return when you `translate` a date string
 Default value:: `:none`
