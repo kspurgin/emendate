@@ -29,9 +29,9 @@ RSpec.describe Emendate::Lexer do
         'e c s t y z'=>%i[letter_e space letter_c space letter_s space letter_t
                           space letter_y space letter_z],
         'cent century'=>%i[century space century],
-        'c ca circa approximately around'=>%i[approximate space approximate
-                                              space approximate space
-                                              approximate space approximate],
+        'about around'=>%i[about space about],
+        'approximately estimated'=>%i[approximate space approximate],
+        'c ca circa'=>%i[circa space circa space circa],
         'unknown'=>[:unknown_date],
         'n.d.'=>[:unknown_date],
         'n. d.'=>[:unknown_date],
