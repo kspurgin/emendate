@@ -8,7 +8,7 @@ module Emendate
     attr_reader :original_string, :index_dates,
       :date_start, :date_end,
       :date_start_full, :date_end_full,
-      :inclusive_range, :certainty
+      :inclusive_range, :certainty, :range_switch
 
     # @param date [Emendate::DateTypes::DateType]
     # @param orig [String]
@@ -24,6 +24,7 @@ module Emendate
       @date_end_full = date.latest.nil? ? nil : date.latest.iso8601
       @inclusive_range = date.range? ? true : nil
       @certainty = (certainty + date.certainty).flatten.uniq
+      @range_switch = date.range_switch
       self
     end
 
