@@ -54,7 +54,8 @@ RSpec.describe Emendate::ParsedDate do
          date_start_full: '2021-02-23',
          date_end_full: '2021-02-23',
          inclusive_range: nil,
-         certainty: [] }
+         certainty: [],
+         range_switch: nil }
       end
 
       it 'returns as expected' do
@@ -70,7 +71,7 @@ RSpec.describe Emendate::ParsedDate do
 
       it 'returns as expected' do
         expected = <<~LONGSTRING
-      {\"original_string\":\"2/23/2021\",\"index_dates\":[],\"date_start\":null,\"date_end\":null,\"date_start_full\":\"2021-02-23\",\"date_end_full\":\"2021-02-23\",\"inclusive_range\":null,\"certainty\":[]}
+      {\"original_string\":\"2/23/2021\",\"index_dates\":[],\"date_start\":null,\"date_end\":null,\"date_start_full\":\"2021-02-23\",\"date_end_full\":\"2021-02-23\",\"inclusive_range\":null,\"certainty\":[],\"range_switch\":null}
       LONGSTRING
         expect(result).to eq(expected.chomp)
       end
