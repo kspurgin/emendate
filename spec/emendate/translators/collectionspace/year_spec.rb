@@ -85,4 +85,24 @@ RSpec.describe Emendate::Translators::Collectionspace::Year do
       expect(warnings).to be_empty
     end
   end
+
+  context 'with pre-1964' do
+    let(:str){ 'pre-1964' }
+    let(:expected) do
+      {
+        dateDisplayDate: 'pre-1964',
+        scalarValuesComputed: 'true',
+        dateLatestScalarValue: '1964-01-01T00:00:00.000Z',
+        dateLatestYear: '1964',
+        dateLatestMonth: '1',
+        dateLatestDay: '1',
+        dateLatestEra: 'CE',
+        dateLatestCertainty: 'Before'
+      }
+    end
+    it 'translates as expected' do
+      expect(value).to eq(expected)
+      expect(warnings).to be_empty
+    end
+  end
 end
