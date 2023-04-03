@@ -52,15 +52,23 @@ module Emendate
       end
 
       def approximate
-        "#{base}~"
+        lexed = processed.history[:lexed]
+        types = lexed.types
+        if types.any?(:about)
+          computed.merge({dateEarliestSingleCertainty: 'about'})
+        elsif types.any?(:approximate)
+          computed.merge({dateEarliestSingleCertainty: 'Approximate'})
+        elsif types.any?(:circa)
+          computed.merge({dateEarliestSingleCertainty: 'Circa'})
+        end
       end
 
       def approximate_and_uncertain
-        "#{base}%"
+        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
 
       def one_of_range_set
-        "[#{base}]"
+        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
     end
   end
