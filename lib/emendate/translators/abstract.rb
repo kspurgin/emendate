@@ -17,7 +17,7 @@ module Emendate
 
       def qualify(meth = nil)
         return self.method(meth).call if meth
-        
+
         return base if tokens.certain?
         return approximate_and_uncertain if tokens.approximate_and_uncertain?
         return approximate if tokens.approximate?
@@ -26,11 +26,10 @@ module Emendate
       def tokens
         processed.tokens
       end
-      
+
       def translate_value
         raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
    end
   end
 end
-    
