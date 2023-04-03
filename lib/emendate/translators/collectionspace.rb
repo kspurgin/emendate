@@ -40,7 +40,8 @@ module Emendate
           # not yet implemented
         when 'before'
           computed_before
-        else computed_normal
+        else
+          computed_normal
         end
       end
 
