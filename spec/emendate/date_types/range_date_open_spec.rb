@@ -32,7 +32,7 @@ RSpec.describe Emendate::DateTypes::RangeDateOpen do
     context 'with custom datevalue: 1900-01-01' do
       before(:context) do
         Emendate.config.options.open_unknown_start_date =
-          Date.new(1900, 1, 1)
+          '1900-01-01'
       end
       after(:context){ Emendate.reset_config }
 
@@ -62,7 +62,7 @@ RSpec.describe Emendate::DateTypes::RangeDateOpen do
     context 'with custom datevalue: 2050-01-01' do
       before(:context) do
         Emendate.config.options.open_unknown_end_date =
-          Date.new(2050, 1, 1)
+          '2050-01-01'
       end
       after(:context){ Emendate.reset_config }
 
