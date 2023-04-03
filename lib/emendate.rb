@@ -51,8 +51,14 @@ module Emendate
     setting :ending_slash, default: :open, reader: true
     setting :max_output_dates, default: :all, reader: true
     setting :max_month_number_handling, default: :months, reader: true
-    setting :open_unknown_end_date, default: Date.new(2999, 12, 31), reader: true
-    setting :open_unknown_start_date, default: Date.new(1583, 1, 1), reader: true
+    setting :open_unknown_end_date,
+      default: '2999-12-31',
+      reader: true,
+      constructor: ->(value){ Date.parse(value) }
+    setting :open_unknown_start_date,
+      default: '1583-01-01',
+      reader: true,
+      constructor: ->(value){ Date.parse(value) }
     setting :pluralized_date_interpretation, default: :decade, reader: true
     setting :square_bracket_interpretation, default: :inferred_date, reader: true
     setting :dialect, default: nil, reader: true
