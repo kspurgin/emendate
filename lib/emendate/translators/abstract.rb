@@ -21,6 +21,7 @@ module Emendate
         return base if tokens.certain?
         return approximate_and_uncertain if tokens.approximate_and_uncertain?
         return approximate if tokens.approximate?
+        return uncertain if tokens.uncertain?
       end
 
       def tokens
