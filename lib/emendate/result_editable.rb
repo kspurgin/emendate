@@ -53,6 +53,15 @@ module Emendate
       segments.each{ |segment| result.delete(segment) }
     end
 
+    # @param x [Segment] to replace
+    # @param type [Symbol] type of the new segment
+    def replace_x_with_derived_new_type(x:, type:)
+      ins_pt = result.find_index(x) + 1
+      newsegment = Emendate::DerivedToken.new(type: type, sources: [x])
+      result.insert(ins_pt, newsegment)
+      result.delete(x)
+    end
+
     def replace_x_with_new(x:, new:)
       ins_pt = result.find_index(x) + 1
       result.insert(ins_pt, new)
