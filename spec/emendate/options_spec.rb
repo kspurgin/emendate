@@ -3,20 +3,8 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::Options do
-  before(:each){
-    Emendate.reset_config
-    described_class.new
-  }
-
-  let(:config_opts){ Emendate.config.options.values }
-
-  context 'when called with no option hash' do
-    it 'uses default settings' do
-      defaults = config_opts.dup
-      result = described_class.new
-      expect(config_opts).to eq(defaults)
-    end
-  end
+  subject(:opts){ described_class }
+  after(:each){ Emendate.reset_config }
 
   context 'when called with option hash' do
     let(:call_options){ described_class.new(opthash) }
@@ -32,15 +20,32 @@ RSpec.describe Emendate::Options do
     context 'with unknown option key' do
       let(:opthash){ {foo: :bar} }
       it 'outputs message to STDOUT and exits' do
-        expect{ call_options }.to output(/:foo option is not allowed/).to_stdout.and raise_error(SystemExit)
+        expect{ call_options }.to output(
+          /:foo option is not allowed/
+        ).to_stdout.and raise_error(SystemExit)
       end
     end
 
     context 'with unknown value for option' do
       let(:opthash){ {ambiguous_month_day: :as_month} }
       it 'outputs message to STDOUT and exits' do
-        msg = /:ambiguous_month_day option :as_month is not a an allowed value\. Use one of: :as_month_day, :as_day_month/
-        expect{ call_options }.to output(msg).to_stdout.and raise_error(SystemExit)
+        msg = ":ambiguous_month_day option :as_month is not an allowed "\
+          "value. Use one of: :as_month_day, :as_day_month\nExiting...\n"
+        expect{ call_options }.to output(msg).to_stdout.and raise_error(
+          SystemExit
+        )
+      end
+    end
+
+    context 'with invalid date string for date option' do
+      let(:opthash){ {open_unknown_end_date: '2023-02-30'} }
+      it 'outputs message to STDOUT and exits' do
+        msg = ":open_unknown_end_date option value 2023-02-30 cannot be " \
+          "parsed into a valid date. Use a date string in the format: "\
+          "YYYY-MM-DD\nExiting...\n"
+        expect{ call_options }.to output(msg).to_stdout.and raise_error(
+          SystemExit
+        )
       end
     end
 
