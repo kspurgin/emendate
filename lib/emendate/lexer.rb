@@ -19,12 +19,14 @@ module Emendate
     # c - at beginning = circa, at end = century
     # nd - if directly after number, ordinal indicator; otherwise unknown date.
     #   StringNormalizer attempts to clear this up for most cases.
+    ABOUT = %w[about around].freeze
     AFTER = %w[after post].freeze
     AND = ['&', 'and'].freeze
     APOSTROPHE = "'"
+    APPROXIMATE = %w[approximate approximately est estimate estimated].freeze
     BEFORE = %w[before pre].freeze
     CENTURY = %w[century cent].freeze
-    CIRCA = %w[about approximately around ca circa est].freeze
+    CIRCA = %w[ca circa].freeze
     COLON = ':'
     COMMA = ','
     CURLY_BRACKET_OPEN = '{'
@@ -188,16 +190,20 @@ module Emendate
     end
 
     def letter_type(lexeme)
-      if AFTER.include?(lexeme)
+      if ABOUT.include?(lexeme)
+        :about
+      elsif AFTER.include?(lexeme)
         :after
       elsif AND.include?(lexeme)
         :and
+      elsif APPROXIMATE.include?(lexeme)
+        :approximate
       elsif BEFORE.include?(lexeme)
         :before
       elsif CENTURY.include?(lexeme)
         :century
       elsif CIRCA.include?(lexeme)
-        :approximate
+        :circa
       elsif DAYS.include?(lexeme)
         :day_of_week_alpha
       elsif ERA.include?(lexeme)
