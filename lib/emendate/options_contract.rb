@@ -19,8 +19,8 @@ module Emendate
       optional(:ending_slash).value(:symbol)
       optional(:max_output_dates).value(:integer)
       optional(:max_month_number_handling).value(:symbol)
-      optional(:open_unknown_end_date).value(:date)
-      optional(:open_unknown_start_date).value(:date)
+      optional(:open_unknown_end_date).value(:string)
+      optional(:open_unknown_start_date).value(:string)
       optional(:pluralized_date_interpretation).value(:symbol)
       optional(:square_bracket_interpretation).value(:symbol)
       optional(:dialect).value(:symbol)
@@ -148,10 +148,39 @@ module Emendate
       end
     end
 
+    rule(:open_unknown_end_date) do
+      if key?
+        str = values[:open_unknown_end_date]
+        result = test_date_string(str)
+        key.failure(date_failure_msg(str)) unless result == :success
+      end
+    end
+
+    rule(:open_unknown_start_date) do
+      if key?
+        str = values[:open_unknown_start_date]
+        result = test_date_string(str)
+        key.failure(date_failure_msg(str)) unless result == :success
+      end
+    end
+
     private
 
+    def test_date_string(str)
+      Date.parse(str)
+    rescue
+      :failure
+    else
+      :success
+    end
+
+    def date_failure_msg(str)
+      "value #{str} cannot be parsed into a valid date. Use a date string in the "\
+        "format: YYYY-MM-DD"
+    end
+
     def unknown_val_msg(val, allowed)
-      ":#{val} is not a an allowed value. Use one of: #{allowed.map{ |val| ":#{val}" }.join(', ')}"
+      ":#{val} is not an allowed value. Use one of: #{allowed.map{ |val| ":#{val}" }.join(', ')}"
     end
   end
 end
