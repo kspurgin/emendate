@@ -6,7 +6,7 @@ module Emendate
       def initialize(**opts)
         super
         @usage = opts[:usage]
-        @use_date = set_date
+        @use_date = Emendate.options.send(setting)
       end
 
       def earliest
@@ -39,11 +39,6 @@ module Emendate
       end
 
       private
-
-      def set_date
-        setting_value = Emendate.options.send(setting)
-        setting_value.is_a?(Date) ? setting_value : nil
-      end
 
       def setting
         "open_unknown_#{usage}_date".to_sym
