@@ -11,7 +11,7 @@ group :documentation do
 end
 
 group :test do
-  gem 'rspec', '~> 3.0'
+  gem 'rspec'
   gem 'simplecov', '~> 0.21', require: false
 end
 
