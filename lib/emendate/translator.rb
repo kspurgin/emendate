@@ -65,6 +65,8 @@ module Emendate
       case tokens.types.join(' ')
       when 'century_date_type'
         'Century'
+      when 'decade_date_type'
+        'Decade'
       when 'year_date_type'
         'Year'
       when 'yearmonth_date_type'
