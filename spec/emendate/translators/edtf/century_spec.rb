@@ -5,8 +5,8 @@ require 'spec_helper'
 RSpec.describe Emendate::Translators::Edtf::Century do
   let(:options){ {dialect: :edtf} }
   let(:translation){ Emendate.translate(str, options) }
-  let(:value){ translation.value }
-  let(:warnings){ translation.warnings }
+  let(:value){ translation.values[0] }
+  let(:warnings){ translation.warnings[0] }
 
   context 'with 19th c.' do
     let(:str){ '19th c.' }

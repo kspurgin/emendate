@@ -122,7 +122,7 @@ module Emendate
     pm = Emendate::ProcessingManager.new(str, options)
     pm.call
     translator = Emendate::Translator.new(pm)
-    translator.translate
+    translator.call
   end
 
   def tokenize(str)

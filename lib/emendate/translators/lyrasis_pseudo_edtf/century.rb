@@ -10,10 +10,11 @@ module Emendate
         private
 
         attr_reader :base
-        
+
         def translate_value
-          @century = tokens[0]
-          @base = "#{@century.earliest_at_granularity} - #{@century.latest_at_granularity}"
+          century = date.source
+          @base = "#{century.earliest_at_granularity} - "\
+            "#{century.latest_at_granularity}"
           qualify(:one_of_range_set)
         end
       end

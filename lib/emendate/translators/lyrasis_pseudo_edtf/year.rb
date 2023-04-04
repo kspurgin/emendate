@@ -10,9 +10,9 @@ module Emendate
         private
 
         attr_reader :base
-        
+
         def translate_value
-          @base = tokens[0].lexeme
+          @base = date.source.lexeme
           qualify
         end
       end

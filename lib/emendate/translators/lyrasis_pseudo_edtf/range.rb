@@ -10,12 +10,13 @@ module Emendate
         private
 
         attr_reader :base
-        
+
         def translate_value
-          @range = tokens[0]
-          @start = @range.startdate
-          @end = @range.enddate
-          @base = "#{@start.earliest_at_granularity} - #{@end.latest_at_granularity}"
+          range = date.source
+          start = range.startdate
+          enddate = range.enddate
+          @base = "#{start.earliest_at_granularity} - "\
+            "#{enddate.latest_at_granularity}"
           qualify
         end
       end

@@ -9,8 +9,8 @@ RSpec.describe Emendate::Translators::Collectionspace::Year do
     }
   end
   let(:translation){ Emendate.translate(str, options) }
-  let(:value){ translation.value }
-  let(:warnings){ translation.warnings }
+  let(:value){ translation.values[0] }
+  let(:warnings){ translation.warnings[0] }
 
   context 'with 2012' do
     let(:str){ '2012' }
