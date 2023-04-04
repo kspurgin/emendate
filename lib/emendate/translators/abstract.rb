@@ -24,11 +24,18 @@ module Emendate
 
       def qualify(meth = nil)
         return self.method(meth).call if meth
+        return @base if pdate.certain?
 
-        return base if pdate.certain?
+        if pdate.one_of_set?
+          @base = @base.merge(one_of_set)
+        elsif pdate.all_of_set?
+          @base = @base.merge(all_of_set)
+        end
         return approximate_and_uncertain if pdate.approximate_and_uncertain?
         return approximate if pdate.approximate?
         return uncertain if pdate.uncertain?
+
+        base
       end
 
       def tokens
