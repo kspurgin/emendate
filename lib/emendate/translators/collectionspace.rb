@@ -107,11 +107,19 @@ module Emendate
         raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
 
+      def all_of_set
+        {dateNote: 'Inclusive date'}
+      end
+
+      def one_of_set
+        {dateNote: 'Alternate date'}
+      end
+
       def uncertain
-          computed.merge({
-            dateEarliestSingleCertainty: 'Possibly',
-            dateLatestCertainty: 'Possibly'
-          })
+        computed.merge({
+          dateEarliestSingleCertainty: 'Possibly',
+          dateLatestCertainty: 'Possibly'
+        })
       end
     end
   end
