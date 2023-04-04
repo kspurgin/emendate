@@ -5,8 +5,8 @@ require 'spec_helper'
 RSpec.describe Emendate::Translators::Edtf::YearMonth do
   let(:options){ {dialect: :edtf, ambiguous_month_year: :as_month} }
   let(:translation){ Emendate.translate(str, options) }
-  let(:value){ translation.value }
-  let(:warnings){ translation.warnings }
+  let(:value){ translation.values[0] }
+  let(:warnings){ translation.warnings[0] }
 
   context 'with 2002-10' do
     let(:str){ '2002-10' }

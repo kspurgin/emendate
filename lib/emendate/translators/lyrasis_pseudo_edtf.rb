@@ -6,10 +6,14 @@ module Emendate
   module Translators
     # namespace for LYRASIS pseudo EDTF translators
     module LyrasisPseudoEdtf
+      def date
+        pdate
+      end
+
       def empty_value
         ''
       end
-      
+
       def approximate
         "#{base} (approximate)"
       end
@@ -24,4 +28,3 @@ module Emendate
     end
   end
 end
-

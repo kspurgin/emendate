@@ -5,8 +5,8 @@ require 'spec_helper'
 RSpec.describe Emendate::Translators::LyrasisPseudoEdtf::Range do
   let(:options){ {dialect: :lyrasis_pseudo_edtf, ambiguous_month_year: :as_year} }
   let(:translation){ Emendate.translate(str, options) }
-  let(:value){ translation.value }
-  let(:warnings){ translation.warnings }
+  let(:value){ translation.values[0] }
+  let(:warnings){ translation.warnings[0] }
 
   context 'with 1910-11' do
     let(:str){ '1910-11' }

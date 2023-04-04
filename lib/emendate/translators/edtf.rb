@@ -4,6 +4,10 @@ module Emendate
   module Translators
     # namespace for EDTF translators
     module Edtf
+      def date
+        pdate
+      end
+
       def empty_value
         ''
       end
@@ -22,4 +26,3 @@ module Emendate
     end
   end
 end
-

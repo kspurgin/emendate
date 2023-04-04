@@ -10,10 +10,10 @@ module Emendate
         private
 
         attr_reader :base
-        
+
         def translate_value
-          @date = tokens[0]
-          @base = "#{@date.earliest.year}-#{@date.earliest.month.to_s.rjust(2, '0')}"
+          @base = "#{date.source.earliest.year}-"\
+            "#{date.source.earliest.month.to_s.rjust(2, '0')}"
           qualify
         end
       end

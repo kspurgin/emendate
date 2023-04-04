@@ -19,7 +19,7 @@ module Emendate
       end
 
       def date
-        processed.result.dates.first
+        pdate
       end
 
       def nil_value

@@ -138,7 +138,7 @@ RSpec.describe Emendate::Examples::Tester do
           let(:str){ '2002' }
 
           it 'returns expected' do
-            expect(result).to eq('2002')
+            expect(result).to eq(['2002'])
           end
         end
       end
@@ -161,7 +161,7 @@ RSpec.describe Emendate::Examples::Tester do
           let(:str){ '2002' }
 
           it 'returns expected' do
-            expect(result).to eq('2002')
+            expect(result).to eq(['2002'])
           end
         end
       end

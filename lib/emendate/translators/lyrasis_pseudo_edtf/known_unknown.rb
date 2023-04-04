@@ -15,7 +15,7 @@ module Emendate
           when :custom
             Emendate.options.unknown_date_output_string
           else
-            orig
+            date.original_string
           end
         end
       end

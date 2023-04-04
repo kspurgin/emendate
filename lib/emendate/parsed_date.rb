@@ -2,13 +2,18 @@
 
 require 'json'
 
+require_relative 'segment_sets/certainty_helpers'
+
 module Emendate
   # Wrapper around a DateType segment, used as part of Result
   class ParsedDate
+    include Emendate::SegmentSets::CertaintyHelpers
+
     attr_reader :original_string, :index_dates,
       :date_start, :date_end,
       :date_start_full, :date_end_full,
-      :inclusive_range, :certainty, :range_switch
+      :inclusive_range, :certainty, :range_switch,
+      :date_type, :source
 
     # @param date [Emendate::DateTypes::DateType]
     # @param orig [String]
@@ -25,16 +30,15 @@ module Emendate
       @inclusive_range = date.range? ? true : nil
       @certainty = (certainty + date.certainty).flatten.uniq
       @range_switch = date.range_switch
-      self
+      @date_type = date.class.name.split('::')[-1]
+      @source = date
     end
 
     def to_h
-      h = {}
-      self.instance_variables.each do |iv|
-        iv = iv.to_s.sub('@', '')
-        h[iv.to_sym] = self.send(iv)
-      end
-      h
+      hashable_variables.map{ |var|
+        varsym = var.to_s.sub('@', '').to_sym
+        [varsym, instance_variable_get(var)]
+      }.to_h
     end
 
     def to_json
@@ -52,6 +56,10 @@ module Emendate
 
     private
 
+    def hashable_variables
+      self.instance_variables - %i[@date_type @source]
+    end
+
     def get_original_string(datetype, orig)
       if datetype.respond_to?(:orig)
         datetype.orig
@@ -59,6 +67,5 @@ module Emendate
         orig
       end
     end
-
   end
 end
