@@ -7,6 +7,14 @@ require 'bundler/setup'
 require 'emendate'
 require 'pry'
 
+def to_h(hash_as_string)
+  h = instance_eval(hash_as_string)
+rescue SyntaxError
+  :cannot_eval
+else
+  h.is_a?(Hash) ? h : :cannot_eval
+end
+
 options = {}
 OptionParser.new{ |opts|
   opts.banner = 'Usage: ruby batch_result_report.rb -i {input_csv}'
@@ -16,6 +24,22 @@ OptionParser.new{ |opts|
     unless File::exist?(i)
       puts "Not a valid input file: #{i}"
       exit
+    end
+  }
+  opts.on(
+    '-o',
+    '--optargs OPTARGS',
+    'Options hash, in curly brackets, in quotes'
+  ){ |o|
+    optargs = to_h(o)
+    if optargs == :cannot_eval
+      puts "Cannot parse options to Hash.\nEnter wrapped in quotes and curly "\
+        "brackets like:\n"\
+        "\"{my_option: option_value}\""
+      exit
+    else
+      Emendate::Options.new(optargs)
+      options[:optargs] = optargs
     end
   }
   opts.on('-h', '--help', 'Prints this help'){
@@ -29,14 +53,14 @@ headers = %i[orig errs warnings date_ct start_full end_full certainty range type
 
 CSV.open(outfile, 'wb') do |csvout|
   csvout << headers
+end
 
-  CSV.foreach(options[:input]) do |row|
-    val = row.first.strip
-    puts val
+strings = CSV.foreach(options[:input]).map{ |row| row.first.strip }
+optargs = options[:optargs] ||= {}
 
-    processor = Emendate.process(val)
-
-    prep = { orig: val }
+CSV.open(outfile, 'a') do |csvout|
+  Emendate.batch_process(strings, optargs) do |processor|
+    prep = { orig: processor.orig_string }
     prep[:errs] = processor.errors.join('; ') unless processor.errors.empty?
     prep[:warnings] = processor.warnings.join('; ') unless processor.warnings.empty?
 
@@ -50,7 +74,6 @@ CSV.open(outfile, 'wb') do |csvout|
         prep[:types] = processor.tokens.map(&:type).join(' ')
       end
     end
-
     csvout << prep.values_at(*headers)
   end
 end

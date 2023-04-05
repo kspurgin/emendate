@@ -131,6 +131,20 @@ module Emendate
     puts "#{str}\t\t#{tokens.inspect}"
   end
 
+  # @param strings [Array<String>]
+  # @param options [Hash]
+  def batch_process(strings, options = {})
+    Emendate::Options.new(options) unless options.empty?
+    strings.each do |str|
+      pm = Emendate::ProcessingManager.call(str)
+      if pm.success?
+        yield pm.value!
+      else
+        yield pm.failure
+      end
+    end
+  end
+
   private
 
   def processing_steps

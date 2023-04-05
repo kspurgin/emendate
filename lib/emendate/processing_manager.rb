@@ -141,7 +141,7 @@ module Emendate
         message = "Unhandled segment still present"
         errors << message
         history[:final_check_failed] = message
-        Failure(errors)
+        Failure(self)
       else
         history[:final_check_passed] = nil
         Success()
