@@ -60,7 +60,9 @@ module Emendate
     attr_reader :pm
 
     def map_errors
-      pm.errors.map do |err|
+      pm.errors
+        .reject{ |err| err.is_a?(Emendate::SegmentSets::SegmentSet) }
+        .map do |err|
         if err.is_a?(String)
           err
         else
