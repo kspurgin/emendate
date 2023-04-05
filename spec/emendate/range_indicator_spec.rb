@@ -46,5 +46,74 @@ RSpec.describe Emendate::RangeIndicator do
         expect(result.warnings.length).to eq(1)
       end
     end
+
+    context 'with `1930s or 1940s`' do
+      let(:str){ '1930s or 1940s' }
+
+      it 'returns multiple decade date types by default' do
+        expect(type_string).to eq(
+          'decade_date_type date_separator decade_date_type'
+        )
+        expect(result.warnings).to be_empty
+      end
+
+      context 'with `and_or_date_handling: :single_range`' do
+        before(:context) do
+          Emendate.config.options.and_or_date_handling = :single_range
+        end
+        after(:context){ Emendate.reset_config }
+
+        it 'returns range_date_type' do
+          expect(type_string).to eq('range_date_type')
+          expect(result.warnings).to be_empty
+        end
+      end
+    end
+
+    context 'with `1930s & 1940s`' do
+      let(:str){ '1930s & 1940s' }
+
+      it 'returns multiple decade date types by default' do
+        expect(type_string).to eq(
+          'decade_date_type date_separator decade_date_type'
+        )
+        expect(result.warnings).to be_empty
+      end
+
+      context 'with `and_or_date_handling: :single_range`' do
+        before(:context) do
+          Emendate.config.options.and_or_date_handling = :single_range
+        end
+        after(:context){ Emendate.reset_config }
+
+        it 'returns range_date_type' do
+          expect(type_string).to eq('range_date_type')
+          expect(result.warnings).to be_empty
+        end
+      end
+    end
+
+    context 'with `1932-1942 or 1948-1949`' do
+      let(:str){ '1932-1942 or 1948-1949' }
+
+      it 'returns multiple decade date types by default' do
+        expect(type_string).to eq(
+          'range_date_type date_separator range_date_type'
+        )
+        expect(result.warnings).to be_empty
+      end
+
+      context 'with `and_or_date_handling: :single_range`' do
+        before(:context) do
+          Emendate.config.options.and_or_date_handling = :single_range
+        end
+        after(:context){ Emendate.reset_config }
+
+        it 'returns range_date_type' do
+          expect(type_string).to eq('range_date_type')
+          expect(result.warnings).to be_empty
+        end
+      end
+    end
   end
 end

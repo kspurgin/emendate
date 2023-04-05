@@ -28,6 +28,7 @@
 "[1997 or 1999]","[#### or ####]","alternate_dates;inferred","ba","square_bracket_interpretation: :inferred_date","1","1999","1999","1999-01-01","1999-12-31","inferred;one_of_set","1999",,,"1997 or 1999","[1997,1999]"
 "1932-1942 or 1948-1949","####-#### or ####-####","alternate_dates","mmm",,"0","1932","1942","1932-01-01","1942-12-31","one_of_set","1932-1942 or 1948-1949",,,,
 "1932-1942 or 1948-1949","####-#### or ####-####","alternate_dates","mmm",,"1","1948","1949","1948-01-01","1949-12-31","one_of_set","1932-1942 or 1948-1949",,,,
+"1932-1942 or 1948-1949","####-#### or ####-####","alternate_dates","mmm","and_or_date_handling: :single_range","0","1932","1949","1932-01-01","1949-12-31",,"1932-1942 or 1948-1949",,,,
 "[1997-1998]","[####-####]","inferred","ba","square_bracket_interpretation: :inferred_date","0","1997","1998","1997-01-01","1998-12-31","inferred","[1997-1998]",,,"1997 - 1998","1997/1998"
 "[1997]-[1998]","[####]-[####]","inferred",,,"0","1997","1998","1997-01-01","1998-12-31",,"[1997]-[1998]",,,,
 "[19th century]","[##ORD century]","century;inferred","ba","square_bracket_interpretation: :inferred_date","0","1801","1900","1801-01-01","1900-12-31","inferred","[19th century]",,,"1801 - 1900 (exact year unspecified)","[1801..1900]"

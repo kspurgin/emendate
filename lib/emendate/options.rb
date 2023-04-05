@@ -22,7 +22,8 @@ module Emendate
       validation_errs = Emendate::OptionsContract.new.call(**opthash).errors.to_h
       if validation_errs.empty?
         set_options
-        handle_edtf_shortcut
+        handle_edtf_shortcut if Emendate.options.edtf
+        handle_collectionspace if Emendate.options.dialect == :collectionspace
       else
         report_errors_and_exit(validation_errs)
       end
@@ -59,9 +60,16 @@ module Emendate
       opts.each{ |key, val| Emendate.config.options.send("#{key}=".to_sym, val) }
     end
 
-    def handle_edtf_shortcut
-      return unless Emendate.options.edtf
+    def handle_collectionspace
+      cs_opts = {
+        and_or_date_handling: :single_range,
+        bce_handling: :naive,
+        before_date_treatment: :range
+      }
+      set_options(cs_opts)
+    end
 
+    def handle_edtf_shortcut
       edtf_opts = {
         beginning_hyphen: :edtf,
         ending_slash: :unknown,
