@@ -34,6 +34,12 @@ module Emendate
         @certainty = certainty.flatten.uniq.sort
       end
 
+      def clear_set_certainty
+        certainty.delete(:all_of_set)
+        certainty.delete(:one_of_set)
+        certainty
+      end
+
       def copy(other_set)
         @orig_string = other_set.orig_string
         @norm = other_set.norm

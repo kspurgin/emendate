@@ -6,10 +6,11 @@ module Emendate
     module Collectionspace
       SUFFIX = 'T00:00:00.000Z'
 
-      def self.extended(mod)
-        Emendate.config.options.bce_handling = :naive
-        Emendate.config.options.before_date_treatment = :range
-      end
+      # def self.extended(mod)
+      #   Emendate.config.options.and_or_date_handling = :single_range
+      #   Emendate.config.options.bce_handling = :naive
+      #   Emendate.config.options.before_date_treatment = :range
+      # end
 
       def base_value
         {

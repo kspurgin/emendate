@@ -12,7 +12,6 @@ module Emendate
     def derive(opts)
       set_sources(opts)
       derive_values
-      binding.pry if sources.length == 0
     end
 
     def derive_values
@@ -52,7 +51,6 @@ module Emendate
     end
 
     def derive_location
-#      binding.pry unless sources[0].respond_to?(:location)
       start_position = sources[0].location.col
       length = sources.map{ |src| src.location.length }.sum
       Emendate::Location.new(start_position, length)

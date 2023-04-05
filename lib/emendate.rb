@@ -43,6 +43,7 @@ module Emendate
     setting :ambiguous_year_rollback_threshold,
       default: Date.today.year.to_s[-2..-1].to_i,
       reader: true
+    setting :and_or_date_handling, default: :multi, reader: true
     setting :bce_handling, default: :precise, reader: true
     setting :before_date_treatment, default: :point, reader: true
     setting :beginning_hyphen, default: :unknown, reader: true

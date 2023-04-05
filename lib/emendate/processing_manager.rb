@@ -105,7 +105,8 @@ module Emendate
                  elsif val.respond_to?(:segments) && val.empty?
                    val.norm
                  elsif val.respond_to?(:types)
-                   val.types.inspect
+                   "types: #{val.types.inspect}\n  "\
+                     "certainty: #{val.certainty.inspect}"
                  else
                    nil
                  end

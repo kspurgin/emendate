@@ -93,11 +93,6 @@ RSpec.describe Emendate::CertaintyChecker do
     end
 
     context 'with inferred handling for square brackets' do
-      before do
-        Emendate::Options.new({square_bracket_interpretation: :inferred_date})
-      end
-      after{ Emendate.reset_config }
-
       context 'with [circa 2002?] and default square bracket handling' do
         let(:string){ '[circa 2002?]' }
 
@@ -126,11 +121,26 @@ RSpec.describe Emendate::CertaintyChecker do
         end
       end
 
-        context 'with [1997 or 1999]' do
-          let(:string){ '[1997 or 1999]' }
+      context 'with [1997 or 1999]' do
+        let(:string){ '[1997 or 1999]' }
 
-          it 'certainty is inferred and one_of_set' do
-            expect(result.certainty.sort).to eq(%i[inferred one_of_set])
+        it 'certainty is inferred and one_of_set' do
+          expect(result.certainty.sort).to eq(%i[inferred one_of_set])
+        end
+
+        it 'removes square brackets from result' do
+          expected = 'number4 date_separator number4'
+          expect(result.type_string).to eq(expected)
+        end
+
+        context 'with `and_or_date_handling: :single_range`' do
+          before do
+            Emendate.config.options.and_or_date_handling = :single_range
+          end
+          after{ Emendate.reset_config }
+
+          it 'certainty is inferred' do
+            expect(result.certainty.sort).to eq(%i[inferred])
           end
 
           it 'removes square brackets from result' do
@@ -138,11 +148,12 @@ RSpec.describe Emendate::CertaintyChecker do
             expect(result.type_string).to eq(expected)
           end
         end
+      end
     end
 
     context 'with edtf handling for square brackets' do
       before do
-        Emendate::Options.new({square_bracket_interpretation: :edtf_set})
+        Emendate.config.options.square_bracket_interpretation =  :edtf_set
       end
       after{ Emendate.reset_config }
 
