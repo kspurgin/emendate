@@ -145,6 +145,18 @@ module Emendate
     end
   end
 
+  # @param strings [Array<String>]
+  # @param options [Hash]
+  def batch_translate(strings, options = {})
+    Emendate::Options.new(options) unless options.empty?
+    strings.each do |str|
+      pm = Emendate::ProcessingManager.call(str)
+      processed = pm.success? ? pm.value! : pm.failure
+      translator = Emendate::Translator.new(processed)
+      yield translator.call
+    end
+  end
+
   private
 
   def processing_steps
