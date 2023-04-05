@@ -13,7 +13,16 @@ module Emendate
       def tested_result
         return nil unless example.testable?
 
-        example.processed.result.send(name.delete_prefix('result_').to_sym).join('|')
+
+        result = example.processed
+          .result
+          .send(name.delete_prefix('result_').to_sym)
+
+        if result.empty?
+          'na'
+        else
+          result.join('|')
+        end
       end
     end
   end
