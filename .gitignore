@@ -13,3 +13,5 @@
 # other
 .byebug_history
 *.csv#
+/.DS_Store
+/spec/.DS_Store
