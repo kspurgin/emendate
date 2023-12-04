@@ -10,12 +10,13 @@ require 'active_support/core_ext/object'
 require 'dry-configurable'
 require 'dry/monads'
 require 'dry/monads/do'
+require 'pry-byebug'
 
 require 'emendate/errors'
 require 'emendate/date_types/date_type'
 # require 'emendate/segment/segment'
 
-Dir.glob("#{__dir__}/**/*").sort.select { |path| path.match?(/\.rb$/) }.each do |rbfile|
+Dir.glob("#{__dir__}/**/*").sort.select{ |path| path.match?(/\.rb$/) }.each do |rbfile|
   require rbfile.delete_prefix("#{File.expand_path(__dir__)}/lib/")
 end
 
@@ -41,8 +42,8 @@ module Emendate
     setting :ambiguous_month_day_year, default: :month_day_year, reader: true
     setting :ambiguous_month_year, default: :as_year, reader: true
     setting :ambiguous_year_rollback_threshold,
-      default: Date.today.year.to_s[-2..-1].to_i,
-      reader: true
+            default: Date.today.year.to_s[-2..-1].to_i,
+            reader: true
     setting :and_or_date_handling, default: :multi, reader: true
     setting :bce_handling, default: :precise, reader: true
     setting :before_date_treatment, default: :point, reader: true
@@ -53,13 +54,13 @@ module Emendate
     setting :max_output_dates, default: :all, reader: true
     setting :max_month_number_handling, default: :months, reader: true
     setting :open_unknown_end_date,
-      default: '2999-12-31',
-      reader: true,
-      constructor: ->(value){ Date.parse(value) }
+            default: '2999-12-31',
+            reader: true,
+            constructor: ->(value){ Date.parse(value) }
     setting :open_unknown_start_date,
-      default: '1583-01-01',
-      reader: true,
-      constructor: ->(value){ Date.parse(value) }
+            default: '1583-01-01',
+            reader: true,
+            constructor: ->(value){ Date.parse(value) }
     setting :pluralized_date_interpretation, default: :decade, reader: true
     setting :square_bracket_interpretation, default: :inferred_date, reader: true
     setting :dialect, default: nil, reader: true
@@ -73,10 +74,10 @@ module Emendate
     setting :file_name, default: 'examples.csv', reader: true
     setting :file_path, default: ->{ "#{Emendate.examples.dir.call}/#{Emendate.examples.file_name}" }, reader: true
     setting :tests,
-      default: %w[date_start_full date_end_full
-                  result_warnings
-                  translation_lyrasis_pseudo_edtf],
-      reader: true
+            default: %w[date_start_full date_end_full
+                        result_warnings
+                        translation_lyrasis_pseudo_edtf],
+            reader: true
   end
 
   # @param string [String] original date string
@@ -89,15 +90,15 @@ module Emendate
     return string unless to_prep
 
     tokens = to_prep.first
-      .call(string)
-      .value!
+                    .call(string)
+                    .value!
 
     return tokens if to_prep.length == 1
 
     to_prep.shift
     to_prep.each do |step|
       tokens = step.call(tokens)
-        .value!
+                   .value!
     end
 
     tokens
@@ -177,7 +178,7 @@ module Emendate
       Emendate::RangeIndicator,
       Emendate::TokenCleaner
     ].map{ |klass| [klass, ->(tokens){ klass.send(:call, tokens) }] }
-     .to_h
+      .to_h
   end
 
   # @param step [Class] class you are preparing input for

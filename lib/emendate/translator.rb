@@ -9,7 +9,7 @@ module Emendate
   class Translator
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 
@@ -17,7 +17,7 @@ module Emendate
     def initialize(processed)
       @dialect = Emendate.options.dialect
       unless dialect
-        puts "ERROR: You must pass in a `dialect` option when using `translate`"
+        puts 'ERROR: You must pass in a `dialect` option when using `translate`'
         exit
       end
       extend dialect_module.constantize
@@ -27,10 +27,12 @@ module Emendate
     end
 
     def call
+      return translate_failure(processed) if processed.state == :final_check_failed
+
       processed.result
-        .dates
-        .map{ |pdate| translate_date(pdate) }
-        .each{ |result| translation.add_value(result) }
+               .dates
+               .map{ |pdate| translate_date(pdate) }
+               .each{ |result| translation.add_value(result) }
 
       translation
     end
@@ -41,6 +43,19 @@ module Emendate
 
     def dialect_module
       "Emendate::Translators::#{dialect.to_s.camelize}"
+    end
+
+    def translate_failure(_failure)
+      type = 'ProcessingError'
+      translator = dialect_translator(type)
+
+      result = if translator
+                 do_translation(translator, nil)
+               else
+                 no_translation(type)
+               end
+      translation.add_value(result)
+      translation
     end
 
     # def truncate_tokens
@@ -70,7 +85,7 @@ module Emendate
       klass = "#{dialect_module}::#{type_class}".constantize
       klass.include(dialect_module.constantize)
       klass.new
-    rescue
+    rescue StandardError
       nil
     end
 
@@ -86,11 +101,11 @@ module Emendate
 
     def do_translation(translator, pdate)
       translator.translate(processed, pdate)
-    rescue => err
-      return TranslatedDate.new(
+    rescue StandardError => e
+      TranslatedDate.new(
         orig: processed.orig_string,
         value: empty_value,
-        warnings: [err.full_message]
+        warnings: [e.full_message]
       )
     end
 
@@ -105,7 +120,7 @@ module Emendate
 
     def determine_indiv_date_types
       tokens.select{ |token| token.date_type? }
-        .map{ |datetype| datetype.class.name.split('::')[-1] }
+            .map{ |datetype| datetype.class.name.split('::')[-1] }
     end
 
     def determine_combined_date_type
@@ -126,8 +141,6 @@ module Emendate
         case processed.state
         when :known_unknown_tagged_failure
           'KnownUnknown'
-        else
-          nil
         end
       end
     end
