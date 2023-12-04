@@ -6,7 +6,7 @@
 <title>
   Class: Emendate::Translation
   
-    &mdash; Documentation by YARD 0.9.28
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -99,7 +99,21 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Composite result class to compile translations of individual parsed</p>
 
+<pre class="code ruby"><code class="ruby">dates for a string
+</code></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
 
@@ -138,7 +152,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#value-instance_method" title="#value (instance method)">#<strong>value</strong>  &#x21d2; Object </a>
+      <a href="#values-instance_method" title="#values (instance method)">#<strong>values</strong>  &#x21d2; Object </a>
     
 
     
@@ -158,7 +172,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute value.</p>
+<p>Returns the value of attribute values.</p>
 </div></span>
   
 </li>
@@ -209,7 +223,29 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(orig:, value:, warnings:)  &#x21d2; Translation </a>
+      <a href="#add_value-instance_method" title="#add_value (instance method)">#<strong>add_value</strong>(value)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(orig:, values: [], warnings: [])  &#x21d2; Translation </a>
     
 
     
@@ -241,7 +277,7 @@
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(orig:, value:, warnings:)  &#x21d2; <tt><span class='object_link'><a href="" title="Emendate::Translation (class)">Translation</a></span></tt> 
+    #<strong>initialize</strong>(orig:, values: [], warnings: [])  &#x21d2; <tt><span class='object_link'><a href="" title="Emendate::Translation (class)">Translation</a></span></tt> 
   
 
   
@@ -264,15 +300,19 @@
       <pre class="lines">
 
 
-7
-8
-9</pre>
+9
+10
+11
+12
+13</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/translation.rb', line 7</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translation.rb', line 9</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='label'>orig:</span><span class='comma'>,</span> <span class='label'>value:</span><span class='comma'>,</span> <span class='label'>warnings:</span><span class='rparen'>)</span>
-  <span class='ivar'>@orig</span><span class='comma'>,</span> <span class='ivar'>@value</span><span class='comma'>,</span> <span class='ivar'>@warnings</span> <span class='op'>=</span> <span class='id identifier rubyid_orig'>orig</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_warnings'>warnings</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='label'>orig:</span><span class='comma'>,</span> <span class='label'>values:</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>warnings:</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='ivar'>@orig</span> <span class='op'>=</span> <span class='id identifier rubyid_orig'>orig</span>
+  <span class='ivar'>@values</span> <span class='op'>=</span> <span class='id identifier rubyid_values'>values</span>
+  <span class='ivar'>@warnings</span> <span class='op'>=</span> <span class='id identifier rubyid_warnings'>warnings</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -312,12 +352,12 @@
       <pre class="lines">
 
 
-5
-6
-7</pre>
+7
+8
+9</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/translation.rb', line 5</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translation.rb', line 7</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_orig'>orig</span>
   <span class='ivar'>@orig</span>
@@ -330,9 +370,9 @@
       
       <span id=""></span>
       <div class="method_details ">
-  <h3 class="signature " id="value-instance_method">
+  <h3 class="signature " id="values-instance_method">
   
-    #<strong>value</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
+    #<strong>values</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -341,7 +381,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the value of attribute value.</p>
+<p>Returns the value of attribute values.</p>
 
 
   </div>
@@ -355,15 +395,15 @@
       <pre class="lines">
 
 
-5
-6
-7</pre>
+7
+8
+9</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/translation.rb', line 5</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translation.rb', line 7</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_value'>value</span>
-  <span class='ivar'>@value</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_values'>values</span>
+  <span class='ivar'>@values</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -398,12 +438,12 @@
       <pre class="lines">
 
 
-5
-6
-7</pre>
+7
+8
+9</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/translation.rb', line 5</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translation.rb', line 7</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_warnings'>warnings</span>
   <span class='ivar'>@warnings</span>
@@ -416,12 +456,74 @@
   </div>
 
 
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="add_value-instance_method">
+  
+    #<strong>add_value</strong>(value)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="TranslatedDate.html" title="Emendate::TranslatedDate (class)">Emendate::TranslatedDate</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+16
+17
+18
+19</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translation.rb', line 16</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_add_value'>add_value</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
+  <span class='ivar'>@values</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_value'>value</span>
+  <span class='ivar'>@warnings</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_warnings'>warnings</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
 </div>
 
       <div id="footer">
-  Generated on Sat Apr  1 20:53:13 2023 by
+  Generated on Mon Dec  4 23:54:21 2023 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.28 (ruby-2.7.8).
+  0.9.34 (ruby-2.7.8).
 </div>
 
     </div>

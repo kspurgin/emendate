@@ -6,7 +6,7 @@
 <title>
   Class: Emendate::DateTypes::Range
   
-    &mdash; Documentation by YARD 0.9.28
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -140,6 +140,35 @@
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#indicator-instance_method" title="#indicator (instance method)">#<strong>indicator</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute indicator.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#startdate-instance_method" title="#startdate (instance method)">#<strong>startdate</strong>  &#x21d2; Object </a>
     
 
@@ -173,7 +202,7 @@
   
   
   <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="DateType.html" title="Emendate::DateTypes::DateType (class)">DateType</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="DateType.html#certainty-instance_method" title="Emendate::DateTypes::DateType#certainty (method)">#certainty</a></span>, <span class='object_link'><a href="DateType.html#partial_indicator-instance_method" title="Emendate::DateTypes::DateType#partial_indicator (method)">#partial_indicator</a></span>, <span class='object_link'><a href="DateType.html#range_switch-instance_method" title="Emendate::DateTypes::DateType#range_switch (method)">#range_switch</a></span>, <span class='object_link'><a href="DateType.html#source_tokens-instance_method" title="Emendate::DateTypes::DateType#source_tokens (method)">#source_tokens</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="DateType.html#certainty-instance_method" title="Emendate::DateTypes::DateType#certainty (method)">#certainty</a></span>, <span class='object_link'><a href="DateType.html#partial_indicator-instance_method" title="Emendate::DateTypes::DateType#partial_indicator (method)">#partial_indicator</a></span>, <span class='object_link'><a href="DateType.html#range_switch-instance_method" title="Emendate::DateTypes::DateType#range_switch (method)">#range_switch</a></span>, <span class='object_link'><a href="DateType.html#sources-instance_method" title="Emendate::DateTypes::DateType#sources (method)">#sources</a></span></p>
 
 
   
@@ -226,7 +255,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>A new instance of Range.</p>
+<p>Expect to be initialized with:   sources: Emendate::SegmentSets::SegmentSet Where the segment set has 3 segments (start, indicator, end).</p>
 </div></span>
   
 </li>
@@ -258,6 +287,28 @@
   <span class="summary_signature">
     
       <a href="#lexeme-instance_method" title="#lexeme (instance method)">#<strong>lexeme</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#orig-instance_method" title="#orig (instance method)">#<strong>orig</strong>  &#x21d2; Object </a>
     
 
     
@@ -311,7 +362,7 @@
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="DateType.html" title="Emendate::DateTypes::DateType (class)">DateType</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="DateType.html#date_part%3F-instance_method" title="Emendate::DateTypes::DateType#date_part? (method)">#date_part?</a></span>, <span class='object_link'><a href="DateType.html#date_type%3F-instance_method" title="Emendate::DateTypes::DateType#date_type? (method)">#date_type?</a></span>, <span class='object_link'><a href="DateType.html#earliest_at_granularity-instance_method" title="Emendate::DateTypes::DateType#earliest_at_granularity (method)">#earliest_at_granularity</a></span>, <span class='object_link'><a href="DateType.html#latest_at_granularity-instance_method" title="Emendate::DateTypes::DateType#latest_at_granularity (method)">#latest_at_granularity</a></span>, <span class='object_link'><a href="DateType.html#location-instance_method" title="Emendate::DateTypes::DateType#location (method)">#location</a></span>, <span class='object_link'><a href="DateType.html#prepend_source_token-instance_method" title="Emendate::DateTypes::DateType#prepend_source_token (method)">#prepend_source_token</a></span>, <span class='object_link'><a href="DateType.html#processed%3F-instance_method" title="Emendate::DateTypes::DateType#processed? (method)">#processed?</a></span>, <span class='object_link'><a href="DateType.html#type-instance_method" title="Emendate::DateTypes::DateType#type (method)">#type</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="DateType.html#add_range_switch-instance_method" title="Emendate::DateTypes::DateType#add_range_switch (method)">#add_range_switch</a></span>, <span class='object_link'><a href="DateType.html#date_part%3F-instance_method" title="Emendate::DateTypes::DateType#date_part? (method)">#date_part?</a></span>, <span class='object_link'><a href="DateType.html#date_type%3F-instance_method" title="Emendate::DateTypes::DateType#date_type? (method)">#date_type?</a></span>, <span class='object_link'><a href="DateType.html#earliest_at_granularity-instance_method" title="Emendate::DateTypes::DateType#earliest_at_granularity (method)">#earliest_at_granularity</a></span>, <span class='object_link'><a href="DateType.html#latest_at_granularity-instance_method" title="Emendate::DateTypes::DateType#latest_at_granularity (method)">#latest_at_granularity</a></span>, <span class='object_link'><a href="DateType.html#location-instance_method" title="Emendate::DateTypes::DateType#location (method)">#location</a></span>, <span class='object_link'><a href="DateType.html#prepend_source_token-instance_method" title="Emendate::DateTypes::DateType#prepend_source_token (method)">#prepend_source_token</a></span>, <span class='object_link'><a href="DateType.html#processed%3F-instance_method" title="Emendate::DateTypes::DateType#processed? (method)">#processed?</a></span>, <span class='object_link'><a href="DateType.html#type-instance_method" title="Emendate::DateTypes::DateType#type (method)">#type</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -327,7 +378,12 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns a new instance of Range.</p>
+<p>Expect to be initialized with:</p>
+
+<pre class="code ruby"><code class="ruby">sources: Emendate::SegmentSets::SegmentSet
+</code></pre>
+
+<p>Where the segment set has 3 segments (start, indicator, end)</p>
 
 
   </div>
@@ -341,23 +397,21 @@
       <pre class="lines">
 
 
-9
-10
-11
 12
 13
 14
-15</pre>
+15
+16
+17</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/range.rb', line 9</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/range.rb', line 12</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='op'>**</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
   <span class='kw'>super</span>
-  <span class='ivar'>@startdate</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:startdate</span><span class='rbracket'>]</span>
-  <span class='ivar'>@enddate</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:enddate</span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_ri'>ri</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:range_indicator</span><span class='rbracket'>]</span>
-  <span class='lbracket'>[</span><span class='id identifier rubyid_startdate'>startdate</span><span class='comma'>,</span> <span class='id identifier rubyid_ri'>ri</span><span class='comma'>,</span> <span class='id identifier rubyid_enddate'>enddate</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span> <span class='id identifier rubyid_source_tokens'>source_tokens</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_s'>s</span> <span class='rbrace'>}</span>
+  <span class='ivar'>@startdate</span> <span class='op'>=</span> <span class='id identifier rubyid_sources'>sources</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span>
+  <span class='ivar'>@indicator</span> <span class='op'>=</span> <span class='id identifier rubyid_sources'>sources</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span>
+  <span class='ivar'>@enddate</span> <span class='op'>=</span> <span class='id identifier rubyid_sources'>sources</span><span class='lbracket'>[</span><span class='int'>2</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -406,6 +460,49 @@
 
 <span class='kw'>def</span> <span class='id identifier rubyid_enddate'>enddate</span>
   <span class='ivar'>@enddate</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="indicator-instance_method">
+  
+    #<strong>indicator</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute indicator.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+7
+8
+9</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/range.rb', line 7</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_indicator'>indicator</span>
+  <span class='ivar'>@indicator</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -477,14 +574,14 @@
       <pre class="lines">
 
 
-17
-18
 19
 20
-21</pre>
+21
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/range.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/range.rb', line 19</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_earliest'>earliest</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_startdate'>startdate</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -511,14 +608,14 @@
       <pre class="lines">
 
 
-23
-24
 25
 26
-27</pre>
+27
+28
+29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/range.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/range.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_latest'>latest</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_enddate'>enddate</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -545,18 +642,18 @@
       <pre class="lines">
 
 
-29
-30
 31
 32
 33
 34
 35
 36
-37</pre>
+37
+38
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/range.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/range.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_lexeme'>lexeme</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_earliest'>earliest</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_latest'>latest</span>
@@ -566,6 +663,36 @@
   <span class='kw'>elsif</span> <span class='id identifier rubyid_latest'>latest</span>
     <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>- </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_latest'>latest</span><span class='period'>.</span><span class='id identifier rubyid_iso8601'>iso8601</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
   <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="orig-instance_method">
+  
+    #<strong>orig</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+41
+42
+43</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/range.rb', line 41</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_orig'>orig</span>
+  <span class='id identifier rubyid_sources'>sources</span><span class='period'>.</span><span class='id identifier rubyid_orig_string'>orig_string</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -609,12 +736,12 @@
       <pre class="lines">
 
 
-39
-40
-41</pre>
+45
+46
+47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/range.rb', line 39</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/range.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_range?'>range?</span>
   <span class='kw'>true</span>
@@ -629,9 +756,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Apr  1 20:53:13 2023 by
+  Generated on Mon Dec  4 23:54:21 2023 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.28 (ruby-2.7.8).
+  0.9.34 (ruby-2.7.8).
 </div>
 
     </div>

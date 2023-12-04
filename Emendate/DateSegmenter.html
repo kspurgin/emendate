@@ -6,7 +6,7 @@
 <title>
   Class: Emendate::DateSegmenter
   
-    &mdash; Documentation by YARD 0.9.28
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -301,7 +301,7 @@
       <pre class="code"><span class="info file"># File 'lib/emendate/date_segmenter.rb', line 9</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='op'>...</span><span class='rparen'>)</span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>...</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
+  <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>...</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -342,31 +342,23 @@
 30
 31
 32
-33
-34
-35
-36
-37</pre>
+33</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/emendate/date_segmenter.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span>
-  <span class='kw'>until</span> <span class='id identifier rubyid_working'>working</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
-    <span class='id identifier rubyid_recursive_parse'>recursive_parse</span>
-  <span class='kw'>end</span>
+  <span class='id identifier rubyid_recursive_parse'>recursive_parse</span> <span class='kw'>until</span> <span class='id identifier rubyid_working'>working</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+  <span class='id identifier rubyid_working'>working</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
+  <span class='id identifier rubyid_apply_partial_modifiers'>apply_partial_modifiers</span> <span class='kw'>until</span> <span class='id identifier rubyid_working'>working</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
 
   <span class='id identifier rubyid_working'>working</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
-  <span class='kw'>until</span> <span class='id identifier rubyid_working'>working</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
-    <span class='id identifier rubyid_apply_partial_modifiers'>apply_partial_modifiers</span>
-  <span class='kw'>end</span>
+  <span class='id identifier rubyid_apply_switch_modifiers'>apply_switch_modifiers</span> <span class='kw'>until</span> <span class='id identifier rubyid_working'>working</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
 
-  <span class='id identifier rubyid_working'>working</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
-  <span class='kw'>until</span> <span class='id identifier rubyid_working'>working</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
-    <span class='id identifier rubyid_apply_switch_modifiers'>apply_switch_modifiers</span>
-  <span class='kw'>end</span>
+  <span class='id identifier rubyid_apply_bce'>apply_bce</span> <span class='kw'>if</span> <span class='id identifier rubyid_bce?'>bce?</span>
+
   <span class='const'>Success</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -379,9 +371,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Apr  1 20:53:13 2023 by
+  Generated on Mon Dec  4 23:54:21 2023 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.28 (ruby-2.7.8).
+  0.9.34 (ruby-2.7.8).
 </div>
 
     </div>

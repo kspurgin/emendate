@@ -6,7 +6,7 @@
 <title>
   Class: Emendate::CertaintyChecker
   
-    &mdash; Documentation by YARD 0.9.28
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -149,28 +149,6 @@
   <span class="summary_signature">
     
       <a href="#call-instance_method" title="#call (instance method)">#<strong>call</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#check-instance_method" title="#check (instance method)">#<strong>check</strong>  &#x21d2; Object </a>
     
 
     
@@ -357,66 +335,14 @@
 </table>
 </div>
     
-      <div class="method_details ">
-  <h3 class="signature " id="check-instance_method">
-  
-    #<strong>check</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/certainty_checker.rb', line 32</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_check'>check</span>
-  <span class='kw'>until</span> <span class='id identifier rubyid_whole_done?'>whole_done?</span> <span class='kw'>do</span>
-    <span class='id identifier rubyid_process_whole_certainty'>process_whole_certainty</span>
-  <span class='kw'>end</span>
-
-  <span class='ivar'>@working</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
-
-  <span class='kw'>until</span> <span class='id identifier rubyid_working'>working</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='kw'>do</span>
-    <span class='id identifier rubyid_process_part_certainty'>process_part_certainty</span>
-  <span class='kw'>end</span>
-
-  <span class='id identifier rubyid_result'>result</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
   </div>
 
 </div>
 
       <div id="footer">
-  Generated on Sat Apr  1 20:53:13 2023 by
+  Generated on Mon Dec  4 23:54:21 2023 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.28 (ruby-2.7.8).
+  0.9.34 (ruby-2.7.8).
 </div>
 
     </div>

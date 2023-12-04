@@ -6,7 +6,7 @@
 <title>
   Class: Emendate::KnownUnknownTagger
   
-    &mdash; Documentation by YARD 0.9.28
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -227,13 +227,15 @@
 
 13
 14
-15</pre>
+15
+16</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/emendate/known_unknown_tagger.rb', line 13</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
   <span class='ivar'>@tokens</span> <span class='op'>=</span> <span class='id identifier rubyid_tokens'>tokens</span>
+  <span class='ivar'>@result</span> <span class='op'>=</span> <span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -298,7 +300,6 @@
       <pre class="lines">
 
 
-17
 18
 19
 20
@@ -307,22 +308,19 @@
 23
 24
 25
-26
-27</pre>
+26</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/known_unknown_tagger.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/known_unknown_tagger.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span>
-  <span class='kw'>return</span> <span class='const'>Success</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_known_unknown?'>known_unknown?</span>
-
-  <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SegmentSets.html" title="Emendate::SegmentSets (module)">SegmentSets</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SegmentSets/MixedSet.html" title="Emendate::SegmentSets::MixedSet (class)">MixedSet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="SegmentSets/SegmentSet.html#initialize-instance_method" title="Emendate::SegmentSets::SegmentSet#initialize (method)">new</a></span></span><span class='lparen'>(</span>
-    <span class='label'>string:</span> <span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_orig_string'>orig_string</span>
-  <span class='rparen'>)</span>
-  <span class='id identifier rubyid_result'>result</span> <span class='op'>&lt;&lt;</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="DateTypes.html" title="Emendate::DateTypes (module)">DateTypes</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="DateTypes/KnownUnknown.html" title="Emendate::DateTypes::KnownUnknown (class)">KnownUnknown</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="DateTypes/KnownUnknown.html#initialize-instance_method" title="Emendate::DateTypes::KnownUnknown#initialize (method)">new</a></span></span><span class='lparen'>(</span>
-    <span class='label'>lexeme:</span> <span class='id identifier rubyid_known_unknown_date_value'>known_unknown_date_value</span>
-  <span class='rparen'>)</span>
-  <span class='const'>Failure</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_known_unknown?'>known_unknown?</span>
+    <span class='id identifier rubyid_return_unknown_date_type'>return_unknown_date_type</span>
+  <span class='kw'>elsif</span> <span class='id identifier rubyid_end_of_range_unknown?'>end_of_range_unknown?</span>
+    <span class='id identifier rubyid_replace_question_with_unknown'>replace_question_with_unknown</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='const'>Success</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -334,9 +332,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Apr  1 20:53:13 2023 by
+  Generated on Mon Dec  4 23:54:22 2023 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.28 (ruby-2.7.8).
+  0.9.34 (ruby-2.7.8).
 </div>
 
     </div>

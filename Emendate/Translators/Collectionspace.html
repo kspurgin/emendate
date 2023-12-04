@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Module: Emendate::Translators::Collectionspace
+  
+    &mdash; Documentation by YARD 0.9.34
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "Emendate::Translators::Collectionspace";
+  relpath = '../../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../../class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../../_index.html">Index (C)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../Emendate.html" title="Emendate (module)">Emendate</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Translators.html" title="Emendate::Translators (module)">Translators</a></span></span>
+     &raquo; 
+    <span class="title">Collectionspace</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Module: Emendate::Translators::Collectionspace
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/emendate/translators/collectionspace.rb<span class="defines">,<br />
+  lib/emendate/translators/collectionspace/year.rb,<br /> lib/emendate/translators/collectionspace/range.rb,<br /> lib/emendate/translators/collectionspace/decade.rb,<br /> lib/emendate/translators/collectionspace/century.rb,<br /> lib/emendate/translators/collectionspace/year_month.rb,<br /> lib/emendate/translators/collectionspace/year_season.rb,<br /> lib/emendate/translators/collectionspace/known_unknown.rb,<br /> lib/emendate/translators/collectionspace/untokenizable.rb,<br /> lib/emendate/translators/collectionspace/year_month_day.rb,<br /> lib/emendate/translators/collectionspace/processing_error.rb</span>
+</dd>
+  </dl>
+  
+</div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>namespace for CollectionSpace structured date XML translators</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+  
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Collectionspace/Century.html" title="Emendate::Translators::Collectionspace::Century (class)">Century</a></span>, <span class='object_link'><a href="Collectionspace/Decade.html" title="Emendate::Translators::Collectionspace::Decade (class)">Decade</a></span>, <span class='object_link'><a href="Collectionspace/KnownUnknown.html" title="Emendate::Translators::Collectionspace::KnownUnknown (class)">KnownUnknown</a></span>, <span class='object_link'><a href="Collectionspace/ProcessingError.html" title="Emendate::Translators::Collectionspace::ProcessingError (class)">ProcessingError</a></span>, <span class='object_link'><a href="Collectionspace/Range.html" title="Emendate::Translators::Collectionspace::Range (class)">Range</a></span>, <span class='object_link'><a href="Collectionspace/Untokenizable.html" title="Emendate::Translators::Collectionspace::Untokenizable (class)">Untokenizable</a></span>, <span class='object_link'><a href="Collectionspace/Year.html" title="Emendate::Translators::Collectionspace::Year (class)">Year</a></span>, <span class='object_link'><a href="Collectionspace/YearMonth.html" title="Emendate::Translators::Collectionspace::YearMonth (class)">YearMonth</a></span>, <span class='object_link'><a href="Collectionspace/YearMonthDay.html" title="Emendate::Translators::Collectionspace::YearMonthDay (class)">YearMonthDay</a></span>, <span class='object_link'><a href="Collectionspace/YearSeason.html" title="Emendate::Translators::Collectionspace::YearSeason (class)">YearSeason</a></span>
+    
+  
+</p>
+
+  
+    <h2>
+      Constant Summary
+      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
+    </h2>
+
+    <dl class="constants">
+      
+        <dt id="SUFFIX-constant" class="">SUFFIX =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>T00:00:00.000Z</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#all_of_set-instance_method" title="#all_of_set (instance method)">#<strong>all_of_set</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#approximate-instance_method" title="#approximate (instance method)">#<strong>approximate</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#approximate_and_uncertain-instance_method" title="#approximate_and_uncertain (instance method)">#<strong>approximate_and_uncertain</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#base_value-instance_method" title="#base_value (instance method)">#<strong>base_value</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>def self.extended(mod)   Emendate.config.options.and_or_date_handling = :single_range   Emendate.config.options.bce_handling = :naive   Emendate.config.options.before_date_treatment = :range end.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#computed-instance_method" title="#computed (instance method)">#<strong>computed</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#computed_before-instance_method" title="#computed_before (instance method)">#<strong>computed_before</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#computed_normal-instance_method" title="#computed_normal (instance method)">#<strong>computed_normal</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#date-instance_method" title="#date (instance method)">#<strong>date</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#empty_value-instance_method" title="#empty_value (instance method)">#<strong>empty_value</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#nil_value-instance_method" title="#nil_value (instance method)">#<strong>nil_value</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#one_of_range_set-instance_method" title="#one_of_range_set (instance method)">#<strong>one_of_range_set</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#one_of_set-instance_method" title="#one_of_set (instance method)">#<strong>one_of_set</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#uncertain-instance_method" title="#uncertain (instance method)">#<strong>uncertain</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#unknown_value-instance_method" title="#unknown_value (instance method)">#<strong>unknown_value</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="all_of_set-instance_method">
+  
+    #<strong>all_of_set</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+111
+112
+113</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translators/collectionspace.rb', line 111</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_all_of_set'>all_of_set</span>
+  <span class='lbrace'>{</span> <span class='label'>dateNote:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Inclusive date</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="approximate-instance_method">
+  
+    #<strong>approximate</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translators/collectionspace.rb', line 82</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_approximate'>approximate</span>
+  <span class='id identifier rubyid_lexed'>lexed</span> <span class='op'>=</span> <span class='id identifier rubyid_processed'>processed</span><span class='period'>.</span><span class='id identifier rubyid_history'>history</span><span class='lbracket'>[</span><span class='symbol'>:lexed</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_types'>types</span> <span class='op'>=</span> <span class='id identifier rubyid_lexed'>lexed</span><span class='period'>.</span><span class='id identifier rubyid_types'>types</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_types'>types</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span><span class='lparen'>(</span><span class='symbol'>:about</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_computed'>computed</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='lbrace'>{</span>
+                     <span class='label'>dateEarliestSingleCertainty:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>about</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+                     <span class='label'>dateLatestCertainty:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>about</span><span class='tstring_end'>&#39;</span></span>
+                   <span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='kw'>elsif</span> <span class='id identifier rubyid_types'>types</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span><span class='lparen'>(</span><span class='symbol'>:approximate</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_computed'>computed</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='lbrace'>{</span>
+                     <span class='label'>dateEarliestSingleCertainty:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Approximate</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+                     <span class='label'>dateLatestCertainty:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Approximate</span><span class='tstring_end'>&#39;</span></span>
+                   <span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='kw'>elsif</span> <span class='id identifier rubyid_types'>types</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span><span class='lparen'>(</span><span class='symbol'>:circa</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_computed'>computed</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='lbrace'>{</span>
+                     <span class='label'>dateEarliestSingleCertainty:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Circa</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+                     <span class='label'>dateLatestCertainty:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Circa</span><span class='tstring_end'>&#39;</span></span>
+                   <span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="approximate_and_uncertain-instance_method">
+  
+    #<strong>approximate_and_uncertain</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>NotImplementedError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+103
+104
+105</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translators/collectionspace.rb', line 103</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_approximate_and_uncertain'>approximate_and_uncertain</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NotImplementedError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='embexpr_end'>}</span><span class='tstring_content'> has not implemented method &#39;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid___method__'>__method__</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="base_value-instance_method">
+  
+    #<strong>base_value</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>def self.extended(mod)</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'><span class='object_link'><a href="../../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_and_or_date_handling'>and_or_date_handling</span> <span class='op'>=</span> <span class='symbol'>:single_range</span>
+<span class='const'><span class='object_link'><a href="../../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_bce_handling'>bce_handling</span> <span class='op'>=</span> <span class='symbol'>:naive</span>
+<span class='const'><span class='object_link'><a href="../../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_before_date_treatment'>before_date_treatment</span> <span class='op'>=</span> <span class='symbol'>:range</span>
+</code></pre>
+
+<p>end</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+15
+16
+17
+18
+19
+20</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translators/collectionspace.rb', line 15</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_base_value'>base_value</span>
+  <span class='lbrace'>{</span>
+    <span class='label'>dateDisplayDate:</span> <span class='id identifier rubyid_processed'>processed</span><span class='period'>.</span><span class='id identifier rubyid_orig_string'>orig_string</span><span class='comma'>,</span>
+    <span class='label'>scalarValuesComputed:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>false</span><span class='tstring_end'>&#39;</span></span>
+  <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="computed-instance_method">
+  
+    #<strong>computed</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translators/collectionspace.rb', line 38</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_computed'>computed</span>
+  <span class='kw'>case</span> <span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_range_switch'>range_switch</span>
+  <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>after</span><span class='tstring_end'>&#39;</span></span>
+    <span class='id identifier rubyid_warn'>warn</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>:computed_after not yet implemented</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>before</span><span class='tstring_end'>&#39;</span></span>
+    <span class='id identifier rubyid_computed_before'>computed_before</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_computed_normal'>computed_normal</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="computed_before-instance_method">
+  
+    #<strong>computed_before</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translators/collectionspace.rb', line 68</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_computed_before'>computed_before</span>
+  <span class='id identifier rubyid_end_date'>end_date</span> <span class='op'>=</span> <span class='const'>Date</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_date_end_full'>date_end_full</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='int'>1</span>
+
+  <span class='id identifier rubyid_base_value'>base_value</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='lbrace'>{</span>
+                     <span class='label'>scalarValuesComputed:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>true</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+                     <span class='label'>dateLatestScalarValue:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_end_date'>end_date</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='const'><span class='object_link'><a href="#SUFFIX-constant" title="Emendate::Translators::Collectionspace::SUFFIX (constant)">SUFFIX</a></span></span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                     <span class='label'>dateLatestYear:</span> <span class='id identifier rubyid_end_date'>end_date</span><span class='period'>.</span><span class='id identifier rubyid_year'>year</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span>
+                     <span class='label'>dateLatestMonth:</span> <span class='id identifier rubyid_end_date'>end_date</span><span class='period'>.</span><span class='id identifier rubyid_month'>month</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span>
+                     <span class='label'>dateLatestDay:</span> <span class='id identifier rubyid_end_date'>end_date</span><span class='period'>.</span><span class='id identifier rubyid_day'>day</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span>
+                     <span class='label'>dateLatestEra:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>CE</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+                     <span class='label'>dateLatestCertainty:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Before</span><span class='tstring_end'>&#39;</span></span>
+                   <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="computed_normal-instance_method">
+  
+    #<strong>computed_normal</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translators/collectionspace.rb', line 49</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_computed_normal'>computed_normal</span>
+  <span class='id identifier rubyid_start_date'>start_date</span> <span class='op'>=</span> <span class='const'>Date</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_date_start_full'>date_start_full</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_end_date'>end_date</span> <span class='op'>=</span> <span class='const'>Date</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_date_end_full'>date_end_full</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_base_value'>base_value</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='lbrace'>{</span>
+                     <span class='label'>scalarValuesComputed:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>true</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+                     <span class='label'>dateEarliestScalarValue:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_date_start_full'>date_start_full</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='const'><span class='object_link'><a href="#SUFFIX-constant" title="Emendate::Translators::Collectionspace::SUFFIX (constant)">SUFFIX</a></span></span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                     <span class='label'>dateEarliestSingleYear:</span> <span class='id identifier rubyid_start_date'>start_date</span><span class='period'>.</span><span class='id identifier rubyid_year'>year</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span>
+                     <span class='label'>dateEarliestSingleMonth:</span> <span class='id identifier rubyid_start_date'>start_date</span><span class='period'>.</span><span class='id identifier rubyid_month'>month</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span>
+                     <span class='label'>dateEarliestSingleDay:</span> <span class='id identifier rubyid_start_date'>start_date</span><span class='period'>.</span><span class='id identifier rubyid_day'>day</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span>
+                     <span class='label'>dateEarliestSingleEra:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>CE</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+                     <span class='label'>dateLatestScalarValue:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_date_end_full'>date_end_full</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='const'><span class='object_link'><a href="#SUFFIX-constant" title="Emendate::Translators::Collectionspace::SUFFIX (constant)">SUFFIX</a></span></span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+                     <span class='label'>dateLatestYear:</span> <span class='id identifier rubyid_end_date'>end_date</span><span class='period'>.</span><span class='id identifier rubyid_year'>year</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span>
+                     <span class='label'>dateLatestMonth:</span> <span class='id identifier rubyid_end_date'>end_date</span><span class='period'>.</span><span class='id identifier rubyid_month'>month</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span>
+                     <span class='label'>dateLatestDay:</span> <span class='id identifier rubyid_end_date'>end_date</span><span class='period'>.</span><span class='id identifier rubyid_day'>day</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='comma'>,</span>
+                     <span class='label'>dateLatestEra:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>CE</span><span class='tstring_end'>&#39;</span></span>
+                   <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="date-instance_method">
+  
+    #<strong>date</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+22
+23
+24</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translators/collectionspace.rb', line 22</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_date'>date</span>
+  <span class='id identifier rubyid_pdate'>pdate</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="empty_value-instance_method">
+  
+    #<strong>empty_value</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+30
+31
+32</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translators/collectionspace.rb', line 30</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_empty_value'>empty_value</span>
+  <span class='id identifier rubyid_base_value'>base_value</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="nil_value-instance_method">
+  
+    #<strong>nil_value</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+26
+27
+28</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translators/collectionspace.rb', line 26</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_nil_value'>nil_value</span>
+  <span class='id identifier rubyid_base_value'>base_value</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="one_of_range_set-instance_method">
+  
+    #<strong>one_of_range_set</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>NotImplementedError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+107
+108
+109</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translators/collectionspace.rb', line 107</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_one_of_range_set'>one_of_range_set</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NotImplementedError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='embexpr_end'>}</span><span class='tstring_content'> has not implemented method &#39;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid___method__'>__method__</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="one_of_set-instance_method">
+  
+    #<strong>one_of_set</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+115
+116
+117</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translators/collectionspace.rb', line 115</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_one_of_set'>one_of_set</span>
+  <span class='lbrace'>{</span> <span class='label'>dateNote:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Alternate date</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="uncertain-instance_method">
+  
+    #<strong>uncertain</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+119
+120
+121
+122
+123
+124</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translators/collectionspace.rb', line 119</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_uncertain'>uncertain</span>
+  <span class='id identifier rubyid_computed'>computed</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='lbrace'>{</span>
+                   <span class='label'>dateEarliestSingleCertainty:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Possibly</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+                   <span class='label'>dateLatestCertainty:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Possibly</span><span class='tstring_end'>&#39;</span></span>
+                 <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="unknown_value-instance_method">
+  
+    #<strong>unknown_value</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+34
+35
+36</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translators/collectionspace.rb', line 34</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_unknown_value'>unknown_value</span>
+  <span class='id identifier rubyid_base_value'>base_value</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='lbrace'>{</span> <span class='label'>dateEarliestSingleCertainty:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>no date</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  Generated on Mon Dec  4 23:54:21 2023 by
+  <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.34 (ruby-2.7.8).
+</div>
+
+    </div>
+  </body>
+</html>

@@ -6,7 +6,7 @@
 <title>
   Module: Emendate::ResultEditable
   
-    &mdash; Documentation by YARD 0.9.28
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -76,7 +76,7 @@
   
   <dl>
     <dt>Included in:</dt>
-    <dd><span class='object_link'><a href="AllShortMdyAnalyzer.html" title="Emendate::AllShortMdyAnalyzer (class)">AllShortMdyAnalyzer</a></span>, <span class='object_link'><a href="AlphaMonthConverter.html" title="Emendate::AlphaMonthConverter (class)">AlphaMonthConverter</a></span>, <span class='object_link'><a href="DatePartTagger.html" title="Emendate::DatePartTagger (class)">DatePartTagger</a></span>, <span class='object_link'><a href="FormatStandardizer.html" title="Emendate::FormatStandardizer (class)">FormatStandardizer</a></span>, <span class='object_link'><a href="TokenCollapser.html" title="Emendate::TokenCollapser (class)">TokenCollapser</a></span></dd>
+    <dd><span class='object_link'><a href="AllShortMdyAnalyzer.html" title="Emendate::AllShortMdyAnalyzer (class)">AllShortMdyAnalyzer</a></span>, <span class='object_link'><a href="AlphaMonthConverter.html" title="Emendate::AlphaMonthConverter (class)">AlphaMonthConverter</a></span>, <span class='object_link'><a href="DatePartTagger.html" title="Emendate::DatePartTagger (class)">DatePartTagger</a></span>, <span class='object_link'><a href="FormatStandardizer.html" title="Emendate::FormatStandardizer (class)">FormatStandardizer</a></span>, <span class='object_link'><a href="TokenCollapser.html" title="Emendate::TokenCollapser (class)">TokenCollapser</a></span>, <span class='object_link'><a href="TokenReplacer.html" title="Emendate::TokenReplacer (class)">TokenReplacer</a></span></dd>
   </dl>
   
 
@@ -304,6 +304,28 @@
   <span class="summary_signature">
     
       <a href="#replace_x_with_date_part_type-instance_method" title="#replace_x_with_date_part_type (instance method)">#<strong>replace_x_with_date_part_type</strong>(x:, date_part_type:)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#replace_x_with_derived_new_type-instance_method" title="#replace_x_with_derived_new_type (instance method)">#<strong>replace_x_with_derived_new_type</strong>(x:, type:)  &#x21d2; Object </a>
     
 
     
@@ -671,7 +693,7 @@
   <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="DatePart.html" title="Emendate::DatePart (class)">DatePart</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Segment.html#initialize-instance_method" title="Emendate::Segment#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='label'>type:</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span>
                          <span class='label'>lexeme:</span> <span class='id identifier rubyid_sources'>sources</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:lexeme</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='comma'>,</span>
                          <span class='label'>literal:</span> <span class='id identifier rubyid_sources'>sources</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='comma'>,</span>
-                         <span class='label'>source_tokens:</span> <span class='id identifier rubyid_sources'>sources</span><span class='rparen'>)</span>
+                         <span class='label'>sources:</span> <span class='id identifier rubyid_sources'>sources</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -693,15 +715,15 @@
       <pre class="lines">
 
 
-62
-63
-64
-65
-66
-67</pre>
+71
+72
+73
+74
+75
+76</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/result_editable.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/result_editable.rb', line 71</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_replace_multi_with_date_part_type'>replace_multi_with_date_part_type</span><span class='lparen'>(</span><span class='label'>sources:</span><span class='comma'>,</span> <span class='label'>date_part_type:</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new_date_part'>new_date_part</span> <span class='op'>=</span> <span class='id identifier rubyid_new_date_part'>new_date_part</span><span class='lparen'>(</span><span class='id identifier rubyid_date_part_type'>date_part_type</span><span class='comma'>,</span> <span class='id identifier rubyid_sources'>sources</span><span class='rparen'>)</span>
@@ -774,20 +796,101 @@
       <pre class="lines">
 
 
-69
-70
-71
-72
-73
-74</pre>
+78
+79
+80
+81
+82
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/result_editable.rb', line 69</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/result_editable.rb', line 78</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_replace_x_with_date_part_type'>replace_x_with_date_part_type</span><span class='lparen'>(</span><span class='label'>x:</span><span class='comma'>,</span> <span class='label'>date_part_type:</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new_date_part'>new_date_part</span> <span class='op'>=</span> <span class='id identifier rubyid_new_date_part'>new_date_part</span><span class='lparen'>(</span><span class='id identifier rubyid_date_part_type'>date_part_type</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='id identifier rubyid_x'>x</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_x_ind'>x_ind</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_find_index'>find_index</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_insert'>insert</span><span class='lparen'>(</span><span class='id identifier rubyid_x_ind'>x_ind</span> <span class='op'>+</span> <span class='int'>1</span><span class='comma'>,</span> <span class='id identifier rubyid_new_date_part'>new_date_part</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="replace_x_with_derived_new_type-instance_method">
+  
+    #<strong>replace_x_with_derived_new_type</strong>(x:, type:)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>x</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Segment.html" title="Emendate::Segment (class)">Segment</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>to replace</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>type</span>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>type of the new segment</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+58
+59
+60
+61
+62
+63</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/result_editable.rb', line 58</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_replace_x_with_derived_new_type'>replace_x_with_derived_new_type</span><span class='lparen'>(</span><span class='label'>x:</span><span class='comma'>,</span> <span class='label'>type:</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_ins_pt'>ins_pt</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_find_index'>find_index</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='int'>1</span>
+  <span class='id identifier rubyid_newsegment'>newsegment</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="DerivedToken.html" title="Emendate::DerivedToken (class)">DerivedToken</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Segment.html#initialize-instance_method" title="Emendate::Segment#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='label'>type:</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='label'>sources:</span> <span class='lbracket'>[</span><span class='id identifier rubyid_x'>x</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_insert'>insert</span><span class='lparen'>(</span><span class='id identifier rubyid_ins_pt'>ins_pt</span><span class='comma'>,</span> <span class='id identifier rubyid_newsegment'>newsegment</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -810,14 +913,14 @@
       <pre class="lines">
 
 
-76
-77
-78
-79
-80</pre>
+85
+86
+87
+88
+89</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/result_editable.rb', line 76</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/result_editable.rb', line 85</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_replace_x_with_given_segment'>replace_x_with_given_segment</span><span class='lparen'>(</span><span class='label'>x:</span><span class='comma'>,</span> <span class='label'>segment:</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_x_ind'>x_ind</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_find_index'>find_index</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span>
@@ -844,14 +947,14 @@
       <pre class="lines">
 
 
-56
-57
-58
-59
-60</pre>
+65
+66
+67
+68
+69</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/result_editable.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/result_editable.rb', line 65</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_replace_x_with_new'>replace_x_with_new</span><span class='lparen'>(</span><span class='label'>x:</span><span class='comma'>,</span> <span class='label'>new:</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_ins_pt'>ins_pt</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_find_index'>find_index</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='int'>1</span>
@@ -868,9 +971,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Apr  1 20:53:12 2023 by
+  Generated on Mon Dec  4 23:54:21 2023 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.28 (ruby-2.7.8).
+  0.9.34 (ruby-2.7.8).
 </div>
 
     </div>

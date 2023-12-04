@@ -6,7 +6,7 @@
 <title>
   Class: Emendate::DateTypes::DateType
   
-    &mdash; Documentation by YARD 0.9.28
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -125,7 +125,7 @@
 
 </div><div id="subclasses">
   <h2>Direct Known Subclasses</h2>
-  <p class="children"><span class='object_link'><a href="Century.html" title="Emendate::DateTypes::Century (class)">Century</a></span>, <span class='object_link'><a href="Decade.html" title="Emendate::DateTypes::Decade (class)">Decade</a></span>, <span class='object_link'><a href="KnownUnknown.html" title="Emendate::DateTypes::KnownUnknown (class)">KnownUnknown</a></span>, <span class='object_link'><a href="Millennium.html" title="Emendate::DateTypes::Millennium (class)">Millennium</a></span>, <span class='object_link'><a href="OpenRangeDate.html" title="Emendate::DateTypes::OpenRangeDate (class)">OpenRangeDate</a></span>, <span class='object_link'><a href="Range.html" title="Emendate::DateTypes::Range (class)">Range</a></span>, <span class='object_link'><a href="Unprocessable.html" title="Emendate::DateTypes::Unprocessable (class)">Unprocessable</a></span>, <span class='object_link'><a href="Untokenizable.html" title="Emendate::DateTypes::Untokenizable (class)">Untokenizable</a></span>, <span class='object_link'><a href="Year.html" title="Emendate::DateTypes::Year (class)">Year</a></span>, <span class='object_link'><a href="YearMonth.html" title="Emendate::DateTypes::YearMonth (class)">YearMonth</a></span>, <span class='object_link'><a href="YearMonthDay.html" title="Emendate::DateTypes::YearMonthDay (class)">YearMonthDay</a></span>, <span class='object_link'><a href="YearSeason.html" title="Emendate::DateTypes::YearSeason (class)">YearSeason</a></span></p>
+  <p class="children"><span class='object_link'><a href="Century.html" title="Emendate::DateTypes::Century (class)">Century</a></span>, <span class='object_link'><a href="Decade.html" title="Emendate::DateTypes::Decade (class)">Decade</a></span>, <span class='object_link'><a href="KnownUnknown.html" title="Emendate::DateTypes::KnownUnknown (class)">KnownUnknown</a></span>, <span class='object_link'><a href="Millennium.html" title="Emendate::DateTypes::Millennium (class)">Millennium</a></span>, <span class='object_link'><a href="Range.html" title="Emendate::DateTypes::Range (class)">Range</a></span>, <span class='object_link'><a href="RangeDateOpen.html" title="Emendate::DateTypes::RangeDateOpen (class)">RangeDateOpen</a></span>, <span class='object_link'><a href="RangeDateUnknown.html" title="Emendate::DateTypes::RangeDateUnknown (class)">RangeDateUnknown</a></span>, <span class='object_link'><a href="Unprocessable.html" title="Emendate::DateTypes::Unprocessable (class)">Unprocessable</a></span>, <span class='object_link'><a href="Untokenizable.html" title="Emendate::DateTypes::Untokenizable (class)">Untokenizable</a></span>, <span class='object_link'><a href="Year.html" title="Emendate::DateTypes::Year (class)">Year</a></span>, <span class='object_link'><a href="YearMonth.html" title="Emendate::DateTypes::YearMonth (class)">YearMonth</a></span>, <span class='object_link'><a href="YearMonthDay.html" title="Emendate::DateTypes::YearMonthDay (class)">YearMonthDay</a></span>, <span class='object_link'><a href="YearSeason.html" title="Emendate::DateTypes::YearSeason (class)">YearSeason</a></span></p>
 </div>
 
 
@@ -202,6 +202,8 @@
   
   
     
+      <span class="note title readonly">readonly</span>
+    
     
   
   
@@ -220,7 +222,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#source_tokens-instance_method" title="#source_tokens (instance method)">#<strong>source_tokens</strong>  &#x21d2; Object </a>
+      <a href="#sources-instance_method" title="#sources (instance method)">#<strong>sources</strong>  &#x21d2; Object </a>
     
 
     
@@ -238,7 +240,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute source_tokens.</p>
+<p>Returns the value of attribute sources.</p>
 </div></span>
   
 </li>
@@ -256,6 +258,28 @@
     </h2>
 
     <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#add_range_switch-instance_method" title="#add_range_switch (instance method)">#<strong>add_range_switch</strong>(value)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
       
         <li class="public ">
   <span class="summary_signature">
@@ -595,19 +619,25 @@
 26
 27
 28
-29</pre>
+29
+30
+31
+32</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='op'>**</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
-  <span class='ivar'>@source_tokens</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:children</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-                     <span class='const'><span class='object_link'><a href="../../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../SegmentSets.html" title="Emendate::SegmentSets (module)">SegmentSets</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../SegmentSets/MixedSet.html" title="Emendate::SegmentSets::MixedSet (class)">MixedSet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="../SegmentSets/SegmentSet.html#initialize-instance_method" title="Emendate::SegmentSets::SegmentSet#initialize (method)">new</a></span></span>
-                   <span class='kw'>else</span>
-                     <span class='const'><span class='object_link'><a href="../../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../SegmentSets.html" title="Emendate::SegmentSets (module)">SegmentSets</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../SegmentSets/MixedSet.html" title="Emendate::SegmentSets::MixedSet (class)">MixedSet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="../SegmentSets/SegmentSet.html#initialize-instance_method" title="Emendate::SegmentSets::SegmentSet#initialize (method)">new</a></span></span><span class='lparen'>(</span>
-                       <span class='label'>segments:</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:children</span><span class='rbracket'>]</span>
-                     <span class='rparen'>)</span>
-                   <span class='kw'>end</span>
+  <span class='id identifier rubyid_srcs'>srcs</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:sources</span><span class='rbracket'>]</span>
+  <span class='ivar'>@sources</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='id identifier rubyid_srcs'>srcs</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+               <span class='const'><span class='object_link'><a href="../../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../SegmentSets.html" title="Emendate::SegmentSets (module)">SegmentSets</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../SegmentSets/MixedSet.html" title="Emendate::SegmentSets::MixedSet (class)">MixedSet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="../SegmentSets/SegmentSet.html#initialize-instance_method" title="Emendate::SegmentSets::SegmentSet#initialize (method)">new</a></span></span>
+             <span class='kw'>elsif</span> <span class='id identifier rubyid_srcs'>srcs</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="../../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../SegmentSets.html" title="Emendate::SegmentSets (module)">SegmentSets</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../SegmentSets/SegmentSet.html" title="Emendate::SegmentSets::SegmentSet (class)">SegmentSet</a></span></span><span class='rparen'>)</span>
+               <span class='id identifier rubyid_srcs'>srcs</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_srcs'>srcs</span><span class='rparen'>)</span>
+             <span class='kw'>else</span>
+               <span class='const'><span class='object_link'><a href="../../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../SegmentSets.html" title="Emendate::SegmentSets (module)">SegmentSets</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../SegmentSets/MixedSet.html" title="Emendate::SegmentSets::MixedSet (class)">MixedSet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="../SegmentSets/SegmentSet.html#initialize-instance_method" title="Emendate::SegmentSets::SegmentSet#initialize (method)">new</a></span></span><span class='lparen'>(</span>
+                 <span class='label'>segments:</span> <span class='id identifier rubyid_srcs'>srcs</span>
+               <span class='rparen'>)</span>
+             <span class='kw'>end</span>
   <span class='ivar'>@partial_indicator</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:partial_indicator</span><span class='rbracket'>]</span>
   <span class='ivar'>@range_switch</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:range_switch</span><span class='rbracket'>]</span>
   <span class='ivar'>@certainty</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:certainty</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>?</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:certainty</span><span class='rbracket'>]</span>
@@ -710,11 +740,11 @@
 </div>
     
       
-      <span id="range_switch=-instance_method"></span>
+      <span id=""></span>
       <div class="method_details ">
   <h3 class="signature " id="range_switch-instance_method">
   
-    #<strong>range_switch</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>range_switch</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -737,12 +767,12 @@
       <pre class="lines">
 
 
+14
 15
-16
-17</pre>
+16</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 15</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 14</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_range_switch'>range_switch</span>
   <span class='ivar'>@range_switch</span>
@@ -753,11 +783,11 @@
 </div>
     
       
-      <span id="source_tokens=-instance_method"></span>
+      <span id="sources=-instance_method"></span>
       <div class="method_details ">
-  <h3 class="signature " id="source_tokens-instance_method">
+  <h3 class="signature " id="sources-instance_method">
   
-    #<strong>source_tokens</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>sources</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -766,7 +796,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the value of attribute source_tokens.</p>
+<p>Returns the value of attribute sources.</p>
 
 
   </div>
@@ -787,8 +817,8 @@
     <td>
       <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 15</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_source_tokens'>source_tokens</span>
-  <span class='ivar'>@source_tokens</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_sources'>sources</span>
+  <span class='ivar'>@sources</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -803,7 +833,37 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="date_part?-instance_method">
+  <h3 class="signature first" id="add_range_switch-instance_method">
+  
+    #<strong>add_range_switch</strong>(value)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+34
+35
+36</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 34</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_add_range_switch'>add_range_switch</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
+  <span class='ivar'>@range_switch</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="date_part?-instance_method">
   
     #<strong>date_part?</strong>  &#x21d2; <tt>Boolean</tt> 
   
@@ -839,12 +899,12 @@
       <pre class="lines">
 
 
-31
-32
-33</pre>
+38
+39
+40</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 31</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 38</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_date_part?'>date_part?</span>
   <span class='kw'>true</span>
@@ -891,12 +951,12 @@
       <pre class="lines">
 
 
-35
-36
-37</pre>
+42
+43
+44</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 42</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_date_type?'>date_type?</span>
   <span class='kw'>true</span>
@@ -943,12 +1003,12 @@
       <pre class="lines">
 
 
-43
-44
-45</pre>
+50
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 43</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 50</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_earliest'>earliest</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NotImplementedError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='embexpr_end'>}</span><span class='tstring_content'> has not implemented method &#39;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid___method__'>__method__</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;</span><span class='tstring_end'>&quot;</span></span>
@@ -984,12 +1044,12 @@
       <pre class="lines">
 
 
-52
-53
-54</pre>
+59
+60
+61</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 52</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 59</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_earliest_at_granularity'>earliest_at_granularity</span>
   <span class='id identifier rubyid_earliest'>earliest</span><span class='period'>.</span><span class='id identifier rubyid_year'>year</span>
@@ -1036,12 +1096,12 @@
       <pre class="lines">
 
 
-47
-48
-49</pre>
+54
+55
+56</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_latest'>latest</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NotImplementedError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='embexpr_end'>}</span><span class='tstring_content'> has not implemented method &#39;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid___method__'>__method__</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;</span><span class='tstring_end'>&quot;</span></span>
@@ -1077,12 +1137,12 @@
       <pre class="lines">
 
 
-57
-58
-59</pre>
+64
+65
+66</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_latest_at_granularity'>latest_at_granularity</span>
   <span class='id identifier rubyid_latest'>latest</span><span class='period'>.</span><span class='id identifier rubyid_year'>year</span>
@@ -1129,12 +1189,12 @@
       <pre class="lines">
 
 
-61
-62
-63</pre>
+68
+69
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 61</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 68</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_lexeme'>lexeme</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NotImplementedError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='embexpr_end'>}</span><span class='tstring_content'> has not implemented method &#39;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid___method__'>__method__</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;</span><span class='tstring_end'>&quot;</span></span>
@@ -1159,15 +1219,15 @@
       <pre class="lines">
 
 
-65
-66
-67</pre>
+72
+73
+74</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 65</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 72</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_location'>location</span>
-  <span class='ivar'>@source_tokens</span><span class='period'>.</span><span class='id identifier rubyid_location'>location</span>
+  <span class='ivar'>@sources</span><span class='period'>.</span><span class='id identifier rubyid_location'>location</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1189,16 +1249,16 @@
       <pre class="lines">
 
 
-69
-70
-71
-72</pre>
+76
+77
+78
+79</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 69</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 76</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_prepend_source_token'>prepend_source_token</span><span class='lparen'>(</span><span class='id identifier rubyid_token'>token</span><span class='rparen'>)</span>
-  <span class='ivar'>@source_tokens</span><span class='period'>.</span><span class='id identifier rubyid_unshift'>unshift</span><span class='lparen'>(</span><span class='id identifier rubyid_token'>token</span><span class='rparen'>)</span>
+  <span class='ivar'>@sources</span><span class='period'>.</span><span class='id identifier rubyid_unshift'>unshift</span><span class='lparen'>(</span><span class='id identifier rubyid_token'>token</span><span class='rparen'>)</span>
   <span class='kw'>self</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1243,12 +1303,12 @@
       <pre class="lines">
 
 
-39
-40
-41</pre>
+46
+47
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 39</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_processed?'>processed?</span>
   <span class='kw'>true</span>
@@ -1308,12 +1368,12 @@
       <pre class="lines">
 
 
-74
-75
-76</pre>
+81
+82
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 81</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_range?'>range?</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NotImplementedError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='embexpr_end'>}</span><span class='tstring_content'> has not implemented method &#39;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid___method__'>__method__</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;</span><span class='tstring_end'>&quot;</span></span>
@@ -1338,12 +1398,12 @@
       <pre class="lines">
 
 
-78
-79
-80</pre>
+85
+86
+87</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 78</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/date_type.rb', line 85</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_type'>type</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>::</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='embexpr_end'>}</span><span class='tstring_content'>_date_type</span><span class='tstring_end'>&quot;</span></span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
@@ -1358,9 +1418,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Apr  1 20:53:13 2023 by
+  Generated on Mon Dec  4 23:54:22 2023 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.28 (ruby-2.7.8).
+  0.9.34 (ruby-2.7.8).
 </div>
 
     </div>
