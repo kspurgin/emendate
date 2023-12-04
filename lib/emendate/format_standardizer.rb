@@ -11,13 +11,12 @@ module Emendate
 
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 
     def initialize(tokens)
       @result = tokens.class.new.copy(tokens)
-      @standardizable = true
     end
 
     def call
@@ -50,8 +49,11 @@ module Emendate
       fmdp = full_match_date_part_standardizers
       return fmdp unless fmdp.nil?
 
-      @standardizable = false
       []
+    end
+
+    def standardizable
+      return true unless determine_standardizers.empty?
     end
 
     def full_match_standardizers
@@ -73,19 +75,14 @@ module Emendate
         ]
       when %i[number4 comma month number1or2]
         %i[
-           remove_post_year_comma
-           move_year_to_end_of_segment
-          ]
+          remove_post_year_comma
+          move_year_to_end_of_segment
+        ]
       when %i[partial range_indicator partial number1or2 century]
         %i[copy_number_century_after_first_partial]
       when %i[partial range_indicator partial number4 letter_s]
         %i[copy_number_s_after_first_partial]
       end
-
-      # case result.type_string
-      # when /.*slash$/
-      #   %i[handle_ending_slash]
-      # end
     end
 
     def partial_match_standardizers
@@ -102,13 +99,13 @@ module Emendate
         %i[unknown_end]
       when /.*slash.*/
         %i[replace_slash_with_hyphen]
-      when /.*era.*/
+      when /.*era_ce.*/
         %i[remove_ce_eras]
       when /.*letter_t number1or2 colon.*/
         %i[remove_time_parts]
-      when/.*number3 uncertainty_digits.*/
+      when /.*number3 uncertainty_digits.*/
         %i[decade_as_year]
-      when/.*number3.*/
+      when /.*number3.*/
         %i[pad_3_to_4_digits]
       when /.*single_dot standalone_zero$/
         %i[remove_ending_dot_zero]
@@ -118,6 +115,8 @@ module Emendate
         %i[move_year_to_end_of_segment]
       when /.*number1or2 month number4.*/
         %i[move_month_to_beginning_of_segment]
+      when /.*number1or2 letter_c.*/
+        %i[replace_c_with_century]
       end
     end
 
@@ -210,10 +209,10 @@ module Emendate
     end
 
     def handle_ending_hyphen
-        convert_range_indicator_and_append_open_or_unknown_end_date(
-          indicator: result[-1],
-          klass: Emendate::DateTypes::RangeDateOpen
-        )
+      convert_range_indicator_and_append_open_or_unknown_end_date(
+        indicator: result[-1],
+        klass: Emendate::DateTypes::RangeDateOpen
+      )
     end
 
     def handle_ending_slash
@@ -232,7 +231,7 @@ module Emendate
     def move_month_to_beginning_of_segment
       _n1, mth, _n4 = result.extract(%i[number1or2 month number4]).segments
       m_ind = result.find_index(mth)
-      d_ind =  m_ind - 1
+      d_ind = m_ind - 1
       result.delete_at(m_ind)
       result.insert(d_ind, mth)
     end
@@ -246,9 +245,11 @@ module Emendate
     end
 
     def move_year_to_end_of_segment
-      yr = result.select{ |t| t.type == :number4 &&
-          result[result.find_index(t) + 1].type == :month &&
-          result[result.find_index(t) + 2].type == :number1or2 }[0]
+      yr = result.select do |t|
+             t.type == :number4 &&
+               result[result.find_index(t) + 1].type == :month &&
+               result[result.find_index(t) + 2].type == :number1or2
+           end[0]
       y_ind = result.find_index(yr)
       ins_pt = y_ind + 3
       result.insert(ins_pt, yr.dup)
@@ -311,8 +312,7 @@ module Emendate
       udigits = result.when_type(:uncertainty_digits)[0]
       decade = Emendate::DateTypes::Decade.new(literal: num3.literal,
                                                decade_type: :uncertainty_digits,
-                                               children: [num3, udigits]
-                                              )
+                                               children: [num3, udigits])
       replace_segments_with_new(segments: [num3, udigits], new: decade)
     end
 
@@ -341,6 +341,11 @@ module Emendate
       replace_x_with_new(x: lasttoken, new: openend)
     end
 
+    def replace_c_with_century
+      _yr, c = result.extract(%i[number1or2 letter_c]).segments
+      replace_x_with_derived_new_type(x: c, type: :century)
+    end
+
     def replace_slash_with_hyphen
       slash = result.when_type(:slash)[0]
       ht = Emendate::Token.new(type: :hyphen,
@@ -367,18 +372,8 @@ module Emendate
     end
 
     def remove_ce_eras
-      e = result.extract(%i[era]).segments[0]
-      if e.lexeme == 'ce'
-        result.delete(e)
-      else
-        ins_pt = result.find_index(e) + 1
-        bce = Emendate::Token.new(type: :bce,
-                                  lexeme: e.lexeme,
-                                  literal: e.literal,
-                                  location: e.location)
-        result.insert(ins_pt, bce)
-        result.delete(e)
-      end
+      e = result.extract(%i[era_ce]).segments[0]
+      result.delete(e)
     end
   end
 end

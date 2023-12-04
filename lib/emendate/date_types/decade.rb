@@ -23,9 +23,9 @@ module Emendate
         super
         @literal = opts[:literal].is_a?(Integer) ? opts[:literal] : opts[:literal].to_i
         if opts[:decade_type].nil?
-          raise Emendate::DateTypes::MissingDecadeTypeError.new(allowed_decade_types)
+          raise Emendate::DateTypes::MissingDecadeTypeError, allowed_decade_types
         elsif !allowed_decade_types.include?(opts[:decade_type])
-          raise Emendate::DateTypes::DecadeTypeValueError.new(allowed_decade_types)
+          raise Emendate::DateTypes::DecadeTypeValueError, allowed_decade_types
         else
           @decade_type = opts[:decade_type]
         end
@@ -60,12 +60,12 @@ module Emendate
       private
 
       def decade_earliest_year
-        ( literal.to_s + '0' ).to_i
+        (literal.to_s + '0').to_i
       end
 
       def earliest_year
         year = decade_earliest_year
-        case partial_indicator
+        case partial_indicator&.downcase
         when nil
           year
         when 'early'
@@ -79,7 +79,7 @@ module Emendate
 
       def latest_year
         year = decade_earliest_year
-        case partial_indicator
+        case partial_indicator&.downcase
         when nil
           year + 9
         when 'early'

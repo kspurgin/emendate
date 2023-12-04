@@ -5,7 +5,7 @@ require_relative '../abstract'
 module Emendate
   module Translators
     module Collectionspace
-      class Year  < Emendate::Translators::Abstract
+      class Year < Emendate::Translators::Abstract
         private
 
         attr_reader :base

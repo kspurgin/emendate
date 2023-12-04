@@ -25,7 +25,7 @@ RSpec.describe Emendate::UnprocessableTagger do
         expect(result).to be_a(Dry::Monads::Failure)
         res = result.failure
         expect(res.types).to eq([:unprocessable_date_type])
-        warnings = ["Unprocessable string"]
+        warnings = ['Unprocessable string']
         expect(res.warnings).to eq(warnings)
         expect(res.lexeme).to eq(string)
       end

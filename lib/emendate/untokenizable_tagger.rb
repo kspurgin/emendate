@@ -6,7 +6,7 @@ module Emendate
 
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 
@@ -22,8 +22,8 @@ module Emendate
       result << Emendate::DateTypes::Untokenizable.new(
         children: tokens.segments
       )
-      result.warnings << "Untokenizable sequences: "\
-        "#{untokenizable_strings.join('; ')}"
+      result.warnings << 'Untokenizable sequences: ' \
+                         "#{untokenizable_strings.join('; ')}"
       Failure(result)
     end
 

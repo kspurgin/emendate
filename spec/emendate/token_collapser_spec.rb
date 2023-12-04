@@ -9,16 +9,15 @@ RSpec.describe Emendate::TokenCollapser do
     let(:tokens){ prepped_for(string: string, target: step) }
     let(:result) do
       step.call(tokens)
-        .value!
-        .type_string
+          .value!
+          .type_string
     end
 
     context 'with Jan. 21, 2014' do
       let(:string){ 'Jan. 21, 2014' }
 
-
       it 'collapses spaces after single dot, comma' do
-        expect(result).to eq('month_abbr_alpha number1or2 comma number4')
+        expect(result).to eq('month_alpha number1or2 comma number4')
       end
     end
 
@@ -55,7 +54,7 @@ RSpec.describe Emendate::TokenCollapser do
     end
 
     context "with `1800's`" do
-      let(:string){ %{1800's} }
+      let(:string){ %(1800's) }
 
       it 'collapses apostrophe into s' do
         expect(result).to eq('number4 letter_s')

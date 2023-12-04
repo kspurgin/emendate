@@ -25,7 +25,7 @@ RSpec.describe Emendate::UntokenizableTagger do
         expect(result).to be_a(Dry::Monads::Failure)
         res = result.failure
         expect(res.types).to eq([:untokenizable_date_type])
-        warnings = ["Untokenizable sequences: sometime; in"]
+        warnings = ['Untokenizable sequences: Sometime; in']
         expect(res.warnings).to eq(warnings)
       end
     end

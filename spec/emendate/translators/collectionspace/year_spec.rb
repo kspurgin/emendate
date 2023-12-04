@@ -30,6 +30,7 @@ RSpec.describe Emendate::Translators::Collectionspace::Year do
         dateLatestEra: 'CE'
       }
     end
+
     it 'translates as expected' do
       expect(value).to eq(expected)
       expect(warnings).to be_empty
@@ -53,9 +54,10 @@ RSpec.describe Emendate::Translators::Collectionspace::Year do
         dateLatestMonth: '12',
         dateLatestDay: '31',
         dateLatestEra: 'CE',
-        dateLatestCertainty: 'Possibly',
+        dateLatestCertainty: 'Possibly'
       }
     end
+
     it 'translates as expected' do
       expect(value).to eq(expected)
       expect(warnings).to be_empty
@@ -80,6 +82,7 @@ RSpec.describe Emendate::Translators::Collectionspace::Year do
         dateLatestEra: 'BCE'
       }
     end
+
     it 'translates as expected' do
       expect(value).to eq(expected)
       expect(warnings).to be_empty
@@ -100,6 +103,7 @@ RSpec.describe Emendate::Translators::Collectionspace::Year do
         dateLatestCertainty: 'Before'
       }
     end
+
     it 'translates as expected' do
       expect(value).to eq(expected)
       expect(warnings).to be_empty

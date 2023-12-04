@@ -41,6 +41,7 @@ RSpec.describe Emendate::KnownUnknownTagger do
 
       it 'tags as expected' do
         failure = result.failure
+
         expect(failure.types).to eq(%i[knownunknown_date_type])
       end
     end

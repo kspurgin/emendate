@@ -51,7 +51,7 @@ module Emendate
     setting :edtf, default: false, reader: true
     setting :ending_hyphen, default: :open, reader: true
     setting :ending_slash, default: :open, reader: true
-    setting :max_output_dates, default: :all, reader: true
+    setting :max_output_dates, default: 999, reader: true
     setting :max_month_number_handling, default: :months, reader: true
     setting :open_unknown_end_date,
             default: '2999-12-31',
@@ -91,14 +91,20 @@ module Emendate
 
     tokens = to_prep.first
                     .call(string)
-                    .value!
+                    .either(
+                      ->(success){ success },
+                      ->(failure){ failure }
+                    )
 
     return tokens if to_prep.length == 1
 
     to_prep.shift
     to_prep.each do |step|
       tokens = step.call(tokens)
-                   .value!
+                   .either(
+                     ->(success){ success },
+                     ->(failure){ failure }
+                   )
     end
 
     tokens
@@ -162,7 +168,6 @@ module Emendate
 
   def processing_steps
     [
-      Emendate::StringNormalizer,
       Emendate::Lexer,
       Emendate::UntokenizableTagger,
       Emendate::UnprocessableTagger,

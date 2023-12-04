@@ -16,17 +16,17 @@ RSpec.describe Emendate::ResultEditable do
   describe '#collapse_segments_backward' do
     it 'collapses as expected' do
       tokens = Emendate.prepped_for(
-        string: 'Oct. 31, 2021',
+        string: 'Oct.? 31, 2021',
         target: Emendate::TokenCollapser
       )
       e = Editable.new(tokens)
-      e.collapse_segments_backward(%i[month_abbr_alpha single_dot space])
-      expect(e.result.type_string).to eq('month_abbr_alpha number1or2 comma space number4')
+      e.collapse_segments_backward(%i[month_alpha question space])
+      expect(e.result.type_string).to eq('month_alpha number1or2 comma space number4')
       derived = e.result.segments.first
-      expect(derived.lexeme).to eq('oct.')
+      expect(derived.lexeme).to eq('Oct.?')
       expect(derived.literal).to eq(10)
       expect(derived.location.col).to eq(0)
-      expect(derived.location.length).to eq(5)
+      expect(derived.location.length).to eq(6)
     end
   end
 
@@ -38,10 +38,10 @@ RSpec.describe Emendate::ResultEditable do
       )
       e = Editable.new(tokens)
       e.collapse_token_pair_backward(tokens[0], tokens[1])
-      expect(e.result.type_string).to eq('month_abbr_alpha number4')
+      expect(e.result.type_string).to eq('month_alpha number4')
       der = e.result[0]
       expect(der.literal).to eq(1)
-      expect(der.lexeme).to eq('jan')
+      expect(der.lexeme).to eq('Jan')
       expect(der.location.col).to eq(0)
       expect(der.location.length).to eq(4)
     end

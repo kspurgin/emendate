@@ -10,16 +10,16 @@ module Emendate
     include Emendate::SegmentSets::CertaintyHelpers
 
     attr_reader :original_string, :index_dates,
-      :date_start, :date_end,
-      :date_start_full, :date_end_full,
-      :inclusive_range, :certainty, :range_switch,
-      :date_type, :source
+                :date_start, :date_end,
+                :date_start_full, :date_end_full,
+                :inclusive_range, :certainty, :range_switch,
+                :date_type, :source
 
     # @param date [Emendate::DateTypes::DateType]
     # @param orig [String]
     # @param certainty [Array<Symbol>]
     def initialize(date:, orig:, certainty: [])
-      fail(NonDateTypeError) unless date.is_a?(Emendate::DateTypes::DateType)
+      raise(NonDateTypeError) unless date.is_a?(Emendate::DateTypes::DateType)
 
       @original_string = get_original_string(date, orig)
       @index_dates = []
@@ -35,13 +35,13 @@ module Emendate
     end
 
     def to_h
-      hashable_variables.map{ |var|
+      hashable_variables.map do |var|
         varsym = var.to_s.sub('@', '').to_sym
         [varsym, instance_variable_get(var)]
-      }.to_h
+      end.to_h
     end
 
-    def to_json
+    def to_json(*_args)
       to_h.to_json
     end
 
@@ -57,7 +57,7 @@ module Emendate
     private
 
     def hashable_variables
-      self.instance_variables - %i[@date_type @source]
+      instance_variables - %i[@date_type @source]
     end
 
     def get_original_string(datetype, orig)
