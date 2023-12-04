@@ -11,7 +11,7 @@ module Emendate
 
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 
@@ -53,7 +53,7 @@ module Emendate
     SQUARE_BRACKET_OPEN = '['
     SQUARE_BRACKET_CLOSE = ']'
     TILDE = '~'
-    UNKNOWN_DATE = ['dateunknown', 'nodate', 'notdated', 'undated', 'unk', 'unknown', 'unknowndate'].freeze
+    UNKNOWN_DATE = %w[dateunknown nodate notdated undated unk unknown unknowndate].freeze
 
     def initialize(tokens)
       @tokens = tokens.class.new.copy(tokens)
@@ -74,11 +74,9 @@ module Emendate
     attr_accessor :next_p, :lexeme_start_p
 
     def tokenize
-      while norm_uncompleted?
-        tokenization
-      end
-    rescue StandardError => err
-      Failure(err)
+      tokenization while norm_uncompleted?
+    rescue StandardError => e
+      Failure(e)
     else
       Success()
     end
@@ -127,7 +125,6 @@ module Emendate
 
       token = Token.new(lexeme: c, type: :unknown, location: current_location) if token.nil?
 
-
       tokens << token
     end
 
@@ -142,35 +139,29 @@ module Emendate
     end
 
     def consume_digits
-      while digit?(lookahead)
-        consume
-      end
+      consume while digit?(lookahead)
     end
 
     def consume_letters
-      while alpha?(lookahead)
-        consume
-      end
+      consume while alpha?(lookahead)
     end
 
     def consume_dots
-      while dot?(lookahead)
-        consume
-      end
+      consume while dot?(lookahead)
     end
 
     def dots
       consume_dots
       lexeme = norm[lexeme_start_p..(next_p - 1)]
 
-      case lexeme.length
-      when 1
-        type = :single_dot
-      when 2
-        type = :double_dot
-      else
-        type = :unknown
-      end
+      type = case lexeme.length
+             when 1
+               :single_dot
+             when 2
+               :double_dot
+             else
+               :unknown
+             end
 
       Token.new(type: type, lexeme: lexeme, location: current_location)
     end
@@ -260,7 +251,6 @@ module Emendate
       norm[lookahead_p]
     end
 
-
     def norm_completed?
       next_p >= norm.length # our pointer starts at 0, so the last char is length - 1.
     end
@@ -282,7 +272,7 @@ module Emendate
     end
 
     def alpha?(char)
-      char >= 'a' && char <= 'z' ||
+      (char >= 'a' && char <= 'z') ||
         char == '&'
     end
 
@@ -293,6 +283,5 @@ module Emendate
     def dot?(char)
       char == DOT
     end
-
   end
 end

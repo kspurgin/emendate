@@ -23,7 +23,7 @@ module Emendate
       attr_reader :processed, :pdate, :value, :warnings
 
       def qualify(meth = nil)
-        return self.method(meth).call if meth
+        return method(meth).call if meth
         return @base if pdate.certain?
 
         if pdate.one_of_set?
@@ -45,6 +45,6 @@ module Emendate
       def translate_value
         raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
       end
-   end
+    end
   end
 end
