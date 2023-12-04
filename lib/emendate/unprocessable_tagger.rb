@@ -8,7 +8,7 @@ module Emendate
 
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 
@@ -26,7 +26,7 @@ module Emendate
 
     def initialize(tokens)
       @tokens = tokens
-      @str = tokens.norm
+      @str = tokens.orig_string.downcase
     end
 
     def call

@@ -5,7 +5,6 @@ module Emendate
     class Year < Emendate::DateTypes::DateType
       # @return [Integer]
       attr_reader :orig_literal
-      # @return [:ce, :bce]
       attr_reader :era
 
       def initialize(**opts)
@@ -24,7 +23,7 @@ module Emendate
 
       def literal
         if era == :bce &&
-            Emendate.options.bce_handling == :precise
+           Emendate.options.bce_handling == :precise
           (orig_literal - 1) * -1
         else
           orig_literal
@@ -33,7 +32,7 @@ module Emendate
 
       def range?
         return false if range_switch == 'before' &&
-          Emendate.options.before_date_treatment == :point
+                        Emendate.options.before_date_treatment == :point
 
         !(partial_indicator.nil? && range_switch.nil?)
       end
@@ -89,8 +88,8 @@ module Emendate
           val.to_s.rjust(4, '0')
         else
           base = val.to_s
-            .delete_prefix('-')
-            .rjust(4, '0')
+                    .delete_prefix('-')
+                    .rjust(4, '0')
           "-#{base}"
         end
       end

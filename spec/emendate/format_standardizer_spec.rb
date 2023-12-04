@@ -9,8 +9,8 @@ RSpec.describe Emendate::FormatStandardizer do
     let(:tokens){ prepped_for(string: string, target: step) }
     let(:result) do
       step.call(tokens)
-        .value!
-        .types
+          .value!
+          .types
     end
 
     context 'with 1984-?' do
@@ -190,6 +190,14 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
+    context 'with 300 BCE' do
+      let(:string){ '300 BCE' }
+
+      it 'passes through' do
+        expect(result).to eq(%i[number4 era_bce])
+      end
+    end
+
     context 'with ../2021' do
       let(:string){ '../2021' }
 
@@ -217,6 +225,7 @@ RSpec.describe Emendate::FormatStandardizer do
         before(:context) do
           Emendate.config.options.ending_slash = :unknown
         end
+
         after(:context){ Emendate.reset_config }
 
         it 'appends unknown end date type' do
@@ -238,6 +247,24 @@ RSpec.describe Emendate::FormatStandardizer do
 
       it 'replaces 165X with decade_as_year date type' do
         expect(result).to eq(%i[decade_date_type])
+      end
+    end
+
+    context 'with early 19th c.' do
+      let(:string){ 'early 19th c.' }
+
+      it 'segments as expected' do
+        expect(result).to eq(%i[partial number1or2 century])
+      end
+    end
+
+    context 'with 18th or 19th c.' do
+      let(:string){ '18th or 19th c.' }
+
+      it 'segments as expected' do
+        expect(result).to eq(%i[number1or2 century
+                                date_separator
+                                number1or2 century])
       end
     end
   end

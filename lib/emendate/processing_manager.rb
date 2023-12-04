@@ -9,7 +9,7 @@ module Emendate
 
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 
@@ -18,7 +18,7 @@ module Emendate
     def initialize(string, options = {})
       @orig_string = string
       Emendate::Options.new(options) unless options.empty?
-      @history = {initialized: orig_string}
+      @history = { initialized: orig_string }
       @tokens = Emendate::SegmentSets::TokenSet.new(
         string: orig_string
       )
@@ -27,10 +27,6 @@ module Emendate
     end
 
     def call
-      _normalized = yield handle_step(
-        state: :normalized,
-        proc: ->{ Emendate::StringNormalizer.call(orig_string) }
-      )
       _lexed = yield handle_step(
         state: :lexed,
         proc: ->{ Emendate::Lexer.call(tokens) }
@@ -105,10 +101,8 @@ module Emendate
                  elsif val.respond_to?(:segments) && val.empty?
                    val.norm
                  elsif val.respond_to?(:types)
-                   "types: #{val.types.inspect}\n  "\
+                   "types: #{val.types.inspect}\n  " \
                      "certainty: #{val.certainty.inspect}"
-                 else
-                   nil
                  end
         puts "  #{outval}" if outval
       end
@@ -117,12 +111,12 @@ module Emendate
 
     def to_s
       <<~OBJ
-      #<#{self.class.name}:#{self.object_id}
-        state=#{state},
-        token_type_pattern: #{tokens.types.inspect}>
+        #<#{self.class.name}:#{object_id}
+          state=#{state},
+          token_type_pattern: #{tokens.types.inspect}>
       OBJ
     end
-    alias_method :inspect, :to_s
+    alias inspect to_s
 
     def result
       Emendate::Result.new(self)
@@ -132,13 +126,13 @@ module Emendate
 
     def call_step(step)
       step.call
-    rescue StandardError => err
-      Failure(err)
+    rescue StandardError => e
+      Failure(e)
     end
 
     def final_check
       if !errors.empty? || tokens.any?{ |token| !token.processed? }
-        message = "Unhandled segment still present"
+        message = 'Unhandled segment still present'
         errors << message
         history[:final_check_failed] = message
         Failure(self)
@@ -150,28 +144,28 @@ module Emendate
 
     def add_error?
       no_error_states = %i[
-                           known_unknown_tagged_failure
-                           untokenizable_tagged_failure
-                          ]
+        known_unknown_tagged_failure
+        untokenizable_tagged_failure
+      ]
       true unless no_error_states.any?{ |nes| state.to_s.start_with?(nes.to_s) }
     end
 
     def handle_step(state:, proc:)
       call_step(proc).either(
-        ->(success) do
+        lambda do |success|
           @tokens = success
           @history[state] = success
           add_warnings(success.warnings) if success.respond_to?(:warnings)
           Success()
         end,
-        ->(failure) do
+        lambda do |failure|
           @history["#{state}_failure".to_sym] = nil
           if add_error?
             errors << failure
-          else
-            @tokens = failure if failure.kind_of?(
-              Emendate::SegmentSets::SegmentSet
-            )
+          elsif failure.is_a?(
+            Emendate::SegmentSets::SegmentSet
+          )
+            @tokens = failure
           end
           add_warnings(failure.warnings) if failure.respond_to?(:warnings)
           Failure(self)

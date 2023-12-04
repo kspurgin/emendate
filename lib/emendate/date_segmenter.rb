@@ -7,7 +7,7 @@ module Emendate
 
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 
@@ -18,24 +18,16 @@ module Emendate
     end
 
     def call
-      until working.empty?
-        recursive_parse
-      end
+      recursive_parse until working.empty?
       working.copy(result)
       result.clear
-      until working.empty?
-        apply_partial_modifiers
-      end
+      apply_partial_modifiers until working.empty?
 
       working.copy(result)
       result.clear
-      until working.empty?
-        apply_switch_modifiers
-      end
+      apply_switch_modifiers until working.empty?
 
-      if bce?
-        apply_bce
-      end
+      apply_bce if bce?
 
       Success(result)
     end
@@ -45,16 +37,18 @@ module Emendate
     attr_reader :working, :result
 
     def bce?
-      result.type_string.match?(/(?:year_date_type bce|bce year_date_type)/)
+      result.type_string.match?(
+        /(?:year_date_type era_bce|era_bce year_date_type)/
+      )
     end
 
     def apply_bce
-      if result.type_string.match?(/year_date_type bce/)
-        segments = result.extract(:year_date_type, :bce)
+      if result.type_string.match?(/year_date_type era_bce/)
+        segments = result.extract(:year_date_type, :era_bce)
         year = segments[0]
         bce = segments[1]
       else
-        segments = result.extract(:bce, :year_date_type)
+        segments = result.extract(:era_bce, :year_date_type)
         year = segments[1]
         bce = segments[0]
       end
@@ -161,7 +155,7 @@ module Emendate
 
     def mod_partial
       partial = working.shift
-      if current.kind_of?(Emendate::DateTypes::DateType)
+      if current.is_a?(Emendate::DateTypes::DateType)
         current.partial_indicator = partial.lexeme.strip.delete_suffix('-')
         result << current.prepend_source_token(partial)
         working.shift
@@ -214,7 +208,6 @@ module Emendate
       recursive_parse
     end
 
-
     def parse_century_date_part
       cent = working[0]
       result << Emendate::DateTypes::Century.new(
@@ -255,7 +248,7 @@ module Emendate
       elsif pieces.types.sort == %i[year]
         result << create_year_datetype(pieces)
       else
-        fail(Emendate::UnsegmentableDatePatternError.new(pieces))
+        raise Emendate::UnsegmentableDatePatternError, pieces
       end
 
       recursive_parse

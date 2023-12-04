@@ -8,9 +8,16 @@ RSpec.describe Emendate::Lexer do
   describe '.call' do
     it 'returns expected tokens' do
       examples = {
+        'c.' => [:circa],
+        'c 1947' => %i[circa number4],
+        '2nd' => %i[number1or2 ordinal_indicator],
+        'c1947' => %i[circa number4],
+        '1919 andor 1950' => %i[number4 space unknown space number4],
         '@' => [:unknown],
-        ',' => [:comma],
-        'Sep. 1' => %i[month_abbr_alpha single_dot space number1or2],
+        'Sep. 1' => %i[month_alpha space number1or2],
+        'cat' => [:unknown],
+        'Sep. 19, 1918' => %i[month_alpha space number1or2 comma space
+                              number4],
         '{..1984' => %i[curly_bracket_open double_dot number4],
         '{...1984' => %i[curly_bracket_open unknown number4],
         '- –' => %i[hyphen space hyphen],
@@ -20,23 +27,23 @@ RSpec.describe Emendate::Lexer do
         '1 22 333 4444' => %i[number1or2 space number1or2 space number3 space
                               number4],
         '4444.0' => %i[number4 single_dot standalone_zero],
-        'th' => [:ordinal_indicator],
-        'August Jan' => %i[month_alpha space month_abbr_alpha],
+        'August Jan' => %i[month_alpha space month_alpha],
         'Mon Tuesday' => %i[day_of_week_alpha space day_of_week_alpha],
         'x xx uuu' => %i[uncertainty_digits space uncertainty_digits space
                          uncertainty_digits],
-        # NOTE: c isn't first in string or it'd get normalized to circa
+        # # NOTE: c isn't first in string or it'd get normalized to circa
         'e c s t y z' => %i[letter_e space letter_c space letter_s space letter_t
                             space letter_y space letter_z],
         'cent century' => %i[century space century],
         'about around' => %i[about space about],
         'approximately estimated' => %i[approximate space approximate],
-        'c ca circa' => %i[circa space circa space circa],
+        'c ca circa' => %i[circa circa space circa],
         'unknown' => [:unknown_date],
         'n.d.' => [:unknown_date],
         'n. d.' => [:unknown_date],
         'or' => [:or],
-        'b.c.e bp c.e.' => %i[era space era space era],
+        'b.c.e bp c.e. a.d.' => %i[era_bce space era_bce space era_ce space
+                                   era_ce],
         'early late middle mid' => %i[partial space partial space partial space
                                       partial],
         'before pre after post' => %i[before space before space after space
@@ -46,17 +53,22 @@ RSpec.describe Emendate::Lexer do
         '+%~{}:' => %i[plus percent tilde curly_bracket_open curly_bracket_close
                        colon],
         'to' => [:range_indicator],
-        '1974-present' => %i[number4 hyphen present]
+        '1974-present' => %i[number4 hyphen present],
+        '1985-04-12T23:20:30' => %i[number4 hyphen number1or2 hyphen number1or2
+                                    letter_t
+                                    number1or2 colon number1or2 colon
+                                    number1or2],
+        'early 19th c.' => %i[partial space number1or2 ordinal_indicator space
+                              letter_c single_dot]
       }
 
       results = examples.keys
                         .map do |str|
-        norm = Emendate.prepped_for(string: str, target: lexer)
-        binding.pry
+        tokens = Emendate::SegmentSets::TokenSet.new(string: str)
         [
           str,
-          lexer.call(norm)
-               .value!
+          lexer.call(tokens)
+               .either(->(s){ s }, ->(f){ f })
                .map(&:type)
         ]
       end

@@ -4,9 +4,6 @@ require 'forwardable'
 require 'emendate/segment/segment'
 
 module Emendate
-  class TokenTypeError < StandardError; end
-  class TokenLexemeError < StandardError; end
-
   class Token < Emendate::Segment
     extend Forwardable
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'strscan'
+
 require 'emendate/date_utils'
 require 'emendate/location'
 
@@ -15,51 +17,75 @@ module Emendate
       end
     end
 
-    # ambiguous things
-    # c - at beginning = circa, at end = century
-    # nd - if directly after number, ordinal indicator; otherwise unknown date.
-    #   StringNormalizer attempts to clear this up for most cases.
-    ABOUT = %w[about around].freeze
-    AFTER = %w[after post].freeze
-    AND = ['&', 'and'].freeze
-    APOSTROPHE = "'"
-    APPROXIMATE = %w[approximate approximately est estimate estimated].freeze
-    BEFORE = %w[before pre].freeze
-    CENTURY = %w[century cent].freeze
-    CIRCA = %w[ca circa].freeze
-    COLON = ':'
-    COMMA = ','
-    CURLY_BRACKET_OPEN = '{'
-    CURLY_BRACKET_CLOSE = '}'
-    DAYS = (Date::DAYNAMES + Date::ABBR_DAYNAMES).compact.map(&:downcase).freeze
-    DOT = '.'
-    ERA = %w[bce ce bp].freeze
-    HYPHEN = ["\u002D", "\u2010", "\u2011", "\u2012", "\u2013", "\u2014", "\u2015", "\u2043"].freeze
-    MONTHS = Date::MONTHNAMES.compact.map(&:downcase).freeze
-    MONTH_ABBREVS = [Date::ABBR_MONTHNAMES.compact.map(&:downcase), 'sept'].flatten.freeze
-    QUESTION = '?'
-    OR_INDICATOR = %w[or].freeze
-    ORDINAL_INDICATOR = %w[st nd rd th d].freeze
-    PERCENT = '%'
-    PARTIAL = %w[early late middle mid].freeze
-    PLUS = '+'
-    PRESENT = ['present'].freeze
-    RANGE_INDICATOR = %w[to]
-    # If additional seasons are added, make sure to update the mapping to
-    #   literals in AlphaMonthConverter
-    SEASONS = %w[winter spring summer fall autumn]
-    SLASH = '/'
-    SPACE = ' '
-    SQUARE_BRACKET_OPEN = '['
-    SQUARE_BRACKET_CLOSE = ']'
-    TILDE = '~'
-    UNKNOWN_DATE = %w[dateunknown nodate notdated undated unk unknown unknowndate].freeze
+    SINGLES = {
+      "'" => :apostrophe,
+      ':' => :colon,
+      ',' => :comma,
+      '{' => :curly_bracket_open,
+      '}' => :curly_bracket_close,
+      '%' => :percent,
+      '+' => :plus,
+      '?' => :question,
+      '/' => :slash,
+      ' ' => :space,
+      '[' => :square_bracket_open,
+      ']' => :square_bracket_close,
+      '~' => :tilde
+    }
+    ["\u002D", "\u2010", "\u2011", "\u2012", "\u2013", "\u2014", "\u2015",
+     "\u2043"].each{ |val| SINGLES[val] = :hyphen }
+    SINGLES.freeze
+
+    ORDINAL_INDICATORS = %w[st nd rd th d].freeze
+
+    days = '^(' + ([
+      Date::DAYNAMES.compact,
+      Date::ABBR_DAYNAMES.compact.map{ |val| val + '\.?' }
+    ].flatten
+      .join('|') + ')')
+    months = '^(' + ([
+      Date::MONTHNAMES.compact,
+      Date::ABBR_MONTHNAMES.compact.map{ |val| val + '\.?' },
+      'Sept\.?'
+    ].flatten
+                       .join('|') + ')')
+    ordinals = '^(' + ORDINAL_INDICATORS.join('|') + ')'
+
+    ALPHA = {
+      /^(about|around)/i => :about,
+      /^(after|post)/i => :after,
+      /^(&|and)/i => :and,
+      /^(approximate(ly|)|estimated?|est\.?)/i => :approximate,
+      /^present/i => :present,
+      /^(before|pre|prior to)/i => :before,
+      /^(century|cent\.?)/i => :century,
+      /^(ca\.?|circa)/i => :circa,
+      Regexp.new(days, 'i') => :day_of_week_alpha,
+      /^(b\.? ?c\.? ?e\.?|b\.? ?p\.?|b\.? ?c\.?)/i => :era_bce,
+      /^(c\.? ?e\.?|a\.? ?d\.?)/i => :era_ce,
+      /^(early|late|middle|mid)/i => :partial,
+      Regexp.new(months, 'i') => :month_alpha,
+      /^or/i => :or,
+      /^to/i => :range_indicator,
+      # If additional seasons are added, make sure to update the mapping to
+      #   literals in AlphaMonthConverter
+      /^(winter|spring|summer|fall|autumn)/i => :season,
+      /^(date unknown|unknown date|no date|not dated|unknown|unk|n\.? ?d\.?)$/i =>
+        :unknown_date,
+      Regexp.new(ordinals, 'i') => :ordinal_indicator,
+      /^(u+|x+)/i => :uncertainty_digits
+    }
+
+    SINGLE_ALPHA = /^[cestyz]$/i
 
     def initialize(tokens)
-      @tokens = tokens.class.new.copy(tokens)
-      @norm = @tokens.norm
-      @next_p = 0
-      @lexeme_start_p = 0
+      if tokens.is_a?(String)
+        @scanner = StringScanner.new(tokens)
+        @tokens = Emendate::SegmentSets::TokenSet.new(string: tokens)
+      else
+        @tokens = tokens
+        @scanner = StringScanner.new(tokens.orig_string)
+      end
     end
 
     def call
@@ -70,11 +96,11 @@ module Emendate
 
     private
 
-    attr_reader :norm, :tokens
-    attr_accessor :next_p, :lexeme_start_p
+    attr_reader :tokens, :scanner
 
     def tokenize
-      tokenization while norm_uncompleted?
+      tokenize_anchored_start
+      tokenization until scanner.eos?
     rescue StandardError => e
       Failure(e)
     else
@@ -82,79 +108,48 @@ module Emendate
     end
 
     def tokenization
-      self.lexeme_start_p = next_p
+      nextchar = scanner.getch
+      scanner.unscan
 
-      c = consume
+      token = if SINGLES.key?(nextchar)
+                tokenize_single
+              elsif nextchar == '.'
+                tokenize_dots
+              elsif digit?(nextchar)
+                tokenize_number
+              elsif alpha?(nextchar)
+                tokenize_letter(nextchar)
+              end
+      return if token
 
-      token =
-        if c == APOSTROPHE
-          token_of_type(c, :apostrophe)
-        elsif c == COLON
-          token_of_type(c, :colon)
-        elsif c == COMMA
-          token_of_type(c, :comma)
-        elsif c == CURLY_BRACKET_OPEN
-          token_of_type(c, :curly_bracket_open)
-        elsif c == CURLY_BRACKET_CLOSE
-          token_of_type(c, :curly_bracket_close)
-        elsif c == DOT
-          dots
-        elsif HYPHEN.include?(c)
-          token_of_type(c, :hyphen)
-        elsif c == PERCENT
-          token_of_type(c, :percent)
-        elsif c == PLUS
-          token_of_type(c, :plus)
-        elsif c == QUESTION
-          token_of_type(c, :question)
-        elsif c == SLASH
-          token_of_type(c, :slash)
-        elsif c == SPACE
-          token_of_type(c, :space)
-        elsif c == SQUARE_BRACKET_OPEN
-          token_of_type(c, :square_bracket_open)
-        elsif c == SQUARE_BRACKET_CLOSE
-          token_of_type(c, :square_bracket_close)
-        elsif c == TILDE
-          token_of_type(c, :tilde)
-        elsif digit?(c)
-          number
-        elsif alpha?(c)
-          letter
-        end
-
-      token = Token.new(lexeme: c, type: :unknown, location: current_location) if token.nil?
-
-      tokens << token
+      init = scanner.pos
+      match = scanner.getch
+      add_token(match, :unknown, init)
     end
 
-    def token_of_type(lexeme, type)
-      Token.new(lexeme: lexeme, type: type, location: current_location)
+    def tokenize_anchored_start
+      case scanner.string
+      when /^c\.? ?[^a-z]/i then tokenize_starting_circa
+      end
     end
 
-    def consume
-      c = lookahead
-      self.next_p += 1
-      c
+    def tokenize_starting_circa
+      init = scanner.pos
+      match = scanner.scan(/^c\.? ?/i)
+      add_token(match, :circa, init)
     end
 
-    def consume_digits
-      consume while digit?(lookahead)
+    def tokenize_single
+      init = scanner.pos
+      match = scanner.getch
+      add_token(match, SINGLES[match], init)
+      true
     end
 
-    def consume_letters
-      consume while alpha?(lookahead)
-    end
-
-    def consume_dots
-      consume while dot?(lookahead)
-    end
-
-    def dots
-      consume_dots
-      lexeme = norm[lexeme_start_p..(next_p - 1)]
-
-      type = case lexeme.length
+    def tokenize_dots
+      init = scanner.pos
+      match = scanner.scan(/\.+/)
+      type = case match.length
              when 1
                :single_dot
              when 2
@@ -162,126 +157,111 @@ module Emendate
              else
                :unknown
              end
-
-      Token.new(type: type, lexeme: lexeme, location: current_location)
+      add_token(match, type, init)
+      true
     end
 
-    def letter
-      consume_letters
-      lexeme = norm[lexeme_start_p..(next_p - 1)]
-      type = letter_type(lexeme)
-      literal = letter_literal(type, lexeme)
-      Token.new(type: type, lexeme: lexeme, literal: literal, location: current_location)
+    def tokenize_number
+      init = scanner.pos
+      match = scanner.scan(/\d+/)
+      tokens << NumberToken.new(
+        type: :number, lexeme: match, location: location(init)
+      )
+      tokenize_ordinal_indicator
     end
 
-    def letter_literal(type, lexeme)
-      return nil unless %i[month_alpha month_abbr_alpha].any?(type)
+    def tokenize_ordinal_indicator
+      indicator = ORDINAL_INDICATORS.find{ |ind| ordinal_val_match?(ind) }
+      return true unless indicator
 
-      type == :month_alpha ? month_literal(lexeme) : month_abbr_literal(lexeme)
+      init = scanner.pos
+      pattern = Regexp.new(indicator, Regexp::IGNORECASE)
+      match = scanner.scan(pattern)
+      add_token(match, :ordinal_indicator, init)
+      true
     end
 
-    def letter_type(lexeme)
-      if ABOUT.include?(lexeme)
-        :about
-      elsif AFTER.include?(lexeme)
-        :after
-      elsif AND.include?(lexeme)
-        :and
-      elsif APPROXIMATE.include?(lexeme)
-        :approximate
-      elsif BEFORE.include?(lexeme)
-        :before
-      elsif CENTURY.include?(lexeme)
-        :century
-      elsif CIRCA.include?(lexeme)
-        :circa
-      elsif DAYS.include?(lexeme)
-        :day_of_week_alpha
-      elsif ERA.include?(lexeme)
-        :era
-      elsif PARTIAL.include?(lexeme)
-        :partial
-      elsif PRESENT.include?(lexeme)
-        :present
-      elsif MONTHS.include?(lexeme)
-        :month_alpha
-      elsif MONTH_ABBREVS.include?(lexeme)
-        :month_abbr_alpha
-      elsif OR_INDICATOR.include?(lexeme)
-        :or
-      elsif ORDINAL_INDICATOR.include?(lexeme)
-        :ordinal_indicator
-      elsif RANGE_INDICATOR.include?(lexeme)
-        :range_indicator
-      elsif SEASONS.include?(lexeme)
-        :season
-      elsif UNKNOWN_DATE.include?(lexeme)
-        :unknown_date
-      elsif lexeme.match?(/^x+$/)
-        :uncertainty_digits
-      elsif lexeme.match?(/^u+$/)
-        :uncertainty_digits
-      elsif lexeme == 'c'
-        :letter_c
-      elsif lexeme == 'e'
-        :letter_e
-      elsif lexeme == 's'
-        :letter_s
-      elsif lexeme == 't'
-        :letter_t
-      elsif lexeme == 'y'
-        :letter_y
-      elsif lexeme == 'z'
-        :letter_z
+    def ordinal_val_match?(str)
+      chk = scanner.peek(str.length).downcase
+      str.downcase == chk
+    end
+
+    def tokenize_letter(_char)
+      pattern = alpha_matcher
+
+      if pattern
+        tokenize_alpha_pattern(pattern)
+      elsif single_alpha?
+        tokenize_single_alpha
       else
-        :unknown
+        tokenize_unknown_alpha
+      end
+      true
+    end
+
+    def alpha_matcher
+      chk = scanner.rest
+      ALPHA.keys.find{ |regexp| regexp.match?(chk) }
+    end
+
+    def tokenize_alpha_pattern(pattern)
+      init = scanner.pos
+      match = scanner.scan(pattern)
+      if alpha?(scanner.peek(1))
+        addtl = scanner.scan(/[a-z]+/i)
+        add_token(match + addtl, :unknown, init)
+      else
+        type = ALPHA[pattern]
+        if type == :month_alpha
+          tokens << Emendate::MonthAlphaToken.new(
+            lexeme: match,
+            type: type,
+            location: location(init)
+          )
+        else
+          add_token(match, type, init)
+        end
       end
     end
 
-    def number
-      consume_digits
-      lexeme = norm[lexeme_start_p..(next_p - 1)]
-      NumberToken.new(type: :number, lexeme: lexeme, location: current_location)
+    def single_alpha?
+      scanner.rest.match?(/^[a-z]\b/i) ||
+        scanner.rest.match?(/^[a-z]\d/i)
     end
 
-    def lookahead(offset = 1)
-      lookahead_p = (next_p - 1) + offset
-      return "\0" if lookahead_p >= norm.length
-
-      norm[lookahead_p]
+    def tokenize_single_alpha
+      init = scanner.pos
+      char = scanner.scan(/./)
+      type = "letter_#{char.downcase}".to_sym
+      add_token(char, type, init)
     end
 
-    def norm_completed?
-      next_p >= norm.length # our pointer starts at 0, so the last char is length - 1.
+    def tokenize_unknown_alpha
+      init = scanner.pos
+      match = scanner.scan(/[a-z]+/i)
+      add_token(match, :unknown, init)
     end
 
-    def norm_uncompleted?
-      !norm_completed?
+    # @param lexeme [String]
+    # @param type [Symbol]
+    # @param init [Integer]
+    def add_token(lexeme, type, init)
+      tokens << Token.new(
+        lexeme: lexeme, type: type, location: location(init)
+      )
     end
 
-    def current_location
-      Emendate::Location.new(lexeme_start_p, next_p - lexeme_start_p)
-    end
-
-    def after_source_end_location
-      Emendate::Location.new(next_p, 1)
-    end
-
-    def alpha_numeric?(char)
-      alpha?(char) || digit?(char)
-    end
-
-    def alpha?(char)
-      (char >= 'a' && char <= 'z') ||
-        char == '&'
+    def location(startpos)
+      length = scanner.pos - startpos
+      Emendate::Location.new(startpos, length)
     end
 
     def digit?(char)
       char >= '0' && char <= '9'
     end
 
-    def dot?(char)
-      char == DOT
+    def alpha?(char)
+      /[a-z&]/i.match?(char)
     end
   end
 end
