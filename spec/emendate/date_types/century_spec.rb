@@ -6,7 +6,7 @@ RSpec.describe Emendate::DateTypes::Century do
   subject(:century){ described_class.new(**args) }
 
   context 'when called without century_type' do
-    let(:args){ {literal: 19} }
+    let(:args){ { literal: 19 } }
 
     it 'raises error' do
       expect{ subject }.to raise_error(Emendate::MissingCenturyTypeError)
@@ -14,16 +14,16 @@ RSpec.describe Emendate::DateTypes::Century do
   end
 
   context 'when called with unsupported century_type value' do
-    let(:args) { {} }
+    let(:args){ {} }
 
     it 'raises error' do
       err = Emendate::CenturyTypeValueError
-      expect{described_class.new(literal: 19, century_type: :misc) }.to raise_error(err)
+      expect{ described_class.new(literal: 19, century_type: :misc) }.to raise_error(err)
     end
   end
 
   context 'with textual century name (19th)' do
-    let(:args) { {literal: 19, century_type: :name} }
+    let(:args){ { literal: 19, century_type: :name } }
 
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
@@ -79,7 +79,7 @@ RSpec.describe Emendate::DateTypes::Century do
   end
 
   context 'with plural century name (1900s)' do
-    let(:args) { {literal: 19, century_type: :plural} }
+    let(:args){ { literal: 19, century_type: :plural } }
 
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
@@ -135,7 +135,7 @@ RSpec.describe Emendate::DateTypes::Century do
   end
 
   context 'with uncertainty_digit century (19uu)' do
-    let(:args) { {literal: 19, century_type: :uncertainty_digits} }
+    let(:args){ { literal: 19, century_type: :uncertainty_digits } }
 
     it 'returns expected values' do
       expect(century.earliest).to eq(Date.new(1900, 1, 1))

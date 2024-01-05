@@ -6,7 +6,7 @@ RSpec.describe Emendate::DateTypes::Year do
   subject(:yr){ described_class.new(**args) }
 
   context 'with `2021`' do
-    let(:args){ {literal: '2021'} }
+    let(:args){ { literal: '2021' } }
 
     it 'returns as expected' do
       expect(yr.type).to eq(:year_date_type)
@@ -74,6 +74,7 @@ RSpec.describe Emendate::DateTypes::Year do
       expect(yr.latest).to eq(Date.new(2020, 12, 31))
       expect(yr.latest_at_granularity).to eq('2020')
     end
+
     context 'with `before 2021` and `before_date_treatment: :range`' do
       before(:context){ Emendate.config.options.before_date_treatment = :range }
       after(:context){ Emendate.reset_config }
@@ -91,7 +92,7 @@ RSpec.describe Emendate::DateTypes::Year do
   end
 
   context 'with `230 CE`' do
-    let(:args){ {literal: '230'} }
+    let(:args){ { literal: '230' } }
 
     it 'returns expected' do
       expect(yr.lexeme).to eq('0230')
@@ -105,7 +106,7 @@ RSpec.describe Emendate::DateTypes::Year do
   end
 
   context 'with `231 BCE`' do
-    let(:args){ {literal: '0231'} }
+    let(:args){ { literal: '0231' } }
 
     it 'returns expected' do
       yr.bce
@@ -166,7 +167,6 @@ RSpec.describe Emendate::DateTypes::Year do
   #     end
   #   end
   # end
-
 
   # describe '#range?' do
   #   context 'with range_switch' do

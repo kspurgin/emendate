@@ -6,14 +6,14 @@ RSpec.describe Emendate::DateTypes::Decade do
   context 'when called without decade_type' do
     it 'raises error' do
       err = Emendate::DateTypes::MissingDecadeTypeError
-      expect{described_class.new(literal: 199) }.to raise_error(err)
+      expect{ described_class.new(literal: 199) }.to raise_error(err)
     end
   end
 
   context 'when called with unsupported decade_type value' do
     it 'raises error' do
       err = Emendate::DateTypes::DecadeTypeValueError
-      expect{described_class.new(literal: 199, decade_type: :misc) }.to raise_error(err)
+      expect{ described_class.new(literal: 199, decade_type: :misc) }.to raise_error(err)
     end
   end
 
@@ -66,27 +66,27 @@ RSpec.describe Emendate::DateTypes::Decade do
   end
 
   context 'with plural decade (2000s)' do
-  before(:all) do
-    @dt = described_class.new(literal: 2000, decade_type: :plural)
-  end
-
-  describe '#earliest' do
-    it 'returns 2000-01-01' do
-      expect(@dt.earliest).to eq(Date.new(2000, 1, 1))
+    before(:all) do
+      @dt = described_class.new(literal: 2000, decade_type: :plural)
     end
-  end
 
-  describe '#latest' do
-    it 'returns 2009-12-31' do
-      expect(@dt.latest).to eq(Date.new(2009, 12, 31))
+    describe '#earliest' do
+      it 'returns 2000-01-01' do
+        expect(@dt.earliest).to eq(Date.new(2000, 1, 1))
+      end
     end
-  end
 
-  describe '#lexeme' do
-    it 'returns 2000s' do
-      expect(@dt.lexeme).to eq('2000s')
+    describe '#latest' do
+      it 'returns 2009-12-31' do
+        expect(@dt.latest).to eq(Date.new(2009, 12, 31))
+      end
     end
-  end
+
+    describe '#lexeme' do
+      it 'returns 2000s' do
+        expect(@dt.lexeme).to eq('2000s')
+      end
+    end
   end
 
   context 'with plural decade (200s)' do

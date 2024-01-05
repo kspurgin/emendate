@@ -52,13 +52,13 @@ RSpec.describe Emendate::NumberUtils do
       end
     end
   end
-  
+
   describe '#valid_day?' do
     let(:result){ numutils.valid_day?(str) }
-    
+
     context 'with not valid (i.e. 42)' do
       let(:str){ '42' }
-      
+
       it 'returns false' do
         expect(result).to be false
       end
@@ -66,7 +66,7 @@ RSpec.describe Emendate::NumberUtils do
 
     context 'with valid (i.e. 24)' do
       let(:str){ '24' }
-      
+
       it 'returns true' do
         expect(result).to be true
       end
@@ -75,10 +75,10 @@ RSpec.describe Emendate::NumberUtils do
 
   describe '#valid_month?' do
     let(:result){ numutils.valid_month?(str) }
-    
+
     context 'with not valid (i.e. 21)' do
       let(:str){ '21' }
-      
+
       it 'returns false' do
         expect(result).to be false
       end
@@ -86,7 +86,7 @@ RSpec.describe Emendate::NumberUtils do
 
     context 'with valid (i.e. 12)' do
       let(:str){ '12' }
-      
+
       it 'returns true' do
         expect(result).to be true
       end
@@ -104,7 +104,7 @@ RSpec.describe Emendate::NumberUtils do
       expect(result('22')).to be false
       expect(result('40')).to be false
     end
-    
+
     context 'with max_month_number_handling: :edtf_level_1' do
       before{ Emendate.config.options.max_month_number_handling = :edtf_level_1 }
 
@@ -127,7 +127,7 @@ RSpec.describe Emendate::NumberUtils do
       end
     end
   end
-  
+
   describe '#valid_season?' do
     def result(str)
       numutils.valid_season?(str)
@@ -138,7 +138,7 @@ RSpec.describe Emendate::NumberUtils do
       expect(result('22')).to be false
       expect(result('40')).to be false
     end
-    
+
     context 'with max_month_number_handling: :edtf_level_1' do
       before{ Emendate.config.options.max_month_number_handling = :edtf_level_1 }
 
@@ -173,7 +173,7 @@ RSpec.describe Emendate::NumberUtils do
 
     context 'with valid (i.e. 1923)' do
       let(:str){ '1923' }
-      
+
       it 'returns true' do
         expect(result).to be true
       end

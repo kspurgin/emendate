@@ -36,26 +36,6 @@ module Emendate
 
     attr_reader :working, :result
 
-    def bce?
-      result.type_string.match?(
-        /(?:year_date_type era_bce|era_bce year_date_type)/
-      )
-    end
-
-    def apply_bce
-      if result.type_string.match?(/year_date_type era_bce/)
-        segments = result.extract(:year_date_type, :era_bce)
-        year = segments[0]
-        bce = segments[1]
-      else
-        segments = result.extract(:era_bce, :year_date_type)
-        year = segments[1]
-        bce = segments[0]
-      end
-      year.bce
-      result.delete(bce)
-    end
-
     def recursive_parse
       return if working.empty?
 
@@ -92,6 +72,26 @@ module Emendate
       else
         :parse_non_date_part
       end
+    end
+
+    def bce?
+      result.type_string.match?(
+        /(?:year_date_type era_bce|era_bce year_date_type)/
+      )
+    end
+
+    def apply_bce
+      if result.type_string.match?(/year_date_type era_bce/)
+        segments = result.extract(:year_date_type, :era_bce)
+        year = segments[0]
+        bce = segments[1]
+      else
+        segments = result.extract(:era_bce, :year_date_type)
+        year = segments[1]
+        bce = segments[0]
+      end
+      year.bce
+      result.delete(bce)
     end
 
     def apply_switch_modifiers

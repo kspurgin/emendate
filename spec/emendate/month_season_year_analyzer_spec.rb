@@ -4,7 +4,8 @@ require 'spec_helper'
 
 RSpec.describe Emendate::MonthSeasonYearAnalyzer do
   subject(:analyzer){ described_class.new(*tokens) }
-  after(:each){ Emendate.reset_config }
+
+  after{ Emendate.reset_config }
 
   let(:tokens) do
     t = Emendate.prepped_for(
@@ -20,7 +21,8 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
     let(:lexeme){ result.result.lexeme }
     let(:warnings){ result.warnings.first }
 
-    context 'with 2020-03 (unambiguous year-number - second less than first - MONTH)' do
+    context 'with 2020-03 (unambiguous year-number - second less than first ' \
+            '- MONTH)' do
       let(:str){ '2020-03' }
 
       it 'returns month' do
@@ -30,17 +32,24 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
       end
     end
 
-    context 'with 1995-28 (unambiguous year-number - second less than first - SEASON)' do
+    context 'with 1995-28 (unambiguous year-number - second less than first ' \
+            '- SEASON)' do
       let(:str){ '1995-28' }
 
-      it 'returns year (default treatment for ambiguous month/year -- default month max, invalid range)' do
+      it 'returns year (default treatment for ambiguous month/year -- ' \
+         'default month max, invalid range)' do
         expect(type).to eq(:year)
         expect(lexeme).to eq('1928')
-        expect(warnings).to eq('Ambiguous year + month/season/year treated as_year, but this creates invalid range')
+        expect(warnings).to eq(
+          'Ambiguous year + month/season/year treated as_year, but this ' \
+          'creates invalid range'
+        )
       end
 
       context 'with max_month_number_handling: :edtf_level_2' do
-        before{ Emendate.config.options.max_month_number_handling = :edtf_level_2 }
+        before do
+          Emendate.config.options.max_month_number_handling = :edtf_level_2
+        end
 
         it 'returns season' do
           expect(type).to eq(:season)
@@ -50,21 +59,26 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
       end
     end
 
-    context 'with 1995-99 (unambiguous year-number - second >first, cannot be month/season, valid range)' do
+    context 'with 1995-99 (unambiguous year-number - second >first, cannot ' \
+            'be month/season, valid range)' do
       let(:str){ '1995-99' }
-        it 'returns year' do
-          expect(type).to eq(:year)
-          expect(lexeme).to eq('1999')
-          expect(warnings).to be_nil
-        end
+
+      it 'returns year' do
+        expect(type).to eq(:year)
+        expect(lexeme).to eq('1999')
+        expect(warnings).to be_nil
+      end
     end
 
     context 'with 2010-12 (ambiguous value, with default treatment as year)' do
       let(:str){ '2010-12' }
+
       it 'returns year' do
         expect(type).to eq(:year)
         expect(lexeme).to eq('2012')
-        expect(warnings).to eq('Ambiguous year + month/season/year treated as_year')
+        expect(warnings).to eq(
+          'Ambiguous year + month/season/year treated as_year'
+        )
       end
 
       context 'with ambiguous_month_year: :as_month' do
@@ -73,13 +87,16 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
         it 'returns year' do
           expect(type).to eq(:month)
           expect(lexeme).to eq('12')
-          expect(warnings).to eq('Ambiguous year + month/season/year treated as_month')
+          expect(warnings).to eq(
+            'Ambiguous year + month/season/year treated as_month'
+          )
         end
       end
     end
 
     context 'with 2010-21 (ambiguous value, with default treatment as year)' do
       let(:str){ '2010-21' }
+
       it 'returns year' do
         expect(type).to eq(:year)
         expect(lexeme).to eq('2021')
@@ -95,7 +112,9 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
         it 'returns season' do
           expect(type).to eq(:season)
           expect(lexeme).to eq('21')
-          expect(warnings).to eq('Ambiguous year + month/season/year treated as_season')
+          expect(warnings).to eq(
+            'Ambiguous year + month/season/year treated as_season'
+          )
         end
       end
     end

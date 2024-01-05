@@ -73,11 +73,12 @@ RSpec.describe Emendate::DateUtils do
   end
 
   describe '#valid_date?' do
-    let(:tokens){ Emendate.prepped_for(
-      string: str,
-      target: Emendate::DatePartTagger
-    )
-    }
+    let(:tokens) do
+      Emendate.prepped_for(
+        string: str,
+        target: Emendate::DatePartTagger
+      )
+    end
     let(:args){ [tokens[0], tokens[2], tokens[4]] }
     let(:result){ dateutils.valid_date?(*args) }
 
