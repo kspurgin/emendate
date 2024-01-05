@@ -1,4 +1,4 @@
-require: 
+require:
   - rubocop-performance
   - rubocop-rspec
 
@@ -14,7 +14,9 @@ Layout/SpaceBeforeBlockBraces:
   EnforcedStyle: no_space
 Naming/MethodParameterName:
   AllowedNames: n, n1, n2, yr, x
-  
+Style/NumericLiterals:
+  Enabled: false
+
 # I am careful to not leak state between tests
 # Eventually this can be cleaned up but it is not a priority
 RSpec/InstanceVariable:
@@ -24,9 +26,8 @@ RSpec/BeforeAfterAll:
 # Nested groups help create documentation from tests
 RSpec/NestedGroups:
   Enabled: false
-  
+
 # Temporarily disabled
 Style/Documentation:
   # document classes after structure/design is more set
   Enabled: false
-
