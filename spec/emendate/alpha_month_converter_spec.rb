@@ -18,7 +18,7 @@ RSpec.describe Emendate::AlphaMonthConverter do
       it 'tags as expected' do
         segment = result.first
         expect(segment.type).to eq(:month)
-        expect(segment.lexeme).to eq('Jan')
+        expect(segment.lexeme).to eq('Jan ')
         expect(segment.literal).to eq(1)
         expect(segment.location.col).to eq(0)
         expect(segment.location.length).to eq(4)
@@ -31,7 +31,7 @@ RSpec.describe Emendate::AlphaMonthConverter do
       it 'tags as expected' do
         segment = result.first
         expect(segment.type).to eq(:month)
-        expect(segment.lexeme).to eq('October')
+        expect(segment.lexeme).to eq('October ')
         expect(segment.literal).to eq(10)
         expect(segment.location.col).to eq(0)
         expect(segment.location.length).to eq(8)

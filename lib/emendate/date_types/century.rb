@@ -9,9 +9,9 @@ module Emendate
         super
         @literal = opts[:literal].is_a?(Integer) ? opts[:literal] : opts[:literal].to_i
         if opts[:century_type].nil?
-          fail(MissingCenturyTypeError.new(allowed_century_types))
+          raise MissingCenturyTypeError, allowed_century_types
         elsif !allowed_century_types.include?(opts[:century_type])
-          fail(CenturyTypeValueError.new(allowed_century_types))
+          raise CenturyTypeValueError, allowed_century_types
         else
           @century_type = opts[:century_type]
         end
@@ -51,11 +51,11 @@ module Emendate
       end
 
       def named_century_earliest_year
-        ( adjusted_century.to_s + '00' ).to_i + 1
+        (adjusted_century.to_s + '00').to_i + 1
       end
 
       def other_century_earliest_year
-        ( adjusted_century.to_s + '00' ).to_i
+        (adjusted_century.to_s + '00').to_i
       end
 
       def earliest_year

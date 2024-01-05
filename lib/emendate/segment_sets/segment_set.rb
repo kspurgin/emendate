@@ -10,16 +10,17 @@ module Emendate
       include Emendate::SegmentSets::CertaintyHelpers
       extend Forwardable
       attr_reader :orig_string, :norm, :segments,
-        :certainty, :inferred_date, :warnings
+                  :certainty, :inferred_date, :warnings
 
       def_delegator :@segments, :[], :[]
       def_delegators :@segments, :any?, :clear, :delete, :delete_at, :empty?,
-        :find_index, :first, :insert, :last, :length, :pop, :shift, :unshift
+                     :find_index, :first, :insert, :last, :length, :pop, :shift,
+                     :unshift
 
       def initialize(string: nil, norm: nil, segments: nil)
         @orig_string = string
         @norm = norm
-        @segments = segments ? Array.new(segments) : Array.new
+        @segments = segments ? Array.new(segments) : []
         @certainty = []
         @inferred_date = false
         @warnings = []
@@ -62,8 +63,8 @@ module Emendate
         date_part_types.join(' ')
       end
 
-      def each(*args, &block)
-        segments.each(*args, &block)
+      def each(...)
+        segments.each(...)
       end
 
       def is_inferred
@@ -103,12 +104,12 @@ module Emendate
 
         segment = []
         tails.each do |tail|
-          if segment.empty?
-            tail_i = segments.find_index(tail)
-            head_i = tail_i - segsize + 1
-            seg = self.class.new(segments: segments[head_i..tail_i])
-            segment = seg.types == args ? seg : []
-          end
+          next unless segment.empty?
+
+          tail_i = segments.find_index(tail)
+          head_i = tail_i - segsize + 1
+          seg = self.class.new(segments: segments[head_i..tail_i])
+          segment = seg.types == args ? seg : []
         end
         result = self.class.new
         segment.each{ |s| result << s }
@@ -117,7 +118,7 @@ module Emendate
 
       def map(*args, &block)
         results = segments.map(*args, &block)
-        if results.any?{ |s| s.kind_of?(Emendate::Segment) }
+        if results.any?{ |s| s.is_a?(Emendate::Segment) }
           self.class.new(segments: results)
         else
           results
@@ -126,7 +127,7 @@ module Emendate
 
       def select(*args, &block)
         results = segments.select(*args, &block)
-        if results.any?{ |s| s.kind_of?(Emendate::Segment) }
+        if results.any?{ |s| s.is_a?(Emendate::Segment) }
           self.class.new(segments: results)
         else
           results
@@ -134,17 +135,17 @@ module Emendate
       end
 
       def to_s
-      <<~OBJ
-      #<#{self.class.name}:#{self.object_id}
-        @orig_string=#{orig_string.inspect},
-        @norm=#{norm.inspect},
-        segments: #{types.inspect},
-        @certainty: #{certainty.inspect},
-        @inferred_date: #{inferred_date},
-        @warnings: #{warnings.inspect}>
-      OBJ
+        <<~OBJ
+          #<#{self.class.name}:#{object_id}
+            @orig_string=#{orig_string.inspect},
+            @norm=#{norm.inspect},
+            segments: #{types.inspect},
+            @certainty: #{certainty.inspect},
+            @inferred_date: #{inferred_date},
+            @warnings: #{warnings.inspect}>
+        OBJ
       end
-      alias_method :inspect, :to_s
+      alias inspect to_s
 
       def types
         segments.map(&:type)

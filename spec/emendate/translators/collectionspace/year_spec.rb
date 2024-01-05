@@ -109,4 +109,32 @@ RSpec.describe Emendate::Translators::Collectionspace::Year do
       expect(warnings).to be_empty
     end
   end
+
+  context 'with after 1970' do
+    let(:str){ 'after 1970' }
+    let(:expected) do
+      {
+        dateDisplayDate: 'after 1970',
+        scalarValuesComputed: 'true',
+        dateEarliestScalarValue: '1970-12-31T00:00:00.000Z',
+        dateEarliestSingleYear: '1970',
+        dateEarliestSingleMonth: '12',
+        dateEarliestSingleDay: '31',
+        dateEarliestSingleEra: 'CE',
+        dateEarliestSingleCertainty: 'After',
+        dateLatestScalarValue: '2023-12-02T00:00:00.000Z',
+        dateLatestYear: '2023',
+        dateLatestMonth: '12',
+        dateLatestDay: '2',
+        dateLatestEra: 'CE',
+        dateLatestCertainty: 'After'
+      }
+    end
+
+    it 'translates as expected' do
+      allow(Date).to receive(:today).and_return(Date.new(2023, 12, 2))
+      expect(value).to eq(expected)
+      expect(warnings).to be_empty
+    end
+  end
 end

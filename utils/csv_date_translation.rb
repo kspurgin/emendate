@@ -5,65 +5,88 @@ require 'csv'
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # variables to change per usage
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-input_csv = '~/data/input.csv'
-output_csv = '~/data/output.csv'
-date_column = 'orig_date_value'
-dialect = :lyrasis_pseudo_edtf
-max_dates = 1
-month_year = :as_year
-known_unknown = 'not dated'
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+input_csv = '~/data/az_ccp/mig/working/obj_dates_all_uniq.csv'
+output_csv = '~/data/az_ccp/mig/supplied/obj_dates_translated.csv'
+date_column = 'date_value'
 
 options = {
-  target_dialect: dialect,
-  max_output_dates: max_dates,
-  unknown_date_output: :custom,
-  unknown_date_output_string: 'not dated',
-  ambiguous_month_year: :as_year 
+  ambiguous_month_year: :as_month,
+  dialect: :collectionspace,
+  max_output_dates: 1,
+  unknown_date_output: :orig,
+  unknown_date_output_string: ''
 }
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 def get_headers(input)
-  ct = 0
-  headers = nil
-  CSV.foreach(input) do |row|
-    headers = row
-    ct += 1
-    break if ct > 0
+  CSV.parse_line(File.open(input), headers: true)
+     .headers
+     .map(&:to_sym)
+end
+
+def dialect_headers(options)
+  case options[:dialect]
+  when :collectionspace
+    %i[dateDisplayDate datePeriod dateAssociation dateNote
+       dateEarliestSingleYear dateEarliestSingleMonth
+       dateEarliestSingleDay dateEarliestSingleEra
+       dateEarliestSingleCertainty dateEarliestSingleQualifier
+       dateEarliestSingleQualifierValue dateEarliestSingleQualifierUnit
+       dateLatestYear dateLatestMonth dateLatestDay dateLatestEra
+       dateLatestCertainty dateLatestQualifier dateLatestQualifierValue
+       dateLatestQualifierUnit dateEarliestScalarValue
+       dateLatestScalarValue scalarValuesComputed]
+  else
+    [:date_result]
   end
-  headers
+end
+
+def target_for_orig_when_error(options)
+  case options[:dialect]
+  when :collectionspace
+    :dateDisplayDate
+  else
+    :date_result
+  end
 end
 
 input = File.expand_path(input_csv)
 output = File.expand_path(output_csv)
 orig_headers = get_headers(input)
-extra_headers = orig_headers - [date_column]
-headers = orig_headers + %w[date_result date_processing_warnings]
+extra_headers = orig_headers - [date_column.to_sym]
+headers = [date_column.to_sym, :warnings, dialect_headers(options),
+           extra_headers].flatten
 
 CSV.open(output, 'w', headers: headers, write_headers: true) do |csv|
-  CSV.foreach(input, headers: true) do |row|
-    new_row = []
-    orig_headers.each{ |hdr| new_row << row[hdr] }
-    orig_date = row[date_column]
+  CSV.foreach(input, headers: true) do |inrow|
+    orig_date = inrow[date_column]
+    next if orig_date.blank?
 
-    if orig_date.blank?
-      date_result = ''
-      warnings = []
+    base = { date_column.to_sym => orig_date }
+    extra_headers.each { |e_hdr| base[e_hdr] = inrow[e_hdr.to_s] }
+    base[:scalarValuesComputed] = 'false' if options[:dialect] == :collectionspace
+
+    begin
+      translation = Emendate.translate(orig_date, options)
+    rescue StandardError => e
+      row = base.merge {
+        target_for_orig_when_error(options) => orig_date,
+          :warnings => e
+      }
+      csv << row.values_at(*headers)
     else
-
-      begin
-        result = Emendate.translate(orig_date, options)
-      rescue => err
-        date_result = ''
-        warnings = [err]
-      else
-        date_result = result.value
-        warnings = result.warnings
+      base[:warnings] = translation.warnings.join("; ")
+      translation.values.each do |value|
+        if options[:dialect] == :collectionspace
+          row = base.merge(value)
+        else
+          row = base.merge {
+            dialect_headers(options).first => value
+          }
+        end
+      csv << row.values_at(*headers)
       end
-      
     end
 
-    new_row << date_result
-    new_row << warnings.join('; ')
-    csv << new_row
   end
 end

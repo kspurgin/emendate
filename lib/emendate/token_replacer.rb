@@ -9,7 +9,7 @@ module Emendate
 
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 
@@ -21,10 +21,12 @@ module Emendate
       return Success(result) unless replaceable?
 
       result.select{ |token| replacements.key?(token.type) }
-        .map{ |source| replace_x_with_derived_new_type(
+            .map do |source|
+        replace_x_with_derived_new_type(
           x: source,
-          type: replacements[source.type])
-        }
+          type: replacements[source.type]
+        )
+      end
       Success(result)
     end
 
@@ -39,7 +41,9 @@ module Emendate
     def replacements
       {
         about: :approximate,
-        circa: :approximate
+        circa: :approximate,
+        probably: :uncertain,
+        possibly: :uncertain
       }
     end
   end

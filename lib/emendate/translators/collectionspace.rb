@@ -38,7 +38,7 @@ module Emendate
       def computed
         case date.range_switch
         when 'after'
-          warn(':computed_after not yet implemented')
+          computed_after
         when 'before'
           computed_before
         else
@@ -65,6 +65,27 @@ module Emendate
                          })
       end
 
+      def computed_after
+        start_date = Date.parse(date.date_start_full) - 1
+        end_date = Date.parse(date.date_end_full)
+
+        base_value.merge({
+                           scalarValuesComputed: 'true',
+                           dateEarliestScalarValue: "#{start_date.iso8601}#{SUFFIX}",
+                           dateEarliestSingleYear: start_date.year.to_s,
+                           dateEarliestSingleMonth: start_date.month.to_s,
+                           dateEarliestSingleDay: start_date.day.to_s,
+                           dateEarliestSingleEra: 'CE',
+                           dateEarliestSingleCertainty: 'After',
+                           dateLatestScalarValue: "#{end_date}#{SUFFIX}",
+                           dateLatestYear: end_date.year.to_s,
+                           dateLatestMonth: end_date.month.to_s,
+                           dateLatestDay: end_date.day.to_s,
+                           dateLatestEra: 'CE',
+                           dateLatestCertainty: 'After'
+                         })
+      end
+
       def computed_before
         end_date = Date.parse(date.date_end_full) + 1
 
@@ -79,29 +100,32 @@ module Emendate
                          })
       end
 
-      def approximate
+      def approximate_term
         lexed = processed.history[:lexed]
         types = lexed.types
         if types.any?(:about)
-          computed.merge({
-                           dateEarliestSingleCertainty: 'about',
-                           dateLatestCertainty: 'about'
-                         })
-        elsif types.any?(:approximate)
-          computed.merge({
-                           dateEarliestSingleCertainty: 'Approximate',
-                           dateLatestCertainty: 'Approximate'
-                         })
+          'about'
         elsif types.any?(:circa)
-          computed.merge({
-                           dateEarliestSingleCertainty: 'Circa',
-                           dateLatestCertainty: 'Circa'
-                         })
+          'Circa'
+        else
+          'Approximate'
         end
       end
 
+      def approximate
+        term = approximate_term
+        computed.merge({
+                         dateEarliestSingleCertainty: term,
+                         dateLatestCertainty: term
+                       })
+      end
+
       def approximate_and_uncertain
-        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+        term = 'approximate and possibly'
+        computed.merge({
+                         dateEarliestSingleCertainty: term,
+                         dateLatestCertainty: term
+                       })
       end
 
       def one_of_range_set
@@ -117,9 +141,10 @@ module Emendate
       end
 
       def uncertain
+        term = 'Possibly'
         computed.merge({
-                         dateEarliestSingleCertainty: 'Possibly',
-                         dateLatestCertainty: 'Possibly'
+                         dateEarliestSingleCertainty: term,
+                         dateLatestCertainty: term
                        })
       end
     end

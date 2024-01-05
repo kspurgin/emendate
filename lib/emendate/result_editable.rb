@@ -33,7 +33,13 @@ module Emendate
       replace_segments_with_new(segments: [s1, s2], new: new)
     end
 
-    # @param x Emendate::Segment (or subclass)
+    # @param x [Emendate::Segment] (or subclass)
+    def move_x_to_beginning(x)
+      result.delete(x)
+      result.unshift(x)
+    end
+
+    # @param x [Emendate::Segment] (or subclass)
     def move_x_to_end(x)
       result.delete(x)
       result << x
@@ -44,6 +50,16 @@ module Emendate
                              lexeme: sources.map(&:lexeme).join,
                              literal: sources[0].literal,
                              sources: sources)
+    end
+
+    # @param segment_types [Array<Symbol>] of segments to replace
+    # @param type [Symbol] for new derived replacement
+    def replace_segments_with_derived_new_type(segment_types:, type:)
+      segments = result.extract(segment_types)
+      ins_pt = result.find_index(segments[-1]) + 1
+      newsegment = Emendate::DerivedToken.new(type: type, sources: segments)
+      result.insert(ins_pt, newsegment)
+      segments.each{ |segment| result.delete(segment) }
     end
 
     # given an array of segments and a new (derived) segment, replaces the former with the latter

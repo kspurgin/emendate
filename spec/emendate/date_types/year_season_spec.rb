@@ -8,10 +8,18 @@ RSpec.describe Emendate::DateTypes::YearSeason do
   context 'when created with month, year, and children' do
     let(:opts) do
       tokens = [
-        Emendate::Token.new(type: :season, lexeme: 'summer', location: Emendate::Location.new(6, 6)),
-        Emendate::Token.new(type: :year, lexeme: '2002, ', location: Emendate::Location.new(0, 6))
-        ]
-      {year: '2020', month: 22, sources: tokens}
+        Emendate::Token.new(
+          type: :season,
+          lexeme: 'summer',
+          location: Emendate::Location.new(6, 6)
+        ),
+        Emendate::Token.new(
+          type: :year,
+          lexeme: '2002, ',
+          location: Emendate::Location.new(0, 6)
+        )
+      ]
+      { year: '2020', month: 22, sources: tokens }
     end
 
     describe '#type' do
@@ -59,7 +67,7 @@ RSpec.describe Emendate::DateTypes::YearSeason do
 
     describe '#literal' do
       it 'returns 202022' do
-        expect(subject.literal).to eq(202022)
+        expect(subject.literal).to eq(202_022)
       end
     end
 
@@ -77,7 +85,7 @@ RSpec.describe Emendate::DateTypes::YearSeason do
   end
 
   context 'when created with literal' do
-    let(:opts){ {literal: 202022} }
+    let(:opts){ { literal: 202_022 } }
 
     it 'type = :yearseason_date_type' do
       expect(subject.type).to eq(:yearseason_date_type)
