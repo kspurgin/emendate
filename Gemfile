@@ -7,7 +7,7 @@ gemspec
 
 group :documentation do
   gem 'redcarpet', '~>3.5' # markdown parser for generating documentation
-  gem 'yard', '~>0.9.28'
+  gem 'yard'
 end
 
 group :test do
