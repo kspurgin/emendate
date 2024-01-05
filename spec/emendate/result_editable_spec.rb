@@ -23,7 +23,7 @@ RSpec.describe Emendate::ResultEditable do
       e.collapse_segments_backward(%i[month_alpha question space])
       expect(e.result.type_string).to eq('month_alpha number1or2 comma space number4')
       derived = e.result.segments.first
-      expect(derived.lexeme).to eq('Oct.?')
+      expect(derived.lexeme).to eq('Oct.? ')
       expect(derived.literal).to eq(10)
       expect(derived.location.col).to eq(0)
       expect(derived.location.length).to eq(6)
@@ -41,7 +41,7 @@ RSpec.describe Emendate::ResultEditable do
       expect(e.result.type_string).to eq('month_alpha number4')
       der = e.result[0]
       expect(der.literal).to eq(1)
-      expect(der.lexeme).to eq('Jan')
+      expect(der.lexeme).to eq('Jan ')
       expect(der.location.col).to eq(0)
       expect(der.location.length).to eq(4)
     end
@@ -59,6 +59,18 @@ RSpec.describe Emendate::ResultEditable do
     end
   end
 
+  describe '#move_x_to_beginning' do
+    it 'moves token x to be the first token' do
+      tokens = Emendate.prepped_for(
+        string: '1950s early',
+        target: Emendate::FormatStandardizer
+      )
+      e = Editable.new(tokens)
+      e.move_x_to_beginning(tokens[2])
+      expect(e.result.type_string).to eq('partial number4 letter_s')
+    end
+  end
+
   describe '#move_x_to_end' do
     it 'moves token x to be the last token' do
       tokens = Emendate.prepped_for(
@@ -70,6 +82,25 @@ RSpec.describe Emendate::ResultEditable do
       expect(e.result.type_string).to eq('number4 letter_s space number1or2 and space number1or2 space')
       last = e.result[-1]
       expect(last.location.col).to eq(7)
+    end
+  end
+
+  describe '#replace_segments_with_derived_new_type' do
+    it 'tags as expected' do
+      tokens = Emendate.prepped_for(
+        string: '2011 (?)',
+        target: Emendate::TokenCollapser
+      )
+      e = Editable.new(tokens)
+      segment_types = %i[parenthesis_open question parenthesis_close]
+      e.replace_segments_with_derived_new_type(
+        segment_types: segment_types, type: :question
+      )
+      expect(e.result.type_string).to eq('number4 space question')
+
+      expect(e.result.extract(%i[question]).segments.first.sources.types).to eq(
+        segment_types
+      )
     end
   end
 

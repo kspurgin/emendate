@@ -73,6 +73,14 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
+    context 'with 11-2018' do
+      let(:string){ '11-2018' }
+
+      it 'reorders segments' do
+        expect(result).to eq(%i[number4 hyphen number1or2])
+      end
+    end
+
     context 'with c. 999-1-1' do
       let(:string){ 'c. 999-1-1' }
 

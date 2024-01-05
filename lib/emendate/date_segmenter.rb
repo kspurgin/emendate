@@ -139,29 +139,35 @@ module Emendate
       mod = partial_mod_function
       return if mod.nil?
 
-      send(mod)
+      mod.call
     end
 
     def partial_mod_function
       return nil if working.empty?
+      return proc{ passthrough_partial_mod } if working.length < 2
 
-      case working.types.first
-      when :partial
-        :mod_partial
+      pair = working.first(2)
+      if pair[0].date_type? && pair[1].type == :partial
+        proc{ mod_partial(:backward) }
+      elsif pair[1].date_type? && pair[0].type == :partial
+        proc{ mod_partial(:forward) }
       else
-        :passthrough_partial_mod
+        proc{ passthrough_partial_mod }
       end
     end
 
-    def mod_partial
-      partial = working.shift
-      if current.is_a?(Emendate::DateTypes::DateType)
-        current.partial_indicator = partial.lexeme.strip.delete_suffix('-')
-        result << current.prepend_source_token(partial)
-        working.shift
+    def mod_partial(direction)
+      if direction == :forward
+        partial = working.shift
+        datetype = working.shift
       else
-        result << partial
+        datetype = working.shift
+        partial = working.shift
       end
+
+      datetype.partial_indicator = partial.lexeme.strip.delete_suffix('-')
+      result << datetype.prepend_source_token(partial)
+
       apply_partial_modifiers
     end
 
@@ -210,17 +216,18 @@ module Emendate
 
     def parse_century_date_part
       cent = working[0]
+      type = century_type(cent)
       result << Emendate::DateTypes::Century.new(
-        literal: century_literal(cent),
-        century_type: century_type(cent),
+        literal: century_literal(cent, type),
+        century_type: type,
         sources: [cent]
       )
       working.shift
       recursive_parse
     end
 
-    def century_literal(datepart)
-      if datepart.lexeme[-1] == 's'
+    def century_literal(datepart, type)
+      if type == :plural
         datepart.literal.to_s[0..-3].to_i
       else
         datepart.literal
@@ -228,9 +235,9 @@ module Emendate
     end
 
     def century_type(datepart)
-      if datepart.lexeme[-1] == 's'
+      if datepart.sources.types.include?(:letter_s)
         :plural
-      elsif datepart.lexeme[-1].match?(/[ux]/)
+      elsif datepart.sources.types.include?(:uncertainty_digits)
         :uncertainty_digits
       else
         :name

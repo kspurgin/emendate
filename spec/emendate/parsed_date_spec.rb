@@ -9,9 +9,9 @@ RSpec.describe Emendate::ParsedDate do
   let(:args) do
     pm = Emendate.process(str, options)
     dateparts = pm.tokens.segments.select{ |t| t.date_type? }
-    {date: dateparts[pos],
-     certainty: pm.tokens.certainty,
-     orig: pm.orig_string}
+    { date: dateparts[pos],
+      certainty: pm.tokens.certainty,
+      orig: pm.orig_string }
   end
 
   let(:options){ {} }
@@ -20,7 +20,7 @@ RSpec.describe Emendate::ParsedDate do
     context 'with non-date type passed in' do
       let(:args) do
         token = Emendate::Token.new
-        {date: token, orig: 'token'}
+        { date: token, orig: 'token' }
       end
 
       it 'raises error' do
@@ -43,19 +43,20 @@ RSpec.describe Emendate::ParsedDate do
 
   describe '#to_h' do
     let(:result){ parsed.to_h }
+
     context 'with 2/23/2021' do
       let(:str){ '2/23/2021' }
 
       let(:expected) do
         { original_string: '2/23/2021',
-         index_dates: [],
-         date_start: nil,
-         date_end: nil,
-         date_start_full: '2021-02-23',
-         date_end_full: '2021-02-23',
-         inclusive_range: nil,
-         certainty: [],
-         range_switch: nil }
+          index_dates: [],
+          date_start: nil,
+          date_end: nil,
+          date_start_full: '2021-02-23',
+          date_end_full: '2021-02-23',
+          inclusive_range: nil,
+          certainty: [],
+          range_switch: nil }
       end
 
       it 'returns as expected' do
@@ -66,13 +67,14 @@ RSpec.describe Emendate::ParsedDate do
 
   describe '#to_json' do
     let(:result){ parsed.to_json }
+
     context 'with 2/23/2021' do
       let(:str){ '2/23/2021' }
 
       it 'returns as expected' do
         expected = <<~LONGSTRING
-      {\"original_string\":\"2/23/2021\",\"index_dates\":[],\"date_start\":null,\"date_end\":null,\"date_start_full\":\"2021-02-23\",\"date_end_full\":\"2021-02-23\",\"inclusive_range\":null,\"certainty\":[],\"range_switch\":null}
-      LONGSTRING
+          {"original_string":"2/23/2021","index_dates":[],"date_start":null,"date_end":null,"date_start_full":"2021-02-23","date_end_full":"2021-02-23","inclusive_range":null,"certainty":[],"range_switch":null}
+        LONGSTRING
         expect(result).to eq(expected.chomp)
       end
     end
@@ -92,8 +94,8 @@ RSpec.describe Emendate::ParsedDate do
 
   describe '#valid_range?' do
     let(:options) do
-      {ambiguous_year_rollback_threshold: 0,
-       pluralized_date_interpretation: :broad }
+      { ambiguous_year_rollback_threshold: 0,
+        pluralized_date_interpretation: :broad }
     end
     let(:result){ parsed.valid_range? }
 
@@ -116,6 +118,7 @@ RSpec.describe Emendate::ParsedDate do
 
       context 'when only end of range populated (e.g. before 1920)' do
         let(:str){ 'before 1920' }
+
         it 'returns true' do
           expect(result).to be true
         end

@@ -9,7 +9,7 @@ RSpec.describe Emendate::DateSegmenter do
     let(:tokens){ prepped_for(string: str, target: step) }
     let(:result) do
       step.call(tokens)
-        .value!
+          .value!
     end
     let(:types){ result.types }
     let(:certainty){ result.certainty }
@@ -36,7 +36,7 @@ RSpec.describe Emendate::DateSegmenter do
         expect(types).to eq(%i[year_date_type])
         expect(certainty).to eq([:approximate])
         expect(warnings.length).to eq(1)
-        expect(result[0].literal).to eq(202127)
+        expect(result[0].literal).to eq(202_127)
       end
     end
 
@@ -79,7 +79,7 @@ RSpec.describe Emendate::DateSegmenter do
       it 'segments as expected' do
         expect(types).to eq(%i[year_date_type])
         expect(result.warnings).to include('10000007 treated as a long year')
-        expect(result[0].literal).to eq(10000007)
+        expect(result[0].literal).to eq(10_000_007)
       end
     end
 
@@ -126,6 +126,15 @@ RSpec.describe Emendate::DateSegmenter do
         expect(types).to eq(%i[century_date_type])
         expect(result[0].partial_indicator).to eq('early')
         expect(result[0].range_switch).to eq('before')
+      end
+    end
+
+    context 'with 1950s early' do
+      let(:str){ '1950s early' }
+
+      it 'segments as expected' do
+        expect(types).to eq(%i[decade_date_type])
+        expect(result[0].partial_indicator).to eq('early')
       end
     end
 

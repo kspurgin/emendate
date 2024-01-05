@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require_relative './complex_sendable'
 require_relative './result_editable'
 
 module Emendate
   class FormatStandardizer
-    include ComplexSendable
     include Dry::Monads[:result]
     include ResultEditable
 
@@ -21,16 +19,10 @@ module Emendate
 
     def call
       while standardizable
-        functions = determine_standardizers
-        break if functions.nil?
+        function = determine_standardizer
+        break if function.nil?
 
-        functions.each do |function|
-          if function.is_a?(Symbol)
-            send(function)
-          else
-            send_complex(function)
-          end
-        end
+        function.call
       end
       Success(result)
     end
@@ -39,7 +31,7 @@ module Emendate
 
     attr_reader :result, :standardizable
 
-    def determine_standardizers
+    def determine_standardizer
       fms = full_match_standardizers
       return fms unless fms.nil?
 
@@ -49,92 +41,104 @@ module Emendate
       fmdp = full_match_date_part_standardizers
       return fmdp unless fmdp.nil?
 
-      []
+      nil
     end
 
     def standardizable
-      return true unless determine_standardizers.empty?
+      return true if determine_standardizer
     end
 
     def full_match_standardizers
       case result.types
       when %i[number4 comma month]
-        [
-          :remove_post_year_comma,
-          [:move_x_to_end, ->{ result[0] }]
-        ]
+        proc do
+          remove_post_year_comma
+          move_x_to_end(result[0])
+        end
       when %i[number4 hyphen month]
-        [
-          :remove_post_year_hyphen,
-          [:move_x_to_end, ->{ result[0] }]
-        ]
+        proc do
+          remove_post_year_hyphen
+          move_x_to_end(result[0])
+        end
       when %i[number4 comma season]
-        [
-          :remove_post_year_comma,
-          [:move_x_to_end, ->{ result[0] }]
-        ]
+        proc do
+          remove_post_year_comma
+          move_x_to_end(result[0])
+        end
       when %i[number4 comma month number1or2]
-        %i[
+        proc do
           remove_post_year_comma
           move_year_to_end_of_segment
-        ]
+        end
+      when %i[number1or2 hyphen number4]
+        proc{ reverse_tokens }
       when %i[partial range_indicator partial number1or2 century]
-        %i[copy_number_century_after_first_partial]
+        proc{ copy_number_century_after_first_partial }
       when %i[partial range_indicator partial number4 letter_s]
-        %i[copy_number_s_after_first_partial]
+        proc{ copy_number_s_after_first_partial }
       end
     end
 
     def partial_match_standardizers
       case result.type_string
       when /^double_dot.*/
-        %i[open_start]
+        proc{ open_start }
       when /.*double_dot$/
-        %i[open_end]
+        proc{ open_end }
       when /.*hyphen$/
-        %i[handle_ending_hyphen]
+        proc{ handle_ending_hyphen }
       when /.*slash$/
-        %i[handle_ending_slash]
+        proc{ handle_ending_slash }
       when /.*(?:range_indicator|hyphen|slash) unknown_date$/
-        %i[unknown_end]
+        proc{ unknown_end }
       when /.*slash.*/
-        %i[replace_slash_with_hyphen]
+        proc{ replace_slash_with_hyphen }
       when /.*era_ce.*/
-        %i[remove_ce_eras]
+        proc{ remove_ce_eras }
       when /.*letter_t number1or2 colon.*/
-        %i[remove_time_parts]
+        proc{ remove_time_parts }
       when /.*number3 uncertainty_digits.*/
-        %i[decade_as_year]
+        proc{ decade_as_year }
       when /.*number3.*/
-        %i[pad_3_to_4_digits]
+        proc{ pad_3_to_4_digits }
       when /.*single_dot standalone_zero$/
-        %i[remove_ending_dot_zero]
+        proc{ remove_ending_dot_zero }
       when /.*month number1or2 comma number4.*/
-        %i[remove_post_month_comma]
+        proc{ remove_post_month_comma }
       when /.*number4 month number1or2.*/
-        %i[move_year_to_end_of_segment]
+        proc{ move_year_to_end_of_segment }
       when /.*number1or2 month number4.*/
-        %i[move_month_to_beginning_of_segment]
+        proc{ move_month_to_beginning_of_segment }
       when /.*number1or2 letter_c.*/
-        %i[replace_c_with_century]
+        proc{ replace_c_with_century }
       end
     end
 
     def full_match_date_part_standardizers
       case result.date_part_types
       when %i[number1or2 number1or2 century]
-        %i[add_century_after_first_number]
+        proc{ add_century_after_first_number }
       when %i[month month number4]
-        %i[add_year_after_first_month]
+        proc{ add_year_after_first_month }
       when %i[month number1or2 month number1or2 number4]
-        %i[add_year_after_first_number1or2]
+        proc{ add_year_after_first_number1or2 }
       when %i[month number1or2 number1or2 number4]
-        %i[add_year_after_first_number1or2
-           add_month_before_second_number1or2]
+        proc do
+          add_year_after_first_number1or2
+          add_month_before_second_number1or2
+        end
       when %i[number4 month month]
-        %i[move_year_after_first_month
-           add_year_after_second_month]
+        proc do
+          move_year_after_first_month
+          add_year_after_second_month
+        end
       end
+    end
+
+    def reverse_tokens
+      tmp = []
+      tmp << result.segments.pop until result.segments.empty?
+      tmp.each{ |segment| result.segments << segment }
     end
 
     def add_century_after_first_number
@@ -260,7 +264,11 @@ module Emendate
       t3 = result.select{ |t| t.type == :number3 }[0]
       t3i = result.find_index(t3)
       lexeme4 = t3.lexeme.rjust(4, '0')
-      t4 = Emendate::NumberToken.new(type: :number, lexeme: lexeme4, literal: t3.literal, location: t3.location)
+      t4 = Emendate::DerivedToken.new(
+        type: :number4,
+        lexeme: lexeme4,
+        sources: [t3]
+      )
       result.delete_at(t3i)
       result.insert(t3i, t4)
     end

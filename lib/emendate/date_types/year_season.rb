@@ -29,8 +29,8 @@ module Emendate
       def lexeme
         "#{year}-#{month.to_s.rjust(2, '0')}"
       end
-      alias_method :earliest_at_granularity, :lexeme
-      alias_method :latest_at_granularity, :lexeme
+      alias earliest_at_granularity lexeme
+      alias latest_at_granularity lexeme
 
       def range?
         !(partial_indicator.nil? && range_switch.nil?)
@@ -59,7 +59,6 @@ module Emendate
           24 => Date.new(year, 3, 31)
         }.fetch(month)
       end
-
     end
   end
 end

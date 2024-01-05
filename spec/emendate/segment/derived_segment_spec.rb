@@ -15,7 +15,6 @@ RSpec.describe Emendate::DerivedSegment do
 
   let(:derived_type){ :newtype }
   let(:klass){ Derivable.new(type: derived_type, sources: sources) }
-  
 
   describe '#derive' do
     context 'when one source' do
@@ -100,10 +99,30 @@ RSpec.describe Emendate::DerivedSegment do
 
         it 'derives values as expected' do
           expect(klass.type).to eq(:comma)
-          expect(klass.lexeme).to eq(',')
+          expect(klass.lexeme).to eq(', ')
           expect(klass.literal).to be_nil
           expect(klass.location.col).to eq(7)
           expect(klass.location.length).to eq(2)
+        end
+      end
+
+      context 'with multiple levels of derivation' do
+        it 'foo' do
+          sub_a_srcs = [
+            Emendate::NumberToken.new(type: :number, lexeme: '2', location: Emendate::Location.new(0, 1)),
+            Emendate::Token.new(type: :hyphen, lexeme: '/', location: Emendate::Location.new(1, 1))
+          ]
+          sub_a = Derivable.new(type: :sub_a, sources: sub_a_srcs)
+
+          sub_b_srcs = [
+            Emendate::Token.new(type: :question, lexeme: '?', location: Emendate::Location.new(2, 1)),
+            Emendate::Token.new(type: :space, lexeme: ' ', location: Emendate::Location.new(3, 1))
+          ]
+          sub_b = Derivable.new(type: :sub_b, sources: sub_b_srcs)
+
+          parent = Derivable.new(type: :nested, sources: [sub_a, sub_b])
+          expect(parent.type).to eq(:nested)
+          expect(parent.sources.length).to eq(4)
         end
       end
     end

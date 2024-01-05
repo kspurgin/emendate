@@ -60,5 +60,13 @@ RSpec.describe Emendate::TokenCollapser do
         expect(result).to eq('number4 letter_s')
       end
     end
+
+    context 'with `1985 (?)`' do
+      let(:string){ '1985 (?)' }
+
+      it 'collapses (?) into ?' do
+        expect(result).to eq('number4 question')
+      end
+    end
   end
 end
