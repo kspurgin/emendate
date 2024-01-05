@@ -67,8 +67,8 @@ module Emendate
       Regexp.new(months, 'i') => :month_alpha,
       /^or/i => :or,
       /^to/i => :range_indicator,
-      # If additional seasons are added, make sure to update the mapping to
-      #   literals in AlphaMonthConverter
+      # If additional alphabetic seasons are added, make sure to
+      #   update the mapping to literals in Segments::SeasonAlphaToken
       /^(winter|spring|summer|fall|autumn)/i => :season,
       /^(date unknown|unknown date|no date|not dated|unknown|unk|n\.? ?d\.?)$/i =>
         :unknown_date,
@@ -211,15 +211,21 @@ module Emendate
         addtl = scanner.scan(/[a-z]+/i)
         add_token(match + addtl, :unknown, init)
       else
-        type = ALPHA[pattern]
-        if type == :month_alpha
+        case ALPHA[pattern]
+        when :month_alpha
           tokens << Emendate::MonthAlphaToken.new(
             lexeme: match,
-            type: type,
+            type: :month_alpha,
+            location: location(init)
+          )
+        when :season
+          tokens << Emendate::SeasonAlphaToken.new(
+            lexeme: match,
+            type: :season,
             location: location(init)
           )
         else
-          add_token(match, type, init)
+          add_token(match, ALPHA[pattern], init)
         end
       end
     end
