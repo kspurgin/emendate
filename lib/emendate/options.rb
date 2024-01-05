@@ -4,7 +4,6 @@ require_relative 'options_contract'
 
 module Emendate
   # To add or update an option there are several places to edit:
-  # - #defaults in this file -- used to reset to defaults without restarting application
   # - Emendate::OptionsContract -- used to validate configs
   # - Emendate (lib/emendate.rb) -- register the options with dry-configurable
   # - docs/options.adoc
@@ -51,8 +50,8 @@ module Emendate
     def map_error(err)
       return err if err.is_a?(String)
 
-      err.map do |errval|
-        fail StandardError, 'not implemented'
+      err.map do |_errval|
+        raise StandardError, 'not implemented'
       end
     end
 
