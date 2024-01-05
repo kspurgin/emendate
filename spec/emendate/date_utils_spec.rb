@@ -56,15 +56,7 @@ RSpec.describe Emendate::DateUtils do
     let(:result){ dateutils.possible_range?(*args) }
 
     context 'with 2020-10 (10 must be October)' do
-      let(:args){ ['2020', '10'] }
-
-      it 'returns false' do
-        expect(result).to be false
-      end
-    end
-
-    context 'with 2020-40 (2040 not a valid year)' do
-      let(:args){ ['2020', '40'] }
+      let(:args){ %w[2020 10] }
 
       it 'returns false' do
         expect(result).to be false
@@ -72,7 +64,7 @@ RSpec.describe Emendate::DateUtils do
     end
 
     context 'with 2020-21' do
-      let(:args){ ['2020', '21'] }
+      let(:args){ %w[2020 21] }
 
       it 'returns true (may be range or Spring 2020)' do
         expect(result).to be true

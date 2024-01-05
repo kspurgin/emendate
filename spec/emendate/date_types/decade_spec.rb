@@ -139,7 +139,7 @@ RSpec.describe Emendate::DateTypes::Decade do
 
   context 'with early 1990s' do
     before(:all) do
-      @dt = described_class.new(literal: 1990, decade_type: :plural, partial_indicator: 'early')
+      @dt = described_class.new(literal: 1990, decade_type: :plural, partial_indicator: :early)
     end
 
     describe '#earliest' do
@@ -163,7 +163,7 @@ RSpec.describe Emendate::DateTypes::Decade do
 
   context 'with mid-1990s' do
     before(:all) do
-      @dt = described_class.new(literal: 1990, decade_type: :plural, partial_indicator: 'mid')
+      @dt = described_class.new(literal: 1990, decade_type: :plural, partial_indicator: :mid)
     end
 
     describe '#earliest' do
@@ -187,7 +187,7 @@ RSpec.describe Emendate::DateTypes::Decade do
 
   context 'with late 1990s' do
     before(:all) do
-      @dt = described_class.new(literal: 1990, decade_type: :plural, partial_indicator: 'late')
+      @dt = described_class.new(literal: 1990, decade_type: :plural, partial_indicator: :late)
     end
 
     describe '#earliest' do

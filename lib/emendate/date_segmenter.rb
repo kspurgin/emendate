@@ -86,7 +86,7 @@ module Emendate
       when :present
         :parse_present
       when :season
-        :parse_date_parts
+        one_winter? ? :parse_season_date_part : :parse_date_parts
       when :year
         :parse_date_parts
       else
@@ -119,7 +119,7 @@ module Emendate
     def mod_switch
       switch = working.shift
       if current.is_a?(Emendate::DateTypes::DateType)
-        current.add_range_switch(switch.type.to_s)
+        current.add_range_switch(switch.type)
         result << current.prepend_source_token(switch)
         working.shift
       else
@@ -165,7 +165,10 @@ module Emendate
         partial = working.shift
       end
 
-      datetype.partial_indicator = partial.lexeme.strip.delete_suffix('-')
+      datetype.partial_indicator = partial.lexeme
+                                          .strip
+                                          .delete_suffix('-')
+                                          .to_sym
       result << datetype.prepend_source_token(partial)
 
       apply_partial_modifiers
@@ -242,6 +245,37 @@ module Emendate
       else
         :name
       end
+    end
+
+    def parse_season_date_part
+      pieces = working[0..3]
+      year = pieces[3]
+      month = pieces[0]
+      result << Emendate::DateTypes::YearSeason.new(year: year.literal,
+                                                    month: month.literal,
+                                                    sources: pieces,
+                                                    include_prev_year: true)
+      working.shift(4)
+      recursive_parse
+    end
+
+    def one_winter?
+      true if winter? &&
+              followed_by_year_range? &&
+              consecutive_years_in_range?
+    end
+
+    def winter?
+      true if working[0].literal == 24
+    end
+
+    def followed_by_year_range?
+      true if working[1..3].compact.map(&:type) == %i[year range_indicator year]
+    end
+
+    def consecutive_years_in_range?
+      diff = working[3].literal - working[1].literal
+      true if diff == 1
     end
 
     def parse_date_parts

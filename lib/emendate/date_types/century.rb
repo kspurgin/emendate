@@ -59,30 +59,38 @@ module Emendate
       end
 
       def earliest_year
-        year = century_type == :name ? named_century_earliest_year : other_century_earliest_year
+        year = start_year
         case partial_indicator
         when nil
           year
-        when 'early'
+        when :early
           year
-        when 'mid'
+        when :mid
           year + 33
-        when 'late'
+        when :late
           year + 66
         end
       end
 
       def latest_year
-        year = century_type == :name ? named_century_earliest_year : other_century_earliest_year
+        year = start_year
         case partial_indicator
         when nil
           year + 99
-        when 'early'
+        when :early
           year + 33
-        when 'mid'
+        when :mid
           year + 66
-        when 'late'
+        when :late
           year + 99
+        end
+      end
+
+      def start_year
+        if century_type == :name
+          named_century_earliest_year
+        else
+          other_century_earliest_year
         end
       end
     end

@@ -37,9 +37,9 @@ module Emendate
 
       def computed
         case date.range_switch
-        when 'after'
+        when :after
           computed_after
-        when 'before'
+        when :before
           computed_before
         else
           computed_normal

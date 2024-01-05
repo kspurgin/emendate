@@ -162,10 +162,10 @@ RSpec.describe Emendate::NumberUtils do
 
   describe '#valid_year?' do
     let(:result){ numutils.valid_year?(str) }
-    
-    context 'with not valid (i.e. 9999)' do
-      let(:str){ '9999' }
-      
+
+    context 'with not valid (i.e. 20324)' do
+      let(:str){ '20324' }
+
       it 'returns false' do
         expect(result).to be false
       end

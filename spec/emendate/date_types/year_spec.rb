@@ -21,7 +21,7 @@ RSpec.describe Emendate::DateTypes::Year do
   end
 
   context 'with `early 2021`' do
-    let(:args){ { literal: '2021', partial_indicator: 'early'} }
+    let(:args){ { literal: '2021', partial_indicator: :early } }
 
     it 'returns 2021' do
       expect(yr.lexeme).to eq('2021')
@@ -35,7 +35,7 @@ RSpec.describe Emendate::DateTypes::Year do
   end
 
   context 'with `mid 2021`' do
-    let(:args){ {literal: '2021', partial_indicator: 'mid'} }
+    let(:args){ { literal: '2021', partial_indicator: :mid } }
 
     it 'returns 2021' do
       expect(yr.lexeme).to eq('2021')
@@ -49,7 +49,7 @@ RSpec.describe Emendate::DateTypes::Year do
   end
 
   context 'with `late 2021`' do
-    let(:args){ {literal: '2021', partial_indicator: 'late'} }
+    let(:args){ { literal: '2021', partial_indicator: :late } }
 
     it 'returns 2021' do
       expect(yr.lexeme).to eq('2021')
@@ -63,7 +63,7 @@ RSpec.describe Emendate::DateTypes::Year do
   end
 
   context 'with `before 2021`' do
-    let(:args){ {literal: '2021', range_switch: 'before'} }
+    let(:args){ { literal: '2021', range_switch: :before } }
 
     it 'returns 2021' do
       expect(yr.lexeme).to eq('2021')

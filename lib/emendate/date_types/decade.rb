@@ -68,11 +68,11 @@ module Emendate
         case partial_indicator&.downcase
         when nil
           year
-        when 'early'
+        when :early
           year
-        when 'mid'
+        when :mid
           year + 4
-        when 'late'
+        when :late
           year + 7
         end
       end
@@ -82,11 +82,11 @@ module Emendate
         case partial_indicator&.downcase
         when nil
           year + 9
-        when 'early'
+        when :early
           year + 3
-        when 'mid'
+        when :mid
           year + 6
-        when 'late'
+        when :late
           year + 9
         end
       end
