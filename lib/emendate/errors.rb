@@ -73,6 +73,17 @@ module Emendate
     end
   end
 
+  class SeasonLiteralError < StandardError
+    include Emendate::Error
+
+    def initialize(lexeme)
+      m = "Cannot assign literal for season value `#{lexeme}`. Dates will not " \
+          'be translateable until SeasonAlphaToken is updated ' \
+          'to assign the appropriate literal value'
+      super(m)
+    end
+  end
+
   class TokenLexemeError < StandardError
     include Emendate::Error
   end
