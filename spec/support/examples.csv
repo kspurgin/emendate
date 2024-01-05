@@ -59,7 +59,7 @@
 "02-15-20","##-##-##","option;two_digit_year",,"two_digit_year_handling: :literal","0",,,"0020-02-15","0020-02-15",,"02-15-20",,"na",,
 "02-15-2020","##-##-####",,,,"0",,,"2020-02-15","2020-02-15",,"02-15-2020",,"na",,
 "02/15/2020","##/##/####",,,,"0",,,"2020-02-15","2020-02-15",,"02/15/2020",,"na",,
-"03-2020","##-####",,"ccp",,"0",2020,2020,"2020-03-01","2020-03-31",,"03-2020",,"na","2020-03","2020-03"
+"03-2020","##-####",,"ccp",,"0","2020","2020","2020-03-01","2020-03-31",,"03-2020",,"na","2020-03","2020-03"
 "03/2020","##/####",,"csws",,"0","2020","2020","2020-03-01","2020-03-31",,"03/2020",,"na","2020-03","2020-03"
 "1/2/2000 - 12/21/2001","@/@/#### - ##/##/####",,,,"0",,,"2000-01-02","2001-12-21",,"1/2/2000 - 12/21/2001",,"na",,
 "10-02-06","@@-@@-@@","ambiguous_day_month_year;option;two_digit_year","csws","ambiguous_month_day_year: :day_month_year","0","2006","2006","2006-02-10","2006-02-10",,"10-02-06",,"Ambiguous day/month/year treated as day_month_year",,
@@ -121,7 +121,7 @@
 "1985/..","####/..","after_before;edtf;edtf1;open_end",,,"0","1985","2999","1985-01-01","2999-12-31",,"1985/..",,"na",,
 "1990s","####s","approximate;decades","ba","pluralized_date_interpretation: :broad","0","1990","1999","1990-01-01","1999-12-31",,"1990s",,"na","1990 - 1999 (exact year unspecified)","199X"
 "1990s","####s","approximate;decades","ba","pluralized_date_interpretation: :decade","0","1990","1999","1990-01-01","1999-12-31",,,,"na","1990 - 1999 (exact year unspecified)","199X"
-"1990s early","####s early","approximate;decades;partial","ccp",,"0",1990,1993,"1990-01-01","1993-12-31",,"1990s early",,"na",,
+"1990s early","####s early","approximate;decades;partial","ccp",,"0","1990","1993","1990-01-01","1993-12-31",,"1990s early",,"na",,
 "1997 & 1999","#### & ####","alternate_dates",,,"0",,,"1997-01-01","1997-12-31",,"1997 & 1999",,"na",,
 "1997 & 1999","#### & ####","alternate_dates",,,"1",,,"1999-01-01","1999-12-31",,"1997 & 1999",,"na",,
 "1997 or 1999","#### or ####","alternate_dates","ba",,"0","1997","1997","1997-01-01","1997-12-31","one_of_set","1997 or 1999",,"na","1997 or 1999","[1997,1999]"
@@ -199,14 +199,14 @@
 "2020 Spring","#### SEASON","season",,,"0",,,"2020-04-01","2020-06-30",,"2020 Spring",,"na",,
 "2020-02-15","####-##-##","edtf;edtf0",,,"0",,,"2020-02-15","2020-02-15",,"2020-02-15",,"na",,
 "2020-03","####-##","edtf;edtf0","ba",,"0","2020-03","2020-03","2020-03-01","2020-03-31",,"2020-03",,"na","2020-03","2020-03"
-"2020-21","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_month, max_month_number_handling: :edtf_level_1","0","2020-04","2020-06","2020-04-01","2020-06-30",,"2020-21",,"na",,
-"2020-21","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_year","0",,,"2020-01-01","2021-12-31",,"2020-21",,"na",,
+"2020-21","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_month, max_month_number_handling: :edtf_level_1","0","2020-04","2020-06","2020-04-01","2020-06-30",,"2020-21",,"Ambiguous year + month/season/year treated as_season",,
+"2020-21","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_year, max_month_number_handling: :edtf_level_1","0","2020-01","2021-12","2020-01-01","2021-12-31",,"2020-21",,"Ambiguous year + month/season/year treated as_year",,
 "2020-3","####-#",,,,"0",,,"2020-03-01","2020-03-31",,"2020-3",,"na",,
-"2020-34","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_month","0",,,"2020-01-01","2021-03-31",,"2020-34",,"Ambiguous year + month/season/year treated as_month",,
-"2020-34","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_year","0",,,"2020-01-01","2034-12-31",,"2020-34",,"Ambiguous year + month/season/year treated as_year",,
+"2020-34","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_month, max_month_number_handling: :edtf_level_2","0","2020-01","2021-03","2020-01-01","2021-03-31",,"2020-34",,"Ambiguous year + month/season/year treated as_month",,
+"2020-34","####-@@","ambiguous_year_month_season;edtf;edtf1;season;two_digit_year",,"ambiguous_month_year: :as_year","0","2020-01","2034-12","2020-01-01","2034-12-31",,"2020-34",,"Ambiguous year + month/season/year treated as_year",,
 "2020, Feb 15","####, MON ##",,"csws",,"0","2020","2020","2020-02-15","2020-02-15",,"2020, Feb 15",,"na","2020-02-15","2020-02-15"
 "2020, Feb.","####, MON.",,"csws",,"0","2020","2020","2020-02-01","2020-02-29",,"2020, Feb.",,"na","2020-02","2020-02"
-"2020, summer","####, SEASON","season;year_granularity","csws",,"0","2020","2020","2020-07-01","2020-09-30",,"2020, summer",,"na",,
+"2020, summer","####, SEASON","season;year_granularity","csws",,"0","2020-07","2020-09","2020-07-01","2020-09-30",,"2020, summer",,"na",,
 "2020/02/15","####/##/##",,,,"0",,,"2020-02-15","2020-02-15",,"2020/02/15",,"na",,
 "20200215","########",,,,"0",,,"2020-02-15","2020-02-15",,"20200215",,"na",,
 "3/2020","#/####",,"csws",,"0","2020","2020","2020-03-01","2020-03-31",,"3/2020",,"na","2020-03","2020-03"
@@ -238,7 +238,7 @@
 "circa2002","circa####","approximate;four_digit_year;year_granularity","ncm",,"0","2002","2002","2002-01-01","2002-12-31","approximate","circa2002",,"na","2002 (approximate)","2002~"
 "Date Unknown","Date Unknown","indicates_no_date","csws",,"0","nilValue","nilValue","nilValue","nilValue","known_unknown","Date Unknown",,"na","not dated","XXXX"
 "Early 1990","early ####","approximate;partial",,,"0",,,"1990-01-01","1990-04-30",,"Early 1990",,"na",,
-"Early 1990s","early ####s","approximate;decades;partial",,,"0",1990,1993,"1990-01-01","1993-12-31",,"Early 1990s",,"na",,
+"Early 1990s","early ####s","approximate;decades;partial",,,"0","1990","1993","1990-01-01","1993-12-31",,"Early 1990s",,"na",,
 "early 19th century","early ##ORD century","century;partial","ba",,"0","1801","1834","1801-01-01","1834-12-31",,"early 19th century",,"na","1801 - 1834 (exact year unspecified)","[1801..1834]"
 "early to mid-19th century","early to mid-##ORD century","partial_range;century","ba",,"0","1801","1867","1801-01-01","1867-12-31",,"early to mid-19th century",,"na","1801 - 1867 (exact year unspecified)","[1801..1867]"
 "Feb 15 2020","MON ## ####",,,,"0","2020","2020","2020-02-15","2020-02-15",,"Feb 15 2020",,"na","2020-02-15","2020-02-15"
@@ -258,7 +258,7 @@
 "late 19th century","late ##ORD century","century;partial","ba",,"0","1867","1900","1867-01-01","1900-12-31",,"late 19th century",,"na","1867 - 1900 (exact year unspecified)","[1867..1900]"
 "late 19th to early 20th century","late ##ORD to early ##ORD century","century;partial","ba",,"0","1867","1934","1867-01-01","1934-12-31",,"late 19th to early 20th century",,"na","1867 - 1934 (exact year unspecified)","[1867..1934]"
 "late 19th-early 20th c.","late ##ORD-early ##ORD century","century;partial","ba",,"0","1867","1934","1867-01-01","1934-12-31",,"late 19th-early 20th c.",,"na","1867 - 1934 (exact year unspecified)","[1867..1934]"
-"March 2020","MONTH ####",,,,"0",2020,2020,"2020-03-01","2020-03-31",,"March 2020",,"na","2020-03","2020-03"
+"March 2020","MONTH ####",,,,"0","2020","2020","2020-03-01","2020-03-31",,"March 2020",,"na","2020-03","2020-03"
 "May - June 2000","MONTH - MONTH ####",,,,"0",,,"2000-05-01","2000-06-30",,"May - June 2000",,"na","2000-05 - 2000-06","2000-05/2000-06"
 "Mid 1990","mid ####","approximate;partial",,,"0",,,"1990-05-01","1990-08-31",,"Mid 1990",,"na",,
 "Mid 1990s","mid ####s","approximate;decades;partial",,,"0",,,"1993-01-01","1998-12-31",,"Mid 1990s",,"na",,
@@ -272,14 +272,20 @@
 "pre-1750","pre-####","after_before","csws","open_unknown_start_date: '1600-02-15'","0","1749","1749","1749-12-31","1749-12-31",,"pre-1750",,"na","1749 or an earlier date","[..1749]"
 "pre1750","pre####","after_before","csws","before_date_treatment: :range, open_unknown_start_date: '1600-02-15'","0","1600","1749","1600-02-15","1749-12-31",,"pre 1750",,"na","1749 or an earlier date","[..1749]"
 "prior to 1750","prior to ####","after_before","ccp","before_date_treatment: :range, open_unknown_start_date: '1600-02-15'","0","1600","1749","1600-02-15","1749-12-31",,"prior to 1750",,"na","1749 or an earlier date","[..1749]"
-"Spring 20","SEASON ##","option;season;two_digit_year",,"two_digit_year_handling: :coerce, ambiguous_year_rollback_threshold: 50","0",,,"2020-04-01","2020-06-30",,"Spring 20",,"na",,
-"Spring 2020","SEASON ####","season",,,"0",,,"2020-04-01","2020-06-30",,"Spring 2020",,"na",,
+"Spring 20","SEASON ##","option;season;two_digit_year",,"two_digit_year_handling: :coerce, ambiguous_year_rollback_threshold: 50","0","2020-04","2020-06","2020-04-01","2020-06-30",,"Spring 20",,"na",,
+"Spring 2020","SEASON ####","season",,,"0","2020-04","2020-06","2020-04-01","2020-06-30",,"Spring 2020",,"na",,
+"Summer 2019-2020","SEASON ####-####","season",,,"0","2019-07","2020-12","2019-07-01","2020-12-31",,"Summer 2019-2020",,"na",,
+"Summer 2019/2020","SEASON ####/####","season",,,"0","2019-07","2020-12","2019-07-01","2020-12-31",,"Summer 2019/2020",,"na",,
 "undated","undated","indicates_no_date",,,"0",,,"nilValue","nilValue","known_unknown","undated",,"na","not dated","XXXX"
 "unk","unk","indicates_no_date","ncm",,"0","nilValue","nilValue","nilValue","nilValue","known_unknown","unk",,"na","not dated","XXXX"
 "unk.","unk.","indicates_no_date","ncm",,"0","nilValue","nilValue","nilValue","nilValue","known_unknown","unk.",,"na","not dated","XXXX"
 "unkn","unkn","indicates_no_date","ncm",,"0","nilValue","nilValue","nilValue","nilValue","known_unknown","unkn",,"na","not dated","XXXX"
 "unknown","unknown","indicates_no_date","ncm",,"0","nilValue","nilValue","nilValue","nilValue","known_unknown","unknown",,"na","not dated","XXXX"
 "VIII.XIV.MMXX","VIII.XIV.MMXX","unparseable",,,"0",,,"nilValue","nilValue",,"VIII.XIV.MMXX",,"Untokenizable sequences: viii; xiv; mmxx",,
+"Winter 2019-2020","SEASON ####-####","season; one_winter","wpl",,"0","2019-12","2020-03","2019-12-01","2020-03-31",,"Winter 2019-2020",,"na",,
+"Winter 2019-2023","SEASON ####-####","season",,,"0","2019-01","2023-12","2019-01-01","2023-12-31",,"Winter 2019-2023",,"na",,
+"Winter 2019/2020","SEASON ####/####","season; one_winter",,,"0","2019-12","2020-03","2019-12-01","2020-03-31",,"Winter 2019/2020",,"na",,
+"Winter 2019/2023","SEASON ####/####","season",,,"0","2019-01","2023-12","2019-01-01","2023-12-31",,"Winter 2019/2023",,"na",,
 "XXXX-12-XX","xxxx-##-xx","currently_unparseable;edtf;edtf2;in_specific_month_in_any_year",,,"0",,,"nilValue","nilValue",,"XXXX-12-XX",,"Unprocessable string",,
 "Y-170002","y-######","edtf;edtf1;letter_prefixed_year",,,"0",,,"-170002-01-01","-170002-12-31",,"Y-170002",,"Unprocessable string",,
 "Y-17E7","y-##e#","currently_unparseable;edtf;edtf2;exponential_year",,,"0",,,"nilValue","nilValue",,"Y-17E7",,"Unprocessable string",,

@@ -9,7 +9,7 @@ module Emendate
 
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 
@@ -38,11 +38,11 @@ module Emendate
         @result = new_date_part(type: :season, lexeme: n.lexeme)
       elsif assume_year?
         @result = new_date_part(type: :year, lexeme: expand_year)
-        if maybe_range?
-          warning = 'Ambiguous year + month/season/year treated as_year'
-        else
-          warning = 'Ambiguous year + month/season/year treated as_year, but this creates invalid range'
-        end
+        warning = if maybe_range?
+                    'Ambiguous year + month/season/year treated as_year'
+                  else
+                    'Ambiguous year + month/season/year treated as_year, but this creates invalid range'
+                  end
         @warnings << warning
       elsif valid_month?(n.lexeme)
         @result = new_date_part(type: :month, lexeme: n.lexeme)

@@ -250,10 +250,10 @@ module Emendate
 
     def move_year_to_end_of_segment
       yr = result.select do |t|
-             t.type == :number4 &&
-               result[result.find_index(t) + 1].type == :month &&
-               result[result.find_index(t) + 2].type == :number1or2
-           end[0]
+        t.type == :number4 &&
+          result[result.find_index(t) + 1].type == :month &&
+          result[result.find_index(t) + 2].type == :number1or2
+      end[0]
       y_ind = result.find_index(yr)
       ins_pt = y_ind + 3
       result.insert(ins_pt, yr.dup)

@@ -13,7 +13,7 @@ module Emendate
 
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 
@@ -40,8 +40,8 @@ module Emendate
 
         t.is_a?(Symbol) ? send(t) : send(t.shift, *t)
       end
-    rescue Emendate::Error => err
-      Failure(err)
+    rescue Emendate::Error => e
+      Failure(e)
     else
       Success()
     end
@@ -94,11 +94,11 @@ module Emendate
     # types = Array with 2 Segment.type symbols
     # category = String that gets prepended to "date_part" to call DatePart building method
     def collapse_pair(to_collapse, target_type)
-      if to_collapse[0].is_a?(Symbol)
-        sources = result.extract(*to_collapse).segments
-      else
-        sources = to_collapse
-      end
+      sources = if to_collapse[0].is_a?(Symbol)
+                  result.extract(*to_collapse).segments
+                else
+                  to_collapse
+                end
       replace_multi_with_date_part_type(sources: sources, date_part_type: target_type)
     end
 
@@ -128,9 +128,7 @@ module Emendate
       if Emendate.options.pluralized_date_interpretation == :decade
         pair = result.extract(:year, :letter_s).segments
         collapse_pair(pair, :decade)
-        if pair[0].lexeme.end_with?('00')
-          result.warnings << 'Interpreting pluralized year as decade'
-        end
+        result.warnings << 'Interpreting pluralized year as decade' if pair[0].lexeme.end_with?('00')
       else
         year, _letter_s = result.extract(%i[year letter_s]).segments
         zeros = year.lexeme.match(/(0+)/)[1]
@@ -177,7 +175,8 @@ module Emendate
       rescue Emendate::MonthDayAnalyzer::MonthDayError => e
         raise e
       else
-        month, day = [analyzer.month, analyzer.day]
+        month = analyzer.month
+        day = analyzer.day
         replace_x_with_date_part_type(x: month, date_part_type: :month)
         replace_x_with_date_part_type(x: day, date_part_type: :day)
       end
@@ -196,8 +195,8 @@ module Emendate
 
       begin
         analyzer = Emendate::AllShortMdyAnalyzer.call(to_convert)
-      rescue Emendate::Error => err
-        raise(err)
+      rescue Emendate::Error => e
+        raise(e)
       end
 
       analyzer.warnings.each{ |warn| result.warnings << warn }
@@ -251,8 +250,8 @@ module Emendate
 
         replace_x_with_date_part_type(x: t, date_part_type: :year)
       end
-    rescue Emendate::Error => err
-      Failure(err)
+    rescue Emendate::Error => e
+      Failure(e)
     else
       Success()
     end
