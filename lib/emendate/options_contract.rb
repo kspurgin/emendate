@@ -18,6 +18,7 @@ module Emendate
       optional(:edtf).value(:bool)
       optional(:ending_hyphen).value(:symbol)
       optional(:ending_slash).value(:symbol)
+      optional(:hemisphere).value(:symbol)
       optional(:max_output_dates).value(:integer)
       optional(:max_month_number_handling).value(:symbol)
       optional(:open_unknown_end_date).value(:string)
@@ -109,6 +110,14 @@ module Emendate
       end
     end
 
+    rule(:hemisphere) do
+      if key?
+        allowed = %i[northern southern]
+        val = values[:hemisphere]
+        key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
+      end
+    end
+
     rule(:max_month_number_handling) do
       if key?
         allowed = %i[months edtf_level_1 edtf_level_2]
@@ -177,15 +186,15 @@ module Emendate
 
     def test_date_string(str)
       Date.parse(str)
-    rescue
+    rescue StandardError
       :failure
     else
       :success
     end
 
     def date_failure_msg(str)
-      "value #{str} cannot be parsed into a valid date. Use a date string in the "\
-        "format: YYYY-MM-DD"
+      "value #{str} cannot be parsed into a valid date. Use a date string in the " \
+        'format: YYYY-MM-DD'
     end
 
     def unknown_val_msg(val, allowed)
