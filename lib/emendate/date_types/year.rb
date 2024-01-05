@@ -31,7 +31,7 @@ module Emendate
       end
 
       def range?
-        return false if range_switch == 'before' &&
+        return false if range_switch == :before &&
                         Emendate.options.before_date_treatment == :point
 
         !(partial_indicator.nil? && range_switch.nil?)
@@ -45,9 +45,9 @@ module Emendate
         return earliest_by_partial unless range_switch
 
         case range_switch
-        when 'before'
+        when :before
           earliest_for_before
-        when 'after'
+        when :after
           latest_by_partial.next
         end
       end
@@ -56,7 +56,7 @@ module Emendate
         return year_string unless range_switch
 
         case range_switch
-        when 'before'
+        when :before
           year_string(earliest.year)
         end
       end
@@ -65,9 +65,9 @@ module Emendate
         return latest_by_partial unless range_switch
 
         case range_switch
-        when 'before'
+        when :before
           earliest_by_partial.prev_day
-        when 'after'
+        when :after
           Date.today
         end
       end
@@ -76,7 +76,7 @@ module Emendate
         return year_string unless range_switch
 
         case range_switch
-        when 'before'
+        when :before
           year_string(latest.year)
         end
       end
@@ -98,11 +98,11 @@ module Emendate
         case partial_indicator
         when nil
           Date.new(literal, 1, 1)
-        when 'early'
+        when :early
           Date.new(literal, 1, 1)
-        when 'mid'
+        when :mid
           Date.new(literal, 5, 1)
-        when 'late'
+        when :late
           Date.new(literal, 9, 1)
         end
       end
@@ -119,11 +119,11 @@ module Emendate
         case partial_indicator
         when nil
           Date.new(literal, 12, -1)
-        when 'early'
+        when :early
           Date.new(literal, 4, 30)
-        when 'mid'
+        when :mid
           Date.new(literal, 8, 31)
-        when 'late'
+        when :late
           Date.new(literal, 12, 31)
         end
       end

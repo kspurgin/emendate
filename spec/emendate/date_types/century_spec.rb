@@ -37,7 +37,7 @@ RSpec.describe Emendate::DateTypes::Century do
   end
 
   context 'with textual century name (19th) and partial indicator: early' do
-    let(:args) { {literal: 19, century_type: :name, partial_indicator: 'early'} }
+    let(:args){ { literal: 19, century_type: :name, partial_indicator: :early } }
 
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
@@ -51,7 +51,7 @@ RSpec.describe Emendate::DateTypes::Century do
   end
 
   context 'with textual century name (19th) and partial indicator: mid' do
-    let(:args) { {literal: 19, century_type: :name, partial_indicator: 'mid'} }
+    let(:args){ { literal: 19, century_type: :name, partial_indicator: :mid } }
 
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
@@ -65,7 +65,7 @@ RSpec.describe Emendate::DateTypes::Century do
   end
 
   context 'with textual century name (19th) and partial indicator: late' do
-    let(:args) { {literal: 19, century_type: :name, partial_indicator: 'late'} }
+    let(:args){ { literal: 19, century_type: :name, partial_indicator: :late } }
 
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
@@ -93,7 +93,7 @@ RSpec.describe Emendate::DateTypes::Century do
   end
 
   context 'with plural century name (1900s) and partial indicator: early' do
-    let(:args) { {literal: 19, century_type: :plural, partial_indicator: 'early'} }
+    let(:args){ { literal: 19, century_type: :plural, partial_indicator: :early } }
 
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
@@ -107,7 +107,7 @@ RSpec.describe Emendate::DateTypes::Century do
   end
 
   context 'with plural century name (1900s) and partial indicator: mid' do
-    let(:args) { {literal: 19, century_type: :plural, partial_indicator: 'mid'} }
+    let(:args){ { literal: 19, century_type: :plural, partial_indicator: :mid } }
 
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
@@ -121,7 +121,7 @@ RSpec.describe Emendate::DateTypes::Century do
   end
 
   context 'with plural century name (1900s) and partial indicator: late' do
-    let(:args) { {literal: 19, century_type: :plural, partial_indicator: 'late'} }
+    let(:args){ { literal: 19, century_type: :plural, partial_indicator: :late } }
 
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)

@@ -62,6 +62,33 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
+    context 'with autumn 2019-2020' do
+      let(:str){ 'autumn 2019-2020' }
+
+      it 'segments as expected' do
+        expect(types).to eq(%i[yearseason_date_type range_indicator
+                               year_date_type])
+      end
+    end
+
+    context 'with Winter 2019-2020' do
+      let(:str){ 'Winter 2019-2020' }
+
+      it 'segments as expected' do
+        #        binding.pry
+        expect(types).to eq(%i[yearseason_date_type])
+      end
+    end
+
+    context 'with Winter 2019-2023' do
+      let(:str){ 'Winter 2019-2023' }
+
+      it 'segments as expected' do
+        expect(types).to eq(%i[yearseason_date_type range_indicator
+                               year_date_type])
+      end
+    end
+
     context 'with 20200229' do
       let(:str){ '20200229' }
 
@@ -97,7 +124,7 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'segments as expected' do
         expect(types).to eq(%i[year_date_type])
-        expect(result[0].range_switch).to eq('after')
+        expect(result[0].range_switch).to eq(:after)
       end
     end
 
@@ -106,7 +133,7 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'segments as expected' do
         expect(types).to eq(%i[century_date_type])
-        expect(result[0].partial_indicator).to eq('early')
+        expect(result[0].partial_indicator).to eq(:early)
       end
     end
 
@@ -115,7 +142,7 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'segments as expected' do
         expect(types).to eq(%i[century_date_type])
-        expect(result[0].partial_indicator).to eq('mid')
+        expect(result[0].partial_indicator).to eq(:mid)
       end
     end
 
@@ -124,8 +151,8 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'segments as expected' do
         expect(types).to eq(%i[century_date_type])
-        expect(result[0].partial_indicator).to eq('early')
-        expect(result[0].range_switch).to eq('before')
+        expect(result[0].partial_indicator).to eq(:early)
+        expect(result[0].range_switch).to eq(:before)
       end
     end
 
@@ -134,7 +161,7 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'segments as expected' do
         expect(types).to eq(%i[decade_date_type])
-        expect(result[0].partial_indicator).to eq('early')
+        expect(result[0].partial_indicator).to eq(:early)
       end
     end
 
@@ -152,8 +179,8 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'segments as expected' do
         expect(types).to eq(%i[century_date_type range_indicator century_date_type])
-        expect(result[0].partial_indicator).to eq('late')
-        expect(result[2].partial_indicator).to eq('early')
+        expect(result[0].partial_indicator).to eq(:late)
+        expect(result[2].partial_indicator).to eq(:early)
       end
     end
 
