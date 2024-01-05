@@ -5,13 +5,39 @@ require_relative './six_digitable'
 
 module Emendate
   module DateTypes
-    # uses :month to be behaviorally interchangeable with YearMonth date type
     class YearSeason < Emendate::DateTypes::DateType
       include SixDigitable
 
-      attr_reader :literal, :year, :month, :include_prev_year
+      attr_reader :literal, :year, :month
 
-      # @option (see DateType#initialize)
+      NORTHERN_SEASONS = {
+        spring: { start: [:year, 4, 1], end: [:year, 6, 30] },
+        summer: { start: [:year, 7, 1], end: [:year, 9, 30] },
+        fall: { start: [:year, 10, 1], end: [:year, 12, 31] },
+        winter: { start: [:year, 1, 1], end: [:year, 3, 31] }
+      }
+
+      SOUTHERN_SEASONS = {
+        spring: { start: [:year, 10, 1], end: [:year, 12, 31] },
+        summer: { start: [:year, 1, 1], end: [:year, 3, 31] },
+        fall: { start: [:year, 4, 1], end: [:year, 6, 30] },
+        winter: { start: [:year, 7, 1], end: [:year, 9, 30] }
+      }
+
+      # A quarter (q) is defined as a 3-month period. A quadrimester (quad) is
+      # defined as a 4-month period. A semestral is a 6-month period.
+      OTHER_RANGES = {
+        q1: { start: [:year, 1, 1], end: [:year, 3, 31] },
+        q2: { start: [:year, 4, 1], end: [:year, 6, 30] },
+        q3: { start: [:year, 7, 1], end: [:year, 9, 30] },
+        q4: { start: [:year, 10, 1], end: [:year, 12, 31] },
+        quad1: { start: [:year, 1, 1], end: [:year, 4, 30] },
+        quad2: { start: [:year, 5, 1], end: [:year, 8, 31] },
+        quad3: { start: [:year, 9, 1], end: [:year, 12, 31] },
+        semestral1: { start: [:year, 1, 1], end: [:year, 6, 30] },
+        semestral2: { start: [:year, 7, 1], end: [:year, 12, 31] }
+      }
+
       # @option opts [Integer] :year (nil) Literal of year source segment
       # @option opts [Integer] :month (nil) Literal of season source
       #   segment. Called month for consistency with {YearMonth} date
@@ -23,18 +49,21 @@ module Emendate
       #   parsed into a YearSeason
       def initialize(**opts)
         super
+        @seasons = self.class.const_get(
+          "#{Emendate.config.options.hemisphere}_seasons".upcase.to_sym
+        )
         @include_prev_year = opts[:include_prev_year]
         set_up_from_year_month_or_integer(opts)
       end
 
       def earliest
-        return lookup_start_date unless include_prev_year
+        return get_date(:start) unless include_prev_year
 
         Date.new(year - 1, 12, 1)
       end
 
       def latest
-        lookup_end_date
+        get_date(:end)
       end
 
       def lexeme
@@ -61,62 +90,46 @@ module Emendate
 
       private
 
-      def lookup_start_date
-        {
-          21 => Date.new(year, 4, 1),
-          22 => Date.new(year, 7, 1),
-          23 => Date.new(year, 10, 1),
-          24 => Date.new(year, 1, 1),
+      attr_reader :seasons, :include_prev_year
 
-          25 => Date.new(year, 4, 1),
-          26 => Date.new(year, 7, 1),
-          27 => Date.new(year, 10, 1),
-          28 => Date.new(year, 1, 1),
+      # @param type [:start, :end]
+      def get_date(type)
+        recipe = {
+          21 => seasons.dig(:spring, type),
+          22 => seasons.dig(:summer, type),
+          23 => seasons.dig(:fall, type),
+          24 => seasons.dig(:winter, type),
 
-          29 => Date.new(year, 10, 1),
-          30 => Date.new(year, 1, 1),
-          31 => Date.new(year, 4, 1),
-          32 => Date.new(year, 7, 1),
+          25 => NORTHERN_SEASONS.dig(:spring, type),
+          26 => NORTHERN_SEASONS.dig(:summer, type),
+          27 => NORTHERN_SEASONS.dig(:fall, type),
+          28 => NORTHERN_SEASONS.dig(:winter, type),
 
-          33 => Date.new(year, 1, 1),
-          34 => Date.new(year, 4, 1),
-          35 => Date.new(year, 7, 1),
-          36 => Date.new(year, 10, 1),
-          37 => Date.new(year, 1, 1),
-          38 => Date.new(year, 5, 1),
-          39 => Date.new(year, 9, 1),
-          40 => Date.new(year, 1, 1),
-          41 => Date.new(year, 7, 1)
+          29 => SOUTHERN_SEASONS.dig(:spring, type),
+          30 => SOUTHERN_SEASONS.dig(:summer, type),
+          31 => SOUTHERN_SEASONS.dig(:fall, type),
+          32 => SOUTHERN_SEASONS.dig(:winter, type),
+
+          33 => OTHER_RANGES.dig(:q1, type),
+          34 => OTHER_RANGES.dig(:q2, type),
+          35 => OTHER_RANGES.dig(:q3, type),
+          36 => OTHER_RANGES.dig(:q4, type),
+          37 => OTHER_RANGES.dig(:quad1, type),
+          38 => OTHER_RANGES.dig(:quad2, type),
+          39 => OTHER_RANGES.dig(:quad3, type),
+          40 => OTHER_RANGES.dig(:semestral1, type),
+          41 => OTHER_RANGES.dig(:semestral2, type)
         }.fetch(month)
-      end
 
-      def lookup_end_date
-        {
-          21 => Date.new(year, 6, 30),
-          22 => Date.new(year, 9, 30),
-          23 => Date.new(year, 12, 31),
-          24 => Date.new(year, 3, 31),
-
-          25 => Date.new(year, 6, 30),
-          26 => Date.new(year, 9, 30),
-          27 => Date.new(year, 12, 31),
-          28 => Date.new(year, 3, 31),
-
-          29 => Date.new(year, 12, 31),
-          30 => Date.new(year, 3, 31),
-          31 => Date.new(year, 6, 30),
-          32 => Date.new(year, 9, 30),
-
-          33 => Date.new(year, 3, 31),
-          34 => Date.new(year, 6, 30),
-          35 => Date.new(year, 9, 30),
-          36 => Date.new(year, 12, 31),
-          37 => Date.new(year, 4, 30),
-          38 => Date.new(year, 8, 31),
-          39 => Date.new(year, 12, 31),
-          40 => Date.new(year, 6, 30),
-          41 => Date.new(year, 12, 31)
-        }.fetch(month)
+        yr = case recipe[0]
+             when :year
+               year
+             when :prev
+               year - 1
+             when :next
+               year + 1
+             end
+        Date.new(yr, recipe[1], recipe[2])
       end
     end
   end

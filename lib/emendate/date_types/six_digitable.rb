@@ -3,6 +3,8 @@
 module Emendate
   module DateTypes
     module SixDigitable
+      private
+
       def set_up_from_year_month_or_integer(opts)
         if opts[:year] && opts[:month]
           @year = opts[:year].is_a?(Integer) ? opts[:year] : opts[:year].to_i
