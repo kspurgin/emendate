@@ -19,8 +19,9 @@ module Emendate
 
       result = tokens.class.new.copy(tokens)
       result.clear
-      result << Emendate::DateTypes::Untokenizable.new(
-        children: tokens.segments
+      result << Emendate::DateTypes::Error.new(
+        error_type: :untokenizable,
+        sources: tokens
       )
       result.warnings << 'Untokenizable sequences: ' \
                          "#{untokenizable_strings.join('; ')}"

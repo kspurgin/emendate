@@ -6,9 +6,7 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
   subject(:analyzer){ described_class.new(tokens) }
 
   let(:tokens) do
-    Emendate.prepped_for(
-      string: str,
-      target: Emendate::DatePartTagger)
+    Emendate.prepped_for(string: str, target: Emendate::DatePartTagger)
   end
 
   describe '#call' do
@@ -23,6 +21,7 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
 
       it 'converts to date types' do
         expect(ymd).to eq('1987 4 13')
+        expect(result.datetype.lexeme).to eq(str)
         expect(wct).to eq(0)
       end
     end
@@ -67,10 +66,9 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
       let(:str){ '50-02-03' }
 
       it 'returns day month year (with default options)' do
-          expect(ymd).to eq('1950 2 3')
-          expect(wct).to eq(1)
+        expect(ymd).to eq('1950 2 3')
+        expect(wct).to eq(1)
       end
-
     end
 
     context 'with 90-31-29 (invalid)' do

@@ -65,6 +65,8 @@ module Emendate
         :tag_century_num
       when /.*month number1or2 year.*/
         :tag_day_in_mdy
+      when /.*season number1or2.*/
+        :tag_year_in_season_short_year
       when /.*month number1or2.*/
         :tag_year_in_month_short_year
         # this needs to happen before...
@@ -186,6 +188,12 @@ module Emendate
 
     def tag_year_in_month_short_year
       _mth, yr = result.extract(%i[month number1or2]).segments
+      year = Emendate::ShortYearHandler.call(yr)
+      replace_x_with_given_segment(x: yr, segment: year)
+    end
+
+    def tag_year_in_season_short_year
+      _season, yr = result.extract(%i[season number1or2]).segments
       year = Emendate::ShortYearHandler.call(yr)
       replace_x_with_given_segment(x: yr, segment: year)
     end

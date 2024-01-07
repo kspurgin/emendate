@@ -6,6 +6,7 @@ source 'https://rubygems.org'
 gemspec
 
 group :documentation do
+  gem 'asciidoctor'
   gem 'redcarpet', '~>3.5' # markdown parser for generating documentation
   gem 'yard'
 end

@@ -1,36 +1,30 @@
 # frozen_string_literal: true
 
+require_relative 'datetypeable'
+
 module Emendate
   module DateTypes
-    class MissingDecadeTypeError < StandardError
-      def initialize(types)
-        m = "A decade_type option with is required. Value must be one of the following: #{types.join(', ')}"
-        super(m)
-      end
-    end
+    class Decade
+      include Datetypeable
 
-    class DecadeTypeValueError < StandardError
-      def initialize(types)
-        m = "The decade_type option must have one of the following values: #{types.join(', ')}"
-        super(m)
-      end
-    end
+      # @return [:plural, :uncertainty_digits]
+      attr_reader :decade_type
+      # @return [Integer]
+      attr_reader :literal
+      # @return [nil, :early, :mid, :late]
+      attr_reader :partial_indicator
+      # @return [SegmentSets::SegmentSet
+      attr_reader :sources
 
-    class Decade < Emendate::DateTypes::DateType
-      attr_reader :literal, :decade_type
-
-      def initialize(**opts)
-        super
-        @literal = opts[:literal].is_a?(Integer) ? opts[:literal] : opts[:literal].to_i
-        if opts[:decade_type].nil?
-          raise Emendate::DateTypes::MissingDecadeTypeError, allowed_decade_types
-        elsif !allowed_decade_types.include?(opts[:decade_type])
-          raise Emendate::DateTypes::DecadeTypeValueError, allowed_decade_types
-        else
-          @decade_type = opts[:decade_type]
-        end
-
-        adjust_literal_value if decade_type == :plural
+      # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
+      #   included in the date type
+      # @param partial_indicator [:early, :mid, :late] Changes the
+      #   function of `earliest` and `latest` to reflect only part of the
+      #   overall date part
+      def initialize(sources:, partial_indicator: nil)
+        common_setup(binding)
+        @decade_type = set_type
+        @literal = set_literal
       end
 
       def earliest
@@ -41,23 +35,32 @@ module Emendate
         Date.new(latest_year, 12, 31)
       end
 
-      def lexeme
-        case decade_type
-        when :plural
-          val = "#{decade_earliest_year}s"
-        when :uncertainty_digits
-          val = "#{literal}X"
-        end
-
-        val = "#{partial_indicator} #{val}" unless partial_indicator.nil?
-        val
-      end
-
       def range?
         true
       end
 
       private
+
+      def set_type
+        case sources.source_type_string
+        when /uncertainty_digits$/
+          :uncertainty_digits
+        when /letter_s$/
+          :plural
+        else
+          raise Emendate::DecadeTypeError, lexeme
+        end
+      end
+
+      def set_literal
+        datepart = sources[0]
+        case decade_type
+        when :plural
+          datepart.literal.to_s[0..-2].to_i
+        else
+          datepart.literal
+        end
+      end
 
       def decade_earliest_year
         (literal.to_s + '0').to_i
@@ -65,7 +68,7 @@ module Emendate
 
       def earliest_year
         year = decade_earliest_year
-        case partial_indicator&.downcase
+        case partial_indicator
         when nil
           year
         when :early
@@ -79,7 +82,7 @@ module Emendate
 
       def latest_year
         year = decade_earliest_year
-        case partial_indicator&.downcase
+        case partial_indicator
         when nil
           year + 9
         when :early
@@ -89,15 +92,6 @@ module Emendate
         when :late
           year + 9
         end
-      end
-
-      def adjust_literal_value
-        str = literal.to_s[0..-2]
-        @literal = str.to_i
-      end
-
-      def allowed_decade_types
-        %i[plural uncertainty_digits]
       end
     end
   end

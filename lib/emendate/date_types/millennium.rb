@@ -1,36 +1,30 @@
 # frozen_string_literal: true
 
+require_relative 'datetypeable'
+
 module Emendate
   module DateTypes
-    class MissingMillenniumTypeError < StandardError
-      def initialize(types)
-        m = "A millennium_type option with is required. Value must be one of the following: #{types.join(', ')}"
-        super(m)
-      end
-    end
+    class Millennium
+      include Datetypeable
 
-    class MillenniumTypeValueError < StandardError
-      def initialize(types)
-        m = "The millennium_type option must have one of the following values: #{types.join(', ')}"
-        super(m)
-      end
-    end
+      # @return [Integer]
+      attr_reader :literal
+      # @return [:plural, :uncertainty_digits]
+      attr_reader :millennium_type
+      # @return [nil, :early, :mid, :late]
+      attr_reader :partial_indicator
+      # @return [SegmentSets::SegmentSet
+      attr_reader :sources
 
-    class Millennium < Emendate::DateTypes::DateType
-      attr_reader :literal, :millennium_type
-
-      def initialize(**opts)
-        super
-        @literal = opts[:literal].is_a?(Integer) ? opts[:literal] : opts[:literal].to_i
-        if opts[:millennium_type].nil?
-          raise Emendate::DateTypes::MissingMillenniumTypeError.new(allowed_millennium_types)
-        elsif !allowed_millennium_types.include?(opts[:millennium_type])
-          raise Emendate::DateTypes::MillenniumTypeValueError.new(allowed_millennium_types)
-        else
-          @millennium_type = opts[:millennium_type]
-        end
-
-        adjust_literal_value if millennium_type == :plural
+      # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
+      #   included in the date type
+      # @param partial_indicator [:early, :mid, :late] Changes the
+      #   function of `earliest` and `latest` to reflect only part of the
+      #   overall date part
+      def initialize(sources:, partial_indicator: nil)
+        common_setup(binding)
+        @millennium_type = set_type
+        @literal = set_literal
       end
 
       def earliest
@@ -43,28 +37,31 @@ module Emendate
         Date.new(yr, 12, 31)
       end
 
-      def lexeme
-        case millennium_type
-        when :plural
-          "#{earliest.year}s"
-        when :uncertainty_digits
-          "#{literal}XXX"
-        end
-      end
-
       def range?
         true
       end
 
       private
 
-      def adjust_literal_value
-        str = literal.to_s[0..-4]
-        @literal = str.to_i
+      def set_type
+        case sources.source_type_string
+        when /uncertainty_digits$/
+          :uncertainty_digits
+        when /letter_s$/
+          :plural
+        else
+          raise Emendate::MillenniumTypeError, lexeme
+        end
       end
 
-      def allowed_millennium_types
-        %i[plural uncertainty_digits]
+      def set_literal
+        datepart = sources[0]
+        case millennium_type
+        when :plural
+          datepart.literal.to_s[0..-4].to_i
+        else
+          datepart.literal
+        end
       end
     end
   end

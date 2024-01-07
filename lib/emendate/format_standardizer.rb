@@ -198,9 +198,9 @@ module Emendate
 
     # @param indicator [#segment?] to be converted to range indicator type if
     #   not already that type
-    # @param klass [Constant] target date_type class name
+    # @param category [:open, :unknown]
     def convert_range_indicator_and_append_open_or_unknown_end_date(
-      indicator:, klass:
+      indicator:, category:
     )
       unless indicator.type == :range_indicator
         new_ind = Emendate::DerivedToken.new(
@@ -209,26 +209,22 @@ module Emendate
         )
         replace_x_with_new(x: indicator, new: new_ind)
       end
-      result << klass.new(usage: :end)
+      result << Emendate::DateTypes::RangeDateUnknownOrOpen.new(
+        category: category, point: :end, sources: nil
+      )
     end
 
     def handle_ending_hyphen
       convert_range_indicator_and_append_open_or_unknown_end_date(
         indicator: result[-1],
-        klass: Emendate::DateTypes::RangeDateOpen
+        category: Emendate.config.options.ending_hyphen
       )
     end
 
     def handle_ending_slash
-      setting = Emendate.config.options.ending_slash
-      klass = if setting == :open
-                Emendate::DateTypes::RangeDateOpen
-              else
-                Emendate::DateTypes::RangeDateUnknown
-              end
       convert_range_indicator_and_append_open_or_unknown_end_date(
         indicator: result[-1],
-        klass: klass
+        category: Emendate.config.options.ending_slash
       )
     end
 
@@ -263,10 +259,8 @@ module Emendate
     def pad_3_to_4_digits
       t3 = result.select{ |t| t.type == :number3 }[0]
       t3i = result.find_index(t3)
-      lexeme4 = t3.lexeme.rjust(4, '0')
       t4 = Emendate::DerivedToken.new(
         type: :number4,
-        lexeme: lexeme4,
         sources: [t3]
       )
       result.delete_at(t3i)
@@ -318,33 +312,32 @@ module Emendate
     def decade_as_year
       num3 = result.when_type(:number3)[0]
       udigits = result.when_type(:uncertainty_digits)[0]
-      decade = Emendate::DateTypes::Decade.new(literal: num3.literal,
-                                               decade_type: :uncertainty_digits,
-                                               children: [num3, udigits])
+      decade = Emendate::DateTypes::Decade.new(sources: [num3, udigits])
       replace_segments_with_new(segments: [num3, udigits], new: decade)
     end
 
     def open_start
       firsttoken = result[0]
-      openstart = Emendate::DateTypes::RangeDateOpen.new(
-        usage: :start
+      openstart = Emendate::DateTypes::RangeDateUnknownOrOpen.new(
+        category: :open, point: :start, sources: [firsttoken]
       )
       replace_x_with_new(x: firsttoken, new: openstart)
     end
 
     def open_end
-      open_or_unknown_end(Emendate::DateTypes::RangeDateOpen)
+      open_or_unknown_end(:open)
     end
 
     def unknown_end
-      open_or_unknown_end(Emendate::DateTypes::RangeDateUnknown)
+      open_or_unknown_end(:unknown)
     end
 
-    def open_or_unknown_end(klass)
+    def open_or_unknown_end(category)
       lasttoken = result[-1]
-      openend = klass.new(
-        usage: :end,
-        children: [lasttoken]
+      openend = Emendate::DateTypes::RangeDateUnknownOrOpen.new(
+        category: category,
+        point: :end,
+        sources: [lasttoken]
       )
       replace_x_with_new(x: lasttoken, new: openend)
     end

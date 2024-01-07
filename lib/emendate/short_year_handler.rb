@@ -9,7 +9,7 @@ module Emendate
 
     class << self
       def call(year)
-        self.new(year).call
+        new(year).call
       end
     end
 
@@ -19,7 +19,7 @@ module Emendate
 
     def call
       Emendate::DatePart.new(type: :year,
-                             lexeme: full_year.to_s,
+                             lexeme: orig.lexeme,
                              literal: full_year,
                              sources: [orig])
     end

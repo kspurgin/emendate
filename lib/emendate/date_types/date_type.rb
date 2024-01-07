@@ -4,43 +4,47 @@ module Emendate
   module DateTypes
     # @abstract Subclasses implement specific usable date types.
     class DateType
-      attr_reader :certainty, :range_switch, :location
-      attr_accessor :partial_indicator, :sources
+      # @return [SegmentSets::SegmentSet]
+      attr_reader :sources
 
-      # @option opts [SegmentSets::SegmentSet, Array<Segment>] :sources (nil)
-      # @option opts [:early, :mid, :late] :partial_indicator (nil) Changes the
+      # @return [Array<Symbol>]
+      attr_reader :certainty
+
+      # @return [Symbol]
+      attr_reader :partial_indicator
+
+      # @return [Symbol]
+      attr_reader :range_switch
+
+      # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
+      #   included in the date type
+      # @param certainty [Array<Symbol>] Individual date-type-specific
+      #   certainty values (i.e. day approximate) as opposed to the
+      #   certainty attribute on the SegmentSet for the entire date
+      #   value
+      # @param partial_indicator [:early, :mid, :late] Changes the
       #   function of `earliest` and `latest` to reflect only part of the
       #   overall date part
-      # @option opts [:before, :after] :range_switch (nil) Forces
-      #   `earliest`/`latest` to reflect the range before or after this
-      #   particular date
-      # @option opts [Array<Symbol>] :certainty (nil) Individual
-      #   date-type-specific certainty values (i.e. day approximate)
-      #   as opposed to the certainty attribute on the SegmentSet for
-      #   the entire date value
-      # @option opts [Emendate::Location] :location (nil)
-      def initialize(**opts)
-        srcs = opts[:sources]
-        @sources = if srcs.nil?
-                     Emendate::SegmentSets::MixedSet.new
-                   elsif srcs.is_a?(Emendate::SegmentSets::SegmentSet)
-                     srcs.class.new.copy(srcs)
-                   else
-                     Emendate::SegmentSets::MixedSet.new(
-                       segments: srcs
-                     )
-                   end
-        @partial_indicator = opts[:partial_indicator]
-        @range_switch = opts[:range_switch]
-        @certainty = opts[:certainty].nil? ? [] : opts[:certainty]
-        @location = sources ? sources.location : opts[:location]
+      # @param range_switch [:before, :after] Forces
+      #   `earliest`/`latest` to reflect the range before or after
+      #   this particular date
+      def initialize(sources:, certainty: nil, partial_indicator: nil,
+                     range_switch: nil)
+        @sources = set_sources(sources)
+        @partial_indicator = partial_indicator
+        @range_switch = :range_switch
+        @certainty = certainty || []
       end
 
+      # Allows addition/changing of a range switch after date type has been
+      # created
       # @param value [Symbol, String] the range switch to add to date type
       def add_range_switch(value)
         @range_switch = value.to_sym
       end
 
+      # Allows a source to be added to beginning of sources after date type has
+      # been created
       # @param token [{Segment}] or subclasses of {Segment}
       def prepend_source_token(token)
         @sources.unshift(token)
@@ -61,23 +65,21 @@ module Emendate
       end
 
       # @return [TrueClass]
-      # @todo What is this? Is it still needed? If so, document.
+      # Supports ProcessingManager's checking for unprocessed segments while
+      # finalizing result
       def processed?
         true
       end
 
-      # @abstract Implement in subclasses.
-      # @raise [NotImplementedError]
-      def earliest
-        raise NotImplementedError,
-              "#{self.class} has not implemented method '#{__method__}'"
+      # Makes DateTypes behave as good members of a {SegmentSets::SegmentSet}
+      # @return [Symbol]
+      def type
+        "#{self.class.name.split('::').last.downcase}_date_type".to_sym
       end
 
-      # @abstract Implement in subclasses.
-      # @raise [NotImplementedError]
-      def latest
-        raise NotImplementedError,
-              "#{self.class} has not implemented method '#{__method__}'"
+      # @return [String]
+      def lexeme
+        sources.empty? ? '' : sources.lexeme
       end
 
       # @abstract Override in date types with non-year level of granularity
@@ -94,7 +96,14 @@ module Emendate
 
       # @abstract Implement in subclasses.
       # @raise [NotImplementedError]
-      def lexeme
+      def earliest
+        raise NotImplementedError,
+              "#{self.class} has not implemented method '#{__method__}'"
+      end
+
+      # @abstract Implement in subclasses.
+      # @raise [NotImplementedError]
+      def latest
         raise NotImplementedError,
               "#{self.class} has not implemented method '#{__method__}'"
       end
@@ -106,10 +115,18 @@ module Emendate
               "#{self.class} has not implemented method '#{__method__}'"
       end
 
-      # Makes DateTypes behave as good members of a {SegmentSets::SegmentSet}
-      # @return [Symbol]
-      def type
-        "#{self.class.name.split('::').last.downcase}_date_type".to_sym
+      private
+
+      def set_sources(sources)
+        if sources.nil?
+          Emendate::SegmentSets::MixedSet.new
+        elsif sources.is_a?(Emendate::SegmentSets::SegmentSet)
+          srcs.class.new.copy(sources)
+        else
+          Emendate::SegmentSets::MixedSet.new(
+            segments: sources
+          )
+        end
       end
     end
   end

@@ -1,49 +1,37 @@
 # frozen_string_literal: true
 
+require_relative 'datetypeable'
+
 module Emendate
   module DateTypes
-    class Range < Emendate::DateTypes::DateType
+    class Range
+      include Datetypeable
+
       attr_reader :startdate, :enddate, :indicator
 
-      # Expect to be initialized with:
-      #   sources: Emendate::SegmentSets::SegmentSet
-      # Where the segment set has 3 segments (start, indicator, end)
-      def initialize(**opts)
-        super
+      # @return [SegmentSets::SegmentSet
+      attr_reader :sources
+
+      # @param sources [SegmentSets::SegmentSet, Array<Segment>] The three
+      #   segments included in the date type: start, range indicator, end
+      def initialize(sources:)
+        common_setup(binding)
         @startdate = sources[0]
-        @indicator = sources[1]
         @enddate = sources[2]
       end
 
-      def earliest
-        return nil if startdate.nil?
+      # @return [Date]
+      def earliest = startdate.earliest
 
-        startdate.earliest
-      end
+      # @return [Date]
+      def latest = enddate.latest
 
-      def latest
-        return nil if enddate.nil?
+      # @return [TrueClass]
+      def range? = true
 
-        enddate.latest
-      end
+      private
 
-      def lexeme
-        if earliest && latest
-          "#{earliest.iso8601} - #{latest.iso8601}"
-        elsif earliest
-          "#{earliest.iso8601} -"
-        elsif latest
-          "- #{latest.iso8601}"
-        end
-      end
-
-      def orig
-        sources.orig_string
-      end
-
-      def range?
-        true
-      end
+      attr_reader :startdate, :enddate
     end
   end
 end
