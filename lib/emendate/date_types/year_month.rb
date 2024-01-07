@@ -1,35 +1,46 @@
 # frozen_string_literal: true
 
-require_relative './date_type'
-require_relative './six_digitable'
+require_relative 'datetypeable'
+require_relative 'six_digitable'
 
 module Emendate
   module DateTypes
-    class YearMonth < Emendate::DateTypes::DateType
+    # @todo Add earliest/latest at granularity
+    class YearMonth
+      include Datetypeable
       include SixDigitable
 
-      attr_reader :literal, :year, :month
-
-      def initialize(**opts)
-        super
-        set_up_from_year_month_or_integer(opts)
+      # @param year [Integer]
+      # @param month [Integer]
+      # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
+      #   included in the date type
+      def initialize(sources:, year:, month:)
+        @year = year
+        @month = month
+        common_setup(binding)
       end
 
-      def earliest
-        Date.new(year, month, 1)
-      end
+      # @return [Date]
+      def earliest = Date.new(year, month, 1)
 
-      def latest
-        Date.new(year, month, -1)
-      end
+      # @return [Date]
+      def latest = Date.new(year, month, -1)
 
-      def lexeme
-        "#{year}-#{month.to_s.rjust(2, '0')}"
-      end
-
+      # @return [FalseClass] if no partial indicator or range switch is present,
+      #   OR if range_switch is :before and the before_date_treatment setting
+      #   is :point
+      # @return [TrueClass] if partial indicator is set, range switch is
+      #   :after, or range switch is :before with before_date_treatment :range
       def range?
-        !(partial_indicator.nil? && range_switch.nil?)
+        return false if range_switch == :before &&
+                        Emendate.options.before_date_treatment == :point
+
+        true if partial_indicator || range_switch
       end
+
+      private
+
+      attr_reader :year, :month
     end
   end
 end

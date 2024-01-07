@@ -8,12 +8,10 @@ RSpec.describe Emendate::DateTypes::Decade do
   let(:tokens) do
     Emendate.prepped_for(string: str, target: Emendate::DateSegmenter)
   end
-  let(:baseargs){ { sources: tokens } }
-  let(:args){ baseargs }
+  let(:args){ { sources: tokens } }
 
   context 'when plural decade' do
     let(:str){ '1990s' }
-    let(:args){ baseargs }
 
     it 'returns expected values' do
       expect(subject.decade_type).to eq(:plural)
@@ -26,7 +24,6 @@ RSpec.describe Emendate::DateTypes::Decade do
 
   context 'when plural and possibly century' do
     let(:str){ '1900s' }
-    let(:args){ baseargs }
 
     it 'returns expected values' do
       expect(subject.earliest).to eq(Date.new(1900, 1, 1))
@@ -38,7 +35,6 @@ RSpec.describe Emendate::DateTypes::Decade do
 
   context 'when plural and possibly millennium' do
     let(:str){ '2000s' }
-    let(:args){ baseargs }
 
     it 'returns expected values' do
       expect(subject.earliest).to eq(Date.new(2000, 1, 1))
@@ -50,7 +46,6 @@ RSpec.describe Emendate::DateTypes::Decade do
 
   context 'when plural and possibly century with 3 digits' do
     let(:str){ '200s' }
-    let(:args){ baseargs }
 
     it 'returns expected values' do
       expect(subject.earliest).to eq(Date.new(200, 1, 1))
@@ -62,7 +57,6 @@ RSpec.describe Emendate::DateTypes::Decade do
 
   context 'when uncertainty digit decade' do
     let(:str){ '199u' }
-    let(:args){ baseargs }
 
     it 'returns expected values' do
       expect(subject.decade_type).to eq(:uncertainty_digits)
@@ -75,33 +69,29 @@ RSpec.describe Emendate::DateTypes::Decade do
 
   context 'with partial indicator' do
     let(:str){ '1990s' }
-    let(:args){ baseargs.merge({ partial_indicator: ind }) }
 
-    context 'when :early' do
-      let(:ind){ :early }
-
-      it 'returns expected values' do
-        expect(subject.earliest).to eq(Date.new(1990, 1, 1))
-        expect(subject.latest).to eq(Date.new(1993, 12, 31))
-      end
+    it 'returns expected values for early' do
+      t = Emendate::Token.new(type: :partial, literal: :early,
+                              lexeme: 'early ')
+      subject.prepend_source_token(t)
+      expect(subject.earliest).to eq(Date.new(1990, 1, 1))
+      expect(subject.latest).to eq(Date.new(1993, 12, 31))
     end
 
-    context 'when :mid' do
-      let(:ind){ :mid }
-
-      it 'returns expected values' do
-        expect(subject.earliest).to eq(Date.new(1994, 1, 1))
-        expect(subject.latest).to eq(Date.new(1996, 12, 31))
-      end
+    it 'returns expected values for mid' do
+      t = Emendate::Token.new(type: :partial, literal: :mid,
+                              lexeme: 'mid ')
+      subject.prepend_source_token(t)
+      expect(subject.earliest).to eq(Date.new(1994, 1, 1))
+      expect(subject.latest).to eq(Date.new(1996, 12, 31))
     end
 
-    context 'when :late' do
-      let(:ind){ :late }
-
-      it 'returns expected values' do
-        expect(subject.earliest).to eq(Date.new(1997, 1, 1))
-        expect(subject.latest).to eq(Date.new(1999, 12, 31))
-      end
+    it 'returns expected values for late' do
+      t = Emendate::Token.new(type: :partial, literal: :late,
+                              lexeme: 'late ')
+      subject.prepend_source_token(t)
+      expect(subject.earliest).to eq(Date.new(1997, 1, 1))
+      expect(subject.latest).to eq(Date.new(1999, 12, 31))
     end
   end
 end

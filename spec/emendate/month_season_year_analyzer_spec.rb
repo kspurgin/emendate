@@ -5,8 +5,6 @@ require 'spec_helper'
 RSpec.describe Emendate::MonthSeasonYearAnalyzer do
   subject(:analyzer){ described_class.new(*tokens) }
 
-  after{ Emendate.reset_config }
-
   let(:tokens) do
     t = Emendate.prepped_for(
       string: str,
@@ -18,6 +16,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
   describe '#call' do
     let(:result){ analyzer.call }
     let(:type){ result.result.type }
+    let(:literal){ result.result.literal }
     let(:lexeme){ result.result.lexeme }
     let(:warnings){ result.warnings.first }
 
@@ -28,6 +27,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
       it 'returns month' do
         expect(type).to eq(:month)
         expect(lexeme).to eq('03')
+        expect(literal).to eq(3)
         expect(warnings).to be_nil
       end
     end
@@ -39,7 +39,8 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
       it 'returns year (default treatment for ambiguous month/year -- ' \
          'default month max, invalid range)' do
         expect(type).to eq(:year)
-        expect(lexeme).to eq('1928')
+        expect(lexeme).to eq('28')
+        expect(literal).to eq(1928)
         expect(warnings).to eq(
           'Ambiguous year + month/season/year treated as_year, but this ' \
           'creates invalid range'
@@ -54,6 +55,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
         it 'returns season' do
           expect(type).to eq(:season)
           expect(lexeme).to eq('28')
+          expect(literal).to eq(28)
           expect(warnings).to be_nil
         end
       end
@@ -65,7 +67,8 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
 
       it 'returns year' do
         expect(type).to eq(:year)
-        expect(lexeme).to eq('1999')
+        expect(lexeme).to eq('99')
+        expect(literal).to eq(1999)
         expect(warnings).to be_nil
       end
     end
@@ -75,7 +78,8 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
 
       it 'returns year' do
         expect(type).to eq(:year)
-        expect(lexeme).to eq('2012')
+        expect(lexeme).to eq('12')
+        expect(literal).to eq(2012)
         expect(warnings).to eq(
           'Ambiguous year + month/season/year treated as_year'
         )
@@ -87,6 +91,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
         it 'returns year' do
           expect(type).to eq(:month)
           expect(lexeme).to eq('12')
+          expect(literal).to eq(12)
           expect(warnings).to eq(
             'Ambiguous year + month/season/year treated as_month'
           )
@@ -99,7 +104,8 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
 
       it 'returns year' do
         expect(type).to eq(:year)
-        expect(lexeme).to eq('2021')
+        expect(lexeme).to eq('21')
+        expect(literal).to eq(2021)
         expect(warnings).to be_nil # cannot be month, given default options
       end
 
@@ -112,6 +118,7 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
         it 'returns season' do
           expect(type).to eq(:season)
           expect(lexeme).to eq('21')
+          expect(literal).to eq(21)
           expect(warnings).to eq(
             'Ambiguous year + month/season/year treated as_season'
           )

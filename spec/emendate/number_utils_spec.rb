@@ -74,10 +74,10 @@ RSpec.describe Emendate::NumberUtils do
   end
 
   describe '#valid_month?' do
-    let(:result){ numutils.valid_month?(str) }
+    let(:result){ numutils.valid_month?(int) }
 
     context 'with not valid (i.e. 21)' do
-      let(:str){ '21' }
+      let(:int){ 21 }
 
       it 'returns false' do
         expect(result).to be false
@@ -85,7 +85,7 @@ RSpec.describe Emendate::NumberUtils do
     end
 
     context 'with valid (i.e. 12)' do
-      let(:str){ '12' }
+      let(:int){ 12 }
 
       it 'returns true' do
         expect(result).to be true

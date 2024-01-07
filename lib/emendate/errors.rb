@@ -13,6 +13,17 @@ module Emendate
     end
   end
 
+  class DisallowedTokenAdditionError < StandardError
+    include Emendate::Error
+
+    def initialize(token, meth, klass)
+      type = token.type
+      verb = meth.to_s.split('_').first
+      m = "Cannot #{verb} :#{type} segment to #{klass} sources"
+      super(m)
+    end
+  end
+
   class EmptyTestSetError < StandardError
     include Emendate::Error
   end

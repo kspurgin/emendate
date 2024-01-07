@@ -13,8 +13,6 @@ require 'dry/monads/do'
 require 'pry-byebug'
 
 require 'emendate/errors'
-require 'emendate/date_types/date_type'
-# require 'emendate/segment/segment'
 
 Dir.glob("#{__dir__}/**/*").sort.select{ |path| path.match?(/\.rb$/) }.each do |rbfile|
   require rbfile.delete_prefix("#{File.expand_path(__dir__)}/lib/")

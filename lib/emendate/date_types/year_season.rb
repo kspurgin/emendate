@@ -1,17 +1,13 @@
 # frozen_string_literal: true
 
-require_relative './date_type'
-require_relative './six_digitable'
+require_relative 'datetypeable'
+require_relative 'six_digitable'
 
 module Emendate
   module DateTypes
-    class YearSeason < Emendate::DateTypes::DateType
+    class YearSeason
+      include Datetypeable
       include SixDigitable
-
-      # @return [Integer]
-      attr_reader :year
-      # @return [Integer]
-      attr_reader :month
 
       NORTHERN_SEASONS = {
         spring: { start: [:year, 4, 1], end: [:year, 6, 30] },
@@ -41,27 +37,21 @@ module Emendate
         semestral2: { start: [:year, 7, 1], end: [:year, 12, 31] }
       }
 
-      # @option (see DateType#initialize)
-      # @option opts [Integer] :year (nil) Literal of year source segment
-      # @option opts [Integer] :month (nil) Literal of season source
-      #   segment. Called month for consistency with {YearMonth} date
-      #   type.
-      # @option opts [Boolean] :include_prev_year (nil) Used for values like
+      # @param year [Integer]
+      # @param season [Integer]
+      # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
+      #   included in the date type
+      # @param include_prev_year [Boolean] Used for values like
       #   "Winter 2019-2020", to cause the earliest date to include the end of
       #   2019
-      # @overload initialize({year:, month:, sources:})
-      #   Pass specific literal values and source segments. Preferred.
-      # @overload initialize({year:, month:, sources:, include_prev_year: true})
-      #   As above, but uses previous December as start date for winter
-      # @overload initialize({literal:})
-      #   Create from literal with format YYYYSS
-      def initialize(**opts)
-        super
+      def initialize(sources:, year:, season:, include_prev_year: false)
+        common_setup(binding)
+        @year = year
+        @season = season
+        @include_prev_year = include_prev_year
         @seasons = self.class.const_get(
           "#{Emendate.config.options.hemisphere}_seasons".upcase.to_sym
         )
-        @include_prev_year = opts[:include_prev_year]
-        set_up_from_year_month_or_integer(opts)
       end
 
       def earliest
@@ -86,13 +76,9 @@ module Emendate
         !(partial_indicator.nil? && range_switch.nil?)
       end
 
-      def season
-        month
-      end
-
       private
 
-      attr_reader :seasons, :include_prev_year
+      attr_reader :year, :season, :seasons, :include_prev_year
 
       # @param type [:start, :end]
       def get_date(type)
@@ -121,7 +107,7 @@ module Emendate
           39 => OTHER_RANGES.dig(:quad3, type),
           40 => OTHER_RANGES.dig(:semestral1, type),
           41 => OTHER_RANGES.dig(:semestral2, type)
-        }.fetch(month)
+        }.fetch(season)
 
         yr = case recipe[0]
              when :year

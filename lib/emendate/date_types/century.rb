@@ -11,17 +11,10 @@ module Emendate
       attr_reader :century_type
       # @return [Integer]
       attr_reader :literal
-      # @return [nil, :early, :mid, :late]
-      attr_reader :partial_indicator
-      # @return [SegmentSets::SegmentSet
-      attr_reader :sources
 
       # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
       #   included in the date type
-      # @param partial_indicator [:early, :mid, :late] Changes the
-      #   function of `earliest` and `latest` to reflect only part of the
-      #   overall date part
-      def initialize(sources:, partial_indicator: nil)
+      def initialize(sources:)
         cent = sources.first
         @century_type = set_type(cent)
         @literal = set_literal(cent)

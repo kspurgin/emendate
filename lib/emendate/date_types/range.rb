@@ -7,7 +7,7 @@ module Emendate
     class Range
       include Datetypeable
 
-      attr_reader :startdate, :enddate, :indicator
+      attr_reader :startdate, :enddate
 
       # @return [SegmentSets::SegmentSet
       attr_reader :sources
