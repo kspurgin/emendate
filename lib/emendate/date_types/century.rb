@@ -1,20 +1,31 @@
 # frozen_string_literal: true
 
+require_relative 'datetypeable'
+
 module Emendate
   module DateTypes
-    class Century < Emendate::DateTypes::DateType
-      attr_reader :literal, :century_type
+    class Century
+      include Datetypeable
 
-      def initialize(**opts)
-        super
-        @literal = opts[:literal].is_a?(Integer) ? opts[:literal] : opts[:literal].to_i
-        if opts[:century_type].nil?
-          raise MissingCenturyTypeError, allowed_century_types
-        elsif !allowed_century_types.include?(opts[:century_type])
-          raise CenturyTypeValueError, allowed_century_types
-        else
-          @century_type = opts[:century_type]
-        end
+      # @return [:name, :plural, :uncertainty_digits]
+      attr_reader :century_type
+      # @return [Integer]
+      attr_reader :literal
+      # @return [nil, :early, :mid, :late]
+      attr_reader :partial_indicator
+      # @return [SegmentSets::SegmentSet
+      attr_reader :sources
+
+      # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
+      #   included in the date type
+      # @param partial_indicator [:early, :mid, :late] Changes the
+      #   function of `earliest` and `latest` to reflect only part of the
+      #   overall date part
+      def initialize(sources:, partial_indicator: nil)
+        cent = sources.first
+        @century_type = set_type(cent)
+        @literal = set_literal(cent)
+        common_setup(binding)
       end
 
       def earliest
@@ -25,37 +36,31 @@ module Emendate
         Date.new(latest_year, 12, 31)
       end
 
-      def lexeme
-        case century_type
-        when :name
-          "#{literal} century"
-        when :plural
-          "#{literal}00s"
-        when :uncertainty_digits
-          "#{literal}uu"
-        end
-      end
-
       def range?
         true
       end
 
       private
 
-      def adjusted_century
-        century_type == :name ? literal - 1 : literal
+      def set_literal(datepart)
+        case century_type
+        when :name
+          datepart.literal - 1
+        when :plural
+          datepart.literal.to_s[0..-3].to_i
+        else
+          datepart.literal
+        end
       end
 
-      def allowed_century_types
-        %i[name plural uncertainty_digits]
-      end
-
-      def named_century_earliest_year
-        (adjusted_century.to_s + '00').to_i + 1
-      end
-
-      def other_century_earliest_year
-        (adjusted_century.to_s + '00').to_i
+      def set_type(datepart)
+        if datepart.sources.types.include?(:letter_s)
+          :plural
+        elsif datepart.sources.types.include?(:uncertainty_digits)
+          :uncertainty_digits
+        else
+          :name
+        end
       end
 
       def earliest_year
@@ -87,11 +92,8 @@ module Emendate
       end
 
       def start_year
-        if century_type == :name
-          named_century_earliest_year
-        else
-          other_century_earliest_year
-        end
+        base = (literal.to_s + '00').to_i
+        century_type == :name ? base + 1 : base
       end
     end
   end

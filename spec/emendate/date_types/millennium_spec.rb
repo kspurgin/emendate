@@ -3,65 +3,43 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::DateTypes::Millennium do
-  context 'when called without millennium_type' do
-    it 'raises error' do
-      err = Emendate::DateTypes::MissingMillenniumTypeError
-      expect{described_class.new(literal: 1000) }.to raise_error(err)
+  subject{ described_class.new(**args) }
+
+  let(:tokens) do
+    Emendate.prepped_for(string: str, target: Emendate::DateSegmenter)
+  end
+  let(:baseargs){ { sources: tokens } }
+  let(:args){ baseargs }
+
+  context 'when :plural type' do
+    let(:str){ '2000s' }
+    let(:args){ baseargs }
+
+    it 'returns expected values' do
+      expect(subject.type).to eq(:millennium_date_type)
+      expect(subject.millennium_type).to eq(:plural)
+      expect(subject.lexeme).to eq(str)
+      expect(subject.literal).to eq(2)
+      expect(subject.earliest).to eq(Date.new(2000, 1, 1))
+      expect(subject.latest).to eq(Date.new(2999, 12, 31))
+      expect(subject.earliest_at_granularity).to eq(2000)
+      expect(subject.latest_at_granularity).to eq(2999)
     end
   end
 
-  context 'when called with unsupported millennium_type value' do
-    it 'raises error' do
-      err = Emendate::DateTypes::MillenniumTypeValueError
-      expect{described_class.new(literal: 0000, millennium_type: :misc) }.to raise_error(err)
-    end
-  end
+  context 'when :uncertainty_digits type' do
+    let(:str){ '2uuu' }
+    let(:args){ baseargs }
 
-  context 'with plural millennium (2000s)' do
-    before(:all) do
-      @dt = described_class.new(literal: 2000, millennium_type: :plural)
-    end
-
-    describe '#earliest' do
-      it 'returns 2000-01-01' do
-        expect(@dt.earliest).to eq(Date.new(2000, 1, 1))
-      end
-    end
-
-    describe '#latest' do
-      it 'returns 2999-12-31' do
-        expect(@dt.latest).to eq(Date.new(2999, 12, 31))
-      end
-    end
-
-    describe '#lexeme' do
-      it 'returns 2000s' do
-        expect(@dt.lexeme).to eq('2000s')
-      end
-    end
-  end
-
-  context 'with uncertainty_digit millennium (1XXX)' do
-    before(:all) do
-      @dt = described_class.new(literal: 1, millennium_type: :uncertainty_digits)
-    end
-
-    describe '#earliest' do
-      it 'returns 1000-01-01' do
-        expect(@dt.earliest).to eq(Date.new(1000, 1, 1))
-      end
-    end
-
-    describe '#latest' do
-      it 'returns 1999-12-31' do
-        expect(@dt.latest).to eq(Date.new(1999, 12, 31))
-      end
-    end
-
-    describe '#lexeme' do
-      it 'returns 1XXX' do
-        expect(@dt.lexeme).to eq('1XXX')
-      end
+    it 'returns expected values' do
+      expect(subject.type).to eq(:millennium_date_type)
+      expect(subject.millennium_type).to eq(:uncertainty_digits)
+      expect(subject.lexeme).to eq(str)
+      expect(subject.literal).to eq(2)
+      expect(subject.earliest).to eq(Date.new(2000, 1, 1))
+      expect(subject.latest).to eq(Date.new(2999, 12, 31))
+      expect(subject.earliest_at_granularity).to eq(2000)
+      expect(subject.latest_at_granularity).to eq(2999)
     end
   end
 end

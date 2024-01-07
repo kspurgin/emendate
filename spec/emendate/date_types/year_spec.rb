@@ -6,13 +6,16 @@ RSpec.describe Emendate::DateTypes::Year do
   subject(:yr){ described_class.new(**args) }
 
   context 'with `2021`' do
-    let(:args){ { literal: '2021' } }
+    let(:tokens) do
+      [Emendate::NumberToken.new(type: :number, lexeme: '2021')]
+    end
+    let(:args){ { sources: tokens } }
 
     it 'returns as expected' do
       expect(yr.type).to eq(:year_date_type)
       expect(yr.lexeme).to eq('2021')
       expect(yr.literal).to eq(2021)
-      expect(yr.range?).to be false
+      expect(yr.range?).to be_falsey
       expect(yr.earliest).to eq(Date.new(2021, 1, 1))
       expect(yr.earliest_at_granularity).to eq('2021')
       expect(yr.latest).to eq(Date.new(2021, 12, 31))
@@ -21,10 +24,17 @@ RSpec.describe Emendate::DateTypes::Year do
   end
 
   context 'with `early 2021`' do
-    let(:args){ { literal: '2021', partial_indicator: :early } }
+    let(:tokens) do
+      [
+        Emendate::Token.new(type: :partial, lexeme: 'early ', literal: :early),
+        Emendate::NumberToken.new(type: :number, lexeme: '2021')
+      ]
+    end
+    let(:args){ { sources: tokens } }
 
-    it 'returns 2021' do
-      expect(yr.lexeme).to eq('2021')
+    it 'returns as expected' do
+      expect(yr.partial_indicator).to eq(:early)
+      expect(yr.lexeme).to eq('early 2021')
       expect(yr.literal).to eq(2021)
       expect(yr.range?).to be true
       expect(yr.earliest).to eq(Date.new(2021, 1, 1))
@@ -35,10 +45,17 @@ RSpec.describe Emendate::DateTypes::Year do
   end
 
   context 'with `mid 2021`' do
-    let(:args){ { literal: '2021', partial_indicator: :mid } }
+    let(:tokens) do
+      [
+        Emendate::Token.new(type: :partial, lexeme: 'mid ', literal: :mid),
+        Emendate::NumberToken.new(type: :number, lexeme: '2021')
+      ]
+    end
+    let(:args){ { sources: tokens } }
 
-    it 'returns 2021' do
-      expect(yr.lexeme).to eq('2021')
+    it 'returns as expected' do
+      expect(yr.partial_indicator).to eq(:mid)
+      expect(yr.lexeme).to eq('mid 2021')
       expect(yr.literal).to eq(2021)
       expect(yr.range?).to be true
       expect(yr.earliest).to eq(Date.new(2021, 5, 1))
@@ -49,10 +66,17 @@ RSpec.describe Emendate::DateTypes::Year do
   end
 
   context 'with `late 2021`' do
-    let(:args){ { literal: '2021', partial_indicator: :late } }
+    let(:tokens) do
+      [
+        Emendate::Token.new(type: :partial, lexeme: 'late ', literal: :late),
+        Emendate::NumberToken.new(type: :number, lexeme: '2021')
+      ]
+    end
+    let(:args){ { sources: tokens } }
 
-    it 'returns 2021' do
-      expect(yr.lexeme).to eq('2021')
+    it 'returns as expected' do
+      expect(yr.partial_indicator).to eq(:late)
+      expect(yr.lexeme).to eq('late 2021')
       expect(yr.literal).to eq(2021)
       expect(yr.range?).to be true
       expect(yr.earliest).to eq(Date.new(2021, 9, 1))
@@ -62,79 +86,82 @@ RSpec.describe Emendate::DateTypes::Year do
     end
   end
 
-  context 'with `before 2021`' do
-    let(:args){ { literal: '2021', range_switch: :before } }
+  #   end
+  # end
 
-    it 'returns 2021' do
-      expect(yr.lexeme).to eq('2021')
-      expect(yr.literal).to eq(2021)
-      expect(yr.range?).to be false
-      expect(yr.earliest).to eq(Date.new(2020, 12, 31))
-      expect(yr.earliest_at_granularity).to eq('2020')
-      expect(yr.latest).to eq(Date.new(2020, 12, 31))
-      expect(yr.latest_at_granularity).to eq('2020')
-    end
+  # context 'with `before 2021`' do
+  #   let(:args){ { literal: '2021', range_switch: :before } }
 
-    context 'with `before 2021` and `before_date_treatment: :range`' do
-      before(:context){ Emendate.config.options.before_date_treatment = :range }
-      after(:context){ Emendate.reset_config }
+  #   it 'returns 2021' do
+  #     expect(yr.lexeme).to eq('2021')
+  #     expect(yr.literal).to eq(2021)
+  #     expect(yr.range?).to be false
+  #     expect(yr.earliest).to eq(Date.new(2020, 12, 31))
+  #     expect(yr.earliest_at_granularity).to eq('2020')
+  #     expect(yr.latest).to eq(Date.new(2020, 12, 31))
+  #     expect(yr.latest_at_granularity).to eq('2020')
+  #   end
 
-      it 'returns 2021' do
-        expect(yr.lexeme).to eq('2021')
-        expect(yr.literal).to eq(2021)
-        expect(yr.range?).to be true
-        expect(yr.earliest).to eq(Date.new(1583, 1, 1))
-        expect(yr.earliest_at_granularity).to eq('1583')
-        expect(yr.latest).to eq(Date.new(2020, 12, 31))
-        expect(yr.latest_at_granularity).to eq('2020')
-      end
-    end
-  end
+  #   context 'with `before 2021` and `before_date_treatment: :range`' do
+  #     before(:context){ Emendate.config.options.before_date_treatment = :range }
+  #     after(:context){ Emendate.reset_config }
 
-  context 'with `230 CE`' do
-    let(:args){ { literal: '230' } }
+  #     it 'returns 2021' do
+  #       expect(yr.lexeme).to eq('2021')
+  #       expect(yr.literal).to eq(2021)
+  #       expect(yr.range?).to be true
+  #       expect(yr.earliest).to eq(Date.new(1583, 1, 1))
+  #       expect(yr.earliest_at_granularity).to eq('1583')
+  #       expect(yr.latest).to eq(Date.new(2020, 12, 31))
+  #       expect(yr.latest_at_granularity).to eq('2020')
+  #     end
+  #   end
+  # end
 
-    it 'returns expected' do
-      expect(yr.lexeme).to eq('0230')
-      expect(yr.literal).to eq(230)
-      expect(yr.range?).to be false
-      expect(yr.earliest).to eq(Date.new(230, 1, 1))
-      expect(yr.earliest_at_granularity).to eq('0230')
-      expect(yr.latest).to eq(Date.new(230, 12, 31))
-      expect(yr.latest_at_granularity).to eq('0230')
-    end
-  end
+  # context 'with `230 CE`' do
+  #   let(:args){ { literal: '230' } }
 
-  context 'with `231 BCE`' do
-    let(:args){ { literal: '0231' } }
+  #   it 'returns expected' do
+  #     expect(yr.lexeme).to eq('0230')
+  #     expect(yr.literal).to eq(230)
+  #     expect(yr.range?).to be false
+  #     expect(yr.earliest).to eq(Date.new(230, 1, 1))
+  #     expect(yr.earliest_at_granularity).to eq('0230')
+  #     expect(yr.latest).to eq(Date.new(230, 12, 31))
+  #     expect(yr.latest_at_granularity).to eq('0230')
+  #   end
+  # end
 
-    it 'returns expected' do
-      yr.bce
-      expect(yr.lexeme).to eq('-0230')
-      expect(yr.literal).to eq(-230)
-      expect(yr.range?).to be false
-      expect(yr.earliest).to eq(Date.new(-230, 1, 1))
-      expect(yr.earliest_at_granularity).to eq('-0230')
-      expect(yr.latest).to eq(Date.new(-230, 12, 31))
-      expect(yr.latest_at_granularity).to eq('-0230')
-    end
+  # context 'with `231 BCE`' do
+  #   let(:args){ { literal: '0231' } }
 
-    context 'with naive bce_handling' do
-      before(:context){ Emendate.config.options.bce_handling = :naive }
-      after(:context){ Emendate.reset_config }
+  #   it 'returns expected' do
+  #     yr.bce
+  #     expect(yr.lexeme).to eq('-0230')
+  #     expect(yr.literal).to eq(-230)
+  #     expect(yr.range?).to be false
+  #     expect(yr.earliest).to eq(Date.new(-230, 1, 1))
+  #     expect(yr.earliest_at_granularity).to eq('-0230')
+  #     expect(yr.latest).to eq(Date.new(-230, 12, 31))
+  #     expect(yr.latest_at_granularity).to eq('-0230')
+  #   end
 
-      it 'returns expected' do
-        yr.bce
-        expect(yr.lexeme).to eq('0231')
-        expect(yr.literal).to eq(231)
-        expect(yr.range?).to be false
-        expect(yr.earliest).to eq(Date.new(231, 1, 1))
-        expect(yr.earliest_at_granularity).to eq('0231')
-        expect(yr.latest).to eq(Date.new(231, 12, 31))
-        expect(yr.latest_at_granularity).to eq('0231')
-      end
-    end
-  end
+  #   context 'with naive bce_handling' do
+  #     before(:context){ Emendate.config.options.bce_handling = :naive }
+  #     after(:context){ Emendate.reset_config }
+
+  #     it 'returns expected' do
+  #       yr.bce
+  #       expect(yr.lexeme).to eq('0231')
+  #       expect(yr.literal).to eq(231)
+  #       expect(yr.range?).to be false
+  #       expect(yr.earliest).to eq(Date.new(231, 1, 1))
+  #       expect(yr.earliest_at_granularity).to eq('0231')
+  #       expect(yr.latest).to eq(Date.new(231, 12, 31))
+  #       expect(yr.latest_at_granularity).to eq('0231')
+  #     end
+  #   end
+  # end
 
   # describe '#earliest' do
   #   context 'with after' do

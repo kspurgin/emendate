@@ -13,7 +13,7 @@ module Emendate
 
     class << self
       def call(tokens)
-        self.new(tokens).call
+        new(tokens).call
       end
     end
 
@@ -39,7 +39,7 @@ module Emendate
     def analyze
       case valid_permutations.length
       when 0
-        fail(MonthDayYearError.new(numbers))
+        raise MonthDayYearError, numbers
       when 1
         transform_unambiguous(valid_permutations[0])
       when 2
@@ -67,15 +67,16 @@ module Emendate
       month = result.when_type(:month)[0]
       day = result.when_type(:day)[0]
 
-      @datetype = Emendate::DateTypes::YearMonthDay.new(year: year.literal,
-                                            month: month.literal,
-                                            day: day.literal,
-                                            children: [year, month, day])
-
+      @datetype = Emendate::DateTypes::YearMonthDay.new(
+        year: year.literal,
+        month: month.literal,
+        day: day.literal,
+        sources: [year, month, day]
+      )
     end
 
     def expand_year(n)
-      Emendate::ShortYearHandler.call(n).lexeme
+      Emendate::ShortYearHandler.call(n).literal
     end
 
     def permutation_valid?(per)
@@ -90,9 +91,9 @@ module Emendate
 
     def preferred_order
       Emendate.options.ambiguous_month_day_year
-        .to_s
-        .split('_')
-        .map(&:to_sym)
+              .to_s
+              .split('_')
+              .map(&:to_sym)
     end
 
     def transform_all_ambiguous
@@ -103,7 +104,7 @@ module Emendate
         @warnings << "Ambiguous two-digit month/day/year treated #{opt}"
         derive_datetype
       else
-        fail(PreferredMdyOrderInvalidError.new(result.segments))
+        raise PreferredMdyOrderInvalidError, result.segments
       end
     end
 
@@ -112,8 +113,8 @@ module Emendate
 
       begin
         analyzer = Emendate::MonthDayAnalyzer.call(part[1], part[2], yr)
-      rescue Emendate::Error => err
-        raise err
+      rescue Emendate::Error => e
+        raise e
       end
 
       transform_part(analyzer.month, :month)
@@ -141,7 +142,6 @@ module Emendate
     def transform_year(part)
       expanded = expand_year(part)
       yr = Emendate::DatePart.new(type: :year,
-                                  lexeme: expanded,
                                   literal: expanded.to_i,
                                   sources: [part])
       replace_x_with_new(x: part, new: yr)
@@ -149,8 +149,8 @@ module Emendate
 
     def valid_permutations
       numbers.permutation(3)
-        .map{ |per| permutation_valid?(per) }
-        .compact
+             .map{ |per| permutation_valid?(per) }
+             .compact
     end
   end
 end

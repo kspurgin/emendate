@@ -80,15 +80,4 @@ RSpec.describe Emendate::DateTypes::YearSeason do
       expect(subject.month).to eq(24)
     end
   end
-
-  context 'when created with literal' do
-    let(:opts){ { literal: 202022 } }
-
-    it 'creates datetype as expected' do
-      expect(subject.type).to eq(:yearseason_date_type)
-      expect(subject.lexeme).to eq('202022')
-      expect(subject.year).to eq(2020)
-      expect(subject.month).to eq(22)
-    end
-  end
 end

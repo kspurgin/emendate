@@ -3,208 +3,104 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::DateTypes::Decade do
-  context 'when called without decade_type' do
-    it 'raises error' do
-      err = Emendate::DateTypes::MissingDecadeTypeError
-      expect{ described_class.new(literal: 199) }.to raise_error(err)
+  subject{ described_class.new(**args) }
+
+  let(:tokens) do
+    Emendate.prepped_for(string: str, target: Emendate::DateSegmenter)
+  end
+  let(:baseargs){ { sources: tokens } }
+  let(:args){ baseargs }
+
+  context 'when plural decade' do
+    let(:str){ '1990s' }
+    let(:args){ baseargs }
+
+    it 'returns expected values' do
+      expect(subject.decade_type).to eq(:plural)
+      expect(subject.earliest).to eq(Date.new(1990, 1, 1))
+      expect(subject.latest).to eq(Date.new(1999, 12, 31))
+      expect(subject.lexeme).to eq(str)
+      expect(subject.literal).to eq(199)
     end
   end
 
-  context 'when called with unsupported decade_type value' do
-    it 'raises error' do
-      err = Emendate::DateTypes::DecadeTypeValueError
-      expect{ described_class.new(literal: 199, decade_type: :misc) }.to raise_error(err)
+  context 'when plural and possibly century' do
+    let(:str){ '1900s' }
+    let(:args){ baseargs }
+
+    it 'returns expected values' do
+      expect(subject.earliest).to eq(Date.new(1900, 1, 1))
+      expect(subject.latest).to eq(Date.new(1909, 12, 31))
+      expect(subject.lexeme).to eq('1900s')
+      expect(subject.literal).to eq(190)
     end
   end
 
-  context 'with plural decade (1990s)' do
-    before(:all) do
-      @dt = described_class.new(literal: 1990, decade_type: :plural)
-    end
+  context 'when plural and possibly millennium' do
+    let(:str){ '2000s' }
+    let(:args){ baseargs }
 
-    describe '#earliest' do
-      it 'returns 1990-01-01' do
-        expect(@dt.earliest).to eq(Date.new(1990, 1, 1))
-      end
-    end
-
-    describe '#latest' do
-      it 'returns 1999-12-31' do
-        expect(@dt.latest).to eq(Date.new(1999, 12, 31))
-      end
-    end
-
-    describe '#lexeme' do
-      it 'returns 1990s' do
-        expect(@dt.lexeme).to eq('1990s')
-      end
+    it 'returns expected values' do
+      expect(subject.earliest).to eq(Date.new(2000, 1, 1))
+      expect(subject.latest).to eq(Date.new(2009, 12, 31))
+      expect(subject.lexeme).to eq('2000s')
+      expect(subject.literal).to eq(200)
     end
   end
 
-  context 'with plural decade (1900s)' do
-    before(:all) do
-      @dt = described_class.new(literal: 1900, decade_type: :plural)
-    end
+  context 'when plural and possibly century with 3 digits' do
+    let(:str){ '200s' }
+    let(:args){ baseargs }
 
-    describe '#earliest' do
-      it 'returns 1900-01-01' do
-        expect(@dt.earliest).to eq(Date.new(1900, 1, 1))
-      end
-    end
-
-    describe '#latest' do
-      it 'returns 1909-12-31' do
-        expect(@dt.latest).to eq(Date.new(1909, 12, 31))
-      end
-    end
-
-    describe '#lexeme' do
-      it 'returns 1900s' do
-        expect(@dt.lexeme).to eq('1900s')
-      end
+    it 'returns expected values' do
+      expect(subject.earliest).to eq(Date.new(200, 1, 1))
+      expect(subject.latest).to eq(Date.new(209, 12, 31))
+      expect(subject.lexeme).to eq('200s')
+      expect(subject.literal).to eq(20)
     end
   end
 
-  context 'with plural decade (2000s)' do
-    before(:all) do
-      @dt = described_class.new(literal: 2000, decade_type: :plural)
-    end
+  context 'when uncertainty digit decade' do
+    let(:str){ '199u' }
+    let(:args){ baseargs }
 
-    describe '#earliest' do
-      it 'returns 2000-01-01' do
-        expect(@dt.earliest).to eq(Date.new(2000, 1, 1))
-      end
-    end
-
-    describe '#latest' do
-      it 'returns 2009-12-31' do
-        expect(@dt.latest).to eq(Date.new(2009, 12, 31))
-      end
-    end
-
-    describe '#lexeme' do
-      it 'returns 2000s' do
-        expect(@dt.lexeme).to eq('2000s')
-      end
+    it 'returns expected values' do
+      expect(subject.decade_type).to eq(:uncertainty_digits)
+      expect(subject.earliest).to eq(Date.new(1990, 1, 1))
+      expect(subject.latest).to eq(Date.new(1999, 12, 31))
+      expect(subject.lexeme).to eq(str)
+      expect(subject.literal).to eq(199)
     end
   end
 
-  context 'with plural decade (200s)' do
-    before(:all) do
-      @dt = described_class.new(literal: 200, decade_type: :plural)
-    end
+  context 'with partial indicator' do
+    let(:str){ '1990s' }
+    let(:args){ baseargs.merge({ partial_indicator: ind }) }
 
-    describe '#earliest' do
-      it 'returns 0200-01-01' do
-        expect(@dt.earliest).to eq(Date.new(200, 1, 1))
+    context 'when :early' do
+      let(:ind){ :early }
+
+      it 'returns expected values' do
+        expect(subject.earliest).to eq(Date.new(1990, 1, 1))
+        expect(subject.latest).to eq(Date.new(1993, 12, 31))
       end
     end
 
-    describe '#latest' do
-      it 'returns 0209-12-31' do
-        expect(@dt.latest).to eq(Date.new(209, 12, 31))
+    context 'when :mid' do
+      let(:ind){ :mid }
+
+      it 'returns expected values' do
+        expect(subject.earliest).to eq(Date.new(1994, 1, 1))
+        expect(subject.latest).to eq(Date.new(1996, 12, 31))
       end
     end
 
-    describe '#lexeme' do
-      it 'returns 200s' do
-        expect(@dt.lexeme).to eq('200s')
-      end
-    end
-  end
+    context 'when :late' do
+      let(:ind){ :late }
 
-  context 'with uncertainty_digit decade (199u)' do
-    before(:all) do
-      @dt = described_class.new(literal: 199, decade_type: :uncertainty_digits)
-    end
-
-    describe '#earliest' do
-      it 'returns 1990-01-01' do
-        expect(@dt.earliest).to eq(Date.new(1990, 1, 1))
-      end
-    end
-
-    describe '#latest' do
-      it 'returns 1999-12-31' do
-        expect(@dt.latest).to eq(Date.new(1999, 12, 31))
-      end
-    end
-
-    describe '#lexeme' do
-      it 'returns 199X' do
-        expect(@dt.lexeme).to eq('199X')
-      end
-    end
-  end
-
-  context 'with early 1990s' do
-    before(:all) do
-      @dt = described_class.new(literal: 1990, decade_type: :plural, partial_indicator: :early)
-    end
-
-    describe '#earliest' do
-      it 'returns 1990-01-01' do
-        expect(@dt.earliest).to eq(Date.new(1990, 1, 1))
-      end
-    end
-
-    describe '#latest' do
-      it 'returns 1993-12-31' do
-        expect(@dt.latest).to eq(Date.new(1993, 12, 31))
-      end
-    end
-
-    describe '#lexeme' do
-      it 'returns early 1990s' do
-        expect(@dt.lexeme).to eq('early 1990s')
-      end
-    end
-  end
-
-  context 'with mid-1990s' do
-    before(:all) do
-      @dt = described_class.new(literal: 1990, decade_type: :plural, partial_indicator: :mid)
-    end
-
-    describe '#earliest' do
-      it 'returns 1994-01-01' do
-        expect(@dt.earliest).to eq(Date.new(1994, 1, 1))
-      end
-    end
-
-    describe '#latest' do
-      it 'returns 1996-12-31' do
-        expect(@dt.latest).to eq(Date.new(1996, 12, 31))
-      end
-    end
-
-    describe '#lexeme' do
-      it 'returns mid 1990s' do
-        expect(@dt.lexeme).to eq('mid 1990s')
-      end
-    end
-  end
-
-  context 'with late 1990s' do
-    before(:all) do
-      @dt = described_class.new(literal: 1990, decade_type: :plural, partial_indicator: :late)
-    end
-
-    describe '#earliest' do
-      it 'returns 1997-01-01' do
-        expect(@dt.earliest).to eq(Date.new(1997, 1, 1))
-      end
-    end
-
-    describe '#latest' do
-      it 'returns 1999-12-31' do
-        expect(@dt.latest).to eq(Date.new(1999, 12, 31))
-      end
-    end
-
-    describe '#lexeme' do
-      it 'returns late 1990s' do
-        expect(@dt.lexeme).to eq('late 1990s')
+      it 'returns expected values' do
+        expect(subject.earliest).to eq(Date.new(1997, 1, 1))
+        expect(subject.latest).to eq(Date.new(1999, 12, 31))
       end
     end
   end

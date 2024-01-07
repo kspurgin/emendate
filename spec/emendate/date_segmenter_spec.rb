@@ -5,6 +5,8 @@ require 'spec_helper'
 RSpec.describe Emendate::DateSegmenter do
   subject(:step){ described_class }
 
+  after{ Emendate.reset_config }
+
   describe '.call' do
     let(:tokens){ prepped_for(string: str, target: step) }
     let(:result) do
@@ -75,7 +77,6 @@ RSpec.describe Emendate::DateSegmenter do
       let(:str){ 'Winter 2019-2020' }
 
       it 'segments as expected' do
-        #        binding.pry
         expect(types).to eq(%i[yearseason_date_type])
       end
     end
@@ -208,6 +209,19 @@ RSpec.describe Emendate::DateSegmenter do
       it 'returns ...' do
         expect(types).to eq(%i[year_date_type])
         expect(result[0].era).to eq(:bce)
+      end
+    end
+
+    context 'with Spring 20' do
+      before do
+        Emendate.config.options.two_digit_year_handling = :coerce
+        Emendate.config.options.ambiguous_year_rollback_threshold = 50
+      end
+
+      let(:str){ 'Spring 20' }
+
+      it 'returns ...' do
+        expect(types).to eq(%i[yearseason_date_type])
       end
     end
 

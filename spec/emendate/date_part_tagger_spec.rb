@@ -169,6 +169,23 @@ RSpec.describe Emendate::DatePartTagger do
       end
     end
 
+    context 'with Spring 20, threshold 24, and current century 2000s' do
+      before do
+        Emendate.config.options.ambiguous_year_rollback_threshold = 24
+        allow(Date).to receive(:today).and_return Date.new(2001, 2, 3)
+      end
+
+      after{ Emendate.reset_config }
+
+      let(:string){ 'Spring 20' }
+
+      it 'tags as expected' do
+        expect(types).to eq(%i[season year])
+        expect(result[1].literal).to eq(2020)
+        expect(result[1].lexeme).to eq('20')
+      end
+    end
+
     context 'with 02-03-2020' do
       let(:string){ '02-03-2020' }
 

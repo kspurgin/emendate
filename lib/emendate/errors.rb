@@ -4,12 +4,11 @@ module Emendate
   Error = Module.new
   UnconfiguredModuleError = Class.new(NameError){ include Emendate::Error }
 
-  class CenturyTypeValueError < TypeError
+  class DecadeTypeError < StandardError
     include Emendate::Error
 
-    def initialize(types)
-      m = 'The century_type option must have one of the following values: ' \
-          "#{types.join(', ')}"
+    def initialize(lexeme)
+      m = "Cannot determine decade_type for #{lexeme}"
       super(m)
     end
   end
@@ -18,12 +17,11 @@ module Emendate
     include Emendate::Error
   end
 
-  class MissingCenturyTypeError < TypeError
+  class MillenniumTypeError < StandardError
     include Emendate::Error
 
-    def initialize(types)
-      m = 'A century_type option with is required. Value must be one of the ' \
-          "following: #{types.join(', ')}"
+    def initialize(lexeme)
+      m = "Cannot determine millennium_type for #{lexeme}"
       super(m)
     end
   end
@@ -69,6 +67,16 @@ module Emendate
       m = 'Using ambiguous MDY order ' \
           "#{Emendate.options.ambiguous_month_day_year} results in invalid date " \
           "for: #{tokens.map(&:lexeme).join('-')}"
+      super(m)
+    end
+  end
+
+  class RangeStartOpenError < StandardError
+    include Emendate::Error
+
+    def initialize
+      m = 'When :point is `:start`, :category cannot be `:open`. Set ' \
+          ':category to `:unknown`'
       super(m)
     end
   end

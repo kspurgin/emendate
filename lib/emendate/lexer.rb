@@ -67,7 +67,9 @@ module Emendate
       Regexp.new(days, 'i') => :day_of_week_alpha,
       /^(b\.? ?c\.? ?e\.?|b\.? ?p\.?|b\.? ?c\.?)/i => :era_bce,
       /^(c\.? ?e\.?|a\.? ?d\.?)/i => :era_ce,
-      /^(early|late|middle|mid)/i => :partial,
+      /^early/i => :early,
+      /^(middle|mid)/i => :mid,
+      /^late/i => :late,
       Regexp.new(months, 'i') => :month_alpha,
       /^or/i => :or,
       /^to/i => :range_indicator,
@@ -227,6 +229,24 @@ module Emendate
             lexeme: match,
             type: :season,
             location: location(init)
+          )
+        when :early
+          tokens << Emendate::Token.new(
+            lexeme: match,
+            literal: :early,
+            type: :partial
+          )
+        when :mid
+          tokens << Emendate::Token.new(
+            lexeme: match,
+            literal: :mid,
+            type: :partial
+          )
+        when :late
+          tokens << Emendate::Token.new(
+            lexeme: match,
+            literal: :late,
+            type: :partial
           )
         else
           add_token(match, ALPHA[pattern], init)

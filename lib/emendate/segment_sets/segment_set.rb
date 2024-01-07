@@ -151,9 +151,15 @@ module Emendate
         segments.map(&:type)
       end
 
-      def type_string
-        types.join(' ')
+      def type_string = types.join(' ')
+
+      def source_types
+        segments.map { |seg| seg.respond_to?(:sources) ? seg.sources : seg }
+          .map { |obj| obj.respond_to?(:types) ? obj.types : obj.type }
+          .flatten
       end
+
+      def source_type_string = source_types.join(' ')
 
       def when_type(type)
         segments.select{ |t| t.type == type }

@@ -54,9 +54,10 @@ module Emendate
     end
 
     def derive_location
-      start_position = sources[0].location.col
-      length = sources.map{ |src| src.location.length }.sum
-      Emendate::Location.new(start_position, length)
+      nil
+      # start_position = sources[0].location.col
+      # length = sources.map{ |src| src.location.length }.sum
+      # Emendate::Location.new(start_position, length)
     end
 
     def set_sources(opts)

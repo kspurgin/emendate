@@ -8,7 +8,10 @@ module Emendate
     class YearSeason < Emendate::DateTypes::DateType
       include SixDigitable
 
-      attr_reader :literal, :year, :month
+      # @return [Integer]
+      attr_reader :year
+      # @return [Integer]
+      attr_reader :month
 
       NORTHERN_SEASONS = {
         spring: { start: [:year, 4, 1], end: [:year, 6, 30] },
@@ -38,6 +41,7 @@ module Emendate
         semestral2: { start: [:year, 7, 1], end: [:year, 12, 31] }
       }
 
+      # @option (see DateType#initialize)
       # @option opts [Integer] :year (nil) Literal of year source segment
       # @option opts [Integer] :month (nil) Literal of season source
       #   segment. Called month for consistency with {YearMonth} date
@@ -45,8 +49,12 @@ module Emendate
       # @option opts [Boolean] :include_prev_year (nil) Used for values like
       #   "Winter 2019-2020", to cause the earliest date to include the end of
       #   2019
-      # @option opts [Integer] :literal (nil) Six digit YYYYSS literal to be
-      #   parsed into a YearSeason
+      # @overload initialize({year:, month:, sources:})
+      #   Pass specific literal values and source segments. Preferred.
+      # @overload initialize({year:, month:, sources:, include_prev_year: true})
+      #   As above, but uses previous December as start date for winter
+      # @overload initialize({literal:})
+      #   Create from literal with format YYYYSS
       def initialize(**opts)
         super
         @seasons = self.class.const_get(
@@ -64,12 +72,6 @@ module Emendate
 
       def latest
         get_date(:end)
-      end
-
-      def lexeme
-        return literal.to_s if sources.empty?
-
-        sources.segments.map(&:lexeme).join('')
       end
 
       def earliest_at_granularity

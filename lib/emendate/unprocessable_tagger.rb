@@ -34,7 +34,8 @@ module Emendate
 
       result = tokens.class.new.copy(tokens)
       result.clear
-      result << Emendate::DateTypes::Unprocessable.new(
+      result << Emendate::DateTypes::Error.new(
+        error_type: :unprocessable,
         sources: tokens
       )
       result.warnings << 'Unprocessable string'

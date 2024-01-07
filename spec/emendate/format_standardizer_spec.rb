@@ -17,7 +17,7 @@ RSpec.describe Emendate::FormatStandardizer do
       let(:string){ '1984-?' }
 
       it 'replaces question with rangedateopen_date_type' do
-        expect(result).to eq(%i[number4 hyphen rangedateunknown_date_type])
+        expect(result).to eq(%i[number4 hyphen rangedateendunknown_date_type])
       end
     end
 
@@ -206,27 +206,27 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
-    context 'with ../2021' do
+    context 'with ../2021', :rangedateunknownoropen do
       let(:string){ '../2021' }
 
       it 'replace double dot with open start date type' do
-        expect(result).to eq(%i[rangedateopen_date_type hyphen number4])
+        expect(result).to eq(%i[rangedatestartopen_date_type hyphen number4])
       end
     end
 
-    context 'with 1985/..' do
+    context 'with 1985/..', :rangedateunknownoropen do
       let(:string){ '1985/..' }
 
       it 'replace double dot with open end date type' do
-        expect(result).to eq(%i[number4 hyphen rangedateopen_date_type])
+        expect(result).to eq(%i[number4 hyphen rangedateendopen_date_type])
       end
     end
 
-    context 'with 1985/' do
+    context 'with 1985/', :rangedateunknownoropen do
       let(:string){ '1985/' }
 
       it 'appends open end date type' do
-        expect(result).to eq(%i[number4 range_indicator rangedateopen_date_type])
+        expect(result).to eq(%i[number4 range_indicator rangedateendopen_date_type])
       end
 
       context 'with ending_slash: :unknown' do
@@ -234,19 +234,17 @@ RSpec.describe Emendate::FormatStandardizer do
           Emendate.config.options.ending_slash = :unknown
         end
 
-        after(:context){ Emendate.reset_config }
-
         it 'appends unknown end date type' do
-          expect(result).to eq(%i[number4 range_indicator rangedateunknown_date_type])
+          expect(result).to eq(%i[number4 range_indicator rangedateendunknown_date_type])
         end
       end
     end
 
-    context 'with 1985-' do
+    context 'with 1985-', :rangedateunknownoropen do
       let(:string){ '1985-' }
 
       it 'appends open end date type' do
-        expect(result).to eq(%i[number4 range_indicator rangedateopen_date_type])
+        expect(result).to eq(%i[number4 range_indicator rangedateendopen_date_type])
       end
     end
 

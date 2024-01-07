@@ -1,29 +1,34 @@
 # frozen_string_literal: true
 
+require_relative 'datetypeable'
+
 module Emendate
   module DateTypes
-    class Year < Emendate::DateTypes::DateType
-      # @return [Integer]
-      attr_reader :orig_literal
+    class Year
+      include Datetypeable
+
+      # @return [nil, :early, :mid, :late]
+      attr_reader :partial_indicator
+      # @return [SegmentSets::SegmentSet
+      attr_reader :sources
+      # @return [:bce, :ce]
       attr_reader :era
 
-      def initialize(**opts)
-        super
-        @orig_literal = opts[:literal].to_i
+      # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
+      #   included in the date type
+      def initialize(sources:)
+        common_setup(binding)
+        @orig_literal = first_numeric_literal
         @era = :ce
       end
 
+      # Switches @era to :bce
       def bce
         @era = :bce
       end
 
-      def lexeme
-        year_string
-      end
-
       def literal
-        if era == :bce &&
-           Emendate.options.bce_handling == :precise
+        if era == :bce && Emendate.options.bce_handling == :precise
           (orig_literal - 1) * -1
         else
           orig_literal
@@ -34,11 +39,7 @@ module Emendate
         return false if range_switch == :before &&
                         Emendate.options.before_date_treatment == :point
 
-        !(partial_indicator.nil? && range_switch.nil?)
-      end
-
-      def year
-        literal
+        true if partial_indicator || range_switch
       end
 
       def earliest
@@ -82,6 +83,8 @@ module Emendate
       end
 
       private
+
+      attr_reader :orig_literal
 
       def year_string(val = literal)
         if val >= 0

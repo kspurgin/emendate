@@ -21,11 +21,15 @@ module Emendate
       recursive_parse until working.empty?
       working.copy(result)
       result.clear
-      apply_partial_modifiers until working.empty?
+      apply_modifiers(:partial) until working.empty?
 
       working.copy(result)
       result.clear
-      apply_switch_modifiers until working.empty?
+      apply_modifiers(:before) until working.empty?
+
+      working.copy(result)
+      result.clear
+      apply_modifiers(:after) until working.empty?
 
       apply_bce if bce?
 
@@ -66,7 +70,7 @@ module Emendate
       when :present
         :parse_present
       when :season
-        one_winter? ? :parse_season_date_part : :parse_date_parts
+        :parse_season
       when :year
         :parse_date_parts
       else
@@ -133,6 +137,48 @@ module Emendate
       apply_switch_modifiers
     end
 
+    def apply_modifiers(type)
+      return if working.empty?
+
+      mod = mod_function(type)
+      return if mod.nil?
+
+      mod.call
+    end
+
+    def mod_function(type)
+      return nil if working.empty?
+      return proc{ passthrough_mod(type) } if working.length < 2
+
+      pair = working.first(2)
+      if pair[0].date_type? && pair[1].type == type
+        proc{ apply_mod(type, :backward) }
+      elsif pair[0].type == type && pair[1].date_type?
+        proc{ apply_mod(type, :forward) }
+      else
+        proc{ passthrough_mod(type) }
+      end
+    end
+
+    def apply_mod(type, direction)
+      case direction
+      when :forward
+        modifier = working.shift
+        datetype = working.shift
+        result << datetype.append_source_token(modifier)
+      when :backward
+        datetype = working.shift
+        modifier = working.shift
+        result << datetype.prepend_source_token(modifier)
+      end
+      apply_modifiers(type)
+    end
+
+    def passthrough_mod(type)
+      transfer_token
+      apply_modifiers(type)
+    end
+
     def apply_partial_modifiers
       return if working.empty?
 
@@ -149,7 +195,7 @@ module Emendate
       pair = working.first(2)
       if pair[0].date_type? && pair[1].type == :partial
         proc{ mod_partial(:backward) }
-      elsif pair[1].date_type? && pair[0].type == :partial
+      elsif pair[0].type == :partial && pair[1].date_type?
         proc{ mod_partial(:forward) }
       else
         proc{ passthrough_partial_mod }
@@ -157,20 +203,18 @@ module Emendate
     end
 
     def mod_partial(direction)
-      if direction == :forward
+      case direction
+      when :forward
         partial = working.shift
         datetype = working.shift
-      else
+        result << datetype.append_source_token(partial)
+      when :backward
         datetype = working.shift
         partial = working.shift
+        result << datetype.prepend_source_token(partial)
       end
 
-      datetype.partial_indicator = partial.lexeme
-                                          .strip
-                                          .delete_suffix('-')
-                                          .to_sym
-      result << datetype.prepend_source_token(partial)
-
+      datetype.partial_indicator = partial.literal
       apply_partial_modifiers
     end
 
@@ -180,16 +224,7 @@ module Emendate
     end
 
     def parse_decade_date_part
-      decade = working[0]
-      if s_date?(decade)
-        result << Emendate::DateTypes::Decade.new(literal: decade.literal,
-                                                  decade_type: :plural,
-                                                  sources: [decade])
-      elsif uncertainty_date?(decade)
-        result << Emendate::DateTypes::Decade.new(literal: decade.literal,
-                                                  decade_type: :uncertainty_digits,
-                                                  sources: [decade])
-      end
+      result << Emendate::DateTypes::Decade.new(sources: [working[0]])
       working.shift
       recursive_parse
     end
@@ -203,51 +238,38 @@ module Emendate
     end
 
     def parse_millennium_date_part
-      millennium = working[0]
-      if s_date?(millennium)
-        result << Emendate::DateTypes::Millennium.new(literal: millennium.literal,
-                                                      millennium_type: :plural,
-                                                      sources: [millennium])
-      elsif uncertainty_date?(millennium)
-        result << Emendate::DateTypes::Millennium.new(literal: millennium.literal,
-                                                      millennium_type: :uncertainty_digits,
-                                                      sources: [millennium])
-      end
+      result << Emendate::DateTypes::Millennium.new(sources: [working[0]])
       working.shift
       recursive_parse
     end
 
     def parse_century_date_part
-      cent = working[0]
-      type = century_type(cent)
       result << Emendate::DateTypes::Century.new(
-        literal: century_literal(cent, type),
-        century_type: type,
-        sources: [cent]
+        sources: [working[0]]
       )
       working.shift
       recursive_parse
     end
 
-    def century_literal(datepart, type)
-      if type == :plural
-        datepart.literal.to_s[0..-3].to_i
+    def parse_season
+      pieces = date_parts
+      if one_winter?
+        two_year_winter
+      elsif pieces.types.sort == %i[season year]
+        result << create_year_season_datetype(pieces)
+        working.clear
+        recursive_parse
+      elsif working.types[0..1].sort == %i[season year] &&
+            working.types[2] == :range_indicator
+        parts = Emendate::SegmentSets::MixedSet.new(segments: working.shift(2))
+        result << create_year_season_datetype(parts)
+        recursive_parse
       else
-        datepart.literal
+        raise Emendate::UnsegmentableDatePatternError, pieces
       end
     end
 
-    def century_type(datepart)
-      if datepart.sources.types.include?(:letter_s)
-        :plural
-      elsif datepart.sources.types.include?(:uncertainty_digits)
-        :uncertainty_digits
-      else
-        :name
-      end
-    end
-
-    def parse_season_date_part
+    def two_year_winter
       pieces = working[0..3]
       year = pieces[3]
       month = pieces[0]
@@ -284,8 +306,6 @@ module Emendate
         result << create_year_month_day_datetype(pieces)
       elsif pieces.types.sort == %i[month year]
         result << create_year_month_datetype(pieces)
-      elsif pieces.types.sort == %i[season year]
-        result << create_year_season_datetype(pieces)
       elsif pieces.types.sort == %i[year]
         result << create_year_datetype(pieces)
       else
@@ -322,9 +342,11 @@ module Emendate
     end
 
     def create_year_datetype(pieces)
-      year = pieces.when_type(:year)[0]
-      Emendate::DateTypes::Year.new(literal: year.literal,
-                                    sources: pieces.segments)
+      Emendate::DateTypes::Year.new(sources: pieces.segments)
+    end
+
+    def date_parts
+      Emendate::SegmentSets::MixedSet.new(segments: working.date_parts)
     end
 
     def consume_date_parts
@@ -370,9 +392,7 @@ module Emendate
 
       case date_type
       when :long_year
-        result << Emendate::DateTypes::Year.new(
-          literal: current.lexeme, sources: pieces
-        )
+        result << Emendate::DateTypes::Year.new(sources: pieces)
       when :ym
         result << Emendate::DateTypes::YearMonth.new(
           year: year, month: month, sources: pieces
@@ -418,9 +438,7 @@ module Emendate
           year: year, month: month, day: day, sources: pieces
         )
       when :long_year
-        result << Emendate::DateTypes::Year.new(
-          literal: current.lexeme, sources: pieces
-        )
+        result << Emendate::DateTypes::Year.new(sources: pieces)
       end
       working.delete(current)
       recursive_parse

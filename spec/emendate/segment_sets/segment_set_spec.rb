@@ -4,7 +4,10 @@ require 'spec_helper'
 
 RSpec.describe Emendate::SegmentSets::SegmentSet do
   subject(:set){ described_class }
-  let(:segments){ %i[a b c d].map{ |t| Emendate::Token.new(type: t) } }
+
+  let(:segments) do
+    %i[a b c d].map{ |t| Emendate::Token.new(type: t, lexeme: "#{t}") }
+  end
   let(:string){ 'str' }
   let(:segset){ set.new(string: string, segments: segments) }
 
@@ -44,8 +47,19 @@ RSpec.describe Emendate::SegmentSets::SegmentSet do
 
   describe '#<<' do
     it 'adds segment as expected' do
-      segset << Emendate::Token.new(type: :z)
-      expect(segset.segments.length).to eq(5)
+      segset << Emendate::Token.new(type: :z, lexeme: 'z')
+      expect(segset.length).to eq(5)
+      expect(segset.last.type).to eq(:z)
+      expect(segset.lexeme).to eq('abcdz')
+    end
+  end
+
+  describe '#unshift' do
+    it 'adds segment as expected' do
+      segset.unshift(Emendate::Token.new(type: :z, lexeme: 'z'))
+      expect(segset.length).to eq(5)
+      expect(segset.first.type).to eq(:z)
+      expect(segset.lexeme).to eq('zabcd')
     end
   end
 
@@ -100,7 +114,7 @@ RSpec.describe Emendate::SegmentSets::SegmentSet do
       let(:result){ segset.map{ |t| t.dup } }
 
       it 'returns kind of SegmentSet' do
-        expect(result).to be_a_kind_of(described_class)
+        expect(result).to be_a(described_class)
       end
     end
 
@@ -110,6 +124,52 @@ RSpec.describe Emendate::SegmentSets::SegmentSet do
       it 'returns Array' do
         expect(result).to be_a(Array)
       end
+    end
+  end
+
+  describe '#types' do
+    let(:result){ segset.types }
+
+    it 'lists types' do
+      expect(result).to eq(%i[a b c d])
+    end
+  end
+
+  describe '#type_string' do
+    let(:result){ segset.type_string }
+
+    it 'lists types' do
+      expect(result).to eq('a b c d')
+    end
+  end
+
+  describe '#source_types' do
+    let(:string){ 'Feb. 3, 2000' }
+    let(:segments) do
+      Emendate.prepped_for(
+        string: string,
+        target: Emendate::DatePartTagger
+      ).segments
+    end
+    let(:result){ segset.source_types }
+
+    it 'lists types' do
+      expect(result).to eq(%i[month_alpha space number1or2 comma space number4])
+    end
+  end
+
+  describe '#source_type_string' do
+    let(:string){ 'Feb. 3, 2000' }
+    let(:segments) do
+      Emendate.prepped_for(
+        string: string,
+        target: Emendate::DatePartTagger
+      ).segments
+    end
+    let(:result){ segset.source_type_string }
+
+    it 'lists types' do
+      expect(result).to eq('month_alpha space number1or2 comma space number4')
     end
   end
 end

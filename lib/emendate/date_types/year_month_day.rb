@@ -2,7 +2,6 @@
 
 module Emendate
   module DateTypes
-
     class YearMonthDay < Emendate::DateTypes::DateType
       attr_reader :literal, :year, :month, :day
 
@@ -28,10 +27,6 @@ module Emendate
 
       def latest
         earliest
-      end
-
-      def lexeme
-        "#{year}-#{month.to_s.rjust(2, '0')}-#{day.to_s.rjust(2, '0')}"
       end
 
       def range?
