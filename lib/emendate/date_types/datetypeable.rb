@@ -15,16 +15,21 @@ module Emendate
     module Datetypeable
       # @return [Array<Symbol>]
       attr_reader :certainty
-      # @return [:early, :mid, :late, nil]
-      attr_reader :partial_indicator
-      # @return [:before, :after, nil]
-      attr_reader :range_switch
+      # @return [SegmentSets::SegmentSet]
+      attr_reader :sources
 
       # Allows a source segment to be added to beginning of sources
       # after date type has been created
       # @param token [{Segment}] or subclasses of {Segment}
       def prepend_source_token(token)
+        unless addable_token_types.include?(token.type)
+          raise Emendate::DisallowedTokenAdditionError.new(
+            token, __method__, self.class
+          )
+        end
+
         @sources.unshift(token)
+        # @todo Check if this actually needs to return self
         self
       end
 
@@ -32,7 +37,14 @@ module Emendate
       # date type has been created
       # @param token [{Segment}] or subclasses of {Segment}
       def append_source_token(token)
+        unless addable_token_types.include?(token.type)
+          raise Emendate::DisallowedTokenAdditionError.new(
+            token, __method__, self.class
+          )
+        end
+
         @sources << token
+        # @todo Check if this actually needs to return self
         self
       end
 
@@ -86,6 +98,24 @@ module Emendate
         latest.year
       end
 
+      # @return [:early, :mid, :late, nil]
+      def partial_indicator
+        return nil unless sources.types.include?(:partial)
+
+        sources.when_type(:partial).first.literal
+      end
+
+      # @return [:before, :after, nil]
+      def range_switch
+        chk = [
+          sources.when_type(:before).first,
+          sources.when_type(:after).first
+        ].compact
+        return nil if chk.empty?
+
+        chk.first.type
+      end
+
       private
 
       def set_sources(context)
@@ -103,48 +133,20 @@ module Emendate
 
       def common_setup(context)
         set_sources(context)
-        vars = context.local_variables - [:sources]
-        %i[certainty partial_indicator range_switch].each do |var|
-          iv = "@#{var}".to_sym
-          if vars.include?(var)
-            instance_variable_set(iv, context.local_variable_get(var))
-          else
-            case var
-            when :certainty
-              # passthrough for now
-            when :partial_indicator
-              instance_variable_set(
-                :@partial_indicator, partial_indicator_value
-              )
-            when :range_switch
-              instance_variable_set(
-                :@range_switch, range_switch_value
-              )
-            end
-          end
-        end
-      end
-
-      def partial_indicator_value
-        return nil unless sources.types.include?(:partial)
-
-        sources.when_type(:partial).first.literal
-      end
-
-      def range_switch_value
-        chk = [
-          sources.when_type(:before).first,
-          sources.when_type(:after).first
-        ].compact
-        return nil if chk.empty?
-
-        chk.first.type
+        instance_variable_set(:@certainty, [])
       end
 
       def first_numeric_literal
         sources.map(&:literal)
                .select{ |literal| literal.is_a?(Integer) }
                .first
+      end
+
+      # Override in any including class that shouldn't allow append/prepend of
+      #   any of these default token types, or that needs to allow
+      #   append/prepend of additional types
+      def addable_token_types
+        %i[partial before after]
       end
     end
   end

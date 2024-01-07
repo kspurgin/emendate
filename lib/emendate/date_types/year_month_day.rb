@@ -1,24 +1,23 @@
 # frozen_string_literal: true
 
+require_relative 'datetypeable'
+
 module Emendate
   module DateTypes
-    class YearMonthDay < Emendate::DateTypes::DateType
-      attr_reader :literal, :year, :month, :day
+    # @todo Implement/test before/after a YearMonthDay
+    class YearMonthDay
+      include Datetypeable
 
-      def initialize(**opts)
-        super
-        if opts[:year] && opts[:month] && opts[:day]
-          @year = opts[:year].is_a?(Integer) ? opts[:year] : opts[:year].to_i
-          @month = opts[:month].is_a?(Integer) ? opts[:month] : opts[:month].to_i
-          @day = opts[:day].is_a?(Integer) ? opts[:day] : opts[:day].to_i
-          @literal = "#{year}#{month.to_s.rjust(2, '0')}#{day.to_s.rjust(2, '0')}".to_i
-        else
-          @literal = opts[:literal].is_a?(Integer) ? opts[:literal] : opts[:literal].to_i
-          parts = literal.to_s.match(/(\d{4})(\d{2})(\d{2})/)
-          @year = parts[1].to_i
-          @month = parts[2].to_i
-          @day = parts[3].to_i
-        end
+      # @param year [Integer]
+      # @param month [Integer]
+      # @param year [Integer]
+      # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
+      #   included in the date type
+      def initialize(sources:, year:, month:, day:)
+        @year = year
+        @month = month
+        @day = day
+        common_setup(binding)
       end
 
       def earliest
@@ -29,9 +28,24 @@ module Emendate
         earliest
       end
 
+      def literal = "#{year}"\
+        "#{month.to_s.rjust(2, '0')}"\
+        "#{day.to_s.rjust(2, '0')}"
+        .to_i
+
+      # @return [FalseClass] if no range switch is present, OR if
+      #   range_switch is :before and the before_date_treatment
+      #   setting is :point
+      # @return [TrueClass] if range switch is :after, or range switch
+      #   is :before with before_date_treatment :range
       def range?
-        false
+        return false if range_switch == :before &&
+                        Emendate.options.before_date_treatment == :point
+
+        true if range_switch
       end
+
+      attr_reader :year, :month, :day
     end
   end
 end

@@ -30,25 +30,25 @@ module Emendate
     attr_reader :n, :year
 
     def analyze
-      if is_range?(year.lexeme, n.lexeme)
-        @result = new_date_part(type: :year, lexeme: expand_year)
-      elsif !maybe_range? && valid_month?(n.lexeme)
-        @result = new_date_part(type: :month, lexeme: n.lexeme)
-      elsif !maybe_range? && valid_season?(n.lexeme)
-        @result = new_date_part(type: :season, lexeme: n.lexeme)
+      if is_range?(year.literal, n.literal)
+        @result = new_date_part(type: :year, literal: expand_year)
+      elsif !maybe_range? && valid_month?(n.literal)
+        @result = new_date_part(type: :month, literal: n.literal)
+      elsif !maybe_range? && valid_season?(n.literal)
+        @result = new_date_part(type: :season, literal: n.literal)
       elsif assume_year?
-        @result = new_date_part(type: :year, lexeme: expand_year)
+        @result = new_date_part(type: :year, literal: expand_year)
         warning = if maybe_range?
                     'Ambiguous year + month/season/year treated as_year'
                   else
                     'Ambiguous year + month/season/year treated as_year, but this creates invalid range'
                   end
         @warnings << warning
-      elsif valid_month?(n.lexeme)
-        @result = new_date_part(type: :month, lexeme: n.lexeme)
+      elsif valid_month?(n.literal)
+        @result = new_date_part(type: :month, literal: n.literal)
         @warnings << 'Ambiguous year + month/season/year treated as_month'
-      elsif valid_season?(n.lexeme)
-        @result = new_date_part(type: :season, lexeme: n.lexeme)
+      elsif valid_season?(n.literal)
+        @result = new_date_part(type: :season, literal: n.literal)
         @warnings << 'Ambiguous year + month/season/year treated as_season'
       end
     end
@@ -57,10 +57,10 @@ module Emendate
       Emendate.options.ambiguous_month_year == :as_year
     end
 
-    def new_date_part(type:, lexeme:)
+    def new_date_part(type:, literal:)
       Emendate::DatePart.new(type: type,
-                             lexeme: lexeme,
-                             literal: lexeme.to_i,
+                             lexeme: n.lexeme,
+                             literal: literal.to_i,
                              sources: [n])
     end
 

@@ -34,14 +34,14 @@ module Emendate
     end
 
     def month_literal(month)
-      Date::MONTHNAMES.map{ |mth| mth.downcase if mth}.index(month.downcase)
+      Date::MONTHNAMES.map{ |mth| mth.downcase if mth }.index(month.downcase)
     end
 
     # determines whether the number following a year could be the end of a range beginning with that year
     # 2020-10 -- false, the 10 has to be October
     # 2020-21 -- true, the 21 could indicate 2021 as end of range, OR this could mean Spring 2020
     def possible_range?(year, digits)
-      expanded = expand_shorter_digits(year, digits)
+      expanded = expand_shorter_digits(year.to_s, digits.to_s)
       return false unless valid_year?(expanded)
 
       expanded.to_i > year.to_i
@@ -49,23 +49,19 @@ module Emendate
 
     # pass in segments. This pulls out literals
     def valid_date?(yr, mth, day)
-      begin
-        Date.new(yr.literal, mth.literal, day.literal)
-      rescue Date::Error
-        valid_english_date?(yr, mth, day)
-      else
-        true
-      end
+      Date.new(yr.literal, mth.literal, day.literal)
+    rescue Date::Error
+      valid_english_date?(yr, mth, day)
+    else
+      true
     end
 
     def valid_english_date?(yr, mth, day)
-      begin
-        Date.new(yr.literal, mth.literal, day.literal, Date::ENGLAND)
-      rescue Date::Error
-        false
-      else
-        true
-      end
+      Date.new(yr.literal, mth.literal, day.literal, Date::ENGLAND)
+    rescue Date::Error
+      false
+    else
+      true
     end
   end
 end

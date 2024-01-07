@@ -3,7 +3,15 @@
 module Emendate
   module DateTypes
     module SixDigitable
+      def literal = "#{year}#{non_year_value.rjust(2, "0")}".to_i
+
       private
+
+      def non_year_value
+        return month.to_s if instance_variable_defined?(:@month)
+
+        season.to_s
+      end
 
       def set_up_from_year_month_or_integer(opts)
         if opts[:year] && opts[:month]

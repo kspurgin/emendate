@@ -7,8 +7,6 @@ module Emendate
     class Year
       include Datetypeable
 
-      # @return [nil, :early, :mid, :late]
-      attr_reader :partial_indicator
       # @return [SegmentSets::SegmentSet
       attr_reader :sources
       # @return [:bce, :ce]
@@ -28,11 +26,9 @@ module Emendate
       end
 
       def literal
-        if era == :bce && Emendate.options.bce_handling == :precise
-          (orig_literal - 1) * -1
-        else
-          orig_literal
-        end
+        return adjusted_literal if era == :ce
+
+        adjusted_literal * -1
       end
 
       def range?
@@ -85,6 +81,14 @@ module Emendate
       private
 
       attr_reader :orig_literal
+
+      def adjusted_literal
+        if era == :bce && Emendate.options.bce_handling == :precise
+          orig_literal - 1
+        else
+          orig_literal
+        end
+      end
 
       def year_string(val = literal)
         if val >= 0

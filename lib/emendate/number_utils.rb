@@ -19,14 +19,8 @@ module Emendate
       str.length <= 2 && int >= 1 && int <= 31
     end
 
-    def valid_month?(str)
-      return false if str.length > 2
-
-      int = str.to_i
-      return false if int == 0
-      return false if int > 12
-
-      true
+    def valid_month?(int)
+      true if int > 0 && int < 13
     end
 
     def valid_month_or_season?(str)

@@ -9,7 +9,7 @@ RSpec.describe Emendate::DateTypes::Range do
     Emendate.prepped_for(
       string: str,
       target: Emendate::RangeIndicator
-      )
+    )
   end
 
   context 'with 1900 to 1985' do
@@ -18,7 +18,7 @@ RSpec.describe Emendate::DateTypes::Range do
     it 'returns as expected' do
       expect(range.earliest).to eq(Date.new(1900, 1, 1))
       expect(range.latest).to eq(Date.new(1985, 12, 31))
-      expect(range.lexeme).to eq('1900-01-01 - 1985-12-31')
+      expect(range.lexeme).to eq(str)
     end
   end
 
@@ -28,7 +28,7 @@ RSpec.describe Emendate::DateTypes::Range do
     it 'returns as expected' do
       expect(range.earliest).to eq(Date.new(1922, 1, 1))
       expect(range.latest).to eq(Date.new(1923, 12, 31))
-      expect(range.lexeme).to eq('1922-01-01 - 1923-12-31')
+      expect(range.lexeme).to eq(str)
     end
   end
 
@@ -38,19 +38,20 @@ RSpec.describe Emendate::DateTypes::Range do
     it 'returns as expected' do
       expect(range.earliest).to eq(Date.new(1922, 1, 1))
       expect(range.latest).to eq(Date.new(2999, 12, 31))
-      expect(range.lexeme).to eq('1922-01-01 - 2999-12-31')
+      expect(range.lexeme).to eq(str)
     end
 
     context 'with custom unknown end range' do
       before(:context) do
         Emendate.config.options.open_unknown_end_date = '2050-01-01'
       end
+
       after(:context){ Emendate.reset_config }
 
       it 'returns as expected' do
         expect(range.earliest).to eq(Date.new(1922, 1, 1))
         expect(range.latest).to eq(Date.new(2050, 1, 1))
-        expect(range.lexeme).to eq('1922-01-01 - 2050-01-01')
+        expect(range.lexeme).to eq(str)
       end
     end
   end

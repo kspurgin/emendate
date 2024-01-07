@@ -8,12 +8,10 @@ RSpec.describe Emendate::DateTypes::Century do
   let(:tokens) do
     Emendate.prepped_for(string: str, target: Emendate::DateSegmenter)
   end
-  let(:baseargs){ { sources: tokens } }
-  let(:args){ baseargs }
+  let(:args){ { sources: tokens } }
 
   context 'when :name type' do
     let(:str){ '19th century' }
-    let(:args){ baseargs }
 
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
@@ -26,47 +24,46 @@ RSpec.describe Emendate::DateTypes::Century do
       expect(subject.latest_at_granularity).to eq(1900)
     end
 
-    context 'with partial indicator' do
-      let(:args){ baseargs.merge({ partial_indicator: ind }) }
-
-      context 'when early' do
-        let(:ind){ :early }
-
-        it 'returns expected values' do
-          expect(subject.earliest).to eq(Date.new(1801, 1, 1))
-          expect(subject.latest).to eq(Date.new(1834, 12, 31))
-          expect(subject.earliest_at_granularity).to eq(1801)
-          expect(subject.latest_at_granularity).to eq(1834)
-        end
+    context 'when early' do
+      it 'returns expected values' do
+        t = Emendate::Token.new(type: :partial, literal: :early,
+                                lexeme: 'early ')
+        subject.prepend_source_token(t)
+        expect(subject.partial_indicator).to eq(:early)
+        expect(subject.earliest).to eq(Date.new(1801, 1, 1))
+        expect(subject.latest).to eq(Date.new(1834, 12, 31))
+        expect(subject.earliest_at_granularity).to eq(1801)
+        expect(subject.latest_at_granularity).to eq(1834)
       end
+    end
 
-      context 'when mid' do
-        let(:ind){ :mid }
-
-        it 'returns expected values' do
-          expect(subject.earliest).to eq(Date.new(1834, 1, 1))
-          expect(subject.latest).to eq(Date.new(1867, 12, 31))
-          expect(subject.earliest_at_granularity).to eq(1834)
-          expect(subject.latest_at_granularity).to eq(1867)
-        end
+    context 'when mid' do
+      it 'returns expected values' do
+        t = Emendate::Token.new(type: :partial, literal: :mid,
+                                lexeme: 'mid ')
+        subject.prepend_source_token(t)
+        expect(subject.earliest).to eq(Date.new(1834, 1, 1))
+        expect(subject.latest).to eq(Date.new(1867, 12, 31))
+        expect(subject.earliest_at_granularity).to eq(1834)
+        expect(subject.latest_at_granularity).to eq(1867)
       end
+    end
 
-      context 'when late' do
-        let(:ind){ :late }
-
-        it 'returns expected values' do
-          expect(subject.earliest).to eq(Date.new(1867, 1, 1))
-          expect(subject.latest).to eq(Date.new(1900, 12, 31))
-          expect(subject.earliest_at_granularity).to eq(1867)
-          expect(subject.latest_at_granularity).to eq(1900)
-        end
+    context 'when late' do
+      it 'returns expected values' do
+        t = Emendate::Token.new(type: :partial, literal: :late,
+                                lexeme: 'late ')
+        subject.prepend_source_token(t)
+        expect(subject.earliest).to eq(Date.new(1867, 1, 1))
+        expect(subject.latest).to eq(Date.new(1900, 12, 31))
+        expect(subject.earliest_at_granularity).to eq(1867)
+        expect(subject.latest_at_granularity).to eq(1900)
       end
     end
   end
 
   context 'with :plural type' do
     let(:str){ '1900s' }
-    let(:args){ baseargs.merge({ sources: tokens }) }
 
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
@@ -79,47 +76,39 @@ RSpec.describe Emendate::DateTypes::Century do
       expect(subject.latest_at_granularity).to eq(1999)
     end
 
-    context 'with partial indicator' do
-      let(:args){ baseargs.merge({ partial_indicator: ind }) }
+    it 'returns expected values when early' do
+      t = Emendate::Token.new(type: :partial, literal: :early,
+                              lexeme: 'early ')
+      subject.prepend_source_token(t)
+      expect(subject.earliest).to eq(Date.new(1900, 1, 1))
+      expect(subject.latest).to eq(Date.new(1933, 12, 31))
+      expect(subject.earliest_at_granularity).to eq(1900)
+      expect(subject.latest_at_granularity).to eq(1933)
+    end
 
-      context 'when early' do
-        let(:ind){ :early }
+    it 'returns expected values when mid' do
+      t = Emendate::Token.new(type: :partial, literal: :mid,
+                              lexeme: 'mid ')
+      subject.prepend_source_token(t)
+      expect(subject.earliest).to eq(Date.new(1933, 1, 1))
+      expect(subject.latest).to eq(Date.new(1966, 12, 31))
+      expect(subject.earliest_at_granularity).to eq(1933)
+      expect(subject.latest_at_granularity).to eq(1966)
+    end
 
-        it 'returns expected values' do
-          expect(subject.earliest).to eq(Date.new(1900, 1, 1))
-          expect(subject.latest).to eq(Date.new(1933, 12, 31))
-          expect(subject.earliest_at_granularity).to eq(1900)
-          expect(subject.latest_at_granularity).to eq(1933)
-        end
-      end
-
-      context 'when mid' do
-        let(:ind){ :mid }
-
-        it 'returns expected values' do
-          expect(subject.earliest).to eq(Date.new(1933, 1, 1))
-          expect(subject.latest).to eq(Date.new(1966, 12, 31))
-          expect(subject.earliest_at_granularity).to eq(1933)
-          expect(subject.latest_at_granularity).to eq(1966)
-        end
-      end
-
-      context 'when late' do
-        let(:ind){ :late }
-
-        it 'returns expected values' do
-          expect(subject.earliest).to eq(Date.new(1966, 1, 1))
-          expect(subject.latest).to eq(Date.new(1999, 12, 31))
-          expect(subject.earliest_at_granularity).to eq(1966)
-          expect(subject.latest_at_granularity).to eq(1999)
-        end
-      end
+    it 'returns expected values when late' do
+      t = Emendate::Token.new(type: :partial, literal: :late,
+                              lexeme: 'late ')
+      subject.prepend_source_token(t)
+      expect(subject.earliest).to eq(Date.new(1966, 1, 1))
+      expect(subject.latest).to eq(Date.new(1999, 12, 31))
+      expect(subject.earliest_at_granularity).to eq(1966)
+      expect(subject.latest_at_granularity).to eq(1999)
     end
   end
 
   context 'with :uncertainty_digits type' do
     let(:str){ '19uu' }
-    let(:args){ baseargs.merge({ sources: tokens }) }
 
     it 'returns expected values' do
       expect(subject.type).to eq(:century_date_type)
