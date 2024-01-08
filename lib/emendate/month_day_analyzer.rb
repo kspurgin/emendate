@@ -10,7 +10,7 @@ module Emendate
 
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 
@@ -27,7 +27,6 @@ module Emendate
       self
     end
 
-
     private
 
     attr_reader :n1, :n2, :y, :opt
@@ -37,10 +36,10 @@ module Emendate
     end
 
     def analyze
-      if !valid_month?(n1.lexeme) && valid_month?(n2.lexeme)
+      if !valid_month?(n1.literal) && valid_month?(n2.literal)
         @month = n2
         @day = n1
-      elsif valid_month?(n1.lexeme) && !valid_month?(n2.lexeme)
+      elsif valid_month?(n1.literal) && !valid_month?(n2.literal)
         @month = n1
         @day = n2
       elsif opt == :as_month_day
@@ -53,11 +52,11 @@ module Emendate
         @day = n1
       end
 
-      unless valid_date?(y, month, day)
-        @month = nil
-        @day = nil
-        raise MonthDayError.new(n1, n2, y)
-      end
+      return if valid_date?(y, month, day)
+
+      @month = nil
+      @day = nil
+      raise Emendate::MonthDayError.new(n1, n2, y)
     end
   end
 end

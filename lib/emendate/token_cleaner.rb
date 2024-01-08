@@ -1,12 +1,18 @@
 # frozen_string_literal: true
 
 module Emendate
+  # Final handling tokens that are not part of actual date types.
+  #
+  # Initially, this only includes :date_separator tokens. If the whole lexeme
+  # is needed at this stage, it should be accessed from :orig_string on the
+  # result segment set. The lexeme of each date type should contain only the
+  # orig_string part that expresses that date.
   class TokenCleaner
     include Dry::Monads[:result]
 
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 

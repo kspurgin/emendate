@@ -3,20 +3,17 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::TokenCollapser do
-  subject(:step){ described_class }
+  subject{ described_class.call(tokens).value! }
 
   describe '.call' do
-    let(:tokens){ prepped_for(string: string, target: step) }
-    let(:result) do
-      step.call(tokens)
-          .value!
-          .type_string
-    end
+    let(:tokens){ prepped_for(string: string, target: described_class) }
+    let(:result){ subject.type_string }
 
     context 'with Jan. 21, 2014' do
       let(:string){ 'Jan. 21, 2014' }
 
       it 'collapses spaces after single dot, comma' do
+        expect(subject.lexeme).to eq(string)
         expect(result).to eq('month_alpha number1or2 comma number4')
       end
     end
@@ -26,6 +23,7 @@ RSpec.describe Emendate::TokenCollapser do
 
       it 'drops `.0` at end' do
         expect(result).to eq('number4')
+        expect(subject.lexeme).to eq(string)
       end
     end
 
@@ -34,6 +32,7 @@ RSpec.describe Emendate::TokenCollapser do
 
       it 'collapse slash into 3' do
         expect(result).to eq('number1or2 number4')
+        expect(subject.lexeme).to eq(string)
       end
     end
 
@@ -42,6 +41,7 @@ RSpec.describe Emendate::TokenCollapser do
 
       it 'collapses - into pre' do
         expect(result).to eq('before number4')
+        expect(subject.lexeme).to eq(string)
       end
     end
 
@@ -50,6 +50,7 @@ RSpec.describe Emendate::TokenCollapser do
 
       it 'collapses - into mid' do
         expect(result).to eq('partial number4')
+        expect(subject.lexeme).to eq(string)
       end
     end
 
@@ -58,6 +59,7 @@ RSpec.describe Emendate::TokenCollapser do
 
       it 'collapses apostrophe into s' do
         expect(result).to eq('number4 letter_s')
+        expect(subject.lexeme).to eq(string)
       end
     end
 
@@ -66,6 +68,7 @@ RSpec.describe Emendate::TokenCollapser do
 
       it 'collapses (?) into ?' do
         expect(result).to eq('number4 question')
+        expect(subject.lexeme).to eq(string)
       end
     end
   end

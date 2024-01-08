@@ -98,6 +98,21 @@ module Emendate
         latest.year
       end
 
+      # @param type [Symbol] Segment type
+      # @return [Boolean] Whether or not it is an addable source type
+      def addable?(type) = addable_token_types.include?(type)
+
+      # @return [NilClass] if Date Type does not allow append/prepend of
+      #   :era_bce type
+      # @return [:bce] if source types include :era_bce
+      # @return [:ce] otherwise
+      def era
+        return unless addable_token_types.include?(:era_bce)
+        return :bce if sources.types.include?(:era_bce)
+
+        :ce
+      end
+
       # @return [:early, :mid, :late, nil]
       def partial_indicator
         return nil unless sources.types.include?(:partial)
@@ -145,9 +160,7 @@ module Emendate
       # Override in any including class that shouldn't allow append/prepend of
       #   any of these default token types, or that needs to allow
       #   append/prepend of additional types
-      def addable_token_types
-        %i[partial before after]
-      end
+      def addable_token_types = %i[partial before after]
     end
   end
 end

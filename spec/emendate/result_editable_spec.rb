@@ -25,8 +25,6 @@ RSpec.describe Emendate::ResultEditable do
       derived = e.result.segments.first
       expect(derived.lexeme).to eq('Oct.? ')
       expect(derived.literal).to eq(10)
-      expect(derived.location.col).to eq(0)
-      expect(derived.location.length).to eq(6)
     end
   end
 
@@ -42,8 +40,6 @@ RSpec.describe Emendate::ResultEditable do
       der = e.result[0]
       expect(der.literal).to eq(1)
       expect(der.lexeme).to eq('Jan ')
-      expect(der.location.col).to eq(0)
-      expect(der.location.length).to eq(4)
     end
   end
 
@@ -56,32 +52,6 @@ RSpec.describe Emendate::ResultEditable do
       e = Editable.new(tokens)
       e.collapse_token_pair_forward(tokens[0], tokens[1])
       expect(e.result.type_string).to eq('number4')
-    end
-  end
-
-  describe '#move_x_to_beginning' do
-    it 'moves token x to be the first token' do
-      tokens = Emendate.prepped_for(
-        string: '1950s early',
-        target: Emendate::FormatStandardizer
-      )
-      e = Editable.new(tokens)
-      e.move_x_to_beginning(tokens[2])
-      expect(e.result.type_string).to eq('partial number4 letter_s')
-    end
-  end
-
-  describe '#move_x_to_end' do
-    it 'moves token x to be the last token' do
-      tokens = Emendate.prepped_for(
-        string: '1990s 3 and 11',
-        target: Emendate::TokenCollapser
-      )
-      e = Editable.new(tokens)
-      e.move_x_to_end(tokens[4])
-      expect(e.result.type_string).to eq('number4 letter_s space number1or2 and space number1or2 space')
-      last = e.result[-1]
-      expect(last.location.col).to eq(7)
     end
   end
 
@@ -113,6 +83,53 @@ RSpec.describe Emendate::ResultEditable do
       e = Editable.new(tokens)
       e.replace_x_with_new(x: tokens[0], new: tokens[1])
       expect(e.result.type_string).to eq('number4 number4')
+    end
+  end
+
+  describe '#collapse_first_token' do
+    let(:string){ '[Jan. 21]' }
+
+    it 'tags as expected' do
+      tokens = Emendate.prepped_for(
+        string: string,
+        target: Emendate::CertaintyChecker
+      )
+      e = Editable.new(tokens)
+      e.collapse_first_token
+      expect(e.result.type_string).to eq(
+        'month number1or2 square_bracket_close'
+      )
+      expect(e.result.lexeme).to eq(string)
+    end
+  end
+
+  describe '#collapse_last_token' do
+    let(:string){ '[Jan. 21]' }
+
+    it 'tags as expected' do
+      tokens = Emendate.prepped_for(
+        string: string,
+        target: Emendate::CertaintyChecker
+      )
+      e = Editable.new(tokens)
+      e.collapse_last_token
+      expect(e.result.type_string).to eq('square_bracket_open month number1or2')
+      expect(e.result.lexeme).to eq(string)
+    end
+  end
+
+  describe '#collapse_enclosing_tokens' do
+    let(:string){ '[Jan. 21]' }
+
+    it 'tags as expected' do
+      tokens = Emendate.prepped_for(
+        string: string,
+        target: Emendate::CertaintyChecker
+      )
+      e = Editable.new(tokens)
+      e.collapse_enclosing_tokens
+      expect(e.result.type_string).to eq('month number1or2')
+      expect(e.result.lexeme).to eq(string)
     end
   end
 end

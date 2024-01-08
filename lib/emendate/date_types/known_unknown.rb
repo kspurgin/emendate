@@ -55,6 +55,10 @@ module Emendate
       def range?
         false
       end
+
+      private
+
+      def addable_token_types = []
     end
   end
 end

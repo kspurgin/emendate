@@ -11,17 +11,12 @@ module Emendate
       attr_reader :literal
       # @return [:plural, :uncertainty_digits]
       attr_reader :millennium_type
-      # @return [nil, :early, :mid, :late]
-      attr_reader :partial_indicator
       # @return [SegmentSets::SegmentSet
       attr_reader :sources
 
       # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
       #   included in the date type
-      # @param partial_indicator [:early, :mid, :late] Changes the
-      #   function of `earliest` and `latest` to reflect only part of the
-      #   overall date part
-      def initialize(sources:, partial_indicator: nil)
+      def initialize(sources:)
         common_setup(binding)
         @millennium_type = set_type
         @literal = set_literal

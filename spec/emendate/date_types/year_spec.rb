@@ -137,33 +137,37 @@ RSpec.describe Emendate::DateTypes::Year do
       expect(yr.latest_at_granularity).to eq('0231')
     end
 
-    context 'with bce set and precise handling' do
-      before{ Emendate.config.options.bce_handling = :precise }
+    context 'with bce set' do
+      let(:bce){ Emendate::Token.new(type: :era_bce, lexeme: 'BCE') }
 
-      it 'returns expected' do
-        yr.bce
-        expect(yr.lexeme).to eq('231')
-        expect(yr.literal).to eq(-230)
-        expect(yr.range?).to be_falsey
-        expect(yr.earliest).to eq(Date.new(-230, 1, 1))
-        expect(yr.earliest_at_granularity).to eq('-0230')
-        expect(yr.latest).to eq(Date.new(-230, 12, 31))
-        expect(yr.latest_at_granularity).to eq('-0230')
+      context 'and with precise handling' do
+        before{ Emendate.config.options.bce_handling = :precise }
+
+        it 'returns expected' do
+          yr.prepend_source_token(bce)
+          expect(yr.lexeme).to eq('BCE231')
+          expect(yr.literal).to eq(-230)
+          expect(yr.range?).to be_falsey
+          expect(yr.earliest).to eq(Date.new(-230, 1, 1))
+          expect(yr.earliest_at_granularity).to eq('-0230')
+          expect(yr.latest).to eq(Date.new(-230, 12, 31))
+          expect(yr.latest_at_granularity).to eq('-0230')
+        end
       end
-    end
 
-    context 'with bce set and naive bce_handling' do
-      before{ Emendate.config.options.bce_handling = :naive }
+      context 'and with naive bce_handling' do
+        before{ Emendate.config.options.bce_handling = :naive }
 
-      it 'returns expected' do
-        yr.bce
-        expect(yr.lexeme).to eq('231')
-        expect(yr.literal).to eq(-231)
-        expect(yr.range?).to be_falsey
-        expect(yr.earliest).to eq(Date.new(-231, 1, 1))
-        expect(yr.earliest_at_granularity).to eq('-0231')
-        expect(yr.latest).to eq(Date.new(-231, 12, 31))
-        expect(yr.latest_at_granularity).to eq('-0231')
+        it 'returns expected' do
+          yr.append_source_token(bce)
+          expect(yr.lexeme).to eq('231BCE')
+          expect(yr.literal).to eq(-231)
+          expect(yr.range?).to be_falsey
+          expect(yr.earliest).to eq(Date.new(-231, 1, 1))
+          expect(yr.earliest_at_granularity).to eq('-0231')
+          expect(yr.latest).to eq(Date.new(-231, 12, 31))
+          expect(yr.latest_at_granularity).to eq('-0231')
+        end
       end
     end
   end

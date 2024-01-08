@@ -24,6 +24,7 @@ module Emendate
         @certainty = []
         @inferred_date = false
         @warnings = []
+        @lexeme_order = []
       end
 
       def <<(segment)
@@ -72,15 +73,15 @@ module Emendate
       end
 
       def lexeme
-        return '' if @segments.empty?
+        return '' if segments.empty?
 
-        @segments.map(&:lexeme).join
+        segments.map(&:lexeme).join
       end
 
       def location
-        return Emendate::Location.new(0, 0) if @segments.empty?
+        return Emendate::Location.new(0, 0) if segments.empty?
 
-        locs = @segments.map(&:location).sort_by(&:col)
+        locs = segments.map(&:location).sort_by(&:col)
         col = locs.first.col
         length = locs.map(&:length).sum
         Emendate::Location.new(col, length)

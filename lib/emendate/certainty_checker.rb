@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
+require 'emendate/result_editable'
+
 module Emendate
   class CertaintyChecker
     include Dry::Monads[:result]
+    include ResultEditable
 
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 
@@ -15,16 +18,12 @@ module Emendate
     end
 
     def call
-      until whole_done? do
-        process_whole_certainty
-      end
+      process_whole_certainty until whole_done?
 
       @working = result.class.new.copy(result)
       result.clear
 
-      until working.empty? do
-        process_part_certainty
-      end
+      process_part_certainty until working.empty?
 
       Success(result)
     end
@@ -46,7 +45,7 @@ module Emendate
         !(
           remain.include?(:square_bracket_open) ||
             remain.include?(:square_bracket_close)
-         )
+        )
       else
         false
       end
@@ -58,7 +57,7 @@ module Emendate
         !(
           remain.include?(:curly_bracket_open) ||
             remain.include?(:curly_bracket_close)
-         )
+        )
       else
         false
       end
@@ -161,37 +160,35 @@ module Emendate
         result.add_certainty(:inferred)
         result.is_inferred
       end
-      result.shift
-      result.pop
+      collapse_enclosing_tokens
     end
 
     def process_curly_brackets(remain)
       return if remain.include?(:curly_bracket_open) || remain.include?(:curly_bracket_close)
 
       result.add_certainty(:all_of_set) unless collapse_set?
-      result.shift
-      result.pop
+      collapse_enclosing_tokens
     end
 
     def process_approximate
       result.add_certainty(:approximate)
-      result.shift
+      collapse_first_token
     end
 
     def process_edtf_approximate
       result.add_certainty(:approximate)
-      result.pop
+      collapse_last_token
     end
 
     def process_uncertain
       result.add_certainty(:uncertain)
-      result.pop
+      collapse_last_token
     end
 
     def process_edtf_approximate_and_uncertain
       result.add_certainty(:approximate)
       result.add_certainty(:uncertain)
-      result.pop
+      collapse_last_token
     end
 
     ####################
@@ -205,26 +202,31 @@ module Emendate
       elsif uncertainty_indicator?(1)
         certainty = certainty_val(nxt).map{ |v| "leftward_#{v}".to_sym }
         number.add_certainty(certainty)
-        passthrough
-        working.shift
+        result << number
+        result << nxt
+        collapse_last_token
+        working.shift(2)
       else
         passthrough
       end
     end
 
     def set_number_certainty
-      certainty = certainty_val(working[0])
-      if nxt.nil?
-        result.warnings << "#{working[0].lexeme} appears at end of string and "\
-                           "was not handled by whole-value processor"
-        passthrough
-      elsif nxt.is_a?(Emendate::NumberToken)
-        nxt.add_certainty(certainty)
-        working.shift
-        passthrough
+      indicator = working.shift
+      certainty = certainty_val(indicator)
+      if working.first.nil?
+        result.warnings << "#{indicator.lexeme} appears at end of string and " \
+                           'was not handled by whole-value processor'
+        result << indicator
+      elsif working.first.is_a?(Emendate::NumberToken)
+        number = working.shift
+        number.add_certainty(certainty)
+        result << indicator
+        result << number
+        collapse_token_pair_forward(result[-2], result[-1])
       else
-        result.warnings << "#{working[0].lexeme} followed by non-number"
-        passthrough
+        result.warnings << "#{indicator.lexeme} followed by non-number"
+        result << indicator
       end
       process_part_certainty
     end
@@ -232,8 +234,8 @@ module Emendate
     def set_set_certainty
       certainty = certainty_val(working[0])
       if nxt.nil?
-        result.warnings << "#{working[0].lexeme} appears at end of string and "\
-                           "was not handled by whole-value processor"
+        result.warnings << "#{working[0].lexeme} appears at end of string and " \
+                           'was not handled by whole-value processor'
         passthrough
       else
         result.add_certainty(certainty)

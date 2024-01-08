@@ -22,6 +22,7 @@ module Emendate
     # @param tokens [Array<Emendate::Segment>] (or subclasses)
     def initialize(tokens)
       @result = Emendate::SegmentSets::SegmentSet.new.copy(tokens)
+      @lexeme = result.lexeme
       @numbers = [result[0], result[2], result[4]]
       @opt = Emendate.options.ambiguous_month_day_year
       @warnings = []
@@ -34,7 +35,7 @@ module Emendate
 
     private
 
-    attr_reader :result, :numbers, :opt
+    attr_reader :result, :lexeme, :numbers, :opt
 
     def analyze
       case valid_permutations.length
@@ -71,7 +72,7 @@ module Emendate
         year: year.literal,
         month: month.literal,
         day: day.literal,
-        sources: [year, month, day]
+        sources: [result]
       )
     end
 
