@@ -17,8 +17,8 @@ group :test do
 end
 
 group :development do
+  gem 'debug', '>= 1.0.0'
   gem 'pry', '~> 0.14.1'
-  gem 'pry-byebug', '~> 3.8'
   gem 'rake', '~> 12.0'
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false

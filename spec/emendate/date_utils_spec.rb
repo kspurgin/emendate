@@ -24,8 +24,8 @@ RSpec.describe Emendate::DateUtils do
     end
 
     it 'expands to match years as expected' do
-      expect(result('1910', '11')).to be false
-      expect(result('1950', '52')).to be true
+      expect(result(1910, 11)).to be false
+      expect(result(1950, 52)).to be true
     end
   end
 

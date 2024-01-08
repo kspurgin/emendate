@@ -7,10 +7,10 @@ require 'fileutils'
 # external gems
 require 'active_support'
 require 'active_support/core_ext/object'
+require 'debug'
 require 'dry-configurable'
 require 'dry/monads'
 require 'dry/monads/do'
-require 'pry-byebug'
 
 require 'emendate/errors'
 

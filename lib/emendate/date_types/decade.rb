@@ -38,9 +38,9 @@ module Emendate
 
       def set_type
         case sources.source_type_string
-        when /uncertainty_digits$/
+        when /uncertainty_digits/
           :uncertainty_digits
-        when /letter_s$/
+        when /letter_s/
           :plural
         else
           raise Emendate::DecadeTypeError, lexeme

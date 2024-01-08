@@ -9,20 +9,12 @@ module Emendate
 
       # @return [SegmentSets::SegmentSet
       attr_reader :sources
-      # @return [:bce, :ce]
-      attr_reader :era
 
       # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
       #   included in the date type
       def initialize(sources:)
         common_setup(binding)
         @orig_literal = first_numeric_literal
-        @era = :ce
-      end
-
-      # Switches @era to :bce
-      def bce
-        @era = :bce
       end
 
       def literal
@@ -134,6 +126,8 @@ module Emendate
           Date.new(literal, 12, 31)
         end
       end
+
+      def addable_token_types = %i[partial before after era_bce]
     end
   end
 end

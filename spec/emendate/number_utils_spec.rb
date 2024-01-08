@@ -80,7 +80,7 @@ RSpec.describe Emendate::NumberUtils do
       let(:int){ 21 }
 
       it 'returns false' do
-        expect(result).to be false
+        expect(result).to be_falsey
       end
     end
 
@@ -99,20 +99,20 @@ RSpec.describe Emendate::NumberUtils do
     end
 
     it 'returns expected with defaults' do
-      expect(result('6')).to be true
-      expect(result('14')).to be false
-      expect(result('22')).to be false
-      expect(result('40')).to be false
+      expect(result(6)).to be true
+      expect(result(14)).to be false
+      expect(result(22)).to be false
+      expect(result(40)).to be false
     end
 
     context 'with max_month_number_handling: :edtf_level_1' do
       before{ Emendate.config.options.max_month_number_handling = :edtf_level_1 }
 
       it 'returns expected' do
-        expect(result('6')).to be true
-        expect(result('14')).to be false
-        expect(result('22')).to be true
-        expect(result('40')).to be false
+        expect(result(6)).to be true
+        expect(result(14)).to be false
+        expect(result(22)).to be true
+        expect(result(40)).to be false
       end
     end
 
@@ -120,10 +120,10 @@ RSpec.describe Emendate::NumberUtils do
       before{ Emendate.config.options.max_month_number_handling = :edtf_level_2 }
 
       it 'returns expected' do
-        expect(result('6')).to be true
-        expect(result('14')).to be false
-        expect(result('22')).to be true
-        expect(result('40')).to be true
+        expect(result(6)).to be true
+        expect(result(14)).to be false
+        expect(result(22)).to be true
+        expect(result(40)).to be true
       end
     end
   end

@@ -40,17 +40,37 @@ module Emendate
       @lexeme = sources.map(&:lexeme).join('') if lexeme.nil?
       @location = derive_location if location.nil?
       @literal = derive_literal if literal.nil?
+      @certainty = sources.map(&:certainty).flatten.uniq.sort
     end
 
     def derive_literal
-      literal = sources.map(&:literal)
-                       .compact
-                       .select{ |val| val.is_a?(Integer) }
-                       .join('').strip
-
+      literal = sources.map(&:literal).compact
       return nil if literal.empty?
 
-      literal.to_i
+      if literal.any?{ |val| val.is_a?(Integer) } &&
+         literal.any?{ |val| val.is_a?(Symbol) }
+        raise Emendate::DerivedSegmentError.new(
+          sources, 'Cannot derive literal from mixed Integers and Symbols'
+        )
+      elsif literal.all?{ |val| val.is_a?(Integer) }
+        literal.select{ |val| val.is_a?(Integer) }
+               .join('')
+               .to_i
+      elsif literal.all?{ |val| val.is_a?(Symbol) }
+        syms = literal.select{ |val| val.is_a?(Symbol) }
+        case syms.length
+        when 1
+          syms[0]
+        else
+          raise Emendate::DerivedSegmentError.new(
+            sources, 'Cannot derive literal from multiple symbols'
+          )
+        end
+      else
+        raise Emendate::DerivedSegmentError.new(
+          sources, 'Cannot derive literal for unknown reason'
+        )
+      end
     end
 
     def derive_location

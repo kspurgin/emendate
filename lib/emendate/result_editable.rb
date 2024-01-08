@@ -33,16 +33,24 @@ module Emendate
       replace_segments_with_new(segments: [s1, s2], new: new)
     end
 
-    # @param x [Emendate::Segment] (or subclass)
-    def move_x_to_beginning(x)
-      result.delete(x)
-      result.unshift(x)
+    # Derives a single token from the first and second tokens in the
+    # result, keeping the second token's type
+    def collapse_first_token
+      collapse_token_pair_forward(result[0], result[1])
     end
 
-    # @param x [Emendate::Segment] (or subclass)
-    def move_x_to_end(x)
-      result.delete(x)
-      result << x
+    # Derives a single token from the last and next-to-last tokens in the
+    # result, keeping the next-to-last token's type
+    def collapse_last_token
+      collapse_token_pair_backward(result[-2], result[-1])
+    end
+
+    # Collapses first and last tokens inward, keeping the types of the
+    # tokens each is collapsed into. Convenience method for collapsing
+    # extraneous parentheses, brackets, etc. around whole values.
+    def collapse_enclosing_tokens
+      collapse_first_token
+      collapse_last_token
     end
 
     def new_date_part(type, sources)

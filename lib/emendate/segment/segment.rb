@@ -5,7 +5,6 @@ require 'forwardable'
 module Emendate
   # Tokens, tagged date parts, tagged dates are subclasses of Segment
   class Segment
-
     attr_reader :type, :lexeme, :literal, :certainty
 
     def initialize(**opts)
@@ -19,6 +18,10 @@ module Emendate
     def add_certainty(val)
       certainty << val
       certainty.flatten!
+    end
+
+    def reset_lexeme(val = nil)
+      @lexeme = val.to_s
     end
 
     def collapsible?
@@ -44,8 +47,7 @@ module Emendate
     private
 
     # subclasses can override this empty method
-    def post_initialize(opts)
-    end
+    def post_initialize(opts); end
 
     def default_certainty
       []

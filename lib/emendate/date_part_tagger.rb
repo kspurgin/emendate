@@ -55,6 +55,13 @@ module Emendate
       t
     end
 
+    def full_match_tagger
+      case result.type_string
+      when /^number1or2 year$/
+        :tag_numeric_month
+      end
+    end
+
     def partial_match_tagger
       case result.type_string
       when /.*year letter_s.*/
@@ -83,13 +90,6 @@ module Emendate
         :tag_year_plus_numeric_month_season_or_year
       when /.* hyphen .*/
         :tag_hyphen_as_range_indicator
-      end
-    end
-
-    def full_match_tagger
-      case result.type_string
-      when /^number1or2 year$/
-        :tag_numeric_month
       end
     end
 
@@ -171,19 +171,23 @@ module Emendate
     end
 
     def tag_numeric_month_day_year
-      n1, h1, n2, h2, y = result.extract(%i[number1or2 hyphen number1or2 hyphen year]).segments
+      n1, h1, n2, h2, _y = result.extract(
+        %i[number1or2 hyphen number1or2 hyphen year]
+      ).segments
+      collapse_token_pair_backward(n2, h2)
+      collapse_token_pair_backward(n1, h1)
+
+      num1, num2, yr = result.extract(%i[number1or2 number1or2 year]).segments
+
       begin
-        analyzer = Emendate::MonthDayAnalyzer.call(n1, n2, y)
-      rescue Emendate::MonthDayAnalyzer::MonthDayError => e
+        res = Emendate::MonthDayAnalyzer.call(num1, num2, yr)
+      rescue Emendate::MonthDayError => e
         raise e
       else
-        month = analyzer.month
-        day = analyzer.day
-        replace_x_with_date_part_type(x: month, date_part_type: :month)
-        replace_x_with_date_part_type(x: day, date_part_type: :day)
+        replace_x_with_date_part_type(x: res.month, date_part_type: :month)
+        replace_x_with_date_part_type(x: res.day, date_part_type: :day)
       end
-      [h1, h2].each{ |h| result.delete(h) }
-      analyzer.warnings.each{ |warn| result.warnings << warn }
+      res.warnings.each{ |warn| result.warnings << warn }
     end
 
     def tag_year_in_month_short_year
@@ -200,7 +204,6 @@ module Emendate
 
     def tag_numeric_month_day_short_year
       to_convert = result.extract(%i[number1or2 hyphen number1or2 hyphen number1or2])
-
       begin
         analyzer = Emendate::AllShortMdyAnalyzer.call(to_convert)
       rescue Emendate::Error => e
@@ -212,26 +215,45 @@ module Emendate
     end
 
     def tag_year_numeric_month_day
-      y, h1, m, h2, d = result.extract(%i[year hyphen number1or2 hyphen number1or2]).segments
-      [h1, h2].each{ |h| result.delete(h) }
-      raise UntaggableDatePatternError.new([y, h1, m, h2, d], 'returns invalid date') unless valid_date?(y, m, d)
+      y, h1, m, h2, _d = result.extract(
+        %i[year hyphen number1or2 hyphen number1or2]
+      ).segments
+      collapse_token_pair_backward(m, h2)
+      collapse_token_pair_backward(y, h1)
 
-      replace_x_with_date_part_type(x: m, date_part_type: :month)
-      replace_x_with_date_part_type(x: d, date_part_type: :day)
+      yr, mth, day = result.extract(%i[year number1or2 number1or2]).segments
+
+      unless valid_date?(yr, mth, day)
+        raise UntaggableDatePatternError.new(
+          [yr, mth, day], 'returns invalid date'
+        )
+      end
+
+      replace_x_with_date_part_type(x: mth, date_part_type: :month)
+      replace_x_with_date_part_type(x: day, date_part_type: :day)
     end
 
     def tag_year_plus_numeric_month_or_season
-      y1, h1, m1, h2, y2, h3, m2 = result.extract(%i[year hyphen number1or2 hyphen year hyphen number1or2]).segments
       month_year_opt = Emendate.options.ambiguous_month_year.dup
       Emendate.config.options.ambiguous_month_year = :as_month
-      [[y1, m1, h1], [y2, m2, h3]].each do |pair|
+
+      y1, h1, _m1, _h2, y2, h3, _m2 = result.extract(
+        %i[year hyphen number1or2 hyphen year hyphen number1or2]
+      ).segments
+      collapse_token_pair_backward(y2, h3)
+      collapse_token_pair_backward(y1, h1)
+      yr1, mth1, hyp, yr2, mth2 = result.extract(
+        %i[year number1or2 hyphen year number1or2]
+      ).segments
+
+      [[yr1, mth1], [yr2, mth2]].each do |pair|
         analyzed = Emendate::MonthSeasonYearAnalyzer.call(pair[1], pair[0])
         replace_x_with_given_segment(x: pair[1], segment: analyzed.result)
-        result.delete(pair[2])
         analyzed.warnings.each{ |warn| result.warnings << warn }
       end
+      hyphen_to_range_indicator(source: hyp)
+
       Emendate.config.options.ambiguous_month_year = month_year_opt
-      hyphen_to_range_indicator(source: h2)
     end
 
     def tag_year_plus_numeric_month_season_or_year
@@ -241,7 +263,7 @@ module Emendate
       if analyzed.type == :year
         hyphen_to_range_indicator(source: h)
       else
-        result.delete(h)
+        collapse_token_pair_backward(y, h)
       end
       analyzed.warnings.each{ |warn| result.warnings << warn }
     end

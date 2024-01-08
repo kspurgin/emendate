@@ -19,7 +19,7 @@ module Emendate
     # @param orig [String]
     # @param certainty [Array<Symbol>]
     def initialize(date:, orig:, certainty: [])
-      raise(NonDateTypeError) unless date.is_a?(Emendate::DateTypes::DateType)
+      raise(NonDateTypeError) unless date.date_type?
 
       @original_string = get_original_string(date, orig)
       @index_dates = []

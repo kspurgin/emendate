@@ -52,6 +52,8 @@ module Emendate
       private
 
       attr_reader :error_type
+
+      def addable_token_types = []
     end
   end
 end

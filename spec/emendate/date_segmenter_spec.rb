@@ -3,19 +3,13 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::DateSegmenter do
-  subject(:step){ described_class }
-
-  after{ Emendate.reset_config }
+  subject(:step){ described_class.call(tokens).value! }
 
   describe '.call' do
-    let(:tokens){ prepped_for(string: str, target: step) }
-    let(:result) do
-      step.call(tokens)
-          .value!
-    end
-    let(:types){ result.types }
-    let(:certainty){ result.certainty }
-    let(:warnings){ result.warnings }
+    let(:tokens){ prepped_for(string: str, target: described_class) }
+    let(:types){ subject.types }
+    let(:certainty){ subject.certainty }
+    let(:warnings){ subject.warnings }
 
     context 'with 1932-1942 or 1948-1949' do
       let(:str){ '1932-1942 or 1948-1949' }
@@ -28,6 +22,7 @@ RSpec.describe Emendate::DateSegmenter do
         )
         expect(certainty).to eq([:one_of_set])
         expect(warnings.length).to eq(0)
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -38,7 +33,8 @@ RSpec.describe Emendate::DateSegmenter do
         expect(types).to eq(%i[year_date_type])
         expect(certainty).to eq([:approximate])
         expect(warnings.length).to eq(1)
-        expect(result[0].literal).to eq(202_127)
+        expect(subject[0].literal).to eq(202127)
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -48,8 +44,9 @@ RSpec.describe Emendate::DateSegmenter do
       it 'segments as expected' do
         expect(types).to eq(%i[yearmonth_date_type])
         expect(certainty).to eq([:approximate])
-        expect(result[0].year).to eq(2020)
-        expect(result[0].month).to eq(2)
+        expect(subject[0].earliest.year).to eq(2020)
+        expect(subject[0].earliest.month).to eq(2)
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -59,8 +56,10 @@ RSpec.describe Emendate::DateSegmenter do
       it 'segments as expected' do
         expect(types).to eq(%i[yearseason_date_type])
         expect(certainty).to eq([])
-        expect(result[0].year).to eq(2002)
-        expect(result[0].month).to eq(22)
+        expect(subject[0].earliest.year).to eq(2002)
+        expect(subject[0].earliest.month).to eq(7)
+        expect(subject[0].literal).to eq(200222)
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -70,6 +69,7 @@ RSpec.describe Emendate::DateSegmenter do
       it 'segments as expected' do
         expect(types).to eq(%i[yearseason_date_type range_indicator
                                year_date_type])
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -78,6 +78,7 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'segments as expected' do
         expect(types).to eq(%i[yearseason_date_type])
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -87,6 +88,7 @@ RSpec.describe Emendate::DateSegmenter do
       it 'segments as expected' do
         expect(types).to eq(%i[yearseason_date_type range_indicator
                                year_date_type])
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -95,9 +97,10 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'returns ymd' do
         expect(types).to eq(%i[yearmonthday_date_type])
-        expect(result[0].year).to eq(2020)
-        expect(result[0].month).to eq(2)
-        expect(result[0].day).to eq(29)
+        expect(subject[0].earliest.year).to eq(2020)
+        expect(subject[0].earliest.month).to eq(2)
+        expect(subject[0].earliest.day).to eq(29)
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -106,8 +109,9 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'segments as expected' do
         expect(types).to eq(%i[year_date_type])
-        expect(result.warnings).to include('10000007 treated as a long year')
-        expect(result[0].literal).to eq(10_000_007)
+        expect(subject.warnings).to include('10000007 treated as a long year')
+        expect(subject[0].literal).to eq(10000007)
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -117,6 +121,7 @@ RSpec.describe Emendate::DateSegmenter do
       it 'segments as expected' do
         e = %i[yearmonthday_date_type range_indicator yearmonthday_date_type]
         expect(types).to eq(e)
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -125,7 +130,8 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'segments as expected' do
         expect(types).to eq(%i[year_date_type])
-        expect(result[0].range_switch).to eq(:after)
+        expect(subject[0].range_switch).to eq(:after)
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -134,7 +140,8 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'segments as expected' do
         expect(types).to eq(%i[century_date_type])
-        expect(result[0].partial_indicator).to eq(:early)
+        expect(subject[0].partial_indicator).to eq(:early)
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -143,7 +150,8 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'segments as expected' do
         expect(types).to eq(%i[century_date_type])
-        expect(result[0].partial_indicator).to eq(:mid)
+        expect(subject[0].partial_indicator).to eq(:mid)
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -152,8 +160,9 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'segments as expected' do
         expect(types).to eq(%i[century_date_type])
-        expect(result[0].partial_indicator).to eq(:early)
-        expect(result[0].range_switch).to eq(:before)
+        expect(subject[0].partial_indicator).to eq(:early)
+        expect(subject[0].range_switch).to eq(:before)
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -162,7 +171,8 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'segments as expected' do
         expect(types).to eq(%i[decade_date_type])
-        expect(result[0].partial_indicator).to eq(:early)
+        expect(subject[0].partial_indicator).to eq(:early)
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -172,6 +182,7 @@ RSpec.describe Emendate::DateSegmenter do
       it 'segments as expected' do
         e = %i[century_date_type date_separator century_date_type]
         expect(types).to eq(e)
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -180,8 +191,9 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'segments as expected' do
         expect(types).to eq(%i[century_date_type range_indicator century_date_type])
-        expect(result[0].partial_indicator).to eq(:late)
-        expect(result[2].partial_indicator).to eq(:early)
+        expect(subject[0].partial_indicator).to eq(:late)
+        expect(subject[2].partial_indicator).to eq(:early)
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -190,25 +202,39 @@ RSpec.describe Emendate::DateSegmenter do
 
       it 'returns yearmonthday_date_type' do
         expect(types).to eq(%i[yearmonthday_date_type])
+        expect(subject.lexeme).to eq(str)
       end
     end
 
     context 'with 1974-present' do
       let(:str){ '1974-present' }
 
-      it 'returns ...' do
+      it 'segments as expected' do
         expect(types).to eq(
           %i[year_date_type range_indicator yearmonthday_date_type]
         )
+        expect(subject.lexeme).to eq(str)
       end
     end
 
     context 'with 231 BCE' do
       let(:str){ '231 BCE' }
 
-      it 'returns ...' do
+      it 'segments as expected' do
         expect(types).to eq(%i[year_date_type])
-        expect(result[0].era).to eq(:bce)
+        expect(subject[0].era).to eq(:bce)
+        expect(subject.lexeme).to eq(str)
+      end
+    end
+
+    context 'with 251 BCE to 231 BCE' do
+      let(:str){ '251 BCE to 231 BCE' }
+
+      it 'segments as expected' do
+        expect(types).to eq(%i[year_date_type range_indicator year_date_type])
+        expect(subject[0].era).to eq(:bce)
+        expect(subject[2].era).to eq(:bce)
+        expect(subject.lexeme).to eq(str)
       end
     end
 
@@ -220,8 +246,9 @@ RSpec.describe Emendate::DateSegmenter do
 
       let(:str){ 'Spring 20' }
 
-      it 'returns ...' do
+      it 'segments as expected' do
         expect(types).to eq(%i[yearseason_date_type])
+        expect(subject.lexeme).to eq(str)
       end
     end
 

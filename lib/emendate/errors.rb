@@ -13,6 +13,18 @@ module Emendate
     end
   end
 
+  class DerivedSegmentError < StandardError
+    include Emendate::Error
+
+    attr_reader :sources
+
+    def initialize(sources, message)
+      @sources = sources
+      m = "With sources: #{sources.type_string}: #{message}"
+      super(m)
+    end
+  end
+
   class DisallowedTokenAdditionError < StandardError
     include Emendate::Error
 
