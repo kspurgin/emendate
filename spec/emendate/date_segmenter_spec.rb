@@ -50,6 +50,20 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
+    context 'with ca. 2002-10' do
+      before{ Emendate.config.options.ambiguous_month_year = :as_month }
+
+      let(:str){ 'ca. 2002-10' }
+
+      it 'segments as expected' do
+        expect(types).to eq(%i[yearmonth_date_type])
+        expect(certainty).to eq([:approximate])
+        expect(subject[0].earliest.year).to eq(2002)
+        expect(subject[0].earliest.month).to eq(10)
+        expect(subject.lexeme).to eq(str)
+      end
+    end
+
     context 'with 2002, summer' do
       let(:str){ '2002, summer' }
 

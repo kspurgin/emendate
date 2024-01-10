@@ -5,17 +5,17 @@ require_relative '../abstract'
 module Emendate
   module Translators
     module LyrasisPseudoEdtf
-    # Lyrasis Pseudo-EDTF translator for century
-      class Century  < Emendate::Translators::Abstract
+      class Century < Emendate::Translators::Abstract
+        def preprocess
+          pdate.certainty << :one_of_set
+        end
+
         private
 
-        attr_reader :base
-
         def translate_value
-          century = date.source
-          @base = "#{century.earliest_at_granularity} - "\
-            "#{century.latest_at_granularity}"
-          qualify(:one_of_range_set)
+          @base = "#{date.earliest_at_granularity} - " \
+                  "#{date.latest_at_granularity}"
+          qualify
         end
       end
     end

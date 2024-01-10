@@ -3,13 +3,14 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::Translators::Edtf::YearMonth do
-  let(:options){ {dialect: :edtf, ambiguous_month_year: :as_month} }
+  let(:options){ { dialect: :edtf, ambiguous_month_year: :as_month } }
   let(:translation){ Emendate.translate(str, options) }
   let(:value){ translation.values[0] }
   let(:warnings){ translation.warnings[0] }
 
   context 'with 2002-10' do
     let(:str){ '2002-10' }
+
     it 'translates as expected' do
       expect(value).to eq('2002-10')
       expect(warnings).to eq(['Ambiguous year + month/season/year treated as_month'])
@@ -18,6 +19,7 @@ RSpec.describe Emendate::Translators::Edtf::YearMonth do
 
   context 'with ca. 2002-10' do
     let(:str){ 'ca. 2002-10' }
+
     it 'translates as expected' do
       expect(value).to eq('2002-10~')
       expect(warnings).to eq(['Ambiguous year + month/season/year treated as_month'])
@@ -26,6 +28,7 @@ RSpec.describe Emendate::Translators::Edtf::YearMonth do
 
   context 'with 03/2020' do
     let(:str){ '03/2020' }
+
     it 'translates as expected' do
       expect(value).to eq('2020-03')
     end

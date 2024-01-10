@@ -13,15 +13,15 @@ module Emendate
       end
 
       def approximate
-        "#{base}~"
+        "#{qualified}~"
       end
 
       def approximate_and_uncertain
-        "#{base}%"
+        "#{qualified}%"
       end
 
-      def one_of_range_set
-        "[#{base}]"
+      def one_of_set
+        "[#{qualified}]"
       end
     end
   end

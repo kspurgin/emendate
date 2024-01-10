@@ -2,25 +2,31 @@
 
 module Emendate
   module Translators
-    # namespace for CollectionSpace structured date XML translators
+    # Namespace and shared methods for CollectionSpace structured date
+    # XML translators
     module Collectionspace
+      # These settings make the translator produce results closer to what the
+      # CollectionSpace application's structured date parser would
+      DIALECT_OPTIONS = {
+        and_or_date_handling: :single_range,
+        bce_handling: :naive,
+        before_date_treatment: :point
+      }
       SUFFIX = 'T00:00:00.000Z'
 
-      # def self.extended(mod)
-      #   Emendate.config.options.and_or_date_handling = :single_range
-      #   Emendate.config.options.bce_handling = :naive
-      #   Emendate.config.options.before_date_treatment = :range
-      # end
+      def date
+        pdate
+      end
+
+      def preprocess
+        set_bce_to_dummy if date.era == :bce
+      end
 
       def base_value
         {
           dateDisplayDate: processed.orig_string,
           scalarValuesComputed: 'false'
         }
-      end
-
-      def date
-        pdate
       end
 
       def nil_value
@@ -47,17 +53,17 @@ module Emendate
       end
 
       def computed_normal
-        start_date = Date.parse(date.date_start_full)
-        end_date = Date.parse(date.date_end_full)
+        start_date = date.earliest
+        end_date = date.latest
 
         base_value.merge({
                            scalarValuesComputed: 'true',
-                           dateEarliestScalarValue: "#{date.date_start_full}#{SUFFIX}",
+                           dateEarliestScalarValue: "#{start_date.iso8601}#{SUFFIX}",
                            dateEarliestSingleYear: start_date.year.to_s,
                            dateEarliestSingleMonth: start_date.month.to_s,
                            dateEarliestSingleDay: start_date.day.to_s,
                            dateEarliestSingleEra: 'CE',
-                           dateLatestScalarValue: "#{date.date_end_full}#{SUFFIX}",
+                           dateLatestScalarValue: "#{end_date.iso8601}#{SUFFIX}",
                            dateLatestYear: end_date.year.to_s,
                            dateLatestMonth: end_date.month.to_s,
                            dateLatestDay: end_date.day.to_s,
@@ -65,9 +71,23 @@ module Emendate
                          })
       end
 
+      def computed_before
+        end_date = date.latest + 1
+
+        base_value.merge({
+                           scalarValuesComputed: 'true',
+                           dateLatestScalarValue: "#{end_date + 1}#{SUFFIX}",
+                           dateLatestYear: end_date.year.to_s,
+                           dateLatestMonth: end_date.month.to_s,
+                           dateLatestDay: end_date.day.to_s,
+                           dateLatestEra: 'CE',
+                           dateLatestCertainty: 'Before'
+                         })
+      end
+
       def computed_after
-        start_date = Date.parse(date.date_start_full) - 1
-        end_date = Date.parse(date.date_end_full)
+        start_date = date.earliest - 1
+        end_date = date.latest
 
         base_value.merge({
                            scalarValuesComputed: 'true',
@@ -83,20 +103,6 @@ module Emendate
                            dateLatestDay: end_date.day.to_s,
                            dateLatestEra: 'CE',
                            dateLatestCertainty: 'After'
-                         })
-      end
-
-      def computed_before
-        end_date = Date.parse(date.date_end_full) + 1
-
-        base_value.merge({
-                           scalarValuesComputed: 'true',
-                           dateLatestScalarValue: "#{end_date}#{SUFFIX}",
-                           dateLatestYear: end_date.year.to_s,
-                           dateLatestMonth: end_date.month.to_s,
-                           dateLatestDay: end_date.day.to_s,
-                           dateLatestEra: 'CE',
-                           dateLatestCertainty: 'Before'
                          })
       end
 
@@ -142,10 +148,34 @@ module Emendate
 
       def uncertain
         term = 'Possibly'
-        computed.merge({
-                         dateEarliestSingleCertainty: term,
-                         dateLatestCertainty: term
-                       })
+        base.merge({
+                     dateEarliestSingleCertainty: term,
+                     dateLatestCertainty: term
+                   })
+      end
+
+      private
+
+      def set_bce_to_dummy
+        segs = date.sources
+        segs.when_type(:era_bce).each do |orig|
+          ind = segs.find_index(orig)
+          newseg = Emendate::DerivedToken.new(type: :dummy_bce, sources: [orig])
+          segs.fill(newseg, ind, 1)
+        end
+      end
+
+      def qualify(meth = nil)
+        super
+
+        set_bce_eras if date.source.sources.types.include?(:dummy_bce)
+      end
+
+      def set_bce_eras
+        qualified.merge!({ dateLatestEra: 'BCE' })
+        return if date.range_switch == :before
+
+        qualified.merge!({ dateEarliestSingleEra: 'BCE' })
       end
     end
   end

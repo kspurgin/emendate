@@ -30,6 +30,7 @@ module Emendate
     attr_reader :n, :year
 
     def analyze
+      #      binding.pry
       if is_range?(year.literal, n.literal)
         @result = new_date_part(type: :year, literal: expand_year)
       elsif !maybe_range? && valid_month?(n.literal)
@@ -71,7 +72,7 @@ module Emendate
     end
 
     def maybe_range?
-      possible_range?(year.lexeme, n.lexeme)
+      possible_range?(year.literal, n.literal)
     end
   end
 end

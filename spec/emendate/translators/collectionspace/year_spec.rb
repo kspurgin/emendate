@@ -89,14 +89,35 @@ RSpec.describe Emendate::Translators::Collectionspace::Year do
     end
   end
 
-  context 'with pre-1964' do
-    let(:str){ 'pre-1964' }
+  context 'with before 2002 B.C.' do
+    let(:str){ 'before 2002 B.C.' }
     let(:expected) do
       {
-        dateDisplayDate: 'pre-1964',
+        dateDisplayDate: 'before 2002 B.C.',
         scalarValuesComputed: 'true',
-        dateLatestScalarValue: '1964-01-01T00:00:00.000Z',
-        dateLatestYear: '1964',
+        dateLatestScalarValue: '2002-01-02T00:00:00.000Z',
+        dateLatestYear: '2002',
+        dateLatestMonth: '1',
+        dateLatestDay: '1',
+        dateLatestEra: 'BCE',
+        dateLatestCertainty: 'Before'
+      }
+    end
+
+    it 'translates as expected' do
+      expect(value).to eq(expected)
+      expect(warnings).to be_empty
+    end
+  end
+
+  context 'with pre-2002' do
+    let(:str){ 'pre-2002' }
+    let(:expected) do
+      {
+        dateDisplayDate: 'pre-2002',
+        scalarValuesComputed: 'true',
+        dateLatestScalarValue: '2002-01-02T00:00:00.000Z',
+        dateLatestYear: '2002',
         dateLatestMonth: '1',
         dateLatestDay: '1',
         dateLatestEra: 'CE',

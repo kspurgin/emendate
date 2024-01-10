@@ -7,6 +7,12 @@ module Emendate
   class Segment
     attr_reader :type, :lexeme, :literal, :certainty
 
+    # Segments having these types will return true for :date_part?
+    DATE_PART_TYPES = %i[number1or2 number3 number4 number6 number8 s century
+                               uncertainty_digits era
+                               number_month month_alpha month_abbr_alpha
+                               year month season day]
+
     def initialize(**opts)
       @type = opts[:type]
       @lexeme = opts[:lexeme]
@@ -15,6 +21,7 @@ module Emendate
       post_initialize(opts)
     end
 
+    # @param val [Symbol]
     def add_certainty(val)
       certainty << val
       certainty.flatten!
@@ -24,25 +31,28 @@ module Emendate
       @lexeme = val.to_s
     end
 
-    def collapsible?
-      false
+    # @return [FalseClass]
+    def collapsible? = false
+
+    # @return [TrueClass, NilClass]
+    def date_part?
+      true if DATE_PART_TYPES.include?(type)
     end
 
-    def date_type?
-      false
-    end
+    # @return [FalseClass]
+    def date_type? = false
 
-    def segment?
-      true
-    end
+    # @return [TrueClass]
+    def segment? = true
 
+    # @return [TrueClass] when segment is a DateType or has type :and or :or
+    # @return [FalseClass] otherwise
     def processed?
       true if date_type? || type == :or || type == :and
     end
 
-    def to_s
-      "#{type} #{lexeme} #{literal}"
-    end
+    # @return [String]
+    def to_s = "#{type} #{lexeme} #{literal}"
 
     private
 
