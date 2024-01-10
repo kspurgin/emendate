@@ -60,12 +60,7 @@ module Emendate
     end
 
     def handle_collectionspace
-      cs_opts = {
-        and_or_date_handling: :single_range,
-        bce_handling: :naive,
-        before_date_treatment: :range
-      }
-      set_options(cs_opts)
+      set_options(Emendate::Translators::Collectionspace::DIALECT_OPTIONS)
     end
 
     def handle_edtf_shortcut

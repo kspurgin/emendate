@@ -28,10 +28,6 @@ module Emendate
 
       # @return [TrueClass]
       def range? = true
-
-      private
-
-      attr_reader :startdate, :enddate
     end
   end
 end

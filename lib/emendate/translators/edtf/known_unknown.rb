@@ -5,12 +5,11 @@ require_relative '../abstract'
 module Emendate
   module Translators
     module Edtf
-    # EDTF translator
-      class KnownUnknown  < Emendate::Translators::Abstract
+      class KnownUnknown < Emendate::Translators::Abstract
         private
-        
+
         def translate_value
-          'XXXX'
+          @base = 'XXXX'
         end
       end
     end

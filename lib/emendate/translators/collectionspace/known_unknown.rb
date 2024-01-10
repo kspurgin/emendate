@@ -5,11 +5,11 @@ require_relative '../abstract'
 module Emendate
   module Translators
     module Collectionspace
-      class KnownUnknown  < Emendate::Translators::Abstract
+      class KnownUnknown < Emendate::Translators::Abstract
         private
 
         def translate_value
-          unknown_value
+          @base = unknown_value
         end
       end
     end

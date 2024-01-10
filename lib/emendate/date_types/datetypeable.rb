@@ -48,13 +48,6 @@ module Emendate
         self
       end
 
-      # Allows addition/changing of a range switch after date type has been
-      # created
-      # @param value [Symbol, String] the range switch to add to date type
-      def add_range_switch(value)
-        @range_switch = value.to_sym
-      end
-
       # @return [TrueClass]
       # All DateType segments are date parts. Supports expected behavior as
       # member of a {SegmentSets::SegmentSet}
@@ -97,6 +90,8 @@ module Emendate
       def latest_at_granularity
         latest.year
       end
+
+      def orig_string = sources.first.orig_string
 
       # @param type [Symbol] Segment type
       # @return [Boolean] Whether or not it is an addable source type

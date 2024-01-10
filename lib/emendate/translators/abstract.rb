@@ -2,7 +2,8 @@
 
 module Emendate
   module Translators
-    # abstract class defining the interface common to all translators
+    # Abstract class defining the interface common to all translators
+    #
     class Abstract
       # @param processed [Emendate::ProcessingManager]
       # @param pdate [Emendate::ParsedDate]
@@ -10,10 +11,14 @@ module Emendate
         @processed = processed
         @pdate = pdate
         @warnings = processed.warnings
-        @value = translate_value
+        @base = nil
+        @qualified = nil
+        preprocess if respond_to?(:preprocess)
+
+        translate_value
         TranslatedDate.new(
           orig: processed.orig_string,
-          value: value,
+          value: qualified || base,
           warnings: warnings
         )
       end
@@ -21,21 +26,27 @@ module Emendate
       private
 
       attr_reader :processed, :pdate, :value, :warnings
+      # @return [String, Hash] the processed value before any qualification
+      attr_reader :base
+      # @return [String, Hash] qualified processed value
+      attr_reader :qualified
 
-      def qualify(meth = nil)
-        return method(meth).call if meth
-        return @base if pdate.certain?
+      def qualify(_meth = nil)
+        @qualified = base.dup
+        return if pdate.certain?
 
-        if pdate.one_of_set?
-          @base = @base.merge(one_of_set)
-        elsif pdate.all_of_set?
-          @base = @base.merge(all_of_set)
+        vals = pdate.certainty.dup
+        if pdate.approximate_and_uncertain?
+          @qualified = method(:approximate_and_uncertain).call
+          %i[approximate uncertain].each{ |val| vals.delete(val) }
         end
-        return approximate_and_uncertain if pdate.approximate_and_uncertain?
-        return approximate if pdate.approximate?
-        return uncertain if pdate.uncertain?
+        return if vals.empty?
 
-        base
+        vals.each do |val|
+          next unless respond_to?(val)
+
+          @qualified = method(val).call
+        end
       end
 
       def tokens

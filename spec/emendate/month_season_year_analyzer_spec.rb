@@ -20,9 +20,9 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
     let(:lexeme){ result.result.lexeme }
     let(:warnings){ result.warnings.first }
 
-    context 'with 2020-03 (unambiguous year-number - second less than first ' \
+    context 'with 2009-3 (unambiguous year-number - second less than first ' \
             '- MONTH)' do
-      let(:str){ '2020-03' }
+      let(:str){ '2009-03' }
 
       it 'returns month' do
         expect(type).to eq(:month)

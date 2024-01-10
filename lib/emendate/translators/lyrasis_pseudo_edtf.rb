@@ -15,15 +15,15 @@ module Emendate
       end
 
       def approximate
-        "#{base} (approximate)"
+        "#{qualified} (approximate)"
       end
 
       def approximate_and_uncertain
-        "#{base} (uncertain and approximate)"
+        "#{qualified} (uncertain and approximate)"
       end
 
-      def one_of_range_set
-        "#{base} (exact year unspecified)"
+      def one_of_set
+        "#{qualified} (exact year unspecified)"
       end
     end
   end

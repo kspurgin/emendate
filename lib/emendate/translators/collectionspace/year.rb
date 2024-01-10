@@ -8,22 +8,9 @@ module Emendate
       class Year < Emendate::Translators::Abstract
         private
 
-        attr_reader :base
-
         def translate_value
           @base = computed
-          qualified = qualify
-
-          if processed.tokens[0].era == :bce
-            qualified.merge(
-              {
-                dateEarliestSingleEra: 'BCE',
-                dateLatestEra: 'BCE'
-              }
-            )
-          else
-            qualified
-          end
+          qualify
         end
       end
     end

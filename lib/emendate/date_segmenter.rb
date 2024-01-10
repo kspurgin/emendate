@@ -236,6 +236,7 @@ module Emendate
 
     def parse_date_parts
       pieces = consume_date_parts
+
       if pieces.types.sort == %i[day month year]
         result << create_year_month_day_datetype(pieces)
       elsif pieces.types.sort == %i[month year]
@@ -285,7 +286,8 @@ module Emendate
 
     def consume_date_parts
       pieces = Emendate::SegmentSets::MixedSet.new
-      until working.empty? || current.date_part? == false
+
+      until working.empty? || !current.date_part?
         pieces << current
         working.delete(current)
       end
