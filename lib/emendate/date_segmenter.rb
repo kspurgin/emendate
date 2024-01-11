@@ -195,7 +195,7 @@ module Emendate
         recursive_parse
       elsif working.types[0..1].sort == %i[season year] &&
           working.types[2] == :range_indicator
-        parts = Emendate::SegmentSets::MixedSet.new(segments: working.shift(2))
+        parts = Emendate::SegmentSets::SegmentSet.new(segments: working.shift(2))
         result << create_year_season_datetype(parts)
         recursive_parse
       else
@@ -281,11 +281,11 @@ module Emendate
     end
 
     def date_parts
-      Emendate::SegmentSets::MixedSet.new(segments: working.date_parts)
+      Emendate::SegmentSets::SegmentSet.new(segments: working.date_parts)
     end
 
     def consume_date_parts
-      pieces = Emendate::SegmentSets::MixedSet.new
+      pieces = Emendate::SegmentSets::SegmentSet.new
 
       until working.empty? || !current.date_part?
         pieces << current

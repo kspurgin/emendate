@@ -131,11 +131,11 @@ module Emendate
       def set_sources(context)
         srcs = context.local_variable_get(:sources)
         @sources = if srcs.nil?
-                     Emendate::SegmentSets::MixedSet.new
+                     Emendate::SegmentSets::SegmentSet.new
                    elsif srcs.is_a?(Emendate::SegmentSets::SegmentSet)
                      srcs.class.new.copy(srcs)
                    else
-                     Emendate::SegmentSets::MixedSet.new(
+                     Emendate::SegmentSets::SegmentSet.new(
                        segments: srcs
                      )
                    end

@@ -81,7 +81,7 @@ module Emendate
     end
 
     def set_sources(opts)
-      @sources = Emendate::SegmentSets::MixedSet.new
+      @sources = Emendate::SegmentSets::SegmentSet.new
       return if opts[:sources].nil?
       return if opts[:sources].empty?
 
