@@ -230,7 +230,7 @@ module Emendate
              when :month then :ym
              when :season then :ys
              end
-      new_datetype(type: type, sources: result[0..1], ind: [0, 1])
+      new_datetype(type: type, sources: result[0..1], ind: [1, 0])
     end
 
     def add_century_after_first_number
