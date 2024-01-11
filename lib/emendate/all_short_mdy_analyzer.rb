@@ -72,7 +72,7 @@ module Emendate
         year: year.literal,
         month: month.literal,
         day: day.literal,
-        sources: [result]
+        sources: result
       )
     end
 
