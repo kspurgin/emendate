@@ -76,7 +76,7 @@ module Emendate
       # If additional alphabetic seasons are added, make sure to
       #   update the mapping to literals in Segments::SeasonAlphaToken
       /^(winter|spring|summer|fall|autumn)/i => :season,
-      /^(date unknown|unknown date|no date|not dated|unknown|unk|n\.? ?d\.?)$/i =>
+      /^(date unknown|unknown date|no date|not dated|undated|unknown|unk|n\.? ?d\.?)$/i =>
         :unknown_date,
       Regexp.new(ordinals, 'i') => :ordinal_indicator,
       /^(u+|x+)/i => :uncertainty_digits
