@@ -8,12 +8,6 @@ module Emendate
 
     attr_reader :location
 
-    COLLAPSIBLE_TOKEN_TYPES = %i[space single_dot standalone_zero]
-
-    def collapsible?
-      COLLAPSIBLE_TOKEN_TYPES.include?(type)
-    end
-
     def col
       return nil unless location
 
