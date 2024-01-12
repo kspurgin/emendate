@@ -24,21 +24,17 @@ module Emendate
       lexeme.to_i
     end
 
+    # @todo Does opts[:digits] ever get passed in?
     def post_initialize(opts)
       super
-      
-      unless type == :number
-        raise Emendate::TokenTypeError.new('Number token must be created with type = :number')
-      end
 
       unless lexeme.match?(/^\d+$/)
-        raise Emendate::TokenLexemeError.new('Number token must be created with lexeme containing only numeric digits')
+        raise Emendate::TokenLexemeError, 'Number token must be created with lexeme containing only numeric digits'
       end
 
       @digits = opts[:digits] || default_digits
       reset_type
     end
-
 
     def reset_type
       if zero?
