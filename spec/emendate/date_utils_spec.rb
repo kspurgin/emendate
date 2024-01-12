@@ -6,26 +6,31 @@ RSpec.describe Emendate::DateUtils do
   subject(:dateutils){ Class.new{ extend Emendate::DateUtils } }
 
   describe '#expand_shorter_digits' do
-    def result(yr, digits)
-      dateutils.expand_shorter_digits(yr, digits)
+    def result(yr, num)
+      year = Emendate::NumberToken.new(lexeme: yr)
+      num = Emendate::NumberToken.new(lexeme: num)
+      dateutils.send(:expand_shorter_digits, year, num)
     end
 
     it 'expands to match years as expected' do
       expect(result('2020', '10')).to eq('2010')
       expect(result('2020', '40')).to eq('2040')
-      expect(result('1998', '9')).to eq('1999')
+      expect(result('1845', '8')).to eq('1848')
+      expect(result('1845', '08')).to eq('1808')
       expect(result('1850', '925')).to eq('1925')
     end
   end
 
   describe '#is_range?' do
-    def result(yr, digits)
-      dateutils.is_range?(yr, digits)
+    def result(yr, num)
+      year = Emendate::NumberToken.new(lexeme: yr)
+      num = Emendate::NumberToken.new(lexeme: num)
+      dateutils.send(:is_range?, year, num)
     end
 
     it 'expands to match years as expected' do
-      expect(result(1910, 11)).to be false
-      expect(result(1950, 52)).to be true
+      expect(result('1910', '11')).to be false
+      expect(result('1950', '52')).to be true
     end
   end
 
@@ -109,22 +114,15 @@ RSpec.describe Emendate::DateUtils do
   end
 
   describe '#possible_range' do
-    let(:result){ dateutils.possible_range?(*args) }
-
-    context 'with 2020-10 (10 must be October)' do
-      let(:args){ %w[2020 10] }
-
-      it 'returns false' do
-        expect(result).to be false
-      end
+    def result(yr, num)
+      year = Emendate::NumberToken.new(lexeme: yr)
+      num = Emendate::NumberToken.new(lexeme: num)
+      dateutils.send(:possible_range?, year, num)
     end
 
-    context 'with 2020-21' do
-      let(:args){ %w[2020 21] }
-
-      it 'returns true (may be range or Spring 2020)' do
-        expect(result).to be true
-      end
+    it 'returns as expected' do
+      expect(result('2020', '10')).to be false
+      expect(result('2020', '21')).to be true
     end
   end
 

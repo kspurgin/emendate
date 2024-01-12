@@ -10,17 +10,21 @@ module Emendate
     # @return [String] the shorter digits, expanded to follow the pattern
     #   of the given `year` value. Examples: returns 2010 for 2020-10; returns
     #   1999 for 1998-9
-    def expand_shorter_digits(year, digits)
-      diff = year.length - digits.length - 1
-      "#{year[0..diff]}#{digits}"
+    def expand_shorter_digits(year, num)
+      year_s = year.literal.to_s
+      digits = num.literal.to_s.rjust(num.digits, '0')
+      diff = year_s.length - digits.length - 1
+      "#{year_s[0..diff]}#{digits}"
     end
 
-    # @param year [String] the known full year
-    # @param digits [String] the shorter digit segment following year
+    # @param year [Segment] representing known year
+    # @param num [Segment] representing ambiguous number
     # @return [Boolean] true if it's a possible range and it can't be a
     #   month/season
-    def is_range?(year, digits)
-      possible_range?(year, digits) && !valid_month_or_season?(digits) ? true : false
+    def is_range?(year, num)
+      return false if valid_month_or_season?(num.literal)
+
+      possible_range?(year, num)
     end
 
     # @return [24] when max_month_number_handling == :edtf_level_1
@@ -56,11 +60,13 @@ module Emendate
     # determines whether the number following a year could be the end of a range beginning with that year
     # 2020-10 -- false, the 10 has to be October
     # 2020-21 -- true, the 21 could indicate 2021 as end of range, OR this could mean Spring 2020
-    def possible_range?(year, digits)
-      expanded = expand_shorter_digits(year.to_s, digits.to_s)
+    # @param year [Segment] representing known year
+    # @param num [Segment] representing ambiguous number
+    def possible_range?(year, num)
+      expanded = expand_shorter_digits(year, num)
       return false unless valid_year?(expanded)
 
-      expanded.to_i > year.to_i
+      expanded.to_i > year.literal
     end
 
     # @param yr [Segment]
