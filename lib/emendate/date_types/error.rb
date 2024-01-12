@@ -7,6 +7,8 @@ module Emendate
     # Represents a date string that cannot be processed. The type value
     # assigned indicates the problem:
     #
+    # invalid:: string follows parseable date pattern, but results in an invalid
+    # date value
     # untokenizable:: string cannot be successfully tokenized
     # unprocessable:: string was successfully tokenized and identified as a
     # pattern that the application cannot currently process

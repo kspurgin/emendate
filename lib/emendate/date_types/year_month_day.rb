@@ -8,6 +8,13 @@ module Emendate
     class YearMonthDay
       include Datetypeable
 
+      # @return [Integer]
+      attr_reader :year
+      # @return [Integer]
+      attr_reader :month
+      # @return [Integer]
+      attr_reader :day
+
       # @param year [Integer]
       # @param month [Integer]
       # @param year [Integer]
@@ -18,6 +25,7 @@ module Emendate
         @month = month.to_i
         @day = day.to_i
         common_setup(binding)
+        validate
       end
 
       def earliest
@@ -40,12 +48,23 @@ module Emendate
       #   is :before with before_date_treatment :range
       def range?
         return false if range_switch == :before &&
-                        Emendate.options.before_date_treatment == :point
+          Emendate.options.before_date_treatment == :point
 
         true if range_switch
       end
 
-      attr_reader :year, :month, :day
+      private
+
+
+
+      def validate
+        earliest
+      rescue Date::Error
+        fail Emendate::InvalidDateError,
+          "#{self.class} with #{lexeme}"
+      else
+        self
+      end
     end
   end
 end
