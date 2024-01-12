@@ -7,6 +7,8 @@ module Emendate
   class Segment
     attr_reader :type, :lexeme, :literal, :certainty, :digits
 
+    COLLAPSIBLE_TYPES = %i[space single_dot standalone_zero]
+
     # Segments having these types will return true for :date_part?
     DATE_PART_TYPES = %i[number1or2 number3 number4 number6 number8 s century
                                uncertainty_digits era
@@ -32,8 +34,8 @@ module Emendate
       @lexeme = val.to_s
     end
 
-    # @return [FalseClass]
-    def collapsible? = false
+    # @return [Boolean]
+    def collapsible? = COLLAPSIBLE_TYPES.include?(type)
 
     # @return [TrueClass, NilClass]
     def date_part?

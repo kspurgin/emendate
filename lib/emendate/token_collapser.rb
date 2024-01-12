@@ -35,7 +35,7 @@ module Emendate
     def collapsible?
       return true if full_match_collapsers || partial_match_collapsers
 
-      result.type_string.match?(/space|single_dot|standalone_zero/)
+      result.any?(&:collapsible?)
     end
 
     def determine_action
@@ -56,6 +56,8 @@ module Emendate
       case result.types
       when %i[number1or2 slash number4]
         proc{ collapse_segments_backward(%i[number1or2 slash]) }
+      when %i[month_alpha comma number4]
+        proc{ collapse_segments_backward(%i[month_alpha comma]) }
       end
     end
 
