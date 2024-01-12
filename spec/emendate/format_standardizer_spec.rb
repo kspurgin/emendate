@@ -318,5 +318,14 @@ RSpec.describe Emendate::FormatStandardizer do
                                 number1or2 hyphen number1or2])
       end
     end
+
+    context 'with invalid YMD values' do
+      let(:string){ '1844 Jun 31' }
+
+      it 'segments as expected' do
+        expect(subject.lexeme).to eq(string)
+        expect(result).to eq(%i[invalid_date_type])
+      end
+    end
   end
 end

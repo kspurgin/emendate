@@ -214,11 +214,19 @@ module Emendate
                  day: sources[ind[2]].literal,
                  sources: sources }
              end
-      dt = klass.new(**args)
+      dt = get_new_datetype(klass, args)
       return dt unless whole
 
       result.clear
       result << dt
+    end
+
+    def get_new_datetype(klass, args)
+      klass.new(**args)
+    rescue Emendate::InvalidDateError
+      Emendate::DateTypes::Error.new(
+        sources: args[:sources], error_type: :invalid
+      )
     end
 
     def year_plus_ambiguous_month_season

@@ -36,6 +36,10 @@ module Emendate
     end
   end
 
+  class InvalidDateError < StandardError
+    include Emendate::Error
+  end
+
   class EmptyTestSetError < StandardError
     include Emendate::Error
   end

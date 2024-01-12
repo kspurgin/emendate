@@ -9,7 +9,7 @@ RSpec.describe Emendate::DateTypes::YearMonthDay do
 
   let(:params){ { year: year, month: month, day: day, sources: tokens } }
 
-  context 'when from year, month, and day values and sources' do
+  context 'when valid date' do
     let(:str){ '87-4-13' }
     let(:tokens) do
       Emendate.prepped_for(string: str, target: Emendate::DatePartTagger)
@@ -24,6 +24,20 @@ RSpec.describe Emendate::DateTypes::YearMonthDay do
       expect(dt.lexeme).to eq(str)
       expect(dt.literal).to eq(19870413)
       expect(dt.range?).to be_falsey
+    end
+  end
+
+  context 'when invalid date' do
+    let(:str){ '1844 Jun 31' }
+    let(:tokens) do
+      Emendate.prepped_for(string: str, target: Emendate::DatePartTagger)
+    end
+    let(:year){ 1844 }
+    let(:month){ 6 }
+    let(:day){ 31 }
+
+    it 'raises error' do
+      expect{ dt }.to raise_error(Emendate::InvalidDateError)
     end
   end
 end
