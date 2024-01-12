@@ -3,14 +3,14 @@
 require 'spec_helper'
 
 RSpec.describe Emendate::MonthSeasonYearAnalyzer do
-  subject(:analyzer){ described_class.new(*tokens) }
+  subject(:analyzer){ described_class.new(**tokens) }
 
   let(:tokens) do
     t = Emendate.prepped_for(
       string: str,
       target: Emendate::DatePartTagger
     )
-    [t[2], t[0]]
+    { year: t[0], num: t[2] }
   end
 
   let(:result){ analyzer.call }
@@ -83,16 +83,20 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
     end
   end
 
-  context 'with 2010-12 (ambiguous value, with default treatment as year)' do
+  context 'with 2010-12 (ambiguous value)' do
     let(:str){ '2010-12' }
 
-    it 'returns year' do
-      expect(type).to eq(:year)
-      expect(lexeme).to eq('12')
-      expect(literal).to eq(2012)
-      expect(warnings).to eq(
-        'Ambiguous year + month/season/year treated as_year'
-      )
+    context 'with ambiguous_month_year: :as_year' do
+      before{ Emendate.config.options.ambiguous_month_year = :as_year }
+
+      it 'returns year' do
+        expect(type).to eq(:year)
+        expect(lexeme).to eq('12')
+        expect(literal).to eq(2012)
+        expect(warnings).to eq(
+          'Ambiguous year + month/season/year treated as_year'
+        )
+      end
     end
 
     context 'with ambiguous_month_year: :as_month' do
@@ -109,14 +113,18 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
     end
   end
 
-  context 'with 2010-21 (ambiguous value, with default treatment as year)' do
+  context 'with 2010-21 (ambiguous value if EDTF max months)' do
     let(:str){ '2010-21' }
 
-    it 'returns year' do
-      expect(type).to eq(:year)
-      expect(lexeme).to eq('21')
-      expect(literal).to eq(2021)
-      expect(warnings).to be_nil # cannot be month, given default options
+    context 'with ambiguous_month_year: :as_year' do
+      before{ Emendate.config.options.ambiguous_month_year = :as_year }
+
+      it 'returns year' do
+        expect(type).to eq(:year)
+        expect(lexeme).to eq('21')
+        expect(literal).to eq(2021)
+        expect(warnings).to be_nil # cannot be month, given default options
+      end
     end
 
     context 'with ambiguous_month_year: :as_month' do

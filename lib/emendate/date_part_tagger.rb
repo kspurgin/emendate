@@ -242,12 +242,15 @@ module Emendate
       ).segments
       collapse_token_pair_backward(y2, h3)
       collapse_token_pair_backward(y1, h1)
+
       yr1, mth1, hyp, yr2, mth2 = result.extract(
         %i[year number1or2 hyphen year number1or2]
       ).segments
 
       [[yr1, mth1], [yr2, mth2]].each do |pair|
-        analyzed = Emendate::MonthSeasonYearAnalyzer.call(pair[1], pair[0])
+        analyzed = Emendate::MonthSeasonYearAnalyzer.call(
+          year: pair[0], num: pair[1]
+        )
         replace_x_with_given_segment(x: pair[1], segment: analyzed.result)
         analyzed.warnings.each{ |warn| result.warnings << warn }
       end
@@ -258,7 +261,7 @@ module Emendate
 
     def tag_year_plus_numeric_month_season_or_year
       y, h, m = result.extract(%i[year hyphen number1or2]).segments
-      analyzed = Emendate::MonthSeasonYearAnalyzer.call(m, y)
+      analyzed = Emendate::MonthSeasonYearAnalyzer.call(year: y, num: m)
       replace_x_with_given_segment(x: m, segment: analyzed.result)
       if analyzed.type == :year
         hyphen_to_range_indicator(source: h)

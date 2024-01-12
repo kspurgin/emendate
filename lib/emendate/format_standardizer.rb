@@ -223,7 +223,7 @@ module Emendate
 
     def year_plus_ambiguous_month_season
       analyzed = Emendate::MonthSeasonYearAnalyzer.call(
-        result[0], result[1]
+        num: result[0], year: result[1]
       )
       replace_x_with_given_segment(x: result[0], segment: analyzed.result)
       type = case analyzed.type

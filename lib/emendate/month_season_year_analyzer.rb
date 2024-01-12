@@ -13,9 +13,11 @@ module Emendate
       end
     end
 
-    def initialize(n, y)
-      @n = n
-      @year = y
+    # @param year [Segment] representing known year
+    # @param num [Segment] representing ambiguous number
+    def initialize(year:, num:)
+      @num = num
+      @year = year
       @warnings = []
     end
 
@@ -27,28 +29,28 @@ module Emendate
 
     private
 
-    attr_reader :n, :year
+    attr_reader :num, :year
 
     def analyze
-      if is_range?(year, n)
-        @result = new_date_part(type: :year, literal: expand_year)
-      elsif !maybe_range? && valid_month?(n.literal)
-        @result = new_date_part(type: :month, literal: n.literal)
-      elsif !maybe_range? && valid_season?(n.literal)
-        @result = new_date_part(type: :season, literal: n.literal)
+      if is_range?(year, num)
+        @result = new_date_part(type: :year, literal: expanded_year)
+      elsif !maybe_range? && valid_month?(num.literal)
+        @result = new_date_part(type: :month, literal: num.literal)
+      elsif !maybe_range? && valid_season?(num.literal)
+        @result = new_date_part(type: :season, literal: num.literal)
       elsif assume_year?
-        @result = new_date_part(type: :year, literal: expand_year)
+        @result = new_date_part(type: :year, literal: expanded_year)
         warning = if maybe_range?
                     'Ambiguous year + month/season/year treated as_year'
                   else
                     'Ambiguous year + month/season/year treated as_year, but this creates invalid range'
                   end
         @warnings << warning
-      elsif valid_month?(n.literal)
-        @result = new_date_part(type: :month, literal: n.literal)
+      elsif valid_month?(num.literal)
+        @result = new_date_part(type: :month, literal: num.literal)
         @warnings << 'Ambiguous year + month/season/year treated as_month'
-      elsif valid_season?(n.literal)
-        @result = new_date_part(type: :season, literal: n.literal)
+      elsif valid_season?(num.literal)
+        @result = new_date_part(type: :season, literal: num.literal)
         @warnings << 'Ambiguous year + month/season/year treated as_season'
       end
     end
@@ -59,19 +61,17 @@ module Emendate
 
     def new_date_part(type:, literal:)
       Emendate::DatePart.new(type: type,
-                             lexeme: n.lexeme,
+                             lexeme: num.lexeme,
                              literal: literal.to_i,
-                             sources: [n])
+                             sources: [num])
     end
 
-    def expand_year
-      endpt = year.lexeme.length - n.lexeme.length - 1
-      prefix = year.lexeme[0..endpt]
-      "#{prefix}#{n.lexeme}"
+    def expanded_year
+      expand_shorter_digits(year, num)
     end
 
     def maybe_range?
-      possible_range?(year, n)
+      possible_range?(year, num)
     end
   end
 end
