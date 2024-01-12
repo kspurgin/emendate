@@ -5,8 +5,6 @@ require 'spec_helper'
 RSpec.describe Emendate::ShortYearHandler do
   subject{ described_class }
 
-  after{ Emendate.reset_config }
-
   let(:str){ '21' }
   let(:token){ Emendate::Token.new(type: :stub, lexeme: str, literal: str.to_i) }
   let(:result){ subject.call(token) }

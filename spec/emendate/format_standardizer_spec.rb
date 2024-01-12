@@ -319,6 +319,16 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
+    context "with November '73" do
+      let(:string){ "November '73" }
+
+      it 'segments as expected' do
+        expect(subject.lexeme).to eq(string)
+        expect(result).to eq(%i[month year])
+        expect(subject[1].literal).to eq(1973)
+      end
+    end
+
     context 'with invalid YMD values' do
       let(:string){ '1844 Jun 31' }
 

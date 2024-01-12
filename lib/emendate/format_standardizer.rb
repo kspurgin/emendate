@@ -101,6 +101,12 @@ module Emendate
           collapse_token_pair_forward(result[0], result[1])
           year_plus_ambiguous_month_season
         end
+      when %i[month number1or2]
+        proc do
+          yr = ShortYearHandler.call(result[1])
+          replace_segments_with_new(segments: [result[1]], new: yr)
+          #          new_datetype(type: :ym, sources: result[0..1], ind: [0, 1])
+        end
       when %i[partial range_indicator partial number1or2 century]
         proc{ copy_number_century_after_first_partial }
       when %i[partial range_indicator partial number4 letter_s]
