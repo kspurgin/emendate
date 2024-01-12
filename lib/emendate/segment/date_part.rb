@@ -18,10 +18,6 @@ module Emendate
       true
     end
 
-    def location
-      @location
-    end
-
     private
 
     def post_initialize(opts)
