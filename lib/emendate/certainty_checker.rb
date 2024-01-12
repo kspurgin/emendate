@@ -18,7 +18,7 @@ module Emendate
     end
 
     def call
-      process_whole_certainty until whole_done?
+      process_whole_certainty while indicators_left?
 
       @working = result.class.new.copy(result)
       result.clear
@@ -32,11 +32,11 @@ module Emendate
 
     attr_reader :result, :working
 
-    def whole_done?
-      !(inferred_indicator? ||
+    def indicators_left?
+      inferred_indicator? ||
         curly? ||
         approximate_indicator? ||
-        uncertain_indicator?)
+        uncertain_indicator?
     end
 
     def inferred_indicator?
@@ -81,6 +81,8 @@ module Emendate
     end
 
     def uncertain_indicator?
+      return true if result.types.include?(:uncertain)
+
       case result.types
       in [*, :question]
         true
@@ -109,6 +111,10 @@ module Emendate
         process_edtf_approximate
       in [*, :percent]
         process_edtf_approximate_and_uncertain
+      in [:number4, :comma, :uncertain, :month]
+        process_segment(2, :forward)
+      else
+        nil
       end
     end
 
@@ -127,7 +133,7 @@ module Emendate
       if working[0].is_a?(Emendate::NumberToken)
         :check_after_number
       elsif uncertainty_indicator?
-        :set_number_certainty
+        :set_date_certainty
       elsif set_indicator?
         :set_set_certainty
       else
@@ -136,7 +142,7 @@ module Emendate
     end
 
     def uncertainty_indicator?(n = 0)
-      %i[question percent tilde].include?(working[n].type)
+      %i[question percent tilde uncertain].include?(working[n].type)
     end
 
     def set_indicator?(n = 0)
@@ -191,6 +197,20 @@ module Emendate
       collapse_last_token
     end
 
+    # @param indidx [Integer] index of uncertainty indicator to merge
+    # @param direction [:forward, :backward] to merge the indicator
+    def process_segment(idx, direction)
+      indicator = result[idx]
+      cert = certainty_val(indicator)
+      targetidx = direction == :forward ? idx + 1 : idx - 1
+      target = result[targetidx]
+      cert.each do |certval|
+        result.add_certainty("#{certval}_#{target.type}".to_sym)
+      end
+      srcs = direction == :forward ? [indicator, target] : [target, indicator]
+      collapse_token_pair(srcs[0], srcs[1], direction)
+    end
+
     ####################
     # Partial processors
     ####################
@@ -211,7 +231,7 @@ module Emendate
       end
     end
 
-    def set_number_certainty
+    def set_date_certainty
       indicator = working.shift
       certainty = certainty_val(indicator)
       if working.first.nil?
@@ -266,6 +286,8 @@ module Emendate
         %i[approximate]
       when :percent
         %i[approximate uncertain]
+      when :uncertain
+        %i[uncertain]
       end
     end
 
