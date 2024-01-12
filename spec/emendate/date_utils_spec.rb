@@ -29,6 +29,62 @@ RSpec.describe Emendate::DateUtils do
     end
   end
 
+  describe '#max_season' do
+    let(:result){ dateutils.max_season }
+
+    it 'returns nil with default options' do
+      expect(result).to be_nil
+    end
+
+    context 'with max_month_number_handling: :edtf_level_1' do
+      before do
+        Emendate.config.options.max_month_number_handling = :edtf_level_1
+      end
+
+      it 'returns 24' do
+        expect(result).to eq(24)
+      end
+    end
+
+    context 'with max_month_number_handling: :edtf_level_2' do
+      before do
+        Emendate.config.options.max_month_number_handling = :edtf_level_2
+      end
+
+      it 'returns 41' do
+        expect(result).to eq(41)
+      end
+    end
+  end
+
+  describe '#min_season' do
+    let(:result){ dateutils.min_season }
+
+    it 'returns nil with default options' do
+      expect(result).to be_nil
+    end
+
+    context 'with max_month_number_handling: :edtf_level_1' do
+      before do
+        Emendate.config.options.max_month_number_handling = :edtf_level_1
+      end
+
+      it 'returns 21' do
+        expect(result).to eq(21)
+      end
+    end
+
+    context 'with max_month_number_handling: :edtf_level_2' do
+      before do
+        Emendate.config.options.max_month_number_handling = :edtf_level_2
+      end
+
+      it 'returns 21' do
+        expect(result).to eq(21)
+      end
+    end
+  end
+
   describe '#month_abbr_literal' do
     def result(month)
       dateutils.month_abbr_literal(month)
@@ -72,10 +128,30 @@ RSpec.describe Emendate::DateUtils do
     end
   end
 
+  describe '#valid_day?' do
+    let(:result){ dateutils.valid_day?(val) }
+
+    context 'with not valid (i.e. 42)' do
+      let(:val){ 42 }
+
+      it 'returns false' do
+        expect(result).to be false
+      end
+    end
+
+    context 'with valid (i.e. 24)' do
+      let(:val){ 24 }
+
+      it 'returns true' do
+        expect(result).to be true
+      end
+    end
+  end
+
   describe '#valid_date?' do
     let(:tokens) do
       Emendate.prepped_for(
-        string: str,
+        string: val,
         target: Emendate::DatePartTagger
       )
     end
@@ -83,7 +159,7 @@ RSpec.describe Emendate::DateUtils do
     let(:result){ dateutils.valid_date?(*args) }
 
     context 'with valid date - 2020-02-29' do
-      let(:str){ '2020-02-29' }
+      let(:val){ '2020-02-29' }
 
       it 'returns true' do
         expect(result).to be true
@@ -91,7 +167,7 @@ RSpec.describe Emendate::DateUtils do
     end
 
     context 'with invalid date - 2020-02-92' do
-      let(:str){ '2020-02-92' }
+      let(:val){ '2020-02-92' }
 
       it 'returns false' do
         expect(result).to be false
@@ -101,7 +177,114 @@ RSpec.describe Emendate::DateUtils do
     # a range of dates in October 1582 do not exist/are not valid using the default
     #  (Italian) Gregorian date adoption assumptions.
     context 'with date invalid in Italy, valid in England - 1582-10-14' do
-      let(:str){ '1582-10-14' }
+      let(:val){ '1582-10-14' }
+
+      it 'returns true' do
+        expect(result).to be true
+      end
+    end
+  end
+
+  describe '#valid_month?' do
+    let(:result){ dateutils.valid_month?(int) }
+
+    context 'with not valid (i.e. 21)' do
+      let(:int){ 21 }
+
+      it 'returns false' do
+        expect(result).to be_falsey
+      end
+    end
+
+    context 'with valid (i.e. 12)' do
+      let(:int){ 12 }
+
+      it 'returns true' do
+        expect(result).to be true
+      end
+    end
+  end
+
+  describe '#valid_month_or_season' do
+    def result(val)
+      dateutils.valid_month_or_season?(val)
+    end
+
+    it 'returns expected with defaults' do
+      expect(result(6)).to be true
+      expect(result(14)).to be false
+      expect(result(22)).to be false
+      expect(result(40)).to be false
+    end
+
+    context 'with max_month_number_handling: :edtf_level_1' do
+      before{ Emendate.config.options.max_month_number_handling = :edtf_level_1 }
+
+      it 'returns expected' do
+        expect(result(6)).to be true
+        expect(result(14)).to be false
+        expect(result(22)).to be true
+        expect(result(40)).to be false
+      end
+    end
+
+    context 'with max_month_number_handling: :edtf_level_2' do
+      before{ Emendate.config.options.max_month_number_handling = :edtf_level_2 }
+
+      it 'returns expected' do
+        expect(result(6)).to be true
+        expect(result(14)).to be false
+        expect(result(22)).to be true
+        expect(result(40)).to be true
+      end
+    end
+  end
+
+  describe '#valid_season?' do
+    def result(val)
+      dateutils.valid_season?(val)
+    end
+
+    it 'returns expected with defaults' do
+      expect(result(14)).to be false
+      expect(result(22)).to be false
+      expect(result(40)).to be false
+    end
+
+    context 'with max_month_number_handling: :edtf_level_1' do
+      before{ Emendate.config.options.max_month_number_handling = :edtf_level_1 }
+
+      it 'returns expected' do
+        expect(result(14)).to be false
+        expect(result(22)).to be true
+        expect(result(40)).to be false
+      end
+    end
+
+    context 'with max_month_number_handling: :edtf_level_2' do
+      before{ Emendate.config.options.max_month_number_handling = :edtf_level_2 }
+
+      it 'returns expected' do
+        expect(result(14)).to be false
+        expect(result(22)).to be true
+        expect(result(40)).to be true
+      end
+    end
+  end
+
+  describe '#valid_year?' do
+    let(:result){ dateutils.valid_year?(val) }
+
+    context 'with not valid (i.e. 20324)' do
+      let(:val){ '20324' }
+
+      it 'returns false' do
+        expect(result).to be false
+      end
+    end
+
+    context 'with valid (i.e. 1923)' do
+      let(:val){ '1923' }
 
       it 'returns true' do
         expect(result).to be true
