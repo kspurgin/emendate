@@ -5,7 +5,7 @@ require 'forwardable'
 module Emendate
   # Tokens, tagged date parts, tagged dates are subclasses of Segment
   class Segment
-    attr_reader :type, :lexeme, :literal, :certainty
+    attr_reader :type, :lexeme, :literal, :certainty, :digits
 
     # Segments having these types will return true for :date_part?
     DATE_PART_TYPES = %i[number1or2 number3 number4 number6 number8 s century
@@ -18,6 +18,7 @@ module Emendate
       @lexeme = opts[:lexeme]
       @literal = opts[:literal] || default_literal
       @certainty = default_certainty
+      @digits = nil
       post_initialize(opts)
     end
 

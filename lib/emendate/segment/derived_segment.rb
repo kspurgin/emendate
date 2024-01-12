@@ -32,12 +32,14 @@ module Emendate
       @lexeme = src.lexeme if lexeme.nil?
       @literal = src.literal if literal.nil?
       @type = src.type if type.nil?
+      @digits = src.digits
     end
 
     def derive_from_multiple_values
       @lexeme = sources.map(&:lexeme).join('') if lexeme.nil?
       @literal = derive_literal if literal.nil?
       @certainty = sources.map(&:certainty).flatten.uniq.sort
+      @digits = sources.map(&:digits).compact.sum
     end
 
     def derive_literal
