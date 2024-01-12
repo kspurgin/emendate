@@ -56,7 +56,7 @@ module Emendate
       case result.types
       when %i[number1or2 slash number4]
         proc{ collapse_segments_backward(%i[number1or2 slash]) }
-      when %i[month_alpha comma number4]
+      when %i[month_alpha comma space number4]
         proc{ collapse_segments_backward(%i[month_alpha comma]) }
       end
     end

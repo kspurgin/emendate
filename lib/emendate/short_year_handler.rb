@@ -33,11 +33,11 @@ module Emendate
     end
 
     def coerce_current_century
-      "#{current_century}#{orig.lexeme}".to_i
+      "#{current_century}#{orig.literal.to_s.rjust(2, '0')}".to_i
     end
 
     def coerce_previous_century
-      "#{previous_century}#{orig.lexeme}".to_i
+      "#{previous_century}#{orig.literal.to_s.rjust(2, '0')}".to_i
     end
 
     def full_year
