@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'forwardable'
-require_relative '../location'
 
 module Emendate
   # Mixin providing the logic for deriving one segment from one or more other segments
@@ -33,12 +32,10 @@ module Emendate
       @lexeme = src.lexeme if lexeme.nil?
       @literal = src.literal if literal.nil?
       @type = src.type if type.nil?
-      @location = src.location if location.nil?
     end
 
     def derive_from_multiple_values
       @lexeme = sources.map(&:lexeme).join('') if lexeme.nil?
-      @location = derive_location if location.nil?
       @literal = derive_literal if literal.nil?
       @certainty = sources.map(&:certainty).flatten.uniq.sort
     end
@@ -71,13 +68,6 @@ module Emendate
           sources, 'Cannot derive literal for unknown reason'
         )
       end
-    end
-
-    def derive_location
-      nil
-      # start_position = sources[0].location.col
-      # length = sources.map{ |src| src.location.length }.sum
-      # Emendate::Location.new(start_position, length)
     end
 
     def set_sources(opts)

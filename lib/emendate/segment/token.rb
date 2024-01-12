@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'forwardable'
 require 'emendate/segment/segment'
 
 module Emendate
@@ -9,20 +8,23 @@ module Emendate
 
     attr_reader :location
 
-    def_delegators :@location, :col, :length
-
     COLLAPSIBLE_TOKEN_TYPES = %i[space single_dot standalone_zero]
-    # DATE_PART_TOKEN_TYPES = %i[number1or2 number3 number4 number6 number8 s century
-    #                            uncertainty_digits era
-    #                            number_month month_alpha month_abbr_alpha]
 
     def collapsible?
       COLLAPSIBLE_TOKEN_TYPES.include?(type)
     end
 
-    # def date_part?
-    #   DATE_PART_TOKEN_TYPES.include?(type)
-    # end
+    def col
+      return nil unless location
+
+      location.col
+    end
+
+    def length
+      return nil unless location
+
+      location.length
+    end
 
     private
 
