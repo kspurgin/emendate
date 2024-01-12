@@ -241,6 +241,16 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
+  context 'with ca. 1955-60' do
+    let(:string){ 'ca. 1955-60' }
+
+    it 'tags as expected' do
+      expect(types).to eq(%i[year range_indicator year])
+      expect(result.lexeme).to eq(string)
+      expect(result[2].literal).to eq(1960)
+    end
+  end
+
   context 'with 2 December 2020, 2020/02/15' do
     let(:string){ '2 December 2020, 2020/02/15' }
 
@@ -253,11 +263,10 @@ RSpec.describe Emendate::DatePartTagger do
   context 'with 2004-06/2006-08' do
     let(:string){ '2004-06/2006-08' }
 
-    context 'when default options' do
-      it 'tags' do
-        expect(types).to eq(%i[year month range_indicator year month])
-        expect(result.lexeme).to eq(string)
-      end
+    it 'tags' do
+      expect(types).to eq(%i[year month range_indicator year month])
+      expect(result.lexeme).to eq(string)
+      expect(result.map(&:literal).compact).to eq([2004, 6, 2006, 8])
     end
   end
 
