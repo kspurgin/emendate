@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative './date_utils'
 require_relative './result_editable'
 
 module Emendate
@@ -24,6 +25,7 @@ module Emendate
   # up the lexeme value, so we simplify later processing by converting
   # directly to date type segments when we can.
   class FormatStandardizer
+    include DateUtils
     include Dry::Monads[:result]
     include ResultEditable
 
@@ -230,9 +232,14 @@ module Emendate
     end
 
     def year_plus_ambiguous_month_season
+      opt = Emendate.options.ambiguous_month_year.dup
+      Emendate.config.options.ambiguous_month_year = :as_month
+
       analyzed = Emendate::MonthSeasonYearAnalyzer.call(
         num: result[0], year: result[1]
       )
+      Emendate.config.options.ambiguous_month_year = opt
+
       replace_x_with_given_segment(x: result[0], segment: analyzed.result)
       type = case analyzed.type
              when :month then :ym

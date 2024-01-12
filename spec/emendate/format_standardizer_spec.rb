@@ -76,10 +76,10 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
-    context 'with 11-2018' do
-      let(:string){ '11-2018' }
+    context 'with 12-2011' do
+      let(:string){ '12-2011' }
 
-      it 'reorders segments' do
+      it 'returns as expected' do
         expect(subject.lexeme).to eq(string)
         expect(result).to eq(%i[yearmonth_date_type])
       end
