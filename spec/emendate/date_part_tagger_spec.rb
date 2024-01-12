@@ -224,6 +224,19 @@ RSpec.describe Emendate::DatePartTagger do
       it 'removes hyphen' do
         expect(types).to eq(%i[year month])
         expect(result.lexeme).to eq(string)
+        expect(result[1].literal).to eq(4)
+      end
+    end
+
+    context 'when ambiguous_month_year: as_year' do
+      before do
+        Emendate.config.options.ambiguous_month_year = :as_year
+      end
+
+      it 'tags as expected' do
+        expect(types).to eq(%i[year range_indicator year])
+        expect(result.lexeme).to eq(string)
+        expect(result[2].literal).to eq(2004)
       end
     end
   end
