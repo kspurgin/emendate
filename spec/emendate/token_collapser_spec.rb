@@ -71,5 +71,14 @@ RSpec.describe Emendate::TokenCollapser do
         expect(subject.lexeme).to eq(string)
       end
     end
+
+    context "with `Nov. '73`" do
+      let(:string){ "Nov. '73" }
+
+      it 'collapses as expected' do
+        expect(result).to eq('month_alpha number1or2')
+        expect(subject.lexeme).to eq(string)
+      end
+    end
   end
 end

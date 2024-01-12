@@ -63,6 +63,8 @@ module Emendate
       case result.type_string
       when /.*apostrophe letter_s.*/
         proc{ collapse_segments_forward(%i[apostrophe letter_s]) }
+      when /.*apostrophe number1or2.*/
+        proc{ collapse_segments_forward(%i[apostrophe number1or2]) }
       when /.*before hyphen.*/
         proc{ collapse_segments_backward(%i[before hyphen]) }
       when /.*partial hyphen.*/
