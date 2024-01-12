@@ -13,13 +13,7 @@ RSpec.describe Emendate::CertaintyChecker do
 
       it 'values include: approximate' do
         expect(subject.certainty).to eq([:approximate])
-      end
-
-      it 'returns 1 token for 2002' do
         expect(subject.type_string).to eq('number4')
-      end
-
-      it 'has expected lexeme' do
         expect(subject.lexeme).to eq(string)
       end
     end
@@ -29,14 +23,18 @@ RSpec.describe Emendate::CertaintyChecker do
 
       it 'has expected lexeme' do
         expect(subject.lexeme).to eq(string)
-      end
-
-      it 'values include: approximate' do
         expect(subject.certainty).to eq([:approximate])
-      end
-
-      it 'returns 1 token for 1920' do
         expect(subject.type_string).to eq('number4')
+      end
+    end
+
+    context 'with 2020, possibly March' do
+      let(:string){ '2020, possibly March' }
+
+      it 'has expected lexeme' do
+        expect(subject.lexeme).to eq(string)
+        expect(subject.certainty).to eq([:uncertain_month])
+        expect(subject.type_string).to eq('number4 comma month')
       end
     end
 
@@ -45,13 +43,7 @@ RSpec.describe Emendate::CertaintyChecker do
 
       it 'has expected lexeme' do
         expect(subject.lexeme).to eq(string)
-      end
-
-      it 'values include: approximate' do
         expect(subject.certainty).to eq([:approximate])
-      end
-
-      it 'returns tokens with tilde removed' do
         expect(subject.type_string).to eq('number4 hyphen number1or2')
       end
     end
@@ -61,13 +53,7 @@ RSpec.describe Emendate::CertaintyChecker do
 
       it 'has expected lexeme' do
         expect(subject.lexeme).to eq(string)
-      end
-
-      it 'values include: approximate, uncertain' do
         expect(subject.certainty.sort).to eq(%i[approximate uncertain])
-      end
-
-      it 'returns tokens with tilde removed' do
         expect(subject.type_string).to eq('number4 hyphen number1or2')
       end
     end
@@ -77,15 +63,9 @@ RSpec.describe Emendate::CertaintyChecker do
 
       it 'has expected lexeme' do
         expect(subject.lexeme).to eq(string)
-      end
-
-      it 'returns tokens with tilde removed' do
         expect(subject.type_string).to eq(
           'number4 hyphen number1or2 hyphen number1or2'
         )
-      end
-
-      it 'sets uncertainty on year token to leftward_approximate' do
         expect(subject[2].certainty).to eq([:leftward_approximate])
       end
     end
@@ -101,13 +81,7 @@ RSpec.describe Emendate::CertaintyChecker do
         expect(subject.type_string).to eq(
           'number4 hyphen number1or2 hyphen number1or2'
         )
-      end
-
-      it 'sets uncertainty on year token to approximate' do
         expect(subject[0].certainty).to eq([:approximate])
-      end
-
-      it 'sets uncertainty on day token to approximate and uncertain' do
         expect(subject[4].certainty.sort).to eq(%i[approximate uncertain])
       end
     end
@@ -118,17 +92,10 @@ RSpec.describe Emendate::CertaintyChecker do
 
         it 'has expected lexeme' do
           expect(subject.lexeme).to eq(string)
-        end
-
-        it 'values include: approximate and uncertain' do
-          expect(subject.certainty.sort).to eq(%i[approximate inferred uncertain])
-        end
-
-        it 'returns 1 token for 2002' do
+          expect(subject.certainty.sort).to eq(
+            %i[approximate inferred uncertain]
+          )
           expect(subject.type_string).to eq('number4')
-        end
-
-        it 'tags result as inferred' do
           expect(subject.inferred_date).to be true
         end
       end
@@ -138,13 +105,7 @@ RSpec.describe Emendate::CertaintyChecker do
 
         it 'has expected lexeme' do
           expect(subject.lexeme).to eq(string)
-        end
-
-        it 'no values' do
           expect(subject.certainty).to be_empty
-        end
-
-        it 'returns all original tokens' do
           expect(subject.type_string).to eq(tokens.type_string)
         end
       end
@@ -154,13 +115,7 @@ RSpec.describe Emendate::CertaintyChecker do
 
         it 'has expected lexeme' do
           expect(subject.lexeme).to eq(string)
-        end
-
-        it 'certainty is inferred and one_of_set' do
           expect(subject.certainty.sort).to eq(%i[inferred one_of_set])
-        end
-
-        it 'removes square brackets from result' do
           expected = 'number4 date_separator number4'
           expect(subject.type_string).to eq(expected)
         end
@@ -172,13 +127,7 @@ RSpec.describe Emendate::CertaintyChecker do
 
           it 'has expected lexeme' do
             expect(subject.lexeme).to eq(string)
-          end
-
-          it 'certainty is inferred' do
             expect(subject.certainty.sort).to eq(%i[inferred])
-          end
-
-          it 'removes square brackets from result' do
             expected = 'number4 date_separator number4'
             expect(subject.type_string).to eq(expected)
           end
@@ -196,13 +145,7 @@ RSpec.describe Emendate::CertaintyChecker do
 
         it 'has expected lexeme' do
           expect(subject.lexeme).to eq(string)
-        end
-
-        it 'certainty is one_of_set' do
           expect(subject.certainty).to eq([:one_of_set])
-        end
-
-        it 'removes square brackets from result' do
           expected = 'number4 comma number4 comma number4 double_dot number4'
           expect(subject.type_string).to eq(expected)
         end
@@ -213,13 +156,7 @@ RSpec.describe Emendate::CertaintyChecker do
 
         it 'has expected lexeme' do
           expect(subject.lexeme).to eq(string)
-        end
-
-        it 'certainty is one_of_set' do
           expect(subject.certainty.sort).to eq(%i[one_of_set])
-        end
-
-        it 'removes square brackets from result' do
           expected = 'number4 date_separator number4'
           expect(subject.type_string).to eq(expected)
         end
@@ -231,13 +168,7 @@ RSpec.describe Emendate::CertaintyChecker do
 
       it 'has expected lexeme' do
         expect(subject.lexeme).to eq(string)
-      end
-
-      it 'certainty is all_of_set' do
         expect(subject.certainty).to eq([:all_of_set])
-      end
-
-      it 'removes curly brackets from result' do
         expected = 'number4 comma number4 comma number4 double_dot number4'
         expect(subject.type_string).to eq(expected)
       end

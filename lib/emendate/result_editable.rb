@@ -33,6 +33,20 @@ module Emendate
       replace_segments_with_new(segments: [s1, s2], new: new)
     end
 
+    # @param s1 [{Segment}] first of pair
+    # @param s2 [{Segment}] second of pair
+    # @param direction [:forward, :backward]
+    def collapse_token_pair(s1, s2, direction)
+      case direction
+      when :forward
+        collapse_token_pair_forward(s1, s2)
+      when :backward
+        collapse_token_pair_backward(s1, s2)
+      else
+        raise Emendate::Error, 'Direction must be :forward or :backward'
+      end
+    end
+
     # Derives a single token from the first and second tokens in the
     # result, keeping the second token's type
     def collapse_first_token
