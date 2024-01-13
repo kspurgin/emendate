@@ -30,9 +30,8 @@ module Emendate
 
       unless lexeme.match?(/^\d+$/)
         raise Emendate::TokenLexemeError,
-          # rubocop:todo Layout/LineLength
-          "Number token must be created with lexeme containing only numeric digits"
-          # rubocop:enable Layout/LineLength
+          "Number token must be created with lexeme containing only numeric "\
+          "digits"
       end
 
       @digits = opts[:digits] || default_digits

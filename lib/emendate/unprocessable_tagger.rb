@@ -12,7 +12,7 @@ module Emendate
       end
     end
 
-    Patterns = [
+    PATTERNS = [
       /^y-\d+$/,
       /xxxx-\d{2}-xx/,
       /\dxxx-xx/,
@@ -22,7 +22,7 @@ module Emendate
       /^\d{3,4}S\d+$/,
       /\d{4}-\d{2}-xx/
     ]
-    Re = Regexp.union(Patterns)
+    Re = Regexp.union(PATTERNS)
 
     def initialize(tokens)
       @tokens = tokens

@@ -14,9 +14,9 @@ module Emendate
         def build(test:, example:)
           split_test = test.split("_")
           type = split_test.shift
-          # rubocop:todo Layout/LineLength
-          test_type = Object.const_get("Emendate::Examples::#{type.capitalize}Testable")
-          # rubocop:enable Layout/LineLength
+          test_type = Object.const_get(
+            "Emendate::Examples::#{type.capitalize}Testable"
+          )
           test_name = "#{type}_#{split_test.join("_")}"
           new(type: test_type, name: test_name, example: example)
         end
@@ -26,9 +26,8 @@ module Emendate
 
       attr_reader :name
 
-      # rubocop:todo Layout/LineLength
-      # @param type [Constant] Module that will be mixed in to run test. Set by Tester.build from first part of test name
-      # rubocop:enable Layout/LineLength
+      # @param type [Constant] Module that will be mixed in to run test. Set by
+      #   `Tester.build` from first part of test name
       # @param name [String] test name
       # @param example [Emendate::Examples::TestableExample]
       def initialize(type:, name:, example:)
@@ -51,6 +50,8 @@ module Emendate
       rescue
         super(symbol, *args)
       end
+
+      def respond_to_missing? = super
 
       def to_s
         "#{self.class.name}, name: #{name}"

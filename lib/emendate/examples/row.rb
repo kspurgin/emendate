@@ -4,11 +4,9 @@ module Emendate
   module Examples
     class Row
       def initialize(row)
-        prepped = prep(row)
+        @keys = prep(row).keys
         # metaprogramming bit to create an instance variable for each column
-        prepped.keys.each do |field|
-          instance_variable_set(:"@#{field}", row[field])
-        end
+        keys.each { |field| instance_variable_set(:"@#{field}", row[field]) }
       end
 
       def data_sets
@@ -49,11 +47,15 @@ module Emendate
           .keys
       end
 
+      def respond_to_missing?(method, *)
+        keys.include?(method.to_s) || super
+      end
+
       private
 
-      # rubocop:todo Layout/LineLength
-      # metaprogramming bit to avoid manually declaring attr_reader for every column in row
-      # rubocop:enable Layout/LineLength
+      attr_reader :keys
+
+      # avoid manually declaring attr_reader for every column in row
       def method_missing(symbol, *args)
         instance_variable_get(:"@#{symbol}")
       rescue

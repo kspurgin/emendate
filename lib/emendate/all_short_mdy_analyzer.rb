@@ -114,11 +114,7 @@ module Emendate
     def transform_ambiguous_pair(part)
       yr = transform_part(part[0], :year)
 
-      begin
-        analyzer = Emendate::MonthDayAnalyzer.call(part[1], part[2], yr)
-      rescue Emendate::Error => e
-        raise e
-      end
+      analyzer = Emendate::MonthDayAnalyzer.call(part[1], part[2], yr)
 
       transform_part(analyzer.month, :month)
       transform_part(analyzer.day, :day)
