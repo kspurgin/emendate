@@ -122,6 +122,8 @@
   <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>,</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:comma</span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>{</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:curly_bracket_open</span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>}</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:curly_bracket_close</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>(</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:parenthesis_open</span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>)</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:parenthesis_close</span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>%</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:percent</span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>+</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:plus</span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>?</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:question</span><span class='comma'>,</span>
@@ -144,6 +146,8 @@
   <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(about|around)</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:about</span><span class='comma'>,</span>
   <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(after|post)</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:after</span><span class='comma'>,</span>
   <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(&amp;|and)</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:and</span><span class='comma'>,</span>
+  <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(probably|probable|prob\.)</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:probably</span><span class='comma'>,</span>
+  <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(possibly|possible|poss\.)</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:possibly</span><span class='comma'>,</span>
   <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(approximate(ly|)|estimated?|est\.?)</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:approximate</span><span class='comma'>,</span>
   <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^present</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:present</span><span class='comma'>,</span>
   <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(before|pre|prior to)</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:before</span><span class='comma'>,</span>
@@ -152,14 +156,16 @@
   <span class='const'>Regexp</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_days'>days</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>i</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='op'>=&gt;</span> <span class='symbol'>:day_of_week_alpha</span><span class='comma'>,</span>
   <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(b\.? ?c\.? ?e\.?|b\.? ?p\.?|b\.? ?c\.?)</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:era_bce</span><span class='comma'>,</span>
   <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(c\.? ?e\.?|a\.? ?d\.?)</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:era_ce</span><span class='comma'>,</span>
-  <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(early|late|middle|mid)</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:partial</span><span class='comma'>,</span>
+  <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^early</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:early</span><span class='comma'>,</span>
+  <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(middle|mid)</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:mid</span><span class='comma'>,</span>
+  <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^late</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:late</span><span class='comma'>,</span>
   <span class='const'>Regexp</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_months'>months</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>i</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='op'>=&gt;</span> <span class='symbol'>:month_alpha</span><span class='comma'>,</span>
   <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^or</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:or</span><span class='comma'>,</span>
   <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^to</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:range_indicator</span><span class='comma'>,</span>
-  <span class='comment'># If additional seasons are added, make sure to update the mapping to
-</span>  <span class='comment'>#   literals in AlphaMonthConverter
+  <span class='comment'># If additional alphabetic seasons are added, make sure to
+</span>  <span class='comment'>#   update the mapping to literals in Segments::SeasonAlphaToken
 </span>  <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(winter|spring|summer|fall|autumn)</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:season</span><span class='comma'>,</span>
-  <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(date unknown|unknown date|no date|not dated|unknown|unk|n\.? ?d\.?)$</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span>
+  <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(date unknown|unknown date|no date|not dated|undated|unknown|unk|n\.? ?d\.?)$</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span>
     <span class='symbol'>:unknown_date</span><span class='comma'>,</span>
   <span class='const'>Regexp</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_ordinals'>ordinals</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>i</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='op'>=&gt;</span> <span class='symbol'>:ordinal_indicator</span><span class='comma'>,</span>
   <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^(u+|x+)</span><span class='regexp_end'>/i</span></span> <span class='op'>=&gt;</span> <span class='symbol'>:uncertainty_digits</span>
@@ -279,18 +285,7 @@
   
   
   <h3 class="inherited">Methods included from <span class='object_link'><a href="DateUtils.html" title="Emendate::DateUtils (module)">DateUtils</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="DateUtils.html#expand_shorter_digits-instance_method" title="Emendate::DateUtils#expand_shorter_digits (method)">#expand_shorter_digits</a></span>, <span class='object_link'><a href="DateUtils.html#is_range%3F-instance_method" title="Emendate::DateUtils#is_range? (method)">#is_range?</a></span>, <span class='object_link'><a href="DateUtils.html#month_abbr_literal-instance_method" title="Emendate::DateUtils#month_abbr_literal (method)">#month_abbr_literal</a></span>, <span class='object_link'><a href="DateUtils.html#month_literal-instance_method" title="Emendate::DateUtils#month_literal (method)">#month_literal</a></span>, <span class='object_link'><a href="DateUtils.html#possible_range%3F-instance_method" title="Emendate::DateUtils#possible_range? (method)">#possible_range?</a></span>, <span class='object_link'><a href="DateUtils.html#valid_date%3F-instance_method" title="Emendate::DateUtils#valid_date? (method)">#valid_date?</a></span>, <span class='object_link'><a href="DateUtils.html#valid_english_date%3F-instance_method" title="Emendate::DateUtils#valid_english_date? (method)">#valid_english_date?</a></span></p>
-
-  
-  
-  
-  
-  
-  
-  
-  
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="NumberUtils.html" title="Emendate::NumberUtils (module)">NumberUtils</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="NumberUtils.html#max_season-instance_method" title="Emendate::NumberUtils#max_season (method)">#max_season</a></span>, <span class='object_link'><a href="NumberUtils.html#min_season-instance_method" title="Emendate::NumberUtils#min_season (method)">#min_season</a></span>, <span class='object_link'><a href="NumberUtils.html#valid_day%3F-instance_method" title="Emendate::NumberUtils#valid_day? (method)">#valid_day?</a></span>, <span class='object_link'><a href="NumberUtils.html#valid_month%3F-instance_method" title="Emendate::NumberUtils#valid_month? (method)">#valid_month?</a></span>, <span class='object_link'><a href="NumberUtils.html#valid_month_or_season%3F-instance_method" title="Emendate::NumberUtils#valid_month_or_season? (method)">#valid_month_or_season?</a></span>, <span class='object_link'><a href="NumberUtils.html#valid_season%3F-instance_method" title="Emendate::NumberUtils#valid_season? (method)">#valid_season?</a></span>, <span class='object_link'><a href="NumberUtils.html#valid_year%3F-instance_method" title="Emendate::NumberUtils#valid_year? (method)">#valid_year?</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="DateUtils.html#expand_shorter_digits-instance_method" title="Emendate::DateUtils#expand_shorter_digits (method)">#expand_shorter_digits</a></span>, <span class='object_link'><a href="DateUtils.html#is_range%3F-instance_method" title="Emendate::DateUtils#is_range? (method)">#is_range?</a></span>, <span class='object_link'><a href="DateUtils.html#max_season-instance_method" title="Emendate::DateUtils#max_season (method)">#max_season</a></span>, <span class='object_link'><a href="DateUtils.html#min_season-instance_method" title="Emendate::DateUtils#min_season (method)">#min_season</a></span>, <span class='object_link'><a href="DateUtils.html#month_abbr_literal-instance_method" title="Emendate::DateUtils#month_abbr_literal (method)">#month_abbr_literal</a></span>, <span class='object_link'><a href="DateUtils.html#month_literal-instance_method" title="Emendate::DateUtils#month_literal (method)">#month_literal</a></span>, <span class='object_link'><a href="DateUtils.html#possible_range%3F-instance_method" title="Emendate::DateUtils#possible_range? (method)">#possible_range?</a></span>, <span class='object_link'><a href="DateUtils.html#valid_date%3F-instance_method" title="Emendate::DateUtils#valid_date? (method)">#valid_date?</a></span>, <span class='object_link'><a href="DateUtils.html#valid_day%3F-instance_method" title="Emendate::DateUtils#valid_day? (method)">#valid_day?</a></span>, <span class='object_link'><a href="DateUtils.html#valid_month%3F-instance_method" title="Emendate::DateUtils#valid_month? (method)">#valid_month?</a></span>, <span class='object_link'><a href="DateUtils.html#valid_month_or_season%3F-instance_method" title="Emendate::DateUtils#valid_month_or_season? (method)">#valid_month_or_season?</a></span>, <span class='object_link'><a href="DateUtils.html#valid_season%3F-instance_method" title="Emendate::DateUtils#valid_season? (method)">#valid_season?</a></span>, <span class='object_link'><a href="DateUtils.html#valid_year%3F-instance_method" title="Emendate::DateUtils#valid_year? (method)">#valid_year?</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -320,23 +315,23 @@
       <pre class="lines">
 
 
-81
-82
-83
-84
-85
-86
 87
 88
-89</pre>
+89
+90
+91
+92
+93
+94
+95</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/lexer.rb', line 81</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/lexer.rb', line 87</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span>
     <span class='ivar'>@scanner</span> <span class='op'>=</span> <span class='const'>StringScanner</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
-    <span class='ivar'>@tokens</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SegmentSets.html" title="Emendate::SegmentSets (module)">SegmentSets</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SegmentSets/TokenSet.html" title="Emendate::SegmentSets::TokenSet (class)">TokenSet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="SegmentSets/SegmentSet.html#initialize-instance_method" title="Emendate::SegmentSets::SegmentSet#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='label'>string:</span> <span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
+    <span class='ivar'>@tokens</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SegmentSets.html" title="Emendate::SegmentSets (module)">SegmentSets</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SegmentSets/TokenSet.html" title="Emendate::SegmentSets::TokenSet (class)">TokenSet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>string:</span> <span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
   <span class='kw'>else</span>
     <span class='ivar'>@tokens</span> <span class='op'>=</span> <span class='id identifier rubyid_tokens'>tokens</span>
     <span class='ivar'>@scanner</span> <span class='op'>=</span> <span class='const'>StringScanner</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_orig_string'>orig_string</span><span class='rparen'>)</span>
@@ -405,14 +400,14 @@
       <pre class="lines">
 
 
-91
-92
-93
-94
-95</pre>
+97
+98
+99
+100
+101</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/lexer.rb', line 91</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/lexer.rb', line 97</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span>
   <span class='id identifier rubyid__tokenized'>_tokenized</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_tokenize'>tokenize</span>
@@ -429,7 +424,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Dec  4 23:54:21 2023 by
+  Generated on Sat Jan 13 00:44:30 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

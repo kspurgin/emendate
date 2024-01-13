@@ -76,17 +76,12 @@
   
   
   
-  <dl>
-      <dt>Includes:</dt>
-      <dd><span class='object_link'><a href="NumberUtils.html" title="Emendate::NumberUtils (module)">NumberUtils</a></span></dd>
-  </dl>
-  
   
 
   
   <dl>
     <dt>Included in:</dt>
-    <dd><span class='object_link'><a href="AllShortMdyAnalyzer.html" title="Emendate::AllShortMdyAnalyzer (class)">AllShortMdyAnalyzer</a></span>, <span class='object_link'><a href="AlphaMonthConverter.html" title="Emendate::AlphaMonthConverter (class)">AlphaMonthConverter</a></span>, <span class='object_link'><a href="DatePartTagger.html" title="Emendate::DatePartTagger (class)">DatePartTagger</a></span>, <span class='object_link'><a href="DateSegmenter.html" title="Emendate::DateSegmenter (class)">DateSegmenter</a></span>, <span class='object_link'><a href="" title="Emendate::DateUtils (module)">DateUtils</a></span>, <span class='object_link'><a href="Lexer.html" title="Emendate::Lexer (class)">Lexer</a></span>, <span class='object_link'><a href="MonthAlphaToken.html" title="Emendate::MonthAlphaToken (class)">MonthAlphaToken</a></span>, <span class='object_link'><a href="MonthDayAnalyzer.html" title="Emendate::MonthDayAnalyzer (class)">MonthDayAnalyzer</a></span>, <span class='object_link'><a href="MonthSeasonYearAnalyzer.html" title="Emendate::MonthSeasonYearAnalyzer (class)">MonthSeasonYearAnalyzer</a></span>, <span class='object_link'><a href="NumberToken.html" title="Emendate::NumberToken (class)">NumberToken</a></span>, <span class='object_link'><a href="ShortYearHandler.html" title="Emendate::ShortYearHandler (class)">ShortYearHandler</a></span></dd>
+    <dd><span class='object_link'><a href="AllShortMdyAnalyzer.html" title="Emendate::AllShortMdyAnalyzer (class)">AllShortMdyAnalyzer</a></span>, <span class='object_link'><a href="AlphaMonthConverter.html" title="Emendate::AlphaMonthConverter (class)">AlphaMonthConverter</a></span>, <span class='object_link'><a href="DatePartTagger.html" title="Emendate::DatePartTagger (class)">DatePartTagger</a></span>, <span class='object_link'><a href="" title="Emendate::DateUtils (module)">DateUtils</a></span>, <span class='object_link'><a href="FormatStandardizer.html" title="Emendate::FormatStandardizer (class)">FormatStandardizer</a></span>, <span class='object_link'><a href="Lexer.html" title="Emendate::Lexer (class)">Lexer</a></span>, <span class='object_link'><a href="MonthAlphaToken.html" title="Emendate::MonthAlphaToken (class)">MonthAlphaToken</a></span>, <span class='object_link'><a href="MonthDayAnalyzer.html" title="Emendate::MonthDayAnalyzer (class)">MonthDayAnalyzer</a></span>, <span class='object_link'><a href="MonthSeasonYearAnalyzer.html" title="Emendate::MonthSeasonYearAnalyzer (class)">MonthSeasonYearAnalyzer</a></span>, <span class='object_link'><a href="NumberToken.html" title="Emendate::NumberToken (class)">NumberToken</a></span>, <span class='object_link'><a href="ShortYearHandler.html" title="Emendate::ShortYearHandler (class)">ShortYearHandler</a></span></dd>
   </dl>
   
 
@@ -116,7 +111,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#expand_shorter_digits-instance_method" title="#expand_shorter_digits (instance method)">#<strong>expand_shorter_digits</strong>(year, digits)  &#x21d2; String </a>
+      <a href="#expand_shorter_digits-instance_method" title="#expand_shorter_digits (instance method)">#<strong>expand_shorter_digits</strong>(year, num)  &#x21d2; String </a>
     
 
     
@@ -140,7 +135,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#is_range%3F-instance_method" title="#is_range? (instance method)">#<strong>is_range?</strong>(year, digits)  &#x21d2; Boolean </a>
+      <a href="#is_range%3F-instance_method" title="#is_range? (instance method)">#<strong>is_range?</strong>(year, num)  &#x21d2; Boolean </a>
     
 
     
@@ -164,7 +159,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#month_abbr_literal-instance_method" title="#month_abbr_literal (instance method)">#<strong>month_abbr_literal</strong>(month)  &#x21d2; Object </a>
+      <a href="#max_season-instance_method" title="#max_season (instance method)">#<strong>max_season</strong>  &#x21d2; 24, ... </a>
     
 
     
@@ -186,7 +181,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#month_literal-instance_method" title="#month_literal (instance method)">#<strong>month_literal</strong>(month)  &#x21d2; Object </a>
+      <a href="#min_season-instance_method" title="#min_season (instance method)">#<strong>min_season</strong>  &#x21d2; NilClass, 21 </a>
     
 
     
@@ -208,7 +203,51 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#possible_range%3F-instance_method" title="#possible_range? (instance method)">#<strong>possible_range?</strong>(year, digits)  &#x21d2; Boolean </a>
+      <a href="#month_abbr_literal-instance_method" title="#month_abbr_literal (instance method)">#<strong>month_abbr_literal</strong>(month)  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#month_literal-instance_method" title="#month_literal (instance method)">#<strong>month_literal</strong>(month)  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#possible_range%3F-instance_method" title="#possible_range? (instance method)">#<strong>possible_range?</strong>(year, num)  &#x21d2; Boolean </a>
     
 
     
@@ -232,7 +271,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#valid_date%3F-instance_method" title="#valid_date? (instance method)">#<strong>valid_date?</strong>(yr, mth, day)  &#x21d2; Boolean </a>
+      <a href="#valid_date%3F-instance_method" title="#valid_date? (instance method)">#<strong>valid_date?</strong>(yr, mth, day)  &#x21d2; TrueClass, FalseClass </a>
     
 
     
@@ -246,9 +285,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>pass in segments.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -256,7 +293,95 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#valid_english_date%3F-instance_method" title="#valid_english_date? (instance method)">#<strong>valid_english_date?</strong>(yr, mth, day)  &#x21d2; Boolean </a>
+      <a href="#valid_day%3F-instance_method" title="#valid_day? (instance method)">#<strong>valid_day?</strong>(int)  &#x21d2; TrueClass, FalseClass </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#valid_month%3F-instance_method" title="#valid_month? (instance method)">#<strong>valid_month?</strong>(int)  &#x21d2; TrueClass, FalseClass </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#valid_month_or_season%3F-instance_method" title="#valid_month_or_season? (instance method)">#<strong>valid_month_or_season?</strong>(int)  &#x21d2; TrueClass, FalseClass </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#valid_season%3F-instance_method" title="#valid_season? (instance method)">#<strong>valid_season?</strong>(int)  &#x21d2; TrueClass, FalseClass </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#valid_year%3F-instance_method" title="#valid_year? (instance method)">#<strong>valid_year?</strong>(str)  &#x21d2; Boolean </a>
     
 
     
@@ -279,17 +404,6 @@
   
 
 
-  
-  
-  
-  
-  
-  
-  
-  
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="NumberUtils.html" title="Emendate::NumberUtils (module)">NumberUtils</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="NumberUtils.html#max_season-instance_method" title="Emendate::NumberUtils#max_season (method)">#max_season</a></span>, <span class='object_link'><a href="NumberUtils.html#min_season-instance_method" title="Emendate::NumberUtils#min_season (method)">#min_season</a></span>, <span class='object_link'><a href="NumberUtils.html#valid_day%3F-instance_method" title="Emendate::NumberUtils#valid_day? (method)">#valid_day?</a></span>, <span class='object_link'><a href="NumberUtils.html#valid_month%3F-instance_method" title="Emendate::NumberUtils#valid_month? (method)">#valid_month?</a></span>, <span class='object_link'><a href="NumberUtils.html#valid_month_or_season%3F-instance_method" title="Emendate::NumberUtils#valid_month_or_season? (method)">#valid_month_or_season?</a></span>, <span class='object_link'><a href="NumberUtils.html#valid_season%3F-instance_method" title="Emendate::NumberUtils#valid_season? (method)">#valid_season?</a></span>, <span class='object_link'><a href="NumberUtils.html#valid_year%3F-instance_method" title="Emendate::NumberUtils#valid_year? (method)">#valid_year?</a></span></p>
-
 
   <div id="instance_method_details" class="method_details_list">
     <h2>Instance Method Details</h2>
@@ -298,7 +412,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="expand_shorter_digits-instance_method">
   
-    #<strong>expand_shorter_digits</strong>(year, digits)  &#x21d2; <tt>String</tt> 
+    #<strong>expand_shorter_digits</strong>(year, num)  &#x21d2; <tt>String</tt> 
   
 
   
@@ -375,17 +489,21 @@
       <pre class="lines">
 
 
+13
+14
+15
 16
 17
-18
-19</pre>
+18</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 13</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_expand_shorter_digits'>expand_shorter_digits</span><span class='lparen'>(</span><span class='id identifier rubyid_year'>year</span><span class='comma'>,</span> <span class='id identifier rubyid_digits'>digits</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_diff'>diff</span> <span class='op'>=</span> <span class='id identifier rubyid_year'>year</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>-</span> <span class='id identifier rubyid_digits'>digits</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>-</span> <span class='int'>1</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_year'>year</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='id identifier rubyid_diff'>diff</span><span class='rbracket'>]</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_digits'>digits</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>def</span> <span class='id identifier rubyid_expand_shorter_digits'>expand_shorter_digits</span><span class='lparen'>(</span><span class='id identifier rubyid_year'>year</span><span class='comma'>,</span> <span class='id identifier rubyid_num'>num</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_year_s'>year_s</span> <span class='op'>=</span> <span class='id identifier rubyid_year'>year</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+  <span class='id identifier rubyid_digits'>digits</span> <span class='op'>=</span> <span class='id identifier rubyid_num'>num</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_rjust'>rjust</span><span class='lparen'>(</span><span class='id identifier rubyid_num'>num</span><span class='period'>.</span><span class='id identifier rubyid_digits'>digits</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_diff'>diff</span> <span class='op'>=</span> <span class='id identifier rubyid_year_s'>year_s</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>-</span> <span class='id identifier rubyid_digits'>digits</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>-</span> <span class='int'>1</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_year_s'>year_s</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='id identifier rubyid_diff'>diff</span><span class='rbracket'>]</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_digits'>digits</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -395,7 +513,7 @@
       <div class="method_details ">
   <h3 class="signature " id="is_range?-instance_method">
   
-    #<strong>is_range?</strong>(year, digits)  &#x21d2; <tt>Boolean</tt> 
+    #<strong>is_range?</strong>(year, num)  &#x21d2; <tt>Boolean</tt> 
   
 
   
@@ -418,29 +536,29 @@
         <span class='name'>year</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Segment</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>the known full year</p>
+<p>representing known year</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>digits</span>
+        <span class='name'>num</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Segment</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>the shorter digit segment following year</p>
+<p>representing ambiguous number</p>
 </div>
       
     </li>
@@ -472,15 +590,179 @@
       <pre class="lines">
 
 
+24
 25
 26
-27</pre>
+27
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 24</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_range?'>is_range?</span><span class='lparen'>(</span><span class='id identifier rubyid_year'>year</span><span class='comma'>,</span> <span class='id identifier rubyid_digits'>digits</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_possible_range?'>possible_range?</span><span class='lparen'>(</span><span class='id identifier rubyid_year'>year</span><span class='comma'>,</span> <span class='id identifier rubyid_digits'>digits</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_valid_month_or_season?'>valid_month_or_season?</span><span class='lparen'>(</span><span class='id identifier rubyid_digits'>digits</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='kw'>true</span> <span class='op'>:</span> <span class='kw'>false</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_is_range?'>is_range?</span><span class='lparen'>(</span><span class='id identifier rubyid_year'>year</span><span class='comma'>,</span> <span class='id identifier rubyid_num'>num</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='id identifier rubyid_valid_month_or_season?'>valid_month_or_season?</span><span class='lparen'>(</span><span class='id identifier rubyid_num'>num</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_possible_range?'>possible_range?</span><span class='lparen'>(</span><span class='id identifier rubyid_year'>year</span><span class='comma'>,</span> <span class='id identifier rubyid_num'>num</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="max_season-instance_method">
+  
+    #<strong>max_season</strong>  &#x21d2; <tt>24</tt>, ... 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>24</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>when max_month_number_handling == :edtf_level_1</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>41</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>when max_month_number_handling == :edtf_level_2</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>NilClass</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>when max_month_number_handling == :months</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+33
+34
+35
+36
+37</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 33</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_max_season'>max_season</span>
+  <span class='kw'>return</span> <span class='int'>24</span> <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_max_month_number_handling'>max_month_number_handling</span> <span class='op'>==</span> <span class='symbol'>:edtf_level_1</span>
+
+  <span class='int'>41</span> <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_max_month_number_handling'>max_month_number_handling</span> <span class='op'>==</span> <span class='symbol'>:edtf_level_2</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="min_season-instance_method">
+  
+    #<strong>min_season</strong>  &#x21d2; <tt>NilClass</tt>, <tt>21</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>NilClass</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>when max_month_number_handling == :months</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>21</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>otherwise</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+41
+42
+43</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 41</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_min_season'>min_season</span>
+  <span class='int'>21</span> <span class='kw'>unless</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_max_month_number_handling'>max_month_number_handling</span> <span class='op'>==</span> <span class='symbol'>:months</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -490,27 +772,69 @@
       <div class="method_details ">
   <h3 class="signature " id="month_abbr_literal-instance_method">
   
-    #<strong>month_abbr_literal</strong>(month)  &#x21d2; <tt>Object</tt> 
+    #<strong>month_abbr_literal</strong>(month)  &#x21d2; <tt>Integer</tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>month</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>month abbreviation</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34</pre>
+47
+48
+49
+50
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_month_abbr_literal'>month_abbr_literal</span><span class='lparen'>(</span><span class='id identifier rubyid_month'>month</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_lookup'>lookup</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -526,27 +850,69 @@
       <div class="method_details ">
   <h3 class="signature " id="month_literal-instance_method">
   
-    #<strong>month_literal</strong>(month)  &#x21d2; <tt>Object</tt> 
+    #<strong>month_literal</strong>(month)  &#x21d2; <tt>Integer</tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>month</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>full month name</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-36
-37
-38</pre>
+56
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 56</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_month_literal'>month_literal</span><span class='lparen'>(</span><span class='id identifier rubyid_month'>month</span><span class='rparen'>)</span>
-  <span class='const'>Date</span><span class='op'>::</span><span class='const'>MONTHNAMES</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_mth'>mth</span><span class='op'>|</span> <span class='id identifier rubyid_mth'>mth</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span> <span class='kw'>if</span> <span class='id identifier rubyid_mth'>mth</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_index'>index</span><span class='lparen'>(</span><span class='id identifier rubyid_month'>month</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='rparen'>)</span>
+  <span class='const'>Date</span><span class='op'>::</span><span class='const'>MONTHNAMES</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_mth'>mth</span><span class='op'>|</span> <span class='id identifier rubyid_mth'>mth</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span> <span class='kw'>if</span> <span class='id identifier rubyid_mth'>mth</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_index'>index</span><span class='lparen'>(</span><span class='id identifier rubyid_month'>month</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -556,7 +922,7 @@
       <div class="method_details ">
   <h3 class="signature " id="possible_range?-instance_method">
   
-    #<strong>possible_range?</strong>(year, digits)  &#x21d2; <tt>Boolean</tt> 
+    #<strong>possible_range?</strong>(year, num)  &#x21d2; <tt>Boolean</tt> 
   
 
   
@@ -571,7 +937,43 @@
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>year</span>
+      
+      
+        <span class='type'>(<tt>Segment</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>representing known year</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>num</span>
+      
+      
+        <span class='type'>(<tt>Segment</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>representing ambiguous number</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -592,21 +994,21 @@
       <pre class="lines">
 
 
-43
-44
-45
-46
-47
-48</pre>
+65
+66
+67
+68
+69
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 43</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 65</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_possible_range?'>possible_range?</span><span class='lparen'>(</span><span class='id identifier rubyid_year'>year</span><span class='comma'>,</span> <span class='id identifier rubyid_digits'>digits</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_expanded'>expanded</span> <span class='op'>=</span> <span class='id identifier rubyid_expand_shorter_digits'>expand_shorter_digits</span><span class='lparen'>(</span><span class='id identifier rubyid_year'>year</span><span class='comma'>,</span> <span class='id identifier rubyid_digits'>digits</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_possible_range?'>possible_range?</span><span class='lparen'>(</span><span class='id identifier rubyid_year'>year</span><span class='comma'>,</span> <span class='id identifier rubyid_num'>num</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_expanded'>expanded</span> <span class='op'>=</span> <span class='id identifier rubyid_expand_shorter_digits'>expand_shorter_digits</span><span class='lparen'>(</span><span class='id identifier rubyid_year'>year</span><span class='comma'>,</span> <span class='id identifier rubyid_num'>num</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>unless</span> <span class='id identifier rubyid_valid_year?'>valid_year?</span><span class='lparen'>(</span><span class='id identifier rubyid_expanded'>expanded</span><span class='rparen'>)</span>
 
-  <span class='id identifier rubyid_expanded'>expanded</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_year'>year</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+  <span class='id identifier rubyid_expanded'>expanded</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_year'>year</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -616,7 +1018,7 @@
       <div class="method_details ">
   <h3 class="signature " id="valid_date?-instance_method">
   
-    #<strong>valid_date?</strong>(yr, mth, day)  &#x21d2; <tt>Boolean</tt> 
+    #<strong>valid_date?</strong>(yr, mth, day)  &#x21d2; <tt>TrueClass</tt>, <tt>FalseClass</tt> 
   
 
   
@@ -625,22 +1027,76 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>pass in segments. This pulls out literals</p>
-
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>yr</span>
+      
+      
+        <span class='type'>(<tt>Segment</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>mth</span>
+      
+      
+        <span class='type'>(<tt>Segment</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>day</span>
+      
+      
+        <span class='type'>(<tt>Segment</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
     <li>
       
       
-        <span class='type'>(<tt>Boolean</tt>)</span>
+        <span class='type'>(<tt>TrueClass</tt>)</span>
       
       
+      
+        &mdash;
+        <div class='inline'>
+<p>if segment literals can be converted to a valid date</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>FalseClass</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>otherwise</p>
+</div>
       
     </li>
   
@@ -652,27 +1108,23 @@
       <pre class="lines">
 
 
-51
-52
-53
-54
-55
-56
-57
-58
-59</pre>
+77
+78
+79
+80
+81
+82
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_valid_date?'>valid_date?</span><span class='lparen'>(</span><span class='id identifier rubyid_yr'>yr</span><span class='comma'>,</span> <span class='id identifier rubyid_mth'>mth</span><span class='comma'>,</span> <span class='id identifier rubyid_day'>day</span><span class='rparen'>)</span>
-  <span class='kw'>begin</span>
-    <span class='const'>Date</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_yr'>yr</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='comma'>,</span> <span class='id identifier rubyid_mth'>mth</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='comma'>,</span> <span class='id identifier rubyid_day'>day</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='rparen'>)</span>
-  <span class='kw'>rescue</span> <span class='const'>Date</span><span class='op'>::</span><span class='const'>Error</span>
-    <span class='id identifier rubyid_valid_english_date?'>valid_english_date?</span><span class='lparen'>(</span><span class='id identifier rubyid_yr'>yr</span><span class='comma'>,</span> <span class='id identifier rubyid_mth'>mth</span><span class='comma'>,</span> <span class='id identifier rubyid_day'>day</span><span class='rparen'>)</span>
-  <span class='kw'>else</span>
-    <span class='kw'>true</span>
-  <span class='kw'>end</span>
+  <span class='const'>Date</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_yr'>yr</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='comma'>,</span> <span class='id identifier rubyid_mth'>mth</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='comma'>,</span> <span class='id identifier rubyid_day'>day</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='rparen'>)</span>
+<span class='kw'>rescue</span> <span class='const'>Date</span><span class='op'>::</span><span class='const'>Error</span>
+  <span class='id identifier rubyid_valid_english_date?'>valid_english_date?</span><span class='lparen'>(</span><span class='id identifier rubyid_yr'>yr</span><span class='comma'>,</span> <span class='id identifier rubyid_mth'>mth</span><span class='comma'>,</span> <span class='id identifier rubyid_day'>day</span><span class='rparen'>)</span>
+<span class='kw'>else</span>
+  <span class='kw'>true</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -680,9 +1132,9 @@
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="valid_english_date?-instance_method">
+  <h3 class="signature " id="valid_day?-instance_method">
   
-    #<strong>valid_english_date?</strong>(yr, mth, day)  &#x21d2; <tt>Boolean</tt> 
+    #<strong>valid_day?</strong>(int)  &#x21d2; <tt>TrueClass</tt>, <tt>FalseClass</tt> 
   
 
   
@@ -691,6 +1143,430 @@
 </h3><div class="docstring">
   <div class="discussion">
     
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>int</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>TrueClass</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>if 1 to 31</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>FalseClass</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>otherwise</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>StandardError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+88
+89
+90
+91
+92</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 88</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_valid_day?'>valid_day?</span><span class='lparen'>(</span><span class='id identifier rubyid_int'>int</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>StandardError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>string passed instead of integer</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_int'>int</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Integer</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_int'>int</span> <span class='op'>&gt;=</span> <span class='int'>1</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_int'>int</span> <span class='op'>&lt;=</span> <span class='int'>31</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="valid_month?-instance_method">
+  
+    #<strong>valid_month?</strong>(int)  &#x21d2; <tt>TrueClass</tt>, <tt>FalseClass</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>int</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>TrueClass</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>if 1 to 12</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>FalseClass</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>otherwise</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>StandardError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+112
+113
+114
+115
+116</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 112</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_valid_month?'>valid_month?</span><span class='lparen'>(</span><span class='id identifier rubyid_int'>int</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>StandardError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>string passed instead of integer</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_int'>int</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Integer</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_int'>int</span> <span class='op'>&gt;</span> <span class='int'>0</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_int'>int</span> <span class='op'>&lt;</span> <span class='int'>13</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="valid_month_or_season?-instance_method">
+  
+    #<strong>valid_month_or_season?</strong>(int)  &#x21d2; <tt>TrueClass</tt>, <tt>FalseClass</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>int</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>TrueClass</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>if is <span class='object_link'><a href="#valid_month%3F-instance_method" title="Emendate::DateUtils#valid_month? (method)">#valid_month?</a></span> or <span class='object_link'><a href="#valid_season%3F-instance_method" title="Emendate::DateUtils#valid_season? (method)">#valid_season?</a></span></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>FalseClass</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>otherwise</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>StandardError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+121
+122
+123
+124
+125</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 121</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_valid_month_or_season?'>valid_month_or_season?</span><span class='lparen'>(</span><span class='id identifier rubyid_int'>int</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>StandardError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>string passed instead of integer</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_int'>int</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Integer</span><span class='rparen'>)</span>
+
+  <span class='lparen'>(</span><span class='id identifier rubyid_valid_month?'>valid_month?</span><span class='lparen'>(</span><span class='id identifier rubyid_int'>int</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_valid_season?'>valid_season?</span><span class='lparen'>(</span><span class='id identifier rubyid_int'>int</span><span class='rparen'>)</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="valid_season?-instance_method">
+  
+    #<strong>valid_season?</strong>(int)  &#x21d2; <tt>TrueClass</tt>, <tt>FalseClass</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>int</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>TrueClass</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>if is a valid EDTF season/quarter/semester indicator</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>FalseClass</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>otherwise</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>StandardError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+130
+131
+132
+133
+134
+135
+136</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 130</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_valid_season?'>valid_season?</span><span class='lparen'>(</span><span class='id identifier rubyid_int'>int</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>StandardError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>string passed instead of integer</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_int'>int</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Integer</span><span class='rparen'>)</span>
+
+  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_max_month_number_handling'>max_month_number_handling</span> <span class='op'>==</span> <span class='symbol'>:months</span>
+
+  <span class='id identifier rubyid_int'>int</span> <span class='op'>&gt;=</span> <span class='id identifier rubyid_min_season'>min_season</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_int'>int</span> <span class='op'>&lt;=</span> <span class='id identifier rubyid_max_season'>max_season</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="valid_year?-instance_method">
+  
+    #<strong>valid_year?</strong>(str)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note todo">
+    <strong>TODO:</strong>
+    <div class='inline'>
+<p>Years shouldn&#39;t have to be fewer than 4 digits - check/fix this assumption</p>
+</div>
+  </div>
+
+
 
   </div>
 </div>
@@ -716,27 +1592,17 @@
       <pre class="lines">
 
 
-61
-62
-63
-64
-65
-66
-67
-68
-69</pre>
+139
+140
+141
+142</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 61</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 139</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_valid_english_date?'>valid_english_date?</span><span class='lparen'>(</span><span class='id identifier rubyid_yr'>yr</span><span class='comma'>,</span> <span class='id identifier rubyid_mth'>mth</span><span class='comma'>,</span> <span class='id identifier rubyid_day'>day</span><span class='rparen'>)</span>
-  <span class='kw'>begin</span>
-    <span class='const'>Date</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_yr'>yr</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='comma'>,</span> <span class='id identifier rubyid_mth'>mth</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='comma'>,</span> <span class='id identifier rubyid_day'>day</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='comma'>,</span> <span class='const'>Date</span><span class='op'>::</span><span class='const'>ENGLAND</span><span class='rparen'>)</span>
-  <span class='kw'>rescue</span> <span class='const'>Date</span><span class='op'>::</span><span class='const'>Error</span>
-    <span class='kw'>false</span>
-  <span class='kw'>else</span>
-    <span class='kw'>true</span>
-  <span class='kw'>end</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_valid_year?'>valid_year?</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_str'>str</span> <span class='op'>=</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='kw'>unless</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&lt;=</span> <span class='int'>4</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -748,7 +1614,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Dec  4 23:54:21 2023 by
+  Generated on Sat Jan 13 00:44:29 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

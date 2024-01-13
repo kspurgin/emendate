@@ -69,12 +69,10 @@
   <dl>
     <dt>Inherits:</dt>
     <dd>
-      <span class="inheritName"><span class='object_link'><a href="DateType.html" title="Emendate::DateTypes::DateType (class)">DateType</a></span></span>
+      <span class="inheritName">Object</span>
       
         <ul class="fullTree">
           <li>Object</li>
-          
-            <li class="next"><span class='object_link'><a href="DateType.html" title="Emendate::DateTypes::DateType (class)">DateType</a></span></li>
           
             <li class="next">Emendate::DateTypes::Decade</li>
           
@@ -88,6 +86,11 @@
   
   
   
+  
+  <dl>
+      <dt>Includes:</dt>
+      <dd>Datetypeable</dd>
+  </dl>
   
   
 
@@ -111,7 +114,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#decade_type-instance_method" title="#decade_type (instance method)">#<strong>decade_type</strong>  &#x21d2; Object </a>
+      <a href="#decade_type-instance_method" title="#decade_type (instance method)">#<strong>decade_type</strong>  &#x21d2; :plural, :uncertainty_digits </a>
     
 
     
@@ -130,9 +133,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute decade_type.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -140,7 +141,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#literal-instance_method" title="#literal (instance method)">#<strong>literal</strong>  &#x21d2; Object </a>
+      <a href="#literal-instance_method" title="#literal (instance method)">#<strong>literal</strong>  &#x21d2; Integer </a>
     
 
     
@@ -159,9 +160,34 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute literal.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#sources-instance_method" title="#sources (instance method)">#<strong>sources</strong>  &#x21d2; SegmentSets::SegmentSet </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -169,11 +195,6 @@
   </ul>
 
 
-
-  
-  
-  <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="DateType.html" title="Emendate::DateTypes::DateType (class)">DateType</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="DateType.html#certainty-instance_method" title="Emendate::DateTypes::DateType#certainty (method)">#certainty</a></span>, <span class='object_link'><a href="DateType.html#partial_indicator-instance_method" title="Emendate::DateTypes::DateType#partial_indicator (method)">#partial_indicator</a></span>, <span class='object_link'><a href="DateType.html#range_switch-instance_method" title="Emendate::DateTypes::DateType#range_switch (method)">#range_switch</a></span>, <span class='object_link'><a href="DateType.html#sources-instance_method" title="Emendate::DateTypes::DateType#sources (method)">#sources</a></span></p>
 
 
   
@@ -209,7 +230,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(**opts)  &#x21d2; Decade </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(sources:)  &#x21d2; Decade </a>
     
 
     
@@ -257,28 +278,6 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#lexeme-instance_method" title="#lexeme (instance method)">#<strong>lexeme</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#range%3F-instance_method" title="#range? (instance method)">#<strong>range?</strong>  &#x21d2; Boolean </a>
     
 
@@ -302,23 +301,13 @@
   
 
 
-  
-  
-  
-  
-  
-  
-  
-  
-  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="DateType.html" title="Emendate::DateTypes::DateType (class)">DateType</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="DateType.html#add_range_switch-instance_method" title="Emendate::DateTypes::DateType#add_range_switch (method)">#add_range_switch</a></span>, <span class='object_link'><a href="DateType.html#date_part%3F-instance_method" title="Emendate::DateTypes::DateType#date_part? (method)">#date_part?</a></span>, <span class='object_link'><a href="DateType.html#date_type%3F-instance_method" title="Emendate::DateTypes::DateType#date_type? (method)">#date_type?</a></span>, <span class='object_link'><a href="DateType.html#earliest_at_granularity-instance_method" title="Emendate::DateTypes::DateType#earliest_at_granularity (method)">#earliest_at_granularity</a></span>, <span class='object_link'><a href="DateType.html#latest_at_granularity-instance_method" title="Emendate::DateTypes::DateType#latest_at_granularity (method)">#latest_at_granularity</a></span>, <span class='object_link'><a href="DateType.html#location-instance_method" title="Emendate::DateTypes::DateType#location (method)">#location</a></span>, <span class='object_link'><a href="DateType.html#prepend_source_token-instance_method" title="Emendate::DateTypes::DateType#prepend_source_token (method)">#prepend_source_token</a></span>, <span class='object_link'><a href="DateType.html#processed%3F-instance_method" title="Emendate::DateTypes::DateType#processed? (method)">#processed?</a></span>, <span class='object_link'><a href="DateType.html#type-instance_method" title="Emendate::DateTypes::DateType#type (method)">#type</a></span></p>
-<div id="constructor_details" class="method_details_list">
+  <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(**opts)  &#x21d2; <tt><span class='object_link'><a href="" title="Emendate::DateTypes::Decade (class)">Decade</a></span></tt> 
+    #<strong>initialize</strong>(sources:)  &#x21d2; <tt><span class='object_link'><a href="" title="Emendate::DateTypes::Decade (class)">Decade</a></span></tt> 
   
 
   
@@ -333,7 +322,27 @@
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>sources</span>
+      
+      
+        <span class='type'>(<tt>SegmentSets::SegmentSet</tt>, <tt>Array&lt;Segment&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Segments included in the date type</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 
 </div><table class="source_code">
   <tr>
@@ -341,35 +350,19 @@
       <pre class="lines">
 
 
+19
+20
+21
 22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34</pre>
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/decade.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/decade.rb', line 19</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='op'>**</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
-  <span class='kw'>super</span>
-  <span class='ivar'>@literal</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:literal</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Integer</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:literal</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:literal</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:decade_type</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../DateTypes.html" title="Emendate::DateTypes (module)">DateTypes</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="MissingDecadeTypeError.html" title="Emendate::DateTypes::MissingDecadeTypeError (class)">MissingDecadeTypeError</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_allowed_decade_types'>allowed_decade_types</span>
-  <span class='kw'>elsif</span> <span class='op'>!</span><span class='id identifier rubyid_allowed_decade_types'>allowed_decade_types</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:decade_type</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../DateTypes.html" title="Emendate::DateTypes (module)">DateTypes</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="DecadeTypeValueError.html" title="Emendate::DateTypes::DecadeTypeValueError (class)">DecadeTypeValueError</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_allowed_decade_types'>allowed_decade_types</span>
-  <span class='kw'>else</span>
-    <span class='ivar'>@decade_type</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:decade_type</span><span class='rbracket'>]</span>
-  <span class='kw'>end</span>
-
-  <span class='id identifier rubyid_adjust_literal_value'>adjust_literal_value</span> <span class='kw'>if</span> <span class='id identifier rubyid_decade_type'>decade_type</span> <span class='op'>==</span> <span class='symbol'>:plural</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='label'>sources:</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_common_setup'>common_setup</span><span class='lparen'>(</span><span class='id identifier rubyid_binding'>binding</span><span class='rparen'>)</span>
+  <span class='ivar'>@decade_type</span> <span class='op'>=</span> <span class='id identifier rubyid_set_type'>set_type</span>
+  <span class='ivar'>@literal</span> <span class='op'>=</span> <span class='id identifier rubyid_set_literal'>set_literal</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -386,7 +379,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="decade_type-instance_method">
   
-    #<strong>decade_type</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
+    #<strong>decade_type</strong>  &#x21d2; <tt>:plural</tt>, <tt>:uncertainty_digits</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -395,13 +388,24 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the value of attribute decade_type.</p>
-
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>:plural</tt>, <tt>:uncertainty_digits</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -409,12 +413,12 @@
       <pre class="lines">
 
 
-20
-21
-22</pre>
+11
+12
+13</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/decade.rb', line 20</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/decade.rb', line 11</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_decade_type'>decade_type</span>
   <span class='ivar'>@decade_type</span>
@@ -429,7 +433,7 @@
       <div class="method_details ">
   <h3 class="signature " id="literal-instance_method">
   
-    #<strong>literal</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
+    #<strong>literal</strong>  &#x21d2; <tt>Integer</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -438,13 +442,24 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the value of attribute literal.</p>
-
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -452,15 +467,69 @@
       <pre class="lines">
 
 
-20
-21
-22</pre>
+13
+14
+15</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/decade.rb', line 20</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/decade.rb', line 13</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_literal'>literal</span>
   <span class='ivar'>@literal</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="sources-instance_method">
+  
+    #<strong>sources</strong>  &#x21d2; <tt>SegmentSets::SegmentSet</tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>SegmentSets::SegmentSet</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+15
+16
+17</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/decade.rb', line 15</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_sources'>sources</span>
+  <span class='ivar'>@sources</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -489,12 +558,12 @@
       <pre class="lines">
 
 
-36
-37
-38</pre>
+25
+26
+27</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/decade.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/decade.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_earliest'>earliest</span>
   <span class='const'>Date</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_earliest_year'>earliest_year</span><span class='comma'>,</span> <span class='int'>1</span><span class='comma'>,</span> <span class='int'>1</span><span class='rparen'>)</span>
@@ -519,61 +588,15 @@
       <pre class="lines">
 
 
-40
-41
-42</pre>
+29
+30
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/decade.rb', line 40</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/decade.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_latest'>latest</span>
   <span class='const'>Date</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_latest_year'>latest_year</span><span class='comma'>,</span> <span class='int'>12</span><span class='comma'>,</span> <span class='int'>31</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="lexeme-instance_method">
-  
-    #<strong>lexeme</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/decade.rb', line 44</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_lexeme'>lexeme</span>
-  <span class='kw'>case</span> <span class='id identifier rubyid_decade_type'>decade_type</span>
-  <span class='kw'>when</span> <span class='symbol'>:plural</span>
-    <span class='id identifier rubyid_val'>val</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_decade_earliest_year'>decade_earliest_year</span><span class='embexpr_end'>}</span><span class='tstring_content'>s</span><span class='tstring_end'>&quot;</span></span>
-  <span class='kw'>when</span> <span class='symbol'>:uncertainty_digits</span>
-    <span class='id identifier rubyid_val'>val</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_literal'>literal</span><span class='embexpr_end'>}</span><span class='tstring_content'>X</span><span class='tstring_end'>&quot;</span></span>
-  <span class='kw'>end</span>
-
-  <span class='id identifier rubyid_val'>val</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_partial_indicator'>partial_indicator</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_val'>val</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_partial_indicator'>partial_indicator</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-  <span class='id identifier rubyid_val'>val</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -617,12 +640,12 @@
       <pre class="lines">
 
 
-56
-57
-58</pre>
+33
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/decade.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/decade.rb', line 33</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_range?'>range?</span>
   <span class='kw'>true</span>
@@ -637,7 +660,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Dec  4 23:54:22 2023 by
+  Generated on Sat Jan 13 00:44:30 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

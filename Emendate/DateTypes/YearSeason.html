@@ -69,12 +69,10 @@
   <dl>
     <dt>Inherits:</dt>
     <dd>
-      <span class="inheritName"><span class='object_link'><a href="DateType.html" title="Emendate::DateTypes::DateType (class)">DateType</a></span></span>
+      <span class="inheritName">Object</span>
       
         <ul class="fullTree">
           <li>Object</li>
-          
-            <li class="next"><span class='object_link'><a href="DateType.html" title="Emendate::DateTypes::DateType (class)">DateType</a></span></li>
           
             <li class="next">Emendate::DateTypes::YearSeason</li>
           
@@ -91,7 +89,7 @@
   
   <dl>
       <dt>Includes:</dt>
-      <dd><span class='object_link'><a href="SixDigitable.html" title="Emendate::DateTypes::SixDigitable (module)">SixDigitable</a></span></dd>
+      <dd>Datetypeable, SixDigitable</dd>
   </dl>
   
   
@@ -106,10 +104,40 @@
   
 </div>
 
-<h2>Overview</h2><div class="docstring">
+
+  
+    <h2>
+      Constant Summary
+      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
+    </h2>
+
+    <dl class="constants">
+      
+        <dt id="NORTHERN_SEASONS-constant" class="">NORTHERN_SEASONS =
+          
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span>
+  <span class='label'>spring:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>4</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>6</span><span class='comma'>,</span> <span class='int'>30</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>summer:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>7</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>9</span><span class='comma'>,</span> <span class='int'>30</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>fall:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>10</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>12</span><span class='comma'>,</span> <span class='int'>31</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>winter:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>1</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>3</span><span class='comma'>,</span> <span class='int'>31</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
+<span class='rbrace'>}</span></pre></dd>
+      
+        <dt id="SOUTHERN_SEASONS-constant" class="">SOUTHERN_SEASONS =
+          
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span>
+  <span class='label'>spring:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>10</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>12</span><span class='comma'>,</span> <span class='int'>31</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>summer:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>1</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>3</span><span class='comma'>,</span> <span class='int'>31</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>fall:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>4</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>6</span><span class='comma'>,</span> <span class='int'>30</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>winter:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>7</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>9</span><span class='comma'>,</span> <span class='int'>30</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
+<span class='rbrace'>}</span></pre></dd>
+      
+        <dt id="OTHER_RANGES-constant" class="">OTHER_RANGES =
+          <div class="docstring">
   <div class="discussion">
     
-<p>uses :month to be behaviorally interchangeable with YearMonth date type</p>
+<p>A quarter (q) is defined as a 3-month period. A quadrimester (quad) is defined as a 4-month period. A semestral is a 6-month period.</p>
 
 
   </div>
@@ -118,107 +146,26 @@
   
 
 </div>
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span>
+  <span class='label'>q1:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>1</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>3</span><span class='comma'>,</span> <span class='int'>31</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>q2:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>4</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>6</span><span class='comma'>,</span> <span class='int'>30</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>q3:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>7</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>9</span><span class='comma'>,</span> <span class='int'>30</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>q4:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>10</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>12</span><span class='comma'>,</span> <span class='int'>31</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>quad1:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>1</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>4</span><span class='comma'>,</span> <span class='int'>30</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>quad2:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>5</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>8</span><span class='comma'>,</span> <span class='int'>31</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>quad3:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>9</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>12</span><span class='comma'>,</span> <span class='int'>31</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>semestral1:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>1</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>6</span><span class='comma'>,</span> <span class='int'>30</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+  <span class='label'>semestral2:</span> <span class='lbrace'>{</span> <span class='label'>start:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>7</span><span class='comma'>,</span> <span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>end:</span> <span class='lbracket'>[</span><span class='symbol'>:year</span><span class='comma'>,</span> <span class='int'>12</span><span class='comma'>,</span> <span class='int'>31</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
+<span class='rbrace'>}</span></pre></dd>
+      
+    </dl>
+  
+
 
 
 
-  <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
-  <ul class="summary">
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#literal-instance_method" title="#literal (instance method)">#<strong>literal</strong>  &#x21d2; Object </a>
-    
 
-    
-  </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute literal.</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#month-instance_method" title="#month (instance method)">#<strong>month</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute month.</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#year-instance_method" title="#year (instance method)">#<strong>year</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute year.</p>
-</div></span>
-  
-</li>
-
-    
-  </ul>
-
-
-
-  
-  
-  <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="DateType.html" title="Emendate::DateTypes::DateType (class)">DateType</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="DateType.html#certainty-instance_method" title="Emendate::DateTypes::DateType#certainty (method)">#certainty</a></span>, <span class='object_link'><a href="DateType.html#partial_indicator-instance_method" title="Emendate::DateTypes::DateType#partial_indicator (method)">#partial_indicator</a></span>, <span class='object_link'><a href="DateType.html#range_switch-instance_method" title="Emendate::DateTypes::DateType#range_switch (method)">#range_switch</a></span>, <span class='object_link'><a href="DateType.html#sources-instance_method" title="Emendate::DateTypes::DateType#sources (method)">#sources</a></span></p>
 
 
   
@@ -254,7 +201,29 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(**opts)  &#x21d2; YearSeason </a>
+      <a href="#earliest_at_granularity-instance_method" title="#earliest_at_granularity (instance method)">#<strong>earliest_at_granularity</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(sources:, year:, season:, include_prev_year: false)  &#x21d2; YearSeason </a>
     
 
     
@@ -271,7 +240,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Expect to be initialized with:   sources: Emendate::SegmentSets::SegmentSet.</p>
+<p>A new instance of YearSeason.</p>
 </div></span>
   
 </li>
@@ -302,11 +271,9 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#lexeme-instance_method" title="#lexeme (instance method)">#<strong>lexeme</strong>  &#x21d2; Object </a>
+      <a href="#latest_at_granularity-instance_method" title="#latest_at_granularity (instance method)">#<strong>latest_at_granularity</strong>  &#x21d2; Object </a>
     
 
-    
-      (also: #earliest_at_granularity, #latest_at_granularity)
     
   </span>
   
@@ -345,60 +312,18 @@
 </li>
 
       
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#season-instance_method" title="#season (instance method)">#<strong>season</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
     </ul>
   
 
 
   
-  
-  
-  
-  
-  
-  
-  
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="SixDigitable.html" title="Emendate::DateTypes::SixDigitable (module)">SixDigitable</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="SixDigitable.html#set_up_from_year_month_or_integer-instance_method" title="Emendate::DateTypes::SixDigitable#set_up_from_year_month_or_integer (method)">#set_up_from_year_month_or_integer</a></span></p>
-
-  
-  
-  
-  
-  
-  
-  
-  
-  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="DateType.html" title="Emendate::DateTypes::DateType (class)">DateType</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="DateType.html#add_range_switch-instance_method" title="Emendate::DateTypes::DateType#add_range_switch (method)">#add_range_switch</a></span>, <span class='object_link'><a href="DateType.html#date_part%3F-instance_method" title="Emendate::DateTypes::DateType#date_part? (method)">#date_part?</a></span>, <span class='object_link'><a href="DateType.html#date_type%3F-instance_method" title="Emendate::DateTypes::DateType#date_type? (method)">#date_type?</a></span>, <span class='object_link'><a href="DateType.html#location-instance_method" title="Emendate::DateTypes::DateType#location (method)">#location</a></span>, <span class='object_link'><a href="DateType.html#prepend_source_token-instance_method" title="Emendate::DateTypes::DateType#prepend_source_token (method)">#prepend_source_token</a></span>, <span class='object_link'><a href="DateType.html#processed%3F-instance_method" title="Emendate::DateTypes::DateType#processed? (method)">#processed?</a></span>, <span class='object_link'><a href="DateType.html#type-instance_method" title="Emendate::DateTypes::DateType#type (method)">#type</a></span></p>
-<div id="constructor_details" class="method_details_list">
+  <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(**opts)  &#x21d2; <tt><span class='object_link'><a href="" title="Emendate::DateTypes::YearSeason (class)">YearSeason</a></span></tt> 
+    #<strong>initialize</strong>(sources:, year:, season:, include_prev_year: false)  &#x21d2; <tt><span class='object_link'><a href="" title="Emendate::DateTypes::YearSeason (class)">YearSeason</a></span></tt> 
   
 
   
@@ -407,152 +332,73 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Expect to be initialized with:</p>
-
-<pre class="code ruby"><code class="ruby">sources: Emendate::SegmentSets::SegmentSet
-</code></pre>
+<p>Returns a new instance of YearSeason.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-16
-17
-18
-19</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/year_season.rb', line 16</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='op'>**</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
-  <span class='kw'>super</span>
-  <span class='id identifier rubyid_set_up_from_year_month_or_integer'>set_up_from_year_month_or_integer</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-  
-</div>
-
-  <div id="instance_attr_details" class="attr_details">
-    <h2>Instance Attribute Details</h2>
-    
+    <li>
       
-      <span id=""></span>
-      <div class="method_details first">
-  <h3 class="signature first" id="literal-instance_method">
-  
-    #<strong>literal</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the value of attribute literal.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-12
-13
-14</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/year_season.rb', line 12</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_literal'>literal</span>
-  <span class='ivar'>@literal</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
+        <span class='name'>year</span>
       
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="month-instance_method">
-  
-    #<strong>month</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the value of attribute month.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-12
-13
-14</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/year_season.rb', line 12</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_month'>month</span>
-  <span class='ivar'>@month</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
       
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="year-instance_method">
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+    </li>
   
-    #<strong>year</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
+    <li>
+      
+        <span class='name'>season</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+    </li>
   
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the value of attribute year.</p>
-
-
-  </div>
+    <li>
+      
+        <span class='name'>sources</span>
+      
+      
+        <span class='type'>(<tt>SegmentSets::SegmentSet</tt>, <tt>Array&lt;Segment&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Segments included in the date type</p>
 </div>
-<div class="tags">
+      
+    </li>
   
+    <li>
+      
+        <span class='name'>include_prev_year</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Used for values like “Winter 2019-2020”, to cause the earliest date to include the end of 2019</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 
 </div><table class="source_code">
   <tr>
@@ -560,22 +406,34 @@
       <pre class="lines">
 
 
-12
-13
-14</pre>
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/year_season.rb', line 12</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/year_season.rb', line 47</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_year'>year</span>
-  <span class='ivar'>@year</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='label'>sources:</span><span class='comma'>,</span> <span class='label'>year:</span><span class='comma'>,</span> <span class='label'>season:</span><span class='comma'>,</span> <span class='label'>include_prev_year:</span> <span class='kw'>false</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_common_setup'>common_setup</span><span class='lparen'>(</span><span class='id identifier rubyid_binding'>binding</span><span class='rparen'>)</span>
+  <span class='ivar'>@year</span> <span class='op'>=</span> <span class='id identifier rubyid_year'>year</span>
+  <span class='ivar'>@season</span> <span class='op'>=</span> <span class='id identifier rubyid_season'>season</span>
+  <span class='ivar'>@include_prev_year</span> <span class='op'>=</span> <span class='id identifier rubyid_include_prev_year'>include_prev_year</span>
+  <span class='ivar'>@seasons</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_const_get'>const_get</span><span class='lparen'>(</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'><span class='object_link'><a href="../../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_hemisphere'>hemisphere</span><span class='embexpr_end'>}</span><span class='tstring_content'>_seasons</span><span class='tstring_end'>&quot;</span></span><span class='period'>.</span><span class='id identifier rubyid_upcase'>upcase</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
+  <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
 </div>
-    
-  </div>
+  
+</div>
 
 
   <div id="instance_method_details" class="method_details_list">
@@ -597,15 +455,49 @@
       <pre class="lines">
 
 
-21
-22
-23</pre>
+57
+58
+59
+60
+61</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/year_season.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/year_season.rb', line 57</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_earliest'>earliest</span>
-  <span class='id identifier rubyid_lookup_start_date'>lookup_start_date</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_get_date'>get_date</span><span class='lparen'>(</span><span class='symbol'>:start</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_include_prev_year'>include_prev_year</span>
+
+  <span class='const'>Date</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_year'>year</span> <span class='op'>-</span> <span class='int'>1</span><span class='comma'>,</span> <span class='int'>12</span><span class='comma'>,</span> <span class='int'>1</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="earliest_at_granularity-instance_method">
+  
+    #<strong>earliest_at_granularity</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+67
+68
+69</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/year_season.rb', line 67</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_earliest_at_granularity'>earliest_at_granularity</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_earliest'>earliest</span><span class='period'>.</span><span class='id identifier rubyid_year'>year</span><span class='embexpr_end'>}</span><span class='tstring_content'>-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_earliest'>earliest</span><span class='period'>.</span><span class='id identifier rubyid_month'>month</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_rjust'>rjust</span><span class='lparen'>(</span><span class='int'>2</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -627,15 +519,15 @@
       <pre class="lines">
 
 
-25
-26
-27</pre>
+63
+64
+65</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/year_season.rb', line 25</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/year_season.rb', line 63</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_latest'>latest</span>
-  <span class='id identifier rubyid_lookup_end_date'>lookup_end_date</span>
+  <span class='id identifier rubyid_get_date'>get_date</span><span class='lparen'>(</span><span class='symbol'>:end</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -643,15 +535,11 @@
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="lexeme-instance_method">
+  <h3 class="signature " id="latest_at_granularity-instance_method">
   
-    #<strong>lexeme</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>latest_at_granularity</strong>  &#x21d2; <tt>Object</tt> 
   
 
-  
-    <span class="aliases">Also known as:
-    <span class="names"><span id='earliest_at_granularity-instance_method'>earliest_at_granularity</span>, <span id='latest_at_granularity-instance_method'>latest_at_granularity</span></span>
-    </span>
   
 
   
@@ -661,15 +549,15 @@
       <pre class="lines">
 
 
-29
-30
-31</pre>
+71
+72
+73</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/year_season.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/year_season.rb', line 71</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_lexeme'>lexeme</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_year'>year</span><span class='embexpr_end'>}</span><span class='tstring_content'>-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_month'>month</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_rjust'>rjust</span><span class='lparen'>(</span><span class='int'>2</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>def</span> <span class='id identifier rubyid_latest_at_granularity'>latest_at_granularity</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_latest'>latest</span><span class='period'>.</span><span class='id identifier rubyid_year'>year</span><span class='embexpr_end'>}</span><span class='tstring_content'>-</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_latest'>latest</span><span class='period'>.</span><span class='id identifier rubyid_month'>month</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_rjust'>rjust</span><span class='lparen'>(</span><span class='int'>2</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -713,45 +601,15 @@
       <pre class="lines">
 
 
-35
-36
-37</pre>
+75
+76
+77</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/year_season.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/year_season.rb', line 75</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_range?'>range?</span>
   <span class='op'>!</span><span class='lparen'>(</span><span class='id identifier rubyid_partial_indicator'>partial_indicator</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_range_switch'>range_switch</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="season-instance_method">
-  
-    #<strong>season</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-39
-40
-41</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_types/year_season.rb', line 39</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_season'>season</span>
-  <span class='id identifier rubyid_month'>month</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -763,7 +621,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Dec  4 23:54:22 2023 by
+  Generated on Sat Jan 13 00:44:30 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

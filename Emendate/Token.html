@@ -69,12 +69,12 @@
   <dl>
     <dt>Inherits:</dt>
     <dd>
-      <span class="inheritName"><span class='object_link'><a href="Segment.html" title="Emendate::Segment (class)">Segment</a></span></span>
+      <span class="inheritName">Segment</span>
       
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next"><span class='object_link'><a href="Segment.html" title="Emendate::Segment (class)">Segment</a></span></li>
+            <li class="next">Segment</li>
           
             <li class="next">Emendate::Token</li>
           
@@ -108,31 +108,8 @@
 
 <div id="subclasses">
   <h2>Direct Known Subclasses</h2>
-  <p class="children"><span class='object_link'><a href="DerivedToken.html" title="Emendate::DerivedToken (class)">DerivedToken</a></span>, <span class='object_link'><a href="MonthAlphaToken.html" title="Emendate::MonthAlphaToken (class)">MonthAlphaToken</a></span>, <span class='object_link'><a href="NumberToken.html" title="Emendate::NumberToken (class)">NumberToken</a></span></p>
+  <p class="children"><span class='object_link'><a href="DerivedToken.html" title="Emendate::DerivedToken (class)">DerivedToken</a></span>, <span class='object_link'><a href="MonthAlphaToken.html" title="Emendate::MonthAlphaToken (class)">MonthAlphaToken</a></span>, <span class='object_link'><a href="NumberToken.html" title="Emendate::NumberToken (class)">NumberToken</a></span>, <span class='object_link'><a href="SeasonAlphaToken.html" title="Emendate::SeasonAlphaToken (class)">SeasonAlphaToken</a></span></p>
 </div>
-
-  
-    <h2>
-      Constant Summary
-      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
-    </h2>
-
-    <dl class="constants">
-      
-        <dt id="COLLAPSIBLE_TOKEN_TYPES-constant" class="">COLLAPSIBLE_TOKEN_TYPES =
-          
-        </dt>
-        <dd><pre class="code"><span class='qsymbols_beg'>%i[</span><span class='tstring_content'>space</span><span class='words_sep'> </span><span class='tstring_content'>single_dot</span><span class='words_sep'> </span><span class='tstring_content'>standalone_zero</span><span class='tstring_end'>]</span></span></pre></dd>
-      
-        <dt id="DATE_PART_TOKEN_TYPES-constant" class="">DATE_PART_TOKEN_TYPES =
-          
-        </dt>
-        <dd><pre class="code"><span class='qsymbols_beg'>%i[</span><span class='tstring_content'>number1or2</span><span class='words_sep'> </span><span class='tstring_content'>number3</span><span class='words_sep'> </span><span class='tstring_content'>number4</span><span class='words_sep'> </span><span class='tstring_content'>number6</span><span class='words_sep'> </span><span class='tstring_content'>number8</span><span class='words_sep'> </span><span class='tstring_content'>s</span><span class='words_sep'> </span><span class='tstring_content'>century</span><span class='words_sep'>
-</span><span class='tstring_content'>uncertainty_digits</span><span class='words_sep'> </span><span class='tstring_content'>era</span><span class='words_sep'>
-</span><span class='tstring_content'>number_month</span><span class='words_sep'> </span><span class='tstring_content'>month_alpha</span><span class='words_sep'> </span><span class='tstring_content'>month_abbr_alpha</span><span class='tstring_end'>]</span></span></pre></dd>
-      
-    </dl>
-  
 
 
 
@@ -173,11 +150,6 @@
 
 
 
-  
-  
-  <h3 class="inherited">Attributes inherited from <span class='object_link'><a href="Segment.html" title="Emendate::Segment (class)">Segment</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Segment.html#certainty-instance_method" title="Emendate::Segment#certainty (method)">#certainty</a></span>, <span class='object_link'><a href="Segment.html#lexeme-instance_method" title="Emendate::Segment#lexeme (method)">#lexeme</a></span>, <span class='object_link'><a href="Segment.html#literal-instance_method" title="Emendate::Segment#literal (method)">#literal</a></span>, <span class='object_link'><a href="Segment.html#type-instance_method" title="Emendate::Segment#type (method)">#type</a></span></p>
-
 
   
     <h2>
@@ -190,7 +162,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#collapsible%3F-instance_method" title="#collapsible? (instance method)">#<strong>collapsible?</strong>  &#x21d2; Boolean </a>
+      <a href="#col-instance_method" title="#col (instance method)">#<strong>col</strong>  &#x21d2; Object </a>
     
 
     
@@ -212,7 +184,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#date_part%3F-instance_method" title="#date_part? (instance method)">#<strong>date_part?</strong>  &#x21d2; Boolean </a>
+      <a href="#length-instance_method" title="#length (instance method)">#<strong>length</strong>  &#x21d2; Object </a>
     
 
     
@@ -237,22 +209,6 @@
 
   
   
-  
-  
-  
-  
-  
-  
-  
-  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="Segment.html" title="Emendate::Segment (class)">Segment</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Segment.html#add_certainty-instance_method" title="Emendate::Segment#add_certainty (method)">#add_certainty</a></span>, <span class='object_link'><a href="Segment.html#date_type%3F-instance_method" title="Emendate::Segment#date_type? (method)">#date_type?</a></span>, <span class='object_link'><a href="Segment.html#initialize-instance_method" title="Emendate::Segment#initialize (method)">#initialize</a></span>, <span class='object_link'><a href="Segment.html#processed%3F-instance_method" title="Emendate::Segment#processed? (method)">#processed?</a></span>, <span class='object_link'><a href="Segment.html#segment%3F-instance_method" title="Emendate::Segment#segment? (method)">#segment?</a></span>, <span class='object_link'><a href="Segment.html#to_s-instance_method" title="Emendate::Segment#to_s (method)">#to_s</a></span></p>
-<div id="constructor_details" class="method_details_list">
-  <h2>Constructor Details</h2>
-  
-    <p class="notice">This class inherits a constructor from <span class='object_link'><a href="Segment.html#initialize-instance_method" title="Emendate::Segment#initialize (method)">Emendate::Segment</a></span></p>
-  
-</div>
-
   <div id="instance_attr_details" class="attr_details">
     <h2>Instance Attribute Details</h2>
     
@@ -284,12 +240,12 @@
       <pre class="lines">
 
 
+9
 10
-11
-12</pre>
+11</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment/token.rb', line 10</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment/token.rb', line 9</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_location'>location</span>
   <span class='ivar'>@location</span>
@@ -307,51 +263,33 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="collapsible?-instance_method">
+  <h3 class="signature first" id="col-instance_method">
   
-    #<strong>collapsible?</strong>  &#x21d2; <tt>Boolean</tt> 
-  
-
+    #<strong>col</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
-</h3><div class="docstring">
-  <div class="discussion">
-    
 
-  </div>
-</div>
-<div class="tags">
   
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-19
-20
-21</pre>
+11
+12
+13
+14
+15</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment/token.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment/token.rb', line 11</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_collapsible?'>collapsible?</span>
-  <span class='const'><span class='object_link'><a href="#COLLAPSIBLE_TOKEN_TYPES-constant" title="Emendate::Token::COLLAPSIBLE_TOKEN_TYPES (constant)">COLLAPSIBLE_TOKEN_TYPES</a></span></span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_col'>col</span>
+  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_location'>location</span>
+
+  <span class='id identifier rubyid_location'>location</span><span class='period'>.</span><span class='id identifier rubyid_col'>col</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -359,51 +297,33 @@
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="date_part?-instance_method">
+  <h3 class="signature " id="length-instance_method">
   
-    #<strong>date_part?</strong>  &#x21d2; <tt>Boolean</tt> 
-  
-
+    #<strong>length</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
-</h3><div class="docstring">
-  <div class="discussion">
-    
 
-  </div>
-</div>
-<div class="tags">
   
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-23
-24
-25</pre>
+17
+18
+19
+20
+21</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment/token.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment/token.rb', line 17</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_date_part?'>date_part?</span>
-  <span class='const'><span class='object_link'><a href="#DATE_PART_TOKEN_TYPES-constant" title="Emendate::Token::DATE_PART_TOKEN_TYPES (constant)">DATE_PART_TOKEN_TYPES</a></span></span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_length'>length</span>
+  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_location'>location</span>
+
+  <span class='id identifier rubyid_location'>location</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -415,7 +335,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Dec  4 23:54:21 2023 by
+  Generated on Sat Jan 13 00:44:30 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

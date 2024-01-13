@@ -99,7 +99,20 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Final handling tokens that are not part of actual date types.</p>
 
+<p>Initially, this only includes :date_separator tokens. If the whole lexeme is needed at this stage, it should be accessed from :orig_string on the result segment set. The lexeme of each date type should contain only the orig_string part that expresses that date.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
 
@@ -225,14 +238,14 @@
       <pre class="lines">
 
 
-13
-14
-15
-16
-17</pre>
+19
+20
+21
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/token_cleaner.rb', line 13</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/token_cleaner.rb', line 19</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
   <span class='ivar'>@working</span> <span class='op'>=</span> <span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
@@ -266,15 +279,15 @@
       <pre class="lines">
 
 
-8
-9
-10</pre>
+14
+15
+16</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/token_cleaner.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/token_cleaner.rb', line 14</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='op'>...</span><span class='rparen'>)</span>
-  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>...</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
+  <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>...</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -302,13 +315,13 @@
       <pre class="lines">
 
 
-19
-20
-21
-22</pre>
+25
+26
+27
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/token_cleaner.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/token_cleaner.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span>
   <span class='id identifier rubyid_has_date_separator?'>has_date_separator?</span> <span class='op'>?</span> <span class='id identifier rubyid_handle_separator'>handle_separator</span> <span class='op'>:</span> <span class='id identifier rubyid_passthrough_all'>passthrough_all</span>
@@ -324,7 +337,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Dec  4 23:54:21 2023 by
+  Generated on Sat Jan 13 00:44:30 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

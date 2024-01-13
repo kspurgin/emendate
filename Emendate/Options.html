@@ -104,8 +104,6 @@
     
 <p>To add or update an option there are several places to edit:</p>
 <ul><li>
-<p>#defaults in this file – used to reset to defaults without restarting application</p>
-</li><li>
 <p>Emendate::OptionsContract – used to validate configs</p>
 </li><li>
 <p>Emendate (lib/emendate.rb) – register the options with dry-configurable</p>
@@ -279,6 +277,7 @@
       <pre class="lines">
 
 
+17
 18
 19
 20
@@ -290,11 +289,10 @@
 26
 27
 28
-29
-30</pre>
+29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/options.rb', line 18</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/options.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_opthash'>opthash</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>if</span> <span class='id identifier rubyid_opthash'>opthash</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
@@ -347,12 +345,12 @@
       <pre class="lines">
 
 
+11
 12
-13
-14</pre>
+13</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/options.rb', line 12</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/options.rb', line 11</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_options'>options</span>
   <span class='ivar'>@options</span>
@@ -384,12 +382,12 @@
       <pre class="lines">
 
 
+13
 14
-15
-16</pre>
+15</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/options.rb', line 14</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/options.rb', line 13</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_list'>list</span>
   <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_config'>config</span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_opt'>opt</span><span class='comma'>,</span> <span class='id identifier rubyid_val'>val</span><span class='op'>|</span> <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_opt'>opt</span><span class='embexpr_end'>}</span><span class='tstring_content'>: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_val'>val</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
@@ -420,13 +418,13 @@
       <pre class="lines">
 
 
+31
 32
 33
-34
-35</pre>
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/options.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/options.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_opthash'>opthash</span><span class='rparen'>)</span>
   <span class='ivar'>@options</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_opthash'>opthash</span><span class='rparen'>)</span>
@@ -442,7 +440,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Dec  4 23:54:21 2023 by
+  Generated on Sat Jan 13 00:44:30 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

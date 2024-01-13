@@ -212,7 +212,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#one_of_range_set-instance_method" title="#one_of_range_set (instance method)">#<strong>one_of_range_set</strong>  &#x21d2; Object </a>
+      <a href="#one_of_set-instance_method" title="#one_of_set (instance method)">#<strong>one_of_set</strong>  &#x21d2; Object </a>
     
 
     
@@ -263,7 +263,7 @@
       <pre class="code"><span class="info file"># File 'lib/emendate/translators/edtf.rb', line 15</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_approximate'>approximate</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_base'>base</span><span class='embexpr_end'>}</span><span class='tstring_content'>~</span><span class='tstring_end'>&quot;</span></span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_qualified'>qualified</span><span class='embexpr_end'>}</span><span class='tstring_content'>~</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -293,7 +293,7 @@
       <pre class="code"><span class="info file"># File 'lib/emendate/translators/edtf.rb', line 19</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_approximate_and_uncertain'>approximate_and_uncertain</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_base'>base</span><span class='embexpr_end'>}</span><span class='tstring_content'>%</span><span class='tstring_end'>&quot;</span></span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_qualified'>qualified</span><span class='embexpr_end'>}</span><span class='tstring_content'>%</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -361,9 +361,9 @@
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="one_of_range_set-instance_method">
+  <h3 class="signature " id="one_of_set-instance_method">
   
-    #<strong>one_of_range_set</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>one_of_set</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -382,8 +382,8 @@
     <td>
       <pre class="code"><span class="info file"># File 'lib/emendate/translators/edtf.rb', line 23</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_one_of_range_set'>one_of_range_set</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>[</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_base'>base</span><span class='embexpr_end'>}</span><span class='tstring_content'>]</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>def</span> <span class='id identifier rubyid_one_of_set'>one_of_set</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>[</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_qualified'>qualified</span><span class='embexpr_end'>}</span><span class='tstring_content'>]</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -395,7 +395,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Dec  4 23:54:21 2023 by
+  Generated on Sat Jan 13 00:44:30 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

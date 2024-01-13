@@ -490,7 +490,7 @@
   <span class='ivar'>@orig_string</span> <span class='op'>=</span> <span class='id identifier rubyid_string'>string</span>
   <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Options.html" title="Emendate::Options (class)">Options</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Options.html#initialize-instance_method" title="Emendate::Options#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
   <span class='ivar'>@history</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>initialized:</span> <span class='id identifier rubyid_orig_string'>orig_string</span> <span class='rbrace'>}</span>
-  <span class='ivar'>@tokens</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SegmentSets.html" title="Emendate::SegmentSets (module)">SegmentSets</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SegmentSets/TokenSet.html" title="Emendate::SegmentSets::TokenSet (class)">TokenSet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="SegmentSets/SegmentSet.html#initialize-instance_method" title="Emendate::SegmentSets::SegmentSet#initialize (method)">new</a></span></span><span class='lparen'>(</span>
+  <span class='ivar'>@tokens</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SegmentSets.html" title="Emendate::SegmentSets (module)">SegmentSets</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SegmentSets/TokenSet.html" title="Emendate::SegmentSets::TokenSet (class)">TokenSet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
     <span class='label'>string:</span> <span class='id identifier rubyid_orig_string'>orig_string</span>
   <span class='rparen'>)</span>
   <span class='ivar'>@errors</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -935,7 +935,7 @@
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__dates_segmented'>_dates_segmented</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:dates_segmented</span><span class='comma'>,</span>
-    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="DateSegmenter.html" title="Emendate::DateSegmenter (class)">DateSegmenter</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="DateSegmenter.html#call-class_method" title="Emendate::DateSegmenter.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'>DateSegmenter</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__ranges_indicated'>_ranges_indicated</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:ranges_indicated</span><span class='comma'>,</span>
@@ -1086,7 +1086,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Dec  4 23:54:22 2023 by
+  Generated on Sat Jan 13 00:44:30 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

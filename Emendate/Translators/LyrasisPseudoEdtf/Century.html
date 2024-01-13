@@ -101,41 +101,99 @@
   
 </div>
 
-<h2>Overview</h2><div class="docstring">
-  <div class="discussion">
+
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
     
-<p>Lyrasis Pseudo-EDTF translator for century</p>
+      <a href="#preprocess-instance_method" title="#preprocess (instance method)">#<strong>preprocess</strong>  &#x21d2; Object </a>
+    
 
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-
-
-
-
-
-
-
+    
+  </span>
   
   
   
   
   
   
-  <h2>Method Summary</h2>
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="../Abstract.html" title="Emendate::Translators::Abstract (class)">Abstract</a></span></h3>
   <p class="inherited"><span class='object_link'><a href="../Abstract.html#translate-instance_method" title="Emendate::Translators::Abstract#translate (method)">#translate</a></span></p>
 
 
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="preprocess-instance_method">
+  
+    #<strong>preprocess</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+9
+10
+11</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/translators/lyrasis_pseudo_edtf/century.rb', line 9</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_preprocess'>preprocess</span>
+  <span class='id identifier rubyid_pdate'>pdate</span><span class='period'>.</span><span class='id identifier rubyid_certainty'>certainty</span> <span class='op'>&lt;&lt;</span> <span class='symbol'>:one_of_set</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
 </div>
 
       <div id="footer">
-  Generated on Mon Dec  4 23:54:22 2023 by
+  Generated on Sat Jan 13 00:44:31 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>
