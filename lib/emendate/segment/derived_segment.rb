@@ -3,13 +3,11 @@
 require "forwardable"
 
 module Emendate
-  # rubocop:todo Layout/LineLength
-  # Mixin providing the logic for deriving one segment from one or more other segments
-  # rubocop:enable Layout/LineLength
-  # rubocop:todo Layout/LineLength
-  # Segments using this module will call `derive(opts)` from their `post_initialize` method
-  # rubocop:enable Layout/LineLength
-  # Used by: DerivedToken, DatePart
+  # Mixin providing the logic for deriving one segment from one or
+  # more other segments
+  #
+  # Segments using this module will call `derive(opts)` from their
+  # `post_initialize` method
   module DerivedSegment
     def sources
       @sources
