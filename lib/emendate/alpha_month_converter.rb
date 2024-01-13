@@ -41,7 +41,7 @@ module Emendate
     attr_reader :result
 
     def convert_month(token)
-      Emendate::DatePart.new(type: :month,
+      Emendate::DerivedToken.new(type: :month,
         lexeme: token.lexeme,
         literal: token.literal,
         sources: [token])
@@ -61,7 +61,7 @@ module Emendate
 
     def season_token_with_literal(token)
       literal = get_season_literal(token)
-      Emendate::DatePart.new(type: :season,
+      Emendate::DerivedToken.new(type: :season,
         lexeme: token.lexeme,
         literal: literal,
         sources: [token])

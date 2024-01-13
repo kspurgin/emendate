@@ -140,7 +140,7 @@ module Emendate
 
     def transform_year(part)
       expanded = expand_year(part)
-      yr = Emendate::DatePart.new(type: :year,
+      yr = Emendate::DerivedToken.new(type: :year,
         literal: expanded.to_i,
         sources: [part])
       replace_x_with_new(x: part, new: yr)
