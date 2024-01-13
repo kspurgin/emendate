@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "emendate/segment/token"
+require "emendate/segment/segment"
 
 module Emendate
-  class SeasonAlphaToken < Token
+  class SeasonAlphaToken < Segment
     private
 
     LITERALS = {

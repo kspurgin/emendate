@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "emendate/segment/token"
+require "emendate/segment/segment"
 require "emendate/date_utils"
 
 module Emendate
-  class NumberToken < Token
+  class NumberToken < Segment
     include DateUtils
 
     attr_reader :digits
