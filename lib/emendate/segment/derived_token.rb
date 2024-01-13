@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "emendate/segment/token"
+require "emendate/segment/segment"
 require "emendate/segment/derived_segment"
 
 module Emendate
@@ -9,7 +9,7 @@ module Emendate
   # rubocop:todo Layout/LineLength
   # Emendate::DerivedToken.new(type: :token_type, sources: [array of source tokens])
   # rubocop:enable Layout/LineLength
-  class DerivedToken < Emendate::Token
+  class DerivedToken < Emendate::Segment
     include DerivedSegment
 
     private

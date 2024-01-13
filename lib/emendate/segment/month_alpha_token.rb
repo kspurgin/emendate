@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "emendate/segment/token"
+require "emendate/segment/segment"
 require "emendate/date_utils"
 
 module Emendate
-  class MonthAlphaToken < Token
+  class MonthAlphaToken < Segment
     include DateUtils
 
     private
