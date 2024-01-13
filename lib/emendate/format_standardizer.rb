@@ -51,7 +51,7 @@ module Emendate
 
     private
 
-    attr_reader :result, :standardizable
+    attr_reader :result
 
     def determine_standardizer
       fms = full_match_standardizers
@@ -417,7 +417,7 @@ module Emendate
       case result.type_string
       # rubocop:todo Layout/LineLength
       when /.*letter_t number1or2 colon number1or2 colon number1or2 hyphen number1or2.*/
-      # rubocop:enable Layout/LineLength
+        # rubocop:enable Layout/LineLength
         result.extract(
           %i[letter_t number1or2 colon number1or2 colon number1or2 hyphen
             number1or2]
@@ -428,7 +428,7 @@ module Emendate
         ).segments
       # rubocop:todo Layout/LineLength
       when /.*letter_t number1or2 colon number1or2 colon number1or2 plus number1or2 colon number1or2.*/
-      # rubocop:enable Layout/LineLength
+        # rubocop:enable Layout/LineLength
         pattern = %i[letter_t number1or2 colon number1or2 colon number1or2 plus
           number1or2 colon number1or2]
         result.extract(pattern).segments
