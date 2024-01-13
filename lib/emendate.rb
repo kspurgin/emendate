@@ -125,6 +125,9 @@ module Emendate
     prepped_for(string: str, target: Emendate::UntokenizableTagger)
   end
 
+  # @param str [String] to translate
+  # @param options [Hash] of {Emendate::Options}
+  # @return [Translation]
   def translate(str, options = {})
     pm = Emendate::ProcessingManager.new(str, options)
     pm.call
