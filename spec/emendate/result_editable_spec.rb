@@ -2,17 +2,17 @@
 
 require "spec_helper"
 
-RSpec.describe Emendate::ResultEditable do
-  class Editable
-    include Emendate::ResultEditable
+class Editable
+  include Emendate::ResultEditable
 
-    attr_reader :result
+  attr_reader :result
 
-    def initialize(tokens)
-      @result = tokens
-    end
+  def initialize(tokens)
+    @result = tokens
   end
+end
 
+RSpec.describe Emendate::ResultEditable do
   describe "#collapse_segments_backward" do
     it "collapses as expected" do
       tokens = Emendate.prepped_for(

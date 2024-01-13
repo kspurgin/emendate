@@ -2,17 +2,17 @@
 
 require "spec_helper"
 
-RSpec.describe Emendate::DerivedSegment do
-  class Derivable < Emendate::Token
-    include Emendate::DerivedSegment
+class Derivable < Emendate::Token
+  include Emendate::DerivedSegment
 
-    private
+  private
 
-    def post_initialize(opts)
-      derive(opts)
-    end
+  def post_initialize(opts)
+    derive(opts)
   end
+end
 
+RSpec.describe Emendate::DerivedSegment do
   let(:derived_type) { :newtype }
   let(:klass) { Derivable.new(type: derived_type, sources: sources) }
 

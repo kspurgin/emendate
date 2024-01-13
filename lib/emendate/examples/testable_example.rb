@@ -24,17 +24,17 @@ module Emendate
       end
 
       def add_error(testname, err)
-        errors.key?(testname) ? @errors[testname] =
-                                  # rubocop:todo Layout/LineLength
-                                  "#{errors[testname]}|#{err}" : @errors[testname] =
-                                  # rubocop:enable Layout/LineLength
-                                                                   err
+        @errors[testname] = formatted_error(testname, err)
+      end
+
+      def formatted_error(testname, err)
+        return err unless errors.key?(testname)
+
+        "#{errors[testname]}|#{err}"
       end
 
       def add_test_result(testname, result)
-        test_results.key?(testname) ? @test_results[testname] =
-                                        result : @test_results[testname] =
-                                                   result
+        @test_results[testname] = result
       end
 
       def all_tags

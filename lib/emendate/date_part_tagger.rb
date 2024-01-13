@@ -189,14 +189,9 @@ module Emendate
 
       num1, num2, yr = result.extract(%i[number1or2 number1or2 year]).segments
 
-      begin
-        res = Emendate::MonthDayAnalyzer.call(num1, num2, yr)
-      rescue Emendate::MonthDayError => e
-        raise e
-      else
-        replace_x_with_date_part_type(x: res.month, date_part_type: :month)
-        replace_x_with_date_part_type(x: res.day, date_part_type: :day)
-      end
+      res = Emendate::MonthDayAnalyzer.call(num1, num2, yr)
+      replace_x_with_date_part_type(x: res.month, date_part_type: :month)
+      replace_x_with_date_part_type(x: res.day, date_part_type: :day)
       res.warnings.each { |warn| result.warnings << warn }
     end
 
@@ -215,11 +210,8 @@ module Emendate
     def tag_numeric_month_day_short_year
       to_convert = result.extract(%i[number1or2 hyphen number1or2 hyphen
         number1or2])
-      begin
-        analyzer = Emendate::AllShortMdyAnalyzer.call(to_convert)
-      rescue Emendate::Error => e
-        raise(e)
-      end
+
+      analyzer = Emendate::AllShortMdyAnalyzer.call(to_convert)
 
       analyzer.warnings.each { |warn| result.warnings << warn }
       replace_segments_with_new(segments: to_convert.segments,

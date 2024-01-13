@@ -76,10 +76,8 @@ module Emendate
       # If additional alphabetic seasons are added, make sure to
       #   update the mapping to literals in Segments::SeasonAlphaToken
       /^(winter|spring|summer|fall|autumn)/i => :season,
-      # rubocop:todo Layout/LineLength
-      /^(date unknown|unknown date|no date|not dated|undated|unknown|unk|n\.? ?d\.?)$/i =>
-      # rubocop:enable Layout/LineLength
-        :unknown_date,
+      /^(date\sunknown|unknown\sdate|no\sdate|not\sdated|undated|
+      unknown|unk|n\.?\s?d\.?)$/ix => :unknown_date,
       Regexp.new(ordinals, "i") => :ordinal_indicator,
       /^(u+|x+)/i => :uncertainty_digits
     }
