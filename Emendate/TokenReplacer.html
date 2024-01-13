@@ -333,8 +333,8 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span>
   <span class='kw'>return</span> <span class='const'>Success</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_replaceable?'>replaceable?</span>
 
-  <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_token'>token</span><span class='op'>|</span> <span class='id identifier rubyid_replacements'>replacements</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span><span class='lparen'>(</span><span class='id identifier rubyid_token'>token</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
-        <span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_source'>source</span><span class='op'>|</span>
+  <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_token'>token</span><span class='op'>|</span> <span class='id identifier rubyid_replacements'>replacements</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span><span class='lparen'>(</span><span class='id identifier rubyid_token'>token</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_source'>source</span><span class='op'>|</span>
     <span class='id identifier rubyid_replace_x_with_derived_new_type'>replace_x_with_derived_new_type</span><span class='lparen'>(</span>
       <span class='label'>x:</span> <span class='id identifier rubyid_source'>source</span><span class='comma'>,</span>
       <span class='label'>type:</span> <span class='id identifier rubyid_replacements'>replacements</span><span class='lbracket'>[</span><span class='id identifier rubyid_source'>source</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='rbracket'>]</span>
@@ -352,7 +352,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jan 13 00:44:30 2024 by
+  Generated on Sat Jan 13 23:41:50 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

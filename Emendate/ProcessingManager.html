@@ -196,35 +196,6 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#state-instance_method" title="#state (instance method)">#<strong>state</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute state.</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#tokens-instance_method" title="#tokens (instance method)">#<strong>tokens</strong>  &#x21d2; Object </a>
     
 
@@ -419,6 +390,28 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#state-instance_method" title="#state (instance method)">#<strong>state</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#to_s-instance_method" title="#to_s (instance method)">#<strong>to_s</strong>  &#x21d2; Object </a>
     
 
@@ -489,7 +482,7 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_string'>string</span><span class='comma'>,</span> <span class='id identifier rubyid_options'>options</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@orig_string</span> <span class='op'>=</span> <span class='id identifier rubyid_string'>string</span>
   <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Options.html" title="Emendate::Options (class)">Options</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Options.html#initialize-instance_method" title="Emendate::Options#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
-  <span class='ivar'>@history</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>initialized:</span> <span class='id identifier rubyid_orig_string'>orig_string</span> <span class='rbrace'>}</span>
+  <span class='ivar'>@history</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>initialized:</span> <span class='id identifier rubyid_orig_string'>orig_string</span><span class='rbrace'>}</span>
   <span class='ivar'>@tokens</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SegmentSets.html" title="Emendate::SegmentSets (module)">SegmentSets</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SegmentSets/TokenSet.html" title="Emendate::SegmentSets::TokenSet (class)">TokenSet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
     <span class='label'>string:</span> <span class='id identifier rubyid_orig_string'>orig_string</span>
   <span class='rparen'>)</span>
@@ -629,49 +622,6 @@
 
 <span class='kw'>def</span> <span class='id identifier rubyid_orig_string'>orig_string</span>
   <span class='ivar'>@orig_string</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="state-instance_method">
-  
-    #<strong>state</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the value of attribute state.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-16
-17
-18</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/processing_manager.rb', line 16</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_state'>state</span>
-  <span class='ivar'>@state</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -891,59 +841,59 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span>
   <span class='id identifier rubyid__lexed'>_lexed</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:lexed</span><span class='comma'>,</span>
-    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Lexer.html" title="Emendate::Lexer (class)">Lexer</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="Lexer.html#call-class_method" title="Emendate::Lexer.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Lexer.html" title="Emendate::Lexer (class)">Lexer</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="Lexer.html#call-class_method" title="Emendate::Lexer.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__untokenizable_tagged'>_untokenizable_tagged</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:untokenizable_tagged</span><span class='comma'>,</span>
-    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="UntokenizableTagger.html" title="Emendate::UntokenizableTagger (class)">UntokenizableTagger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="UntokenizableTagger.html#call-class_method" title="Emendate::UntokenizableTagger.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="UntokenizableTagger.html" title="Emendate::UntokenizableTagger (class)">UntokenizableTagger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="UntokenizableTagger.html#call-class_method" title="Emendate::UntokenizableTagger.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__unprocessable_tagged'>_unprocessable_tagged</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:unprocessable_tagged</span><span class='comma'>,</span>
-    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="UnprocessableTagger.html" title="Emendate::UnprocessableTagger (class)">UnprocessableTagger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="UnprocessableTagger.html#call-class_method" title="Emendate::UnprocessableTagger.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="UnprocessableTagger.html" title="Emendate::UnprocessableTagger (class)">UnprocessableTagger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="UnprocessableTagger.html#call-class_method" title="Emendate::UnprocessableTagger.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__known_unknown_tagged'>_known_unknown_tagged</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:known_unknown_tagged</span><span class='comma'>,</span>
-    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="KnownUnknownTagger.html" title="Emendate::KnownUnknownTagger (class)">KnownUnknownTagger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="KnownUnknownTagger.html#call-class_method" title="Emendate::KnownUnknownTagger.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="KnownUnknownTagger.html" title="Emendate::KnownUnknownTagger (class)">KnownUnknownTagger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="KnownUnknownTagger.html#call-class_method" title="Emendate::KnownUnknownTagger.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__tokens_replaced'>_tokens_replaced</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:tokens_replaced</span><span class='comma'>,</span>
-    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="TokenReplacer.html" title="Emendate::TokenReplacer (class)">TokenReplacer</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="TokenReplacer.html#call-class_method" title="Emendate::TokenReplacer.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="TokenReplacer.html" title="Emendate::TokenReplacer (class)">TokenReplacer</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="TokenReplacer.html#call-class_method" title="Emendate::TokenReplacer.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__tokens_collapsed'>_tokens_collapsed</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:tokens_collapsed</span><span class='comma'>,</span>
-    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="TokenCollapser.html" title="Emendate::TokenCollapser (class)">TokenCollapser</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="TokenCollapser.html#call-class_method" title="Emendate::TokenCollapser.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="TokenCollapser.html" title="Emendate::TokenCollapser (class)">TokenCollapser</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="TokenCollapser.html#call-class_method" title="Emendate::TokenCollapser.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__months_converted'>_months_converted</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:months_converted</span><span class='comma'>,</span>
-    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="AlphaMonthConverter.html" title="Emendate::AlphaMonthConverter (class)">AlphaMonthConverter</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="AlphaMonthConverter.html#call-class_method" title="Emendate::AlphaMonthConverter.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="AlphaMonthConverter.html" title="Emendate::AlphaMonthConverter (class)">AlphaMonthConverter</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="AlphaMonthConverter.html#call-class_method" title="Emendate::AlphaMonthConverter.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__ordinals_translated'>_ordinals_translated</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:ordinals_translated</span><span class='comma'>,</span>
-    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="OrdinalTranslator.html" title="Emendate::OrdinalTranslator (class)">OrdinalTranslator</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="OrdinalTranslator.html#call-class_method" title="Emendate::OrdinalTranslator.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="OrdinalTranslator.html" title="Emendate::OrdinalTranslator (class)">OrdinalTranslator</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="OrdinalTranslator.html#call-class_method" title="Emendate::OrdinalTranslator.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__certainty_checked'>_certainty_checked</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:certainty_checked</span><span class='comma'>,</span>
-    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="CertaintyChecker.html" title="Emendate::CertaintyChecker (class)">CertaintyChecker</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="CertaintyChecker.html#call-class_method" title="Emendate::CertaintyChecker.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="CertaintyChecker.html" title="Emendate::CertaintyChecker (class)">CertaintyChecker</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="CertaintyChecker.html#call-class_method" title="Emendate::CertaintyChecker.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__format_standardized'>_format_standardized</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:format_standardized</span><span class='comma'>,</span>
-    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="FormatStandardizer.html" title="Emendate::FormatStandardizer (class)">FormatStandardizer</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="FormatStandardizer.html#call-class_method" title="Emendate::FormatStandardizer.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="FormatStandardizer.html" title="Emendate::FormatStandardizer (class)">FormatStandardizer</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="FormatStandardizer.html#call-class_method" title="Emendate::FormatStandardizer.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__date_parts_tagged'>_date_parts_tagged</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:date_parts_tagged</span><span class='comma'>,</span>
-    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="DatePartTagger.html" title="Emendate::DatePartTagger (class)">DatePartTagger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="DatePartTagger.html#call-class_method" title="Emendate::DatePartTagger.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="DatePartTagger.html" title="Emendate::DatePartTagger (class)">DatePartTagger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="DatePartTagger.html#call-class_method" title="Emendate::DatePartTagger.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__dates_segmented'>_dates_segmented</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:dates_segmented</span><span class='comma'>,</span>
-    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'>DateSegmenter</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'>DateSegmenter</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__ranges_indicated'>_ranges_indicated</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:ranges_indicated</span><span class='comma'>,</span>
-    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RangeIndicator.html" title="Emendate::RangeIndicator (class)">RangeIndicator</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="RangeIndicator.html#call-class_method" title="Emendate::RangeIndicator.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="RangeIndicator.html" title="Emendate::RangeIndicator (class)">RangeIndicator</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="RangeIndicator.html#call-class_method" title="Emendate::RangeIndicator.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__cleaned'>_cleaned</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_handle_step'>handle_step</span><span class='lparen'>(</span>
     <span class='label'>state:</span> <span class='symbol'>:tokens_cleaned</span><span class='comma'>,</span>
-    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span><span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="TokenCleaner.html" title="Emendate::TokenCleaner (class)">TokenCleaner</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="TokenCleaner.html#call-class_method" title="Emendate::TokenCleaner.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='label'>proc:</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="TokenCleaner.html" title="Emendate::TokenCleaner (class)">TokenCleaner</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="TokenCleaner.html#call-class_method" title="Emendate::TokenCleaner.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid__final_checked'>_final_checked</span> <span class='op'>=</span> <span class='kw'>yield</span> <span class='id identifier rubyid_final_check'>final_check</span>
 
@@ -993,13 +943,13 @@
   <span class='id identifier rubyid_history'>history</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_state'>state</span><span class='comma'>,</span> <span class='id identifier rubyid_val'>val</span><span class='op'>|</span>
     <span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_state'>state</span>
     <span class='id identifier rubyid_outval'>outval</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span>
-               <span class='id identifier rubyid_val'>val</span>
-             <span class='kw'>elsif</span> <span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:segments</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
-               <span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_norm'>norm</span>
-             <span class='kw'>elsif</span> <span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:types</span><span class='rparen'>)</span>
-               <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>types: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_types'>types</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_content'>\n  </span><span class='tstring_end'>&quot;</span></span> \
-                 <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>certainty: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_certainty'>certainty</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
-             <span class='kw'>end</span>
+      <span class='id identifier rubyid_val'>val</span>
+    <span class='kw'>elsif</span> <span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:segments</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+      <span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_norm'>norm</span>
+    <span class='kw'>elsif</span> <span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:types</span><span class='rparen'>)</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>types: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_types'>types</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_content'>\n  </span><span class='tstring_end'>&quot;</span></span>\
+        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>certainty: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_val'>val</span><span class='period'>.</span><span class='id identifier rubyid_certainty'>certainty</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
     <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_outval'>outval</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_outval'>outval</span>
   <span class='kw'>end</span>
   <span class='kw'>nil</span>
@@ -1033,6 +983,36 @@
 
 <span class='kw'>def</span> <span class='id identifier rubyid_result'>result</span>
   <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Result.html" title="Emendate::Result (class)">Result</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Result.html#initialize-instance_method" title="Emendate::Result#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="state-instance_method">
+  
+    #<strong>state</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+92
+93
+94</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/processing_manager.rb', line 92</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_state'>state</span>
+  <span class='id identifier rubyid_history'>history</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1086,7 +1066,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jan 13 00:44:30 2024 by
+  Generated on Sat Jan 13 23:41:50 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

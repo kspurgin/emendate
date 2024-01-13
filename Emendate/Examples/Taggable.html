@@ -188,16 +188,20 @@
 10
 11
 12
-13</pre>
+13
+14
+15</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/emendate/examples/taggable.rb', line 7</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_set_up_tags'>set_up_tags</span><span class='lparen'>(</span><span class='id identifier rubyid_data_sets'>data_sets</span><span class='comma'>,</span> <span class='id identifier rubyid_date_types'>date_types</span><span class='rparen'>)</span>
-  <span class='ivar'>@data_sets</span> <span class='op'>=</span> <span class='id identifier rubyid_data_sets'>data_sets</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-  <span class='ivar'>@date_types</span> <span class='op'>=</span> <span class='id identifier rubyid_date_types'>date_types</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='ivar'>@data_sets</span> <span class='op'>=</span> <span class='id identifier rubyid_data_sets'>data_sets</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>;</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='ivar'>@date_types</span> <span class='op'>=</span> <span class='id identifier rubyid_date_types'>date_types</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>;</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   <span class='qsymbols_beg'>%i[</span><span class='tstring_content'>data_sets</span><span class='words_sep'> </span><span class='tstring_content'>date_types</span><span class='tstring_end'>]</span></span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_tag'>tag</span><span class='op'>|</span>
-    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_define_method'>define_method</span><span class='lparen'>(</span><span class='id identifier rubyid_tag'>tag</span><span class='rparen'>)</span><span class='lbrace'>{</span> <span class='id identifier rubyid_instance_variable_get'>instance_variable_get</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>@</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_tag'>tag</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_define_method'>define_method</span><span class='lparen'>(</span><span class='id identifier rubyid_tag'>tag</span><span class='rparen'>)</span> <span class='kw'>do</span>
+      <span class='id identifier rubyid_instance_variable_get'>instance_variable_get</span><span class='lparen'>(</span><span class='symbol'>:&quot;@</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_tag'>tag</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -220,16 +224,20 @@
       <pre class="lines">
 
 
-15
-16
-17</pre>
+17
+18
+19
+20
+21</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/examples/taggable.rb', line 15</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/examples/taggable.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_tags_to_s'>tags_to_s</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(data_sets: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_data_sets'>data_sets</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>, date_types: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_date_types'>date_types</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
-<span class='kw'>end</span></pre>
+  <span class='comment'># rubocop:todo Layout/LineLength
+</span>  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(data_sets: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_data_sets'>data_sets</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>;</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>, date_types: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_date_types'>date_types</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>;</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span>
+  <span class='comment'># rubocop:enable Layout/LineLength
+</span><span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -240,7 +248,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jan 13 00:44:30 2024 by
+  Generated on Sat Jan 13 23:41:49 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

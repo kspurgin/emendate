@@ -390,6 +390,7 @@
       <pre class="lines">
 
 
+17
 18
 19
 20
@@ -406,27 +407,26 @@
 31
 32
 33
-34
-35</pre>
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 18</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_pm'>pm</span><span class='rparen'>)</span>
   <span class='ivar'>@pm</span> <span class='op'>=</span> <span class='id identifier rubyid_pm'>pm</span>
   <span class='ivar'>@original_string</span> <span class='op'>=</span> <span class='id identifier rubyid_pm'>pm</span><span class='period'>.</span><span class='id identifier rubyid_orig_string'>orig_string</span>
   <span class='ivar'>@errors</span> <span class='op'>=</span> <span class='id identifier rubyid_map_errors'>map_errors</span>
   <span class='ivar'>@warnings</span> <span class='op'>=</span> <span class='id identifier rubyid_pm'>pm</span><span class='period'>.</span><span class='id identifier rubyid_warnings'>warnings</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_pm'>pm</span><span class='period'>.</span><span class='id identifier rubyid_state'>state</span> <span class='op'>==</span> <span class='symbol'>:failed</span>
-    <span class='ivar'>@dates</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='ivar'>@dates</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='id identifier rubyid_pm'>pm</span><span class='period'>.</span><span class='id identifier rubyid_state'>state</span> <span class='op'>==</span> <span class='symbol'>:failed</span>
+    <span class='lbracket'>[</span><span class='rbracket'>]</span>
   <span class='kw'>else</span>
-    <span class='ivar'>@dates</span> <span class='op'>=</span> <span class='id identifier rubyid_pm'>pm</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_t'>t</span><span class='op'>|</span> <span class='id identifier rubyid_t'>t</span><span class='period'>.</span><span class='id identifier rubyid_date_type?'>date_type?</span> <span class='rbrace'>}</span>
+    <span class='id identifier rubyid_pm'>pm</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_t'>t</span><span class='op'>|</span> <span class='id identifier rubyid_t'>t</span><span class='period'>.</span><span class='id identifier rubyid_date_type?'>date_type?</span> <span class='rbrace'>}</span>
       <span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_t'>t</span><span class='op'>|</span>
         <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="ParsedDate.html" title="Emendate::ParsedDate (class)">ParsedDate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="ParsedDate.html#initialize-instance_method" title="Emendate::ParsedDate#initialize (method)">new</a></span></span><span class='lparen'>(</span>
-        <span class='label'>date:</span> <span class='id identifier rubyid_t'>t</span><span class='comma'>,</span>
-        <span class='label'>certainty:</span> <span class='id identifier rubyid_pm'>pm</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_certainty'>certainty</span><span class='comma'>,</span>
-        <span class='label'>orig:</span> <span class='id identifier rubyid_original_string'>original_string</span>
-      <span class='rparen'>)</span>
+          <span class='label'>date:</span> <span class='id identifier rubyid_t'>t</span><span class='comma'>,</span>
+          <span class='label'>certainty:</span> <span class='id identifier rubyid_pm'>pm</span><span class='period'>.</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_certainty'>certainty</span><span class='comma'>,</span>
+          <span class='label'>orig:</span> <span class='id identifier rubyid_original_string'>original_string</span>
+        <span class='rparen'>)</span>
       <span class='kw'>end</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
@@ -479,12 +479,12 @@
       <pre class="lines">
 
 
+14
 15
-16
-17</pre>
+16</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 15</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 14</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_dates'>dates</span>
   <span class='ivar'>@dates</span>
@@ -533,12 +533,12 @@
       <pre class="lines">
 
 
+10
 11
-12
-13</pre>
+12</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 11</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 10</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_errors'>errors</span>
   <span class='ivar'>@errors</span>
@@ -594,12 +594,12 @@
       <pre class="lines">
 
 
+8
 9
-10
-11</pre>
+10</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 9</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 8</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_original_string'>original_string</span>
   <span class='ivar'>@original_string</span>
@@ -648,12 +648,12 @@
       <pre class="lines">
 
 
+12
 13
-14
-15</pre>
+14</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 13</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 12</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_warnings'>warnings</span>
   <span class='ivar'>@warnings</span>
@@ -685,12 +685,12 @@
       <pre class="lines">
 
 
+36
 37
-38
-39</pre>
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 37</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 36</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_compile_date_info'>compile_date_info</span><span class='lparen'>(</span><span class='label'>method:</span><span class='comma'>,</span> <span class='label'>delim:</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_dates'>dates</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='id identifier rubyid_method'>method</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_delim'>delim</span><span class='rparen'>)</span>
@@ -715,12 +715,12 @@
       <pre class="lines">
 
 
+40
 41
-42
-43</pre>
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 40</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_date_count'>date_count</span>
   <span class='id identifier rubyid_dates'>dates</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span>
@@ -745,17 +745,17 @@
       <pre class="lines">
 
 
+44
 45
 46
 47
 48
 49
 50
-51
-52</pre>
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 44</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_h'>to_h</span>
   <span class='lbrace'>{</span>
@@ -785,12 +785,12 @@
       <pre class="lines">
 
 
+53
 54
-55
-56</pre>
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/result.rb', line 53</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_to_json'>to_json</span>
   <span class='id identifier rubyid_to_h'>to_h</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
@@ -805,7 +805,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jan 13 00:44:30 2024 by
+  Generated on Sat Jan 13 23:41:49 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

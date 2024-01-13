@@ -192,9 +192,9 @@
       <pre class="code"><span class="info file"># File 'lib/emendate/errors.rb', line 93</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_m'>m</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Using ambiguous MDY order </span><span class='tstring_end'>&#39;</span></span> \
-      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_ambiguous_month_day_year'>ambiguous_month_day_year</span><span class='embexpr_end'>}</span><span class='tstring_content'> results in invalid date </span><span class='tstring_end'>&quot;</span></span> \
-      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>for: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:lexeme</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>-</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id identifier rubyid_m'>m</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Using ambiguous MDY order </span><span class='tstring_end'>&quot;</span></span>\
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_ambiguous_month_day_year'>ambiguous_month_day_year</span><span class='embexpr_end'>}</span><span class='tstring_content'> results in invalid </span><span class='tstring_end'>&quot;</span></span>\
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>date for: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:lexeme</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
   <span class='kw'>super</span><span class='lparen'>(</span><span class='id identifier rubyid_m'>m</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -208,7 +208,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jan 13 00:44:30 2024 by
+  Generated on Sat Jan 13 23:41:49 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

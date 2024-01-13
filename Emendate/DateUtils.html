@@ -262,7 +262,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>determines whether the number following a year could be the end of a range beginning with that year 2020-10 – false, the 10 has to be October 2020-21 – true, the 21 could indicate 2021 as end of range, OR this could mean Spring 2020.</p>
+<p>rubocop:todo Layout/LineLength determines whether the number following a year could be the end of a range beginning with that year rubocop:enable Layout/LineLength 2020-10 – false, the 10 has to be October rubocop:todo Layout/LineLength 2020-21 – true, the 21 could indicate 2021 as end of range, OR this could mean Spring 2020 rubocop:enable Layout/LineLength.</p>
 </div></span>
   
 </li>
@@ -395,7 +395,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>rubocop:todo Layout/LineLength rubocop:enable Layout/LineLength.</p>
+</div></span>
   
 </li>
 
@@ -501,7 +503,7 @@
 
 <span class='kw'>def</span> <span class='id identifier rubyid_expand_shorter_digits'>expand_shorter_digits</span><span class='lparen'>(</span><span class='id identifier rubyid_year'>year</span><span class='comma'>,</span> <span class='id identifier rubyid_num'>num</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_year_s'>year_s</span> <span class='op'>=</span> <span class='id identifier rubyid_year'>year</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
-  <span class='id identifier rubyid_digits'>digits</span> <span class='op'>=</span> <span class='id identifier rubyid_num'>num</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_rjust'>rjust</span><span class='lparen'>(</span><span class='id identifier rubyid_num'>num</span><span class='period'>.</span><span class='id identifier rubyid_digits'>digits</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_digits'>digits</span> <span class='op'>=</span> <span class='id identifier rubyid_num'>num</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_rjust'>rjust</span><span class='lparen'>(</span><span class='id identifier rubyid_num'>num</span><span class='period'>.</span><span class='id identifier rubyid_digits'>digits</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>0</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   <span class='id identifier rubyid_diff'>diff</span> <span class='op'>=</span> <span class='id identifier rubyid_year_s'>year_s</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>-</span> <span class='id identifier rubyid_digits'>digits</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>-</span> <span class='int'>1</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_year_s'>year_s</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='id identifier rubyid_diff'>diff</span><span class='rbracket'>]</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_digits'>digits</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
@@ -831,16 +833,20 @@
 49
 50
 51
-52</pre>
+52
+53
+54</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_month_abbr_literal'>month_abbr_literal</span><span class='lparen'>(</span><span class='id identifier rubyid_month'>month</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_lookup'>lookup</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
-  <span class='const'>Date</span><span class='op'>::</span><span class='const'>ABBR_MONTHNAMES</span><span class='period'>.</span><span class='id identifier rubyid_compact'>compact</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:downcase</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each_with_index'>each_with_index</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_str'>str</span><span class='comma'>,</span> <span class='id identifier rubyid_i'>i</span><span class='op'>|</span> <span class='id identifier rubyid_lookup'>lookup</span><span class='lbracket'>[</span><span class='id identifier rubyid_str'>str</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_i'>i</span> <span class='op'>+</span> <span class='int'>1</span> <span class='rbrace'>}</span>
-  <span class='id identifier rubyid_lookup'>lookup</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>sept</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>9</span>
-  <span class='id identifier rubyid_lookup'>lookup</span><span class='lbracket'>[</span><span class='id identifier rubyid_month'>month</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_delete_suffix'>delete_suffix</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rbracket'>]</span>
+  <span class='const'>Date</span><span class='op'>::</span><span class='const'>ABBR_MONTHNAMES</span><span class='period'>.</span><span class='id identifier rubyid_compact'>compact</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:downcase</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each_with_index'>each_with_index</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_str'>str</span><span class='comma'>,</span> <span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
+    <span class='id identifier rubyid_lookup'>lookup</span><span class='lbracket'>[</span><span class='id identifier rubyid_str'>str</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_i'>i</span> <span class='op'>+</span> <span class='int'>1</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_lookup'>lookup</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>sept</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>9</span>
+  <span class='id identifier rubyid_lookup'>lookup</span><span class='lbracket'>[</span><span class='id identifier rubyid_month'>month</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_delete_suffix'>delete_suffix</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>.</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -904,15 +910,15 @@
       <pre class="lines">
 
 
-56
-57
-58</pre>
+58
+59
+60</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 58</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_month_literal'>month_literal</span><span class='lparen'>(</span><span class='id identifier rubyid_month'>month</span><span class='rparen'>)</span>
-  <span class='const'>Date</span><span class='op'>::</span><span class='const'>MONTHNAMES</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_mth'>mth</span><span class='op'>|</span> <span class='id identifier rubyid_mth'>mth</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span> <span class='kw'>if</span> <span class='id identifier rubyid_mth'>mth</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_index'>index</span><span class='lparen'>(</span><span class='id identifier rubyid_month'>month</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='rparen'>)</span>
+  <span class='const'>Date</span><span class='op'>::</span><span class='const'>MONTHNAMES</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_mth'>mth</span><span class='op'>|</span> <span class='id identifier rubyid_mth'>mth</span><span class='op'>&amp;.</span><span class='id identifier rubyid_downcase'>downcase</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_index'>index</span><span class='lparen'>(</span><span class='id identifier rubyid_month'>month</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -931,7 +937,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>determines whether the number following a year could be the end of a range beginning with that year 2020-10 – false, the 10 has to be October 2020-21 – true, the 21 could indicate 2021 as end of range, OR this could mean Spring 2020</p>
+<p>rubocop:todo Layout/LineLength determines whether the number following a year could be the end of a range beginning with that year rubocop:enable Layout/LineLength 2020-10 – false, the 10 has to be October rubocop:todo Layout/LineLength 2020-21 – true, the 21 could indicate 2021 as end of range, OR this could mean Spring 2020 rubocop:enable Layout/LineLength</p>
 
 
   </div>
@@ -994,15 +1000,15 @@
       <pre class="lines">
 
 
-65
-66
-67
-68
-69
-70</pre>
+71
+72
+73
+74
+75
+76</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 65</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 71</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_possible_range?'>possible_range?</span><span class='lparen'>(</span><span class='id identifier rubyid_year'>year</span><span class='comma'>,</span> <span class='id identifier rubyid_num'>num</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_expanded'>expanded</span> <span class='op'>=</span> <span class='id identifier rubyid_expand_shorter_digits'>expand_shorter_digits</span><span class='lparen'>(</span><span class='id identifier rubyid_year'>year</span><span class='comma'>,</span> <span class='id identifier rubyid_num'>num</span><span class='rparen'>)</span>
@@ -1108,16 +1114,16 @@
       <pre class="lines">
 
 
-77
-78
-79
-80
-81
-82
-83</pre>
+83
+84
+85
+86
+87
+88
+89</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 83</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_valid_date?'>valid_date?</span><span class='lparen'>(</span><span class='id identifier rubyid_yr'>yr</span><span class='comma'>,</span> <span class='id identifier rubyid_mth'>mth</span><span class='comma'>,</span> <span class='id identifier rubyid_day'>day</span><span class='rparen'>)</span>
   <span class='const'>Date</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_yr'>yr</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='comma'>,</span> <span class='id identifier rubyid_mth'>mth</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='comma'>,</span> <span class='id identifier rubyid_day'>day</span><span class='period'>.</span><span class='id identifier rubyid_literal'>literal</span><span class='rparen'>)</span>
@@ -1195,19 +1201,6 @@
     </li>
   
 </ul>
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>StandardError</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
 
 </div><table class="source_code">
   <tr>
@@ -1215,17 +1208,23 @@
       <pre class="lines">
 
 
-88
-89
-90
-91
-92</pre>
+94
+95
+96
+97
+98
+99
+100
+101</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 88</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 94</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_valid_day?'>valid_day?</span><span class='lparen'>(</span><span class='id identifier rubyid_int'>int</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>StandardError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>string passed instead of integer</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_int'>int</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Integer</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_int'>int</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Integer</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>StandardError</span><span class='comma'>,</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>string passed instead of integer</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
 
   <span class='id identifier rubyid_int'>int</span> <span class='op'>&gt;=</span> <span class='int'>1</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_int'>int</span> <span class='op'>&lt;=</span> <span class='int'>31</span>
 <span class='kw'>end</span></pre>
@@ -1298,19 +1297,6 @@
     </li>
   
 </ul>
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>StandardError</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
 
 </div><table class="source_code">
   <tr>
@@ -1318,17 +1304,23 @@
       <pre class="lines">
 
 
-112
-113
-114
-115
-116</pre>
+121
+122
+123
+124
+125
+126
+127
+128</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 112</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 121</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_valid_month?'>valid_month?</span><span class='lparen'>(</span><span class='id identifier rubyid_int'>int</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>StandardError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>string passed instead of integer</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_int'>int</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Integer</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_int'>int</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Integer</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>StandardError</span><span class='comma'>,</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>string passed instead of integer</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
 
   <span class='id identifier rubyid_int'>int</span> <span class='op'>&gt;</span> <span class='int'>0</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_int'>int</span> <span class='op'>&lt;</span> <span class='int'>13</span>
 <span class='kw'>end</span></pre>
@@ -1401,19 +1393,6 @@
     </li>
   
 </ul>
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>StandardError</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
 
 </div><table class="source_code">
   <tr>
@@ -1421,19 +1400,25 @@
       <pre class="lines">
 
 
-121
-122
-123
-124
-125</pre>
+133
+134
+135
+136
+137
+138
+139
+140</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 121</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 133</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_valid_month_or_season?'>valid_month_or_season?</span><span class='lparen'>(</span><span class='id identifier rubyid_int'>int</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>StandardError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>string passed instead of integer</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_int'>int</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Integer</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_int'>int</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Integer</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>StandardError</span><span class='comma'>,</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>string passed instead of integer</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
 
-  <span class='lparen'>(</span><span class='id identifier rubyid_valid_month?'>valid_month?</span><span class='lparen'>(</span><span class='id identifier rubyid_int'>int</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_valid_season?'>valid_season?</span><span class='lparen'>(</span><span class='id identifier rubyid_int'>int</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_valid_month?'>valid_month?</span><span class='lparen'>(</span><span class='id identifier rubyid_int'>int</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_valid_season?'>valid_season?</span><span class='lparen'>(</span><span class='id identifier rubyid_int'>int</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1504,19 +1489,6 @@
     </li>
   
 </ul>
-<p class="tag_title">Raises:</p>
-<ul class="raise">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>StandardError</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
 
 </div><table class="source_code">
   <tr>
@@ -1524,19 +1496,25 @@
       <pre class="lines">
 
 
-130
-131
-132
-133
-134
-135
-136</pre>
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 130</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 145</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_valid_season?'>valid_season?</span><span class='lparen'>(</span><span class='id identifier rubyid_int'>int</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>StandardError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>string passed instead of integer</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_int'>int</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Integer</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_int'>int</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Integer</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>StandardError</span><span class='comma'>,</span>
+      <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>string passed instead of integer</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
 
   <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_max_month_number_handling'>max_month_number_handling</span> <span class='op'>==</span> <span class='symbol'>:months</span>
 
@@ -1567,6 +1545,8 @@
   </div>
 
 
+<p>rubocop:todo Layout/LineLength rubocop:enable Layout/LineLength</p>
+
 
   </div>
 </div>
@@ -1592,13 +1572,13 @@
       <pre class="lines">
 
 
-139
-140
-141
-142</pre>
+159
+160
+161
+162</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 139</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_utils.rb', line 159</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_valid_year?'>valid_year?</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_str'>str</span> <span class='op'>=</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='kw'>unless</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span>
@@ -1614,7 +1594,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jan 13 00:44:29 2024 by
+  Generated on Sat Jan 13 23:41:49 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>
