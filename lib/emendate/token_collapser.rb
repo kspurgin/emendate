@@ -88,7 +88,7 @@ module Emendate
     end
 
     def collapse_backward
-      to_collapse = result.segments.select(&:collapsible?).last
+      to_collapse = result.segments.reverse.find(&:collapsible?)
       prev = result[result.find_index(to_collapse) - 1]
       collapse_token_pair_backward(prev, to_collapse)
     end

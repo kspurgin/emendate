@@ -257,7 +257,7 @@ module Emendate
     def add_century_after_first_number
       century = result[-1].dup
       century.reset_lexeme
-      centuryless = result.select { |t| t.type == :number1or2 }[0]
+      centuryless = result.find { |t| t.type == :number1or2 }
       ins_pt = result.find_index(centuryless) + 1
       result.insert(ins_pt, century)
     end
@@ -370,11 +370,11 @@ module Emendate
     end
 
     def move_year_to_end_of_segment
-      yr = result.select do |t|
+      yr = result.find do |t|
         t.type == :number4 &&
           result[result.find_index(t) + 1].type == :month &&
           result[result.find_index(t) + 2].type == :number1or2
-      end[0]
+      end
       y_ind = result.find_index(yr)
       ins_pt = y_ind + 3
       result.insert(ins_pt, yr.dup)
@@ -382,7 +382,7 @@ module Emendate
     end
 
     def pad_3_to_4_digits
-      t3 = result.select { |t| t.type == :number3 }[0]
+      t3 = result.find { |t| t.type == :number3 }
       t3i = result.find_index(t3)
       t4 = Emendate::DerivedToken.new(
         type: :number4,

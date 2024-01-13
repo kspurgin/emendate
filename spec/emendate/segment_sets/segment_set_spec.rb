@@ -6,7 +6,7 @@ RSpec.describe Emendate::SegmentSets::SegmentSet do
   subject(:set) { described_class }
 
   let(:segments) do
-    %i[a b c d].map { |t| Emendate::Token.new(type: t, lexeme: "#{t}") }
+    %i[a b c d].map { |t| Emendate::Token.new(type: t, lexeme: t.to_s) }
   end
   let(:string) { "str" }
   let(:segset) { set.new(string: string, segments: segments) }
@@ -73,7 +73,7 @@ RSpec.describe Emendate::SegmentSets::SegmentSet do
 
   describe "#copy" do
     it "copies as expected" do
-      newset = set.new.copy(segset)
+      set.new.copy(segset)
       result = set.new(string: string, segments: segments)
       expect(result.orig_string).to eq(string)
       expect(result.segments.length).to eq(4)

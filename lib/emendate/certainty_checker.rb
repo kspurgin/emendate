@@ -256,7 +256,6 @@ module Emendate
       if nxt.nil?
         result.warnings << "#{working[0].lexeme} appears at end of string and "\
                            "was not handled by whole-value processor"
-        passthrough
       else
         result.add_certainty(certainty)
         result << Emendate::DerivedToken.new(
@@ -264,8 +263,8 @@ module Emendate
           sources: [working[0]]
         )
         working.shift
-        passthrough
       end
+      passthrough
       process_part_certainty
     end
 

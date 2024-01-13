@@ -56,7 +56,7 @@ module Emendate
     # @param month [String] full month name
     # @return [Integer]
     def month_literal(month)
-      Date::MONTHNAMES.map { |mth| mth.downcase if mth }.index(month.downcase)
+      Date::MONTHNAMES.map { |mth| mth&.downcase }.index(month.downcase)
     end
 
     # determines whether the number following a year could be the end of a range beginning with that year
