@@ -8,7 +8,7 @@ RSpec.describe Emendate::DateTypes::Error do
   context "when unprocessable" do
     let(:type) { :unprocessable }
     let(:sources) do
-      pf = prepped_for(
+      prepped_for(
         string: "Y-20987654",
         target: Emendate::UnprocessableTagger
       )
@@ -31,7 +31,7 @@ RSpec.describe Emendate::DateTypes::Error do
   context "when untokenizable" do
     let(:type) { :untokenizable }
     let(:sources) do
-      pf = prepped_for(
+      prepped_for(
         string: "Not a date",
         target: Emendate::UntokenizableTagger
       )

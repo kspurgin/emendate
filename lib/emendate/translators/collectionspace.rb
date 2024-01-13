@@ -173,7 +173,7 @@ module Emendate
       end
 
       def set_bce_eras
-        qualified.merge!({dateLatestEra: "BCE"})
+        qualified[:dateLatestEra] = "BCE"
         return if date.range_switch == :before
 
         qualified.merge!({dateEarliestSingleEra: "BCE"})

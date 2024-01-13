@@ -33,8 +33,8 @@ module Emendate
       @index_dates = []
       @date_start = nil
       @date_end = nil
-      @date_start_full = date.earliest.nil? ? nil : date.earliest.iso8601
-      @date_end_full = date.latest.nil? ? nil : date.latest.iso8601
+      @date_start_full = date.earliest&.iso8601
+      @date_end_full = date.latest&.iso8601
       @inclusive_range = date.range? ? true : nil
       @certainty = (certainty + date.certainty).flatten.uniq
       @date_type = date.class.name.split("::")[-1]

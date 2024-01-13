@@ -19,7 +19,7 @@ e.run_tests
 # e.run_tests(test_list: %i[test_processing])
 
 f = e.group_by_pass_fail[:failures]
-f.each { |test| puts test.full_report } if f
+f&.each { |test| puts test.full_report }
 e.pass_fail_summary
 
 # ## token types for known unknown dates

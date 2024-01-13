@@ -130,6 +130,6 @@ module ExampleHelpers
   end
 
   def example_length
-    EXAMPLES.keys.sort_by { |k| k.length }[-1].length
+    EXAMPLES.keys.max_by { |k| k.length }.length
   end
 end
