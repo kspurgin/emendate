@@ -4,8 +4,6 @@ require "emendate/segment/segment"
 
 module Emendate
   class Token < Emendate::Segment
-    extend Forwardable
-
     attr_reader :location
 
     def col
