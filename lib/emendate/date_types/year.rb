@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'datetypeable'
+require_relative "datetypeable"
 
 module Emendate
   module DateTypes
@@ -25,7 +25,7 @@ module Emendate
 
       def range?
         return false if range_switch == :before &&
-                        Emendate.options.before_date_treatment == :point
+          Emendate.options.before_date_treatment == :point
 
         true if partial_indicator || range_switch
       end
@@ -84,11 +84,11 @@ module Emendate
 
       def year_string(val = literal)
         if val >= 0
-          val.to_s.rjust(4, '0')
+          val.to_s.rjust(4, "0")
         else
           base = val.to_s
-                    .delete_prefix('-')
-                    .rjust(4, '0')
+            .delete_prefix("-")
+            .rjust(4, "0")
           "-#{base}"
         end
       end

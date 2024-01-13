@@ -71,12 +71,12 @@ module Emendate
       # Makes DateTypes behave as good members of a {SegmentSets::SegmentSet}
       # @return [Symbol]
       def type
-        "#{self.class.name.split('::').last.downcase}_date_type".to_sym
+        :"#{self.class.name.split("::").last.downcase}_date_type"
       end
 
       # @return [String]
       def lexeme
-        sources.empty? ? '' : sources.lexeme
+        sources.empty? ? "" : sources.lexeme
       end
 
       # Override in date types with non-year level of granularity
@@ -131,14 +131,14 @@ module Emendate
       def set_sources(context)
         srcs = context.local_variable_get(:sources)
         @sources = if srcs.nil?
-                     Emendate::SegmentSets::SegmentSet.new
-                   elsif srcs.is_a?(Emendate::SegmentSets::SegmentSet)
-                     srcs.class.new.copy(srcs)
-                   else
-                     Emendate::SegmentSets::SegmentSet.new(
-                       segments: srcs
-                     )
-                   end
+          Emendate::SegmentSets::SegmentSet.new
+        elsif srcs.is_a?(Emendate::SegmentSets::SegmentSet)
+          srcs.class.new.copy(srcs)
+        else
+          Emendate::SegmentSets::SegmentSet.new(
+            segments: srcs
+          )
+        end
       end
 
       def common_setup(context)
@@ -148,8 +148,8 @@ module Emendate
 
       def first_numeric_literal
         sources.map(&:literal)
-               .select{ |literal| literal.is_a?(Integer) }
-               .first
+          .select { |literal| literal.is_a?(Integer) }
+          .first
       end
 
       # Override in any including class that shouldn't allow append/prepend of

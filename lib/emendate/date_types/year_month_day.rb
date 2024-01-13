@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'datetypeable'
+require_relative "datetypeable"
 
 module Emendate
   module DateTypes
@@ -37,8 +37,8 @@ module Emendate
       end
 
       def literal = "#{year}"\
-        "#{month.to_s.rjust(2, '0')}"\
-        "#{day.to_s.rjust(2, '0')}"
+        "#{month.to_s.rjust(2, "0")}"\
+        "#{day.to_s.rjust(2, "0")}"
         .to_i
 
       # @return [FalseClass] if no range switch is present, OR if
@@ -54,8 +54,6 @@ module Emendate
       end
 
       private
-
-
 
       def validate
         earliest

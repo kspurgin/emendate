@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'forwardable'
+require "forwardable"
 
 module Emendate
   # Tokens, tagged date parts, tagged dates are subclasses of Segment
@@ -11,9 +11,9 @@ module Emendate
 
     # Segments having these types will return true for :date_part?
     DATE_PART_TYPES = %i[number1or2 number3 number4 number6 number8 s century
-                               uncertainty_digits era
-                               number_month month_alpha month_abbr_alpha
-                               year month season day]
+      uncertainty_digits era
+      number_month month_alpha month_abbr_alpha
+      year month season day]
 
     def initialize(**opts)
       @type = opts[:type]
@@ -60,7 +60,8 @@ module Emendate
     private
 
     # subclasses can override this empty method
-    def post_initialize(opts); end
+    def post_initialize(opts)
+    end
 
     def default_certainty
       []

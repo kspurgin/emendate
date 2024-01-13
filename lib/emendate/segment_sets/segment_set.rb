@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'forwardable'
-require_relative 'certainty_helpers'
-require_relative '../location'
+require "forwardable"
+require_relative "certainty_helpers"
+require_relative "../location"
 
 module Emendate
   module SegmentSets
@@ -10,7 +10,7 @@ module Emendate
       include Emendate::SegmentSets::CertaintyHelpers
       extend Forwardable
       attr_reader :orig_string, :norm, :segments,
-                  :certainty, :inferred_date, :warnings
+        :certainty, :inferred_date, :warnings
 
       def_delegator :@segments, :[], :[]
       def_delegators :@segments, :any?, :clear, :delete, :delete_at, :empty?,
@@ -45,15 +45,15 @@ module Emendate
       def copy(other_set)
         @orig_string = other_set.orig_string
         @norm = other_set.norm
-        other_set.segments.each{ |s| segments << s.dup }
-        other_set.certainty.each{ |c| @certainty << c.dup }
-        other_set.warnings.each{ |w| warnings << w.dup }
+        other_set.segments.each { |s| segments << s.dup }
+        other_set.certainty.each { |c| @certainty << c.dup }
+        other_set.warnings.each { |w| warnings << w.dup }
         @inferred_date = other_set.inferred_date
         self
       end
 
       def date_parts
-        segments.select{ |t| t.date_part? }
+        segments.select { |t| t.date_part? }
       end
 
       def date_part_types
@@ -61,7 +61,7 @@ module Emendate
       end
 
       def date_part_type_string
-        date_part_types.join(' ')
+        date_part_types.join(" ")
       end
 
       def each(...)
@@ -73,7 +73,7 @@ module Emendate
       end
 
       def lexeme
-        return '' if segments.empty?
+        return "" if segments.empty?
 
         segments.map(&:lexeme).join
       end
@@ -100,7 +100,7 @@ module Emendate
           return result
         end
 
-        tails = segments.select{ |t| t.type == args[-1] }
+        tails = segments.select { |t| t.type == args[-1] }
         return self.class.new if tails.empty?
 
         segment = []
@@ -110,25 +110,25 @@ module Emendate
           tail_i = segments.find_index(tail)
           head_i = tail_i - segsize + 1
           seg = self.class.new(segments: segments[head_i..tail_i])
-          segment = seg.types == args ? seg : []
+          segment = (seg.types == args) ? seg : []
         end
         result = self.class.new
-        segment.each{ |s| result << s }
+        segment.each { |s| result << s }
         result
       end
 
-      def map(*args, &block)
-        results = segments.map(*args, &block)
-        if results.any?{ |s| s.is_a?(Emendate::Segment) }
+      def map(*, &block)
+        results = segments.map(*, &block)
+        if results.any? { |s| s.is_a?(Emendate::Segment) }
           self.class.new(segments: results)
         else
           results
         end
       end
 
-      def select(*args, &block)
-        results = segments.select(*args, &block)
-        if results.any?{ |s| s.is_a?(Emendate::Segment) }
+      def select(*, &block)
+        results = segments.select(*, &block)
+        if results.any? { |s| s.is_a?(Emendate::Segment) }
           self.class.new(segments: results)
         else
           results
@@ -146,13 +146,13 @@ module Emendate
             @warnings: #{warnings.inspect}>
         OBJ
       end
-      alias inspect to_s
+      alias_method :inspect, :to_s
 
       def types
         segments.map(&:type)
       end
 
-      def type_string = types.join(' ')
+      def type_string = types.join(" ")
 
       def source_types
         segments.map { |seg| seg.respond_to?(:sources) ? seg.sources : seg }
@@ -160,10 +160,10 @@ module Emendate
           .flatten
       end
 
-      def source_type_string = source_types.join(' ')
+      def source_type_string = source_types.join(" ")
 
       def when_type(type)
-        segments.select{ |t| t.type == type }
+        segments.select { |t| t.type == type }
       end
     end
   end

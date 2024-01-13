@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'datetypeable'
-require_relative 'six_digitable'
+require_relative "datetypeable"
+require_relative "six_digitable"
 
 module Emendate
   module DateTypes
@@ -33,7 +33,7 @@ module Emendate
       #   :after, or range switch is :before with before_date_treatment :range
       def range?
         return false if range_switch == :before &&
-                        Emendate.options.before_date_treatment == :point
+          Emendate.options.before_date_treatment == :point
 
         true if partial_indicator || range_switch
       end
