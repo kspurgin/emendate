@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'datetypeable'
+require_relative "datetypeable"
 
 module Emendate
   module DateTypes
@@ -22,7 +22,7 @@ module Emendate
         @category = category
         @point = point
         @use_date = Emendate.options.send(
-          "open_unknown_#{point}_date".to_sym
+          :"open_unknown_#{point}_date"
         )
       end
 
@@ -47,14 +47,14 @@ module Emendate
       def latest_at_granularity = nil
 
       # @return [Integer]
-      def literal = use_date.strftime('%Y%m%d').to_i
+      def literal = use_date.strftime("%Y%m%d").to_i
 
       # @return [FalseClass]
       def range? = false
 
       # Makes DateTypes behave as good members of a {SegmentSets::SegmentSet}
       # @return [Symbol]
-      def type = "rangedate#{point}#{category}_date_type".to_sym
+      def type = :"rangedate#{point}#{category}_date_type"
 
       private
 

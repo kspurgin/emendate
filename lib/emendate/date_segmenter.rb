@@ -98,15 +98,15 @@ module Emendate
 
     def mod_function(type)
       return nil if working.empty?
-      return proc{ passthrough_mod(type) } if working.length < 2
+      return proc { passthrough_mod(type) } if working.length < 2
 
       pair = working.first(2)
       if pair[0].date_type? && pair[1].type == type
-        proc{ apply_modifier(type, :backward) }
+        proc { apply_modifier(type, :backward) }
       elsif pair[0].type == type && pair[1].date_type?
-        proc{ apply_modifier(type, :forward) }
+        proc { apply_modifier(type, :forward) }
       else
-        proc{ passthrough_mod(type) }
+        proc { passthrough_mod(type) }
       end
     end
 
@@ -208,9 +208,9 @@ module Emendate
       year = pieces[3]
       month = pieces[0]
       result << Emendate::DateTypes::YearSeason.new(year: year.literal,
-                                                    season: month.literal,
-                                                    sources: pieces,
-                                                    include_prev_year: true)
+        season: month.literal,
+        sources: pieces,
+        include_prev_year: true)
       working.shift(4)
       recursive_parse
     end
@@ -255,25 +255,25 @@ module Emendate
       month = pieces.when_type(:month)[0]
       year = pieces.when_type(:year)[0]
       Emendate::DateTypes::YearMonthDay.new(year: year.literal,
-                                            month: month.literal,
-                                            day: day.literal,
-                                            sources: pieces.segments)
+        month: month.literal,
+        day: day.literal,
+        sources: pieces.segments)
     end
 
     def create_year_month_datetype(pieces)
       month = pieces.when_type(:month)[0]
       year = pieces.when_type(:year)[0]
       Emendate::DateTypes::YearMonth.new(year: year.literal,
-                                         month: month.literal,
-                                         sources: pieces.segments)
+        month: month.literal,
+        sources: pieces.segments)
     end
 
     def create_year_season_datetype(pieces)
       month = pieces.when_type(:season)[0]
       year = pieces.when_type(:year)[0]
       Emendate::DateTypes::YearSeason.new(year: year.literal,
-                                          season: month.literal,
-                                          sources: pieces.segments)
+        season: month.literal,
+        sources: pieces.segments)
     end
 
     def create_year_datetype(pieces)

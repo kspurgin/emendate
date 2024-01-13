@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'datetypeable'
+require_relative "datetypeable"
 
 module Emendate
   module DateTypes
@@ -49,7 +49,7 @@ module Emendate
       def range? = false
 
       # @return [:unprocessable_date_type, :untokenizable_date_type]
-      def type = "#{error_type}_date_type".to_sym
+      def type = :"#{error_type}_date_type"
 
       private
 
