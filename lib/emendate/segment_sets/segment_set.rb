@@ -14,7 +14,7 @@ module Emendate
 
       def_delegator :@segments, :[], :[]
       def_delegators :@segments, :any?, :clear, :delete, :delete_at, :empty?,
-        :fill, :find_index, :first, :insert, :last, :length, :pop,
+        :fill, :find, :find_index, :first, :insert, :last, :length, :pop,
         :shift, :unshift
 
       def initialize(string: nil, norm: nil, segments: nil)
