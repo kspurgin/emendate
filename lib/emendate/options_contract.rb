@@ -197,8 +197,8 @@ module Emendate
     end
 
     def date_failure_msg(str)
-      "value #{str} cannot be parsed into a valid date. Use a date string in the "\
-        "format: YYYY-MM-DD"
+      "value #{str} cannot be parsed into a valid date. Use a date string in "\
+        "the format: YYYY-MM-DD"
     end
 
     def unknown_val_msg(val, allowed)
