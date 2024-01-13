@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'forwardable'
-require 'json'
+require "forwardable"
+require "json"
 
-require_relative 'segment_sets/certainty_helpers'
+require_relative "segment_sets/certainty_helpers"
 
 module Emendate
   # Wrapper around a DateType segment, used as part of Result
@@ -12,16 +12,16 @@ module Emendate
     extend Forwardable
 
     attr_reader :original_string, :index_dates,
-                :date_start, :date_end,
-                :date_start_full, :date_end_full,
-                :inclusive_range, :certainty,
-                :date_type, :source
+      :date_start, :date_end,
+      :date_start_full, :date_end_full,
+      :inclusive_range, :certainty,
+      :date_type, :source
 
     def_delegators :@source, :sources, :type,
-                   :lexeme, :orig_string,
-                   :earliest, :earliest_at_granularity,
-                   :latest, :latest_at_granularity,
-                   :range_switch, :era
+      :lexeme, :orig_string,
+      :earliest, :earliest_at_granularity,
+      :latest, :latest_at_granularity,
+      :range_switch, :era
 
     # @param date [Emendate::DateTypes::DateType]
     # @param orig [String]
@@ -37,19 +37,19 @@ module Emendate
       @date_end_full = date.latest.nil? ? nil : date.latest.iso8601
       @inclusive_range = date.range? ? true : nil
       @certainty = (certainty + date.certainty).flatten.uniq
-      @date_type = date.class.name.split('::')[-1]
+      @date_type = date.class.name.split("::")[-1]
       @source = date
     end
 
     def to_h
       hashable_variables.map do |var|
-        varsym = var.to_s.sub('@', '').to_sym
+        varsym = var.to_s.sub("@", "").to_sym
         [varsym, instance_variable_get(var)]
       end.to_h
-                        .merge({
-                                 range_switch: range_switch,
-                                 era: era
-                               })
+        .merge({
+          range_switch: range_switch,
+          era: era
+        })
     end
 
     def to_json(*_args)

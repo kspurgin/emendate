@@ -6,7 +6,7 @@ module Emendate
 
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 
@@ -38,17 +38,17 @@ module Emendate
       @working = result.class.new.copy(result)
       result.clear
 
-      datetypes = working.select{ |token| token.date_type? }
+      datetypes = working.select { |token| token.date_type? }
       startdate = datetypes[0]
       enddate = datetypes[-1]
-      [startdate, enddate].each{ |token| working.delete(token) }
+      [startdate, enddate].each { |token| working.delete(token) }
       indicator = DerivedToken.new(
         type: :range_indicator,
         sources: working.segments
       )
       sources = working.class.new.copy(working)
       sources.clear
-      [startdate, indicator, enddate].each{ |token| sources << token }
+      [startdate, indicator, enddate].each { |token| sources << token }
       result << Emendate::DateTypes::Range.new(sources: sources)
     end
 
@@ -80,7 +80,6 @@ module Emendate
       end
 
       result << Emendate::DateTypes::Range.new(sources: sources)
-
     end
 
     def current

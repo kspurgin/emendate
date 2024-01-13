@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'emendate/date_types/year_month_day'
-require 'emendate/date_utils'
-require 'emendate/month_day_analyzer'
-require 'emendate/result_editable'
-require 'emendate/short_year_handler'
+require "emendate/date_types/year_month_day"
+require "emendate/date_utils"
+require "emendate/month_day_analyzer"
+require "emendate/result_editable"
+require "emendate/short_year_handler"
 
 module Emendate
   class AllShortMdyAnalyzer
@@ -84,7 +84,7 @@ module Emendate
       yr = expand_year(per[0])
       prepped = [yr.to_i, per[1..2].map(&:literal)].flatten
       Date.new(prepped[0], prepped[1], prepped[2])
-    rescue StandardError
+    rescue
       nil
     else
       per
@@ -92,14 +92,16 @@ module Emendate
 
     def preferred_order
       Emendate.options.ambiguous_month_day_year
-              .to_s
-              .split('_')
-              .map(&:to_sym)
+        .to_s
+        .split("_")
+        .map(&:to_sym)
     end
 
     def transform_all_ambiguous
-      numbers.each_with_index{ |part, ind| transform_part(part, preferred_order[ind]) }
-      parts = %i[year month day].map{ |type| result.when_type(type)[0] }
+      numbers.each_with_index do |part, ind|
+        transform_part(part, preferred_order[ind])
+      end
+      parts = %i[year month day].map { |type| result.when_type(type)[0] }
 
       if valid_date?(*parts)
         @warnings << "Ambiguous two-digit month/day/year treated #{opt}"
@@ -120,7 +122,7 @@ module Emendate
 
       transform_part(analyzer.month, :month)
       transform_part(analyzer.day, :day)
-      analyzer.warnings.each{ |warn| @warnings << warn }
+      analyzer.warnings.each { |warn| @warnings << warn }
       derive_datetype
     end
 
@@ -143,15 +145,15 @@ module Emendate
     def transform_year(part)
       expanded = expand_year(part)
       yr = Emendate::DatePart.new(type: :year,
-                                  literal: expanded.to_i,
-                                  sources: [part])
+        literal: expanded.to_i,
+        sources: [part])
       replace_x_with_new(x: part, new: yr)
     end
 
     def valid_permutations
       numbers.permutation(3)
-             .map{ |per| permutation_valid?(per) }
-             .compact
+        .map { |per| permutation_valid?(per) }
+        .compact
     end
   end
 end

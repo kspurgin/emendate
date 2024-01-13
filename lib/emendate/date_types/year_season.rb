@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'datetypeable'
-require_relative 'six_digitable'
+require_relative "datetypeable"
+require_relative "six_digitable"
 
 module Emendate
   module DateTypes
@@ -10,31 +10,31 @@ module Emendate
       include SixDigitable
 
       NORTHERN_SEASONS = {
-        spring: { start: [:year, 4, 1], end: [:year, 6, 30] },
-        summer: { start: [:year, 7, 1], end: [:year, 9, 30] },
-        fall: { start: [:year, 10, 1], end: [:year, 12, 31] },
-        winter: { start: [:year, 1, 1], end: [:year, 3, 31] }
+        spring: {start: [:year, 4, 1], end: [:year, 6, 30]},
+        summer: {start: [:year, 7, 1], end: [:year, 9, 30]},
+        fall: {start: [:year, 10, 1], end: [:year, 12, 31]},
+        winter: {start: [:year, 1, 1], end: [:year, 3, 31]}
       }
 
       SOUTHERN_SEASONS = {
-        spring: { start: [:year, 10, 1], end: [:year, 12, 31] },
-        summer: { start: [:year, 1, 1], end: [:year, 3, 31] },
-        fall: { start: [:year, 4, 1], end: [:year, 6, 30] },
-        winter: { start: [:year, 7, 1], end: [:year, 9, 30] }
+        spring: {start: [:year, 10, 1], end: [:year, 12, 31]},
+        summer: {start: [:year, 1, 1], end: [:year, 3, 31]},
+        fall: {start: [:year, 4, 1], end: [:year, 6, 30]},
+        winter: {start: [:year, 7, 1], end: [:year, 9, 30]}
       }
 
       # A quarter (q) is defined as a 3-month period. A quadrimester (quad) is
       # defined as a 4-month period. A semestral is a 6-month period.
       OTHER_RANGES = {
-        q1: { start: [:year, 1, 1], end: [:year, 3, 31] },
-        q2: { start: [:year, 4, 1], end: [:year, 6, 30] },
-        q3: { start: [:year, 7, 1], end: [:year, 9, 30] },
-        q4: { start: [:year, 10, 1], end: [:year, 12, 31] },
-        quad1: { start: [:year, 1, 1], end: [:year, 4, 30] },
-        quad2: { start: [:year, 5, 1], end: [:year, 8, 31] },
-        quad3: { start: [:year, 9, 1], end: [:year, 12, 31] },
-        semestral1: { start: [:year, 1, 1], end: [:year, 6, 30] },
-        semestral2: { start: [:year, 7, 1], end: [:year, 12, 31] }
+        q1: {start: [:year, 1, 1], end: [:year, 3, 31]},
+        q2: {start: [:year, 4, 1], end: [:year, 6, 30]},
+        q3: {start: [:year, 7, 1], end: [:year, 9, 30]},
+        q4: {start: [:year, 10, 1], end: [:year, 12, 31]},
+        quad1: {start: [:year, 1, 1], end: [:year, 4, 30]},
+        quad2: {start: [:year, 5, 1], end: [:year, 8, 31]},
+        quad3: {start: [:year, 9, 1], end: [:year, 12, 31]},
+        semestral1: {start: [:year, 1, 1], end: [:year, 6, 30]},
+        semestral2: {start: [:year, 7, 1], end: [:year, 12, 31]}
       }
 
       # @param year [Integer]
@@ -65,11 +65,11 @@ module Emendate
       end
 
       def earliest_at_granularity
-        "#{earliest.year}-#{earliest.month.to_s.rjust(2, '0')}"
+        "#{earliest.year}-#{earliest.month.to_s.rjust(2, "0")}"
       end
 
       def latest_at_granularity
-        "#{latest.year}-#{latest.month.to_s.rjust(2, '0')}"
+        "#{latest.year}-#{latest.month.to_s.rjust(2, "0")}"
       end
 
       def range?
@@ -110,13 +110,13 @@ module Emendate
         }.fetch(season)
 
         yr = case recipe[0]
-             when :year
-               year
-             when :prev
-               year - 1
-             when :next
-               year + 1
-             end
+        when :year
+          year
+        when :prev
+          year - 1
+        when :next
+          year + 1
+        end
         Date.new(yr, recipe[1], recipe[2])
       end
     end

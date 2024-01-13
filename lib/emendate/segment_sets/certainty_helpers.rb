@@ -19,7 +19,7 @@ module Emendate
       def inferred?
         certainty.any?(:inferred)
       end
-      
+
       def uncertain?
         certainty.any?(:uncertain)
       end

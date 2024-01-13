@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-require 'emendate/date_utils'
-require 'emendate/result_editable'
-require 'emendate/segment/derived_token'
+require "emendate/date_utils"
+require "emendate/result_editable"
+require "emendate/segment/derived_token"
 
 module Emendate
-
   class AlphaMonthConverter
     include DateUtils
     include Dry::Monads[:result]
@@ -13,7 +12,7 @@ module Emendate
 
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 
@@ -43,18 +42,18 @@ module Emendate
 
     def convert_month(token)
       Emendate::DatePart.new(type: :month,
-                             lexeme: token.lexeme,
-                             literal: token.literal,
-                             sources: [token])
+        lexeme: token.lexeme,
+        literal: token.literal,
+        sources: [token])
     end
 
     def get_season_literal(token)
       lookup = {
-        'spring' => 21,
-        'summer' => 22,
-        'autumn' => 23,
-        'fall' => 23,
-        'winter' => 24
+        "spring" => 21,
+        "summer" => 22,
+        "autumn" => 23,
+        "fall" => 23,
+        "winter" => 24
       }
 
       lookup[token.lexeme.downcase]
@@ -63,9 +62,9 @@ module Emendate
     def season_token_with_literal(token)
       literal = get_season_literal(token)
       Emendate::DatePart.new(type: :season,
-                             lexeme: token.lexeme,
-                             literal: literal,
-                             sources: [token])
+        lexeme: token.lexeme,
+        literal: literal,
+        sources: [token])
     end
   end
 end

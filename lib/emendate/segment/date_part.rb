@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'emendate/segment/segment'
-require 'emendate/segment/derived_segment'
+require "emendate/segment/segment"
+require "emendate/segment/derived_segment"
 
 module Emendate
   # A segment that represents part of a date

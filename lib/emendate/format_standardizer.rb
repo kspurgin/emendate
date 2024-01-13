@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative './date_utils'
-require_relative './result_editable'
+require_relative "date_utils"
+require_relative "result_editable"
 
 module Emendate
   # Makes the format of date patterns more consistent.
@@ -67,7 +67,7 @@ module Emendate
     end
 
     def standardizable
-      return true if determine_standardizer
+      true if determine_standardizer
     end
 
     def full_match_standardizers
@@ -108,36 +108,36 @@ module Emendate
           #          new_datetype(type: :ym, sources: result[0..1], ind: [0, 1])
         end
       when %i[partial range_indicator partial number1or2 century]
-        proc{ copy_number_century_after_first_partial }
+        proc { copy_number_century_after_first_partial }
       when %i[partial range_indicator partial number4 letter_s]
-        proc{ copy_number_s_after_first_partial }
+        proc { copy_number_s_after_first_partial }
       end
     end
 
     def partial_match_standardizers
       case result.type_string
       when /^double_dot.*/
-        proc{ open_start }
+        proc { open_start }
       when /.*double_dot$/
-        proc{ open_end }
+        proc { open_end }
       when /.*hyphen$/
-        proc{ handle_ending_hyphen }
+        proc { handle_ending_hyphen }
       when /.*slash$/
-        proc{ handle_ending_slash }
+        proc { handle_ending_slash }
       when /.*(?:range_indicator|hyphen|slash) unknown_date$/
-        proc{ unknown_end }
+        proc { unknown_end }
       when /.*slash.*/
-        proc{ replace_slash_with_hyphen }
+        proc { replace_slash_with_hyphen }
       when /.*era_ce.*/
-        proc{ remove_ce_eras }
+        proc { remove_ce_eras }
       when /.*letter_t number1or2 colon.*/
-        proc{ remove_time_parts }
+        proc { remove_time_parts }
       when /.*number3 uncertainty_digits.*/
-        proc{ decade_as_year }
+        proc { decade_as_year }
       when /.*number3.*/
-        proc{ pad_3_to_4_digits }
+        proc { pad_3_to_4_digits }
       when /.*single_dot standalone_zero$/
-        proc{ remove_ending_dot_zero }
+        proc { remove_ending_dot_zero }
       when /.*month number1or2 comma number4.*/
         proc do
           tokens = result.extract(%i[month number1or2 comma number4]).segments
@@ -147,14 +147,14 @@ module Emendate
         proc do
           tokens = result.extract(%i[number4 month number1or2]).segments
           dt = new_datetype(type: :ymd, sources: tokens, ind: [0, 1, 2],
-                            whole: false)
+            whole: false)
           replace_segments_with_new(segments: tokens, new: dt)
         end
       when /.*number1or2 month number4.*/
         proc do
           tokens = result.extract(%i[number1or2 month number4]).segments
           dt = new_datetype(type: :ymd, sources: tokens, ind: [2, 0, 1],
-                            whole: false)
+            whole: false)
           replace_segments_with_new(segments: tokens, new: dt)
         end
       when /.*month number1or2 hyphen yearmonthday_date_type.*/
@@ -165,26 +165,26 @@ module Emendate
           ymd = tokens[3]
           yr = Emendate::Token.new(type: :dummy, literal: ymd.year)
           dt = new_datetype(type: :ymd,
-                            sources: [yr, tokens[0], tokens[1]],
-                            ind: [0, 1, 2],
-                            whole: false)
+            sources: [yr, tokens[0], tokens[1]],
+            ind: [0, 1, 2],
+            whole: false)
           replace_segments_with_new(segments: [tokens[0], tokens[1]], new: dt)
         end
       when /.*number1or2 letter_c.*/
-        proc{ replace_c_with_century }
+        proc { replace_c_with_century }
       when /.*number4 hyphen number4 era_bce.*/
-        proc{ copy_era_after_first_year }
+        proc { copy_era_after_first_year }
       end
     end
 
     def full_match_date_part_standardizers
       case result.date_part_types
       when %i[number1or2 number1or2 century]
-        proc{ add_century_after_first_number }
+        proc { add_century_after_first_number }
       when %i[month month number4]
-        proc{ add_year_after_first_month }
+        proc { add_year_after_first_month }
       when %i[month number1or2 month number1or2 number4]
-        proc{ add_year_after_first_number1or2 }
+        proc { add_year_after_first_number1or2 }
       when %i[month number1or2 number1or2 number4]
         proc do
           add_year_after_first_number1or2
@@ -200,28 +200,28 @@ module Emendate
 
     def new_datetype(type:, sources:, ind:, whole: true)
       klass = case type
-              when :ym
-                Emendate::DateTypes::YearMonth
-              when :ys
-                Emendate::DateTypes::YearSeason
-              when :ymd
-                Emendate::DateTypes::YearMonthDay
-              end
+      when :ym
+        Emendate::DateTypes::YearMonth
+      when :ys
+        Emendate::DateTypes::YearSeason
+      when :ymd
+        Emendate::DateTypes::YearMonthDay
+      end
       args = case type
-             when :ym
-               { year: sources[ind[0]].literal,
-                 month: sources[ind[1]].literal,
-                 sources: sources }
-             when :ys
-               { year: sources[ind[0]].literal,
-                 season: sources[ind[1]].literal,
-                 sources: sources }
-             when :ymd
-               { year: sources[ind[0]].literal,
-                 month: sources[ind[1]].literal,
-                 day: sources[ind[2]].literal,
-                 sources: sources }
-             end
+      when :ym
+        {year: sources[ind[0]].literal,
+         month: sources[ind[1]].literal,
+         sources: sources}
+      when :ys
+        {year: sources[ind[0]].literal,
+         season: sources[ind[1]].literal,
+         sources: sources}
+      when :ymd
+        {year: sources[ind[0]].literal,
+         month: sources[ind[1]].literal,
+         day: sources[ind[2]].literal,
+         sources: sources}
+      end
       dt = get_new_datetype(klass, args)
       return dt unless whole
 
@@ -248,16 +248,16 @@ module Emendate
 
       replace_x_with_given_segment(x: result[0], segment: analyzed.result)
       type = case analyzed.type
-             when :month then :ym
-             when :season then :ys
-             end
+      when :month then :ym
+      when :season then :ys
+      end
       new_datetype(type: type, sources: result[0..1], ind: [1, 0])
     end
 
     def add_century_after_first_number
       century = result[-1].dup
       century.reset_lexeme
-      centuryless = result.select{ |t| t.type == :number1or2 }[0]
+      centuryless = result.select { |t| t.type == :number1or2 }[0]
       ins_pt = result.find_index(centuryless) + 1
       result.insert(ins_pt, century)
     end
@@ -308,7 +308,7 @@ module Emendate
 
     def copy_era_after_first_year
       n1, _h, _n2, era = result.extract(%i[number4 hyphen number4 era_bce])
-                               .segments
+        .segments
       ins_pt = result.find_index(n1) + 1
       newseg = era.dup
       newseg.reset_lexeme
@@ -363,9 +363,9 @@ module Emendate
       yr = result.when_type(:number4)[0]
       mth = result.when_type(:month)[0]
       dt = new_datetype(type: :ym,
-                        sources: [yr, mth],
-                        ind: [0, 1],
-                        whole: false)
+        sources: [yr, mth],
+        ind: [0, 1],
+        whole: false)
       replace_segments_with_new(segments: [yr, mth], new: dt)
     end
 
@@ -382,7 +382,7 @@ module Emendate
     end
 
     def pad_3_to_4_digits
-      t3 = result.select{ |t| t.type == :number3 }[0]
+      t3 = result.select { |t| t.type == :number3 }[0]
       t3i = result.find_index(t3)
       t4 = Emendate::DerivedToken.new(
         type: :number4,
@@ -418,7 +418,7 @@ module Emendate
       when /.*letter_t number1or2 colon number1or2 colon number1or2 hyphen number1or2.*/
         result.extract(
           %i[letter_t number1or2 colon number1or2 colon number1or2 hyphen
-             number1or2]
+            number1or2]
         ).segments
       when /.*letter_t number1or2 colon number1or2 colon number1or2 letter_z.*/
         result.extract(
@@ -426,7 +426,7 @@ module Emendate
         ).segments
       when /.*letter_t number1or2 colon number1or2 colon number1or2 plus number1or2 colon number1or2.*/
         pattern = %i[letter_t number1or2 colon number1or2 colon number1or2 plus
-                     number1or2 colon number1or2]
+          number1or2 colon number1or2]
         result.extract(pattern).segments
         # the following must come last as it is a substring of the previous
       when /.*letter_t number1or2 colon number1or2 colon number1or2.*/
@@ -477,8 +477,8 @@ module Emendate
     def replace_slash_with_hyphen
       slash = result.when_type(:slash)[0]
       ht = Emendate::Token.new(type: :hyphen,
-                               lexeme: slash.lexeme,
-                               location: slash.location)
+        lexeme: slash.lexeme,
+        location: slash.location)
       replace_x_with_new(x: slash, new: ht)
     end
 

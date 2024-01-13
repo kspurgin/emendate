@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'forwardable'
+require "forwardable"
 
 module Emendate
   # Mixin providing the logic for deriving one segment from one or more other segments
@@ -36,7 +36,7 @@ module Emendate
     end
 
     def derive_from_multiple_values
-      @lexeme = sources.map(&:lexeme).join('') if lexeme.nil?
+      @lexeme = sources.map(&:lexeme).join("") if lexeme.nil?
       @literal = derive_literal if literal.nil?
       @certainty = sources.map(&:certainty).flatten.uniq.sort
       @digits = sources.map(&:digits).compact.sum
@@ -46,28 +46,28 @@ module Emendate
       literal = sources.map(&:literal).compact
       return nil if literal.empty?
 
-      if literal.any?{ |val| val.is_a?(Integer) } &&
-         literal.any?{ |val| val.is_a?(Symbol) }
+      if literal.any? { |val| val.is_a?(Integer) } &&
+          literal.any? { |val| val.is_a?(Symbol) }
         raise Emendate::DerivedSegmentError.new(
-          sources, 'Cannot derive literal from mixed Integers and Symbols'
+          sources, "Cannot derive literal from mixed Integers and Symbols"
         )
-      elsif literal.all?{ |val| val.is_a?(Integer) }
-        literal.select{ |val| val.is_a?(Integer) }
-               .join('')
-               .to_i
-      elsif literal.all?{ |val| val.is_a?(Symbol) }
-        syms = literal.select{ |val| val.is_a?(Symbol) }
+      elsif literal.all? { |val| val.is_a?(Integer) }
+        literal.select { |val| val.is_a?(Integer) }
+          .join("")
+          .to_i
+      elsif literal.all? { |val| val.is_a?(Symbol) }
+        syms = literal.select { |val| val.is_a?(Symbol) }
         case syms.length
         when 1
           syms[0]
         else
           raise Emendate::DerivedSegmentError.new(
-            sources, 'Cannot derive literal from multiple symbols'
+            sources, "Cannot derive literal from multiple symbols"
           )
         end
       else
         raise Emendate::DerivedSegmentError.new(
-          sources, 'Cannot derive literal for unknown reason'
+          sources, "Cannot derive literal for unknown reason"
         )
       end
     end
@@ -78,14 +78,14 @@ module Emendate
       return if opts[:sources].empty?
 
       srcs = if opts[:sources].respond_to?(:segments)
-               opts[:sources].segments
-             else
-               opts[:sources]
-             end
+        opts[:sources].segments
+      else
+        opts[:sources]
+      end
 
-      srcs.map{ |src| subsources(src) }
-          .flatten
-          .each{ |t| @sources << t }
+      srcs.map { |src| subsources(src) }
+        .flatten
+        .each { |t| @sources << t }
     end
 
     def subsources(src)

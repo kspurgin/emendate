@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'emendate/all_short_mdy_analyzer'
-require 'emendate/date_utils'
-require 'emendate/result_editable'
+require "emendate/all_short_mdy_analyzer"
+require "emendate/date_utils"
+require "emendate/result_editable"
 
 module Emendate
   class DatePartTagger
@@ -97,16 +97,17 @@ module Emendate
     # category = String that gets prepended to "date_part" to call DatePart building method
     def collapse_pair(to_collapse, target_type)
       sources = if to_collapse[0].is_a?(Symbol)
-                  result.extract(*to_collapse).segments
-                else
-                  to_collapse
-                end
-      replace_multi_with_date_part_type(sources: sources, date_part_type: target_type)
+        result.extract(*to_collapse).segments
+      else
+        to_collapse
+      end
+      replace_multi_with_date_part_type(sources: sources,
+        date_part_type: target_type)
     end
 
     def hyphen_to_range_indicator(source:)
       ri = Emendate::DerivedToken.new(type: :range_indicator,
-                                      sources: [source])
+        sources: [source])
       replace_x_with_given_segment(x: source, segment: ri)
     end
 
@@ -121,7 +122,12 @@ module Emendate
 
     def tag_day_in_mdy
       m, d, y = result.extract(:month, :number1or2, :year).segments
-      raise UntaggableDatePartError.new(d, 'invalid day value') unless valid_date?(y, m, d)
+      unless valid_date?(
+        y, m, d
+      )
+        raise UntaggableDatePartError.new(d,
+          "invalid day value")
+      end
 
       replace_x_with_date_part_type(x: d, date_part_type: :day)
     end
@@ -130,7 +136,7 @@ module Emendate
       if Emendate.options.pluralized_date_interpretation == :decade
         pair = result.extract(:year, :letter_s).segments
         collapse_pair(pair, :decade)
-        result.warnings << 'Interpreting pluralized year as decade' if pair[0].lexeme.end_with?('00')
+        result.warnings << "Interpreting pluralized year as decade" if pair[0].lexeme.end_with?("00")
       else
         year, _letter_s = result.extract(%i[year letter_s]).segments
         zeros = year.lexeme.match(/(0+)/)[1]
@@ -139,13 +145,13 @@ module Emendate
           collapse_pair(%i[year letter_s], :decade)
         when 2
           collapse_pair(%i[year letter_s], :century)
-          result.warnings << 'Interpreting pluralized year as century'
+          result.warnings << "Interpreting pluralized year as century"
         when 3
           collapse_pair(%i[year letter_s], :millennium)
-          result.warnings << 'Interpreting pluralized year as millennium'
+          result.warnings << "Interpreting pluralized year as millennium"
         when 4
           collapse_pair(%i[year letter_s], :millennium)
-          result.warnings << 'Interpreting pluralized year as millennium'
+          result.warnings << "Interpreting pluralized year as millennium"
         else
           # there should be no other variations, as only 4-digit years are
           #   tagged as years at this point (and 3-digit years that have been
@@ -187,7 +193,7 @@ module Emendate
         replace_x_with_date_part_type(x: res.month, date_part_type: :month)
         replace_x_with_date_part_type(x: res.day, date_part_type: :day)
       end
-      res.warnings.each{ |warn| result.warnings << warn }
+      res.warnings.each { |warn| result.warnings << warn }
     end
 
     def tag_year_in_month_short_year
@@ -203,15 +209,17 @@ module Emendate
     end
 
     def tag_numeric_month_day_short_year
-      to_convert = result.extract(%i[number1or2 hyphen number1or2 hyphen number1or2])
+      to_convert = result.extract(%i[number1or2 hyphen number1or2 hyphen
+        number1or2])
       begin
         analyzer = Emendate::AllShortMdyAnalyzer.call(to_convert)
       rescue Emendate::Error => e
         raise(e)
       end
 
-      analyzer.warnings.each{ |warn| result.warnings << warn }
-      replace_segments_with_new(segments: to_convert.segments, new: analyzer.datetype)
+      analyzer.warnings.each { |warn| result.warnings << warn }
+      replace_segments_with_new(segments: to_convert.segments,
+        new: analyzer.datetype)
     end
 
     def tag_year_numeric_month_day
@@ -225,7 +233,7 @@ module Emendate
 
       unless valid_date?(yr, mth, day)
         raise UntaggableDatePatternError.new(
-          [yr, mth, day], 'returns invalid date'
+          [yr, mth, day], "returns invalid date"
         )
       end
 
@@ -252,7 +260,7 @@ module Emendate
           year: pair[0], num: pair[1]
         )
         replace_x_with_given_segment(x: pair[1], segment: analyzed.result)
-        analyzed.warnings.each{ |warn| result.warnings << warn }
+        analyzed.warnings.each { |warn| result.warnings << warn }
       end
       hyphen_to_range_indicator(source: hyp)
 
@@ -268,7 +276,7 @@ module Emendate
       else
         collapse_token_pair_backward(y, h)
       end
-      analyzed.warnings.each{ |warn| result.warnings << warn }
+      analyzed.warnings.each { |warn| result.warnings << warn }
     end
 
     def tag_hyphen_as_range_indicator

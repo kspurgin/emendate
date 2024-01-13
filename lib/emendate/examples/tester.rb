@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative '../error_util'
-require_relative 'date_testable'
-require_relative 'result_testable'
-require_relative 'translation_testable'
+require_relative "../error_util"
+require_relative "date_testable"
+require_relative "result_testable"
+require_relative "translation_testable"
 
 module Emendate
   module Examples
@@ -12,11 +12,11 @@ module Emendate
         # @param test [String] test name
         # @param example [Emendate::Examples::TestableExample]
         def build(test:, example:)
-          split_test = test.split('_')
+          split_test = test.split("_")
           type = split_test.shift
           test_type = Object.const_get("Emendate::Examples::#{type.capitalize}Testable")
-          test_name = "#{type}_#{split_test.join('_')}"
-          self.new(type: test_type, name: test_name, example: example)
+          test_name = "#{type}_#{split_test.join("_")}"
+          new(type: test_type, name: test_name, example: example)
         end
       end
 
@@ -72,7 +72,7 @@ module Emendate
 
       def test_fail_mismatch
         ["EXPECTED: #{expected_result}",
-         "RESULT:   #{tested_result}"]
+          "RESULT:   #{tested_result}"]
       end
 
       def test_passed?

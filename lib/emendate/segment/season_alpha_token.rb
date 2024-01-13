@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-require 'emendate/segment/token'
+require "emendate/segment/token"
 
 module Emendate
   class SeasonAlphaToken < Token
     private
 
     LITERALS = {
-      'spring' => 21,
-      'summer' => 22,
-      'fall' => 23,
-      'autumn' => 23,
-      'winter' => 24
+      "spring" => 21,
+      "summer" => 22,
+      "fall" => 23,
+      "autumn" => 23,
+      "winter" => 24
     }
 
     def default_literal
@@ -26,7 +26,7 @@ module Emendate
 
       unless type == :season
         raise Emendate::TokenTypeError,
-              'SeasonAlphaToken must be created with type = :season'
+          "SeasonAlphaToken must be created with type = :season"
       end
 
       @literal = default_literal if default_literal

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'emendate/result_editable'
+require "emendate/result_editable"
 
 module Emendate
   class TokenReplacer
@@ -20,8 +20,8 @@ module Emendate
     def call
       return Success(result) unless replaceable?
 
-      result.select{ |token| replacements.key?(token.type) }
-            .map do |source|
+      result.select { |token| replacements.key?(token.type) }
+        .map do |source|
         replace_x_with_derived_new_type(
           x: source,
           type: replacements[source.type]

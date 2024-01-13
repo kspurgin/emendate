@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../abstract'
+require_relative "../abstract"
 
 module Emendate
   module Translators
@@ -9,8 +9,8 @@ module Emendate
         private
 
         def translate_value
-          warnings << 'Processing error'
-          processed.errors.each{ |err| warnings << err }
+          warnings << "Processing error"
+          processed.errors.each { |err| warnings << err }
           base_value
         end
       end

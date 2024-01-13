@@ -12,7 +12,7 @@ module Emendate
     #   1999 for 1998-9
     def expand_shorter_digits(year, num)
       year_s = year.literal.to_s
-      digits = num.literal.to_s.rjust(num.digits, '0')
+      digits = num.literal.to_s.rjust(num.digits, "0")
       diff = year_s.length - digits.length - 1
       "#{year_s[0..diff]}#{digits}"
     end
@@ -46,15 +46,17 @@ module Emendate
     # @return [Integer]
     def month_abbr_literal(month)
       lookup = {}
-      Date::ABBR_MONTHNAMES.compact.map(&:downcase).each_with_index{ |str, i| lookup[str] = i + 1 }
-      lookup['sept'] = 9
-      lookup[month.downcase.strip.delete_suffix('.')]
+      Date::ABBR_MONTHNAMES.compact.map(&:downcase).each_with_index do |str, i|
+        lookup[str] = i + 1
+      end
+      lookup["sept"] = 9
+      lookup[month.downcase.strip.delete_suffix(".")]
     end
 
     # @param month [String] full month name
     # @return [Integer]
     def month_literal(month)
-      Date::MONTHNAMES.map{ |mth| mth.downcase if mth }.index(month.downcase)
+      Date::MONTHNAMES.map { |mth| mth.downcase if mth }.index(month.downcase)
     end
 
     # determines whether the number following a year could be the end of a range beginning with that year
@@ -86,7 +88,10 @@ module Emendate
     # @return [TrueClass] if 1 to 31
     # @return [FalseClass] otherwise
     def valid_day?(int)
-      raise StandardError, 'string passed instead of integer' unless int.is_a?(Integer)
+      unless int.is_a?(Integer)
+        raise StandardError,
+          "string passed instead of integer"
+      end
 
       int >= 1 && int <= 31
     end
@@ -110,7 +115,10 @@ module Emendate
     # @return [TrueClass] if 1 to 12
     # @return [FalseClass] otherwise
     def valid_month?(int)
-      raise StandardError, 'string passed instead of integer' unless int.is_a?(Integer)
+      unless int.is_a?(Integer)
+        raise StandardError,
+          "string passed instead of integer"
+      end
 
       int > 0 && int < 13
     end
@@ -119,16 +127,22 @@ module Emendate
     # @return [TrueClass] if is {#valid_month?} or {#valid_season?}
     # @return [FalseClass] otherwise
     def valid_month_or_season?(int)
-      raise StandardError, 'string passed instead of integer' unless int.is_a?(Integer)
+      unless int.is_a?(Integer)
+        raise StandardError,
+          "string passed instead of integer"
+      end
 
-      (valid_month?(int) || valid_season?(int))
+      valid_month?(int) || valid_season?(int)
     end
 
     # @param int [Integer]
     # @return [TrueClass] if is a valid EDTF season/quarter/semester indicator
     # @return [FalseClass] otherwise
     def valid_season?(int)
-      raise StandardError, 'string passed instead of integer' unless int.is_a?(Integer)
+      unless int.is_a?(Integer)
+        raise StandardError,
+          "string passed instead of integer"
+      end
 
       return false if Emendate.options.max_month_number_handling == :months
 

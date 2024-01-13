@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-require 'json'
+require "json"
 
 module Emendate
   class Result
-
     # @return [String] the original parsed/processed string
     attr_reader :original_string
     # @return [Array]
@@ -20,16 +19,16 @@ module Emendate
       @original_string = pm.orig_string
       @errors = map_errors
       @warnings = pm.warnings
-      if pm.state == :failed
-        @dates = []
+      @dates = if pm.state == :failed
+        []
       else
-        @dates = pm.tokens.select{ |t| t.date_type? }
+        pm.tokens.select { |t| t.date_type? }
           .map do |t|
             Emendate::ParsedDate.new(
-            date: t,
-            certainty: pm.tokens.certainty,
-            orig: original_string
-          )
+              date: t,
+              certainty: pm.tokens.certainty,
+              orig: original_string
+            )
           end
       end
     end
@@ -61,7 +60,7 @@ module Emendate
 
     def map_errors
       pm.errors
-        .reject{ |err| err.is_a?(Emendate::SegmentSets::SegmentSet) }
+        .reject { |err| err.is_a?(Emendate::SegmentSets::SegmentSet) }
         .map do |err|
         if err.is_a?(String)
           err

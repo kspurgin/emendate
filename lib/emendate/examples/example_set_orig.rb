@@ -7,7 +7,7 @@
 # module Examples
 #   class ExampleSet
 #     attr_reader :data_sets, :date_types, :tests
-    
+
 #     def initialize(data_set: '', date_type: '')
 #       table = CSV.parse(File.read(File.expand_path(Path)), headers: true)
 #       @data_set_tags = data_set.split(';').sort
@@ -30,7 +30,7 @@
 #         .each{ |pattern, row_array| put_grouped_rows(pattern, row_array, :test_options) }
 #       ''
 #     end
-    
+
 #     def list_by_pattern
 #       rows.group_by{ |row| row.test_pattern }
 #         .each{ |pattern, row_array| put_grouped_rows(pattern, row_array, :test_string) }
@@ -40,12 +40,11 @@
 #     def list_runnable_tests
 #       puts runnable_tests
 #     end
-    
+
 #     def list_strings
 #       puts strings
 #     end
-    
-    
+
 #     def run_tests(test_list: nil, fail_fast: true)
 #       if test_list
 #         tests.each{ |test| test.run(tests: test_list, fail_fast: fail_fast) }
@@ -53,7 +52,7 @@
 #         tests.each{ |test| test.run(fail_fast: fail_fast) }
 #       end
 #     end
-    
+
 #     def strings
 #       @rows.map{ |row| row.test_string }.uniq.sort
 #     end
@@ -79,7 +78,7 @@
 #       "#{tests.length} examples (from #{@rows.length} rows)"
 #     end
 #     alias_method :inspect, :to_s
-    
+
 #     private
 
 #     attr_reader :rows
@@ -107,7 +106,7 @@
 
 #       specified_datetype(dataset_rows)
 #     end
-    
+
 #     def string_plus_options(row)
 #       "#{row['examplestring']} #{row['options']}"
 #     end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './examples'
+require_relative "examples"
 
 module ExampleHelpers
   include Emendate::Examples
@@ -24,11 +24,11 @@ module ExampleHelpers
   end
 
   def example_data_set_tags
-    puts all_examples.tags('data_set')
+    puts all_examples.tags("data_set")
   end
 
   def example_date_type_tags
-    puts all_examples.tags('date_type')
+    puts all_examples.tags("date_type")
   end
 
   # Creating example sets
@@ -39,14 +39,14 @@ module ExampleHelpers
   end
 
   # Filtered by tag(s)
-  def examples_with(data_set: '', date_type: '')
+  def examples_with(data_set: "", date_type: "")
     ExampleSet.new(data_sets: data_set, date_types: date_type)
   end
 
   # With one example (by string/options)
   def specific_example(str, opt)
     rows = Emendate::Examples::Csv.rows(str, opt)
-      .sort_by{ |row| row.dateval_occurrence }
+      .sort_by { |row| row.dateval_occurrence }
     if rows.empty?
       puts "No matching rows"
       exit
@@ -55,36 +55,39 @@ module ExampleHelpers
     Emendate::Examples::ExampleSet.new(rows: rows)
   end
 
-
   def tokenize_examples(examples = ExampleSet.new)
     ex = examples.strings
-    lexed = ex.map{ |str| Emendate.lex(str) }
-    tokens = lexed.map{ |t| t.tokens.types }
+    lexed = ex.map { |str| Emendate.lex(str) }
+    tokens = lexed.map { |t| t.tokens.types }
     ex.zip(tokens)
   end
 
   def parse_examples(examples: ExampleSet.new, stage: nil, options: {})
     ex = examples.strings
     if stage.nil?
-      ex.map{ |str| Emendate.process(str, options) }
+      ex.map { |str| Emendate.process(str, options) }
     else
-      ex.map{ |str| Emendate.prep_for(str, stage, options) }
+      ex.map { |str| Emendate.prep_for(str, stage, options) }
     end
   end
 
   # stage should be a SegmentSet-holding instance variable of ProcessingManager
-  def parsed_example_tokens(examples: ExampleSet.new, token_types: :all, stage: nil, options: {})
-    parsed = parse_examples(examples: examples, stage: stage, options: options).reject{ |pm| pm.state == :failed }
+  def parsed_example_tokens(examples: ExampleSet.new, token_types: :all,
+    stage: nil, options: {})
+    parsed = parse_examples(examples: examples, stage: stage,
+      options: options).reject do |pm|
+      pm.state == :failed
+    end
     processed = parsed.map(&:tokens)
-    tokens = token_types == :date ? processed.map(&:date_part_types) : processed.map(&:types)
-    ex = parsed.map{ |pm| pm.orig_string }
+    tokens = (token_types == :date) ? processed.map(&:date_part_types) : processed.map(&:types)
+    ex = parsed.map { |pm| pm.orig_string }
     ex.zip(tokens)
   end
 
   def failed_to_parse(examples: ExampleSet.new)
     parse_examples(examples: examples)
-      .select{ |pm| pm.state == :failed }
-      .map{ |f| "#{f.orig_string} - #{f.errors.join('; ')}" }
+      .select { |pm| pm.state == :failed }
+      .map { |f| "#{f.orig_string} - #{f.errors.join("; ")}" }
   end
 
   # def example_tokens_by_str
@@ -103,13 +106,16 @@ module ExampleHelpers
   # end
 
   # stage should be a SegmentSet-holding instance variable of ProcessingManager
-  def unique_type_patterns(examples: ExampleSet.new, stage: nil, options: {} )
-    results = parsed_example_tokens(examples: examples, stage: stage, options: options)
-    patterns = results.map{ |parsed| parsed[1] }.uniq.sort.map{ |pattern| [pattern, []] }.to_h
-    results.each{ |r| patterns[r[1]] << r[0] }
+  def unique_type_patterns(examples: ExampleSet.new, stage: nil, options: {})
+    results = parsed_example_tokens(examples: examples, stage: stage,
+      options: options)
+    patterns = results.map do |parsed|
+                 parsed[1]
+               end.uniq.sort.map { |pattern| [pattern, []] }.to_h
+    results.each { |r| patterns[r[1]] << r[0] }
     patterns.keys.sort.each do |pattern|
-      puts pattern.join(' ')
-      patterns[pattern].each{ |e| puts '     ' + e }
+      puts pattern.join(" ")
+      patterns[pattern].each { |e| puts "     " + e }
     end
 
     failed = failed_to_parse(examples: examples)
@@ -119,11 +125,11 @@ module ExampleHelpers
     puts failed
   end
 
-  def example_results(date_type: '', options: {} )
+  def example_results(date_type: "", options: {})
     parse_examples(tag: tag, options: options).map(&:result)
   end
 
   def example_length
-    EXAMPLES.keys.sort_by{ |k| k.length }[-1].length
+    EXAMPLES.keys.sort_by { |k| k.length }[-1].length
   end
 end

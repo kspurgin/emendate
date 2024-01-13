@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'emendate/segment/token'
-require 'emendate/date_utils'
+require "emendate/segment/token"
+require "emendate/date_utils"
 
 module Emendate
   class MonthAlphaToken < Token
@@ -20,7 +20,8 @@ module Emendate
       super
 
       unless type == :month_alpha
-        raise Emendate::TokenTypeError, 'MonthAlphaToken must be created with type = :month_alpha'
+        raise Emendate::TokenTypeError,
+          "MonthAlphaToken must be created with type = :month_alpha"
       end
 
       @literal = default_literal if default_literal

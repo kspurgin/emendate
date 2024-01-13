@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../abstract'
+require_relative "../abstract"
 
 module Emendate
   module Translators
@@ -10,9 +10,9 @@ module Emendate
 
         def translate_value
           src = date.source
-          @base = "#{src.earliest.year}-" \
-                  "#{src.earliest.month.to_s.rjust(2, '0')}-" \
-                  "#{src.earliest.day.to_s.rjust(2, '0')}"
+          @base = "#{src.earliest.year}-"\
+                  "#{src.earliest.month.to_s.rjust(2, "0")}-"\
+                  "#{src.earliest.day.to_s.rjust(2, "0")}"
           qualify
         end
       end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'segment_set'
+require_relative "segment_set"
 
 module Emendate
   module SegmentSets
@@ -10,7 +10,7 @@ module Emendate
       end
 
       def unknown
-        self.select{ |t| t.type == :unknown }
+        self.select { |t| t.type == :unknown }
       end
     end
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry-validation'
+require "dry-validation"
 
 module Emendate
   class OptionsContract < Dry::Validation::Contract
@@ -41,7 +41,8 @@ module Emendate
 
     rule(:ambiguous_month_day_year) do
       if key?
-        allowed = %i[month_day_year day_month_year year_month_day year_day_month]
+        allowed = %i[month_day_year day_month_year year_month_day
+          year_day_month]
         val = values[:ambiguous_month_day_year]
         key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
       end
@@ -58,7 +59,7 @@ module Emendate
     rule(:ambiguous_year_rollback_threshold) do
       if key?
         val = values[:ambiguous_year_rollback_threshold]
-        key.failure('must be 0-99') unless val < 100
+        key.failure("must be 0-99") unless val < 100
       end
     end
 
@@ -154,7 +155,10 @@ module Emendate
       if key?
         allowed = %i[coerce literal]
         val = values[:two_digit_year_handling]
-        key(:two_digit_year_handling).failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
+        unless allowed.any?(val)
+          key(:two_digit_year_handling).failure(unknown_val_msg(val,
+            allowed))
+        end
       end
     end
 
@@ -186,19 +190,21 @@ module Emendate
 
     def test_date_string(str)
       Date.parse(str)
-    rescue StandardError
+    rescue
       :failure
     else
       :success
     end
 
     def date_failure_msg(str)
-      "value #{str} cannot be parsed into a valid date. Use a date string in the " \
-        'format: YYYY-MM-DD'
+      "value #{str} cannot be parsed into a valid date. Use a date string in the "\
+        "format: YYYY-MM-DD"
     end
 
     def unknown_val_msg(val, allowed)
-      ":#{val} is not an allowed value. Use one of: #{allowed.map{ |val| ":#{val}" }.join(', ')}"
+      ":#{val} is not an allowed value. Use one of: #{allowed.map do |val|
+                                                        ":#{val}"
+                                                      end.join(", ")}"
     end
   end
 end
