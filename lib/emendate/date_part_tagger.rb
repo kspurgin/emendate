@@ -94,7 +94,9 @@ module Emendate
     end
 
     # types = Array with 2 Segment.type symbols
+    # rubocop:todo Layout/LineLength
     # category = String that gets prepended to "date_part" to call DatePart building method
+    # rubocop:enable Layout/LineLength
     def collapse_pair(to_collapse, target_type)
       sources = if to_collapse[0].is_a?(Symbol)
         result.extract(*to_collapse).segments
@@ -136,7 +138,9 @@ module Emendate
       if Emendate.options.pluralized_date_interpretation == :decade
         pair = result.extract(:year, :letter_s).segments
         collapse_pair(pair, :decade)
+        # rubocop:todo Layout/LineLength
         result.warnings << "Interpreting pluralized year as decade" if pair[0].lexeme.end_with?("00")
+        # rubocop:enable Layout/LineLength
       else
         year, _letter_s = result.extract(%i[year letter_s]).segments
         zeros = year.lexeme.match(/(0+)/)[1]

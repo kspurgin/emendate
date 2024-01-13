@@ -59,9 +59,13 @@ module Emendate
       Date::MONTHNAMES.map { |mth| mth&.downcase }.index(month.downcase)
     end
 
+    # rubocop:todo Layout/LineLength
     # determines whether the number following a year could be the end of a range beginning with that year
+    # rubocop:enable Layout/LineLength
     # 2020-10 -- false, the 10 has to be October
+    # rubocop:todo Layout/LineLength
     # 2020-21 -- true, the 21 could indicate 2021 as end of range, OR this could mean Spring 2020
+    # rubocop:enable Layout/LineLength
     # @param year [Segment] representing known year
     # @param num [Segment] representing ambiguous number
     def possible_range?(year, num)
@@ -149,7 +153,9 @@ module Emendate
       int >= min_season && int <= max_season
     end
 
+    # rubocop:todo Layout/LineLength
     # @todo Years shouldn't have to be fewer than 4 digits - check/fix this assumption
+    # rubocop:enable Layout/LineLength
     def valid_year?(str)
       str = str.to_s unless str.is_a?(String)
       str.length <= 4

@@ -13,7 +13,9 @@ RSpec.describe Emendate::Translators::Edtf::YearMonth do
 
     it "translates as expected" do
       expect(value).to eq("2002-10")
+      # rubocop:todo Layout/LineLength
       expect(warnings).to eq(["Ambiguous year + month/season/year treated as_month"])
+      # rubocop:enable Layout/LineLength
     end
   end
 
@@ -22,7 +24,9 @@ RSpec.describe Emendate::Translators::Edtf::YearMonth do
 
     it "translates as expected" do
       expect(value).to eq("2002-10~")
+      # rubocop:todo Layout/LineLength
       expect(warnings).to eq(["Ambiguous year + month/season/year treated as_month"])
+      # rubocop:enable Layout/LineLength
     end
   end
 

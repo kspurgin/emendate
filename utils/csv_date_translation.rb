@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "bundler/setup"
 require "emendate"
 require "csv"
@@ -71,10 +73,10 @@ CSV.open(output, "w", headers: headers, write_headers: true) do |csv|
 
     begin
       translation = Emendate.translate(orig_date, options)
-    rescue => e
+    rescue => err
       row = base.merge do
         target_for_orig_when_error(options) => orig_date,
-          :warnings => e
+          :warnings => err
       end
       csv << row.values_at(*headers)
     else

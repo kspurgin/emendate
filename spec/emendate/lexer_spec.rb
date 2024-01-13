@@ -32,8 +32,10 @@ RSpec.describe Emendate::Lexer do
         "x xx uuu" => %i[uncertainty_digits space uncertainty_digits space
           uncertainty_digits],
         # # NOTE: c isn't first in string or it'd get normalized to circa
+        # rubocop:todo Layout/LineLength
         "e c s t y z" => %i[letter_e space letter_c space letter_s space letter_t
           space letter_y space letter_z],
+        # rubocop:enable Layout/LineLength
         "cent century" => %i[century space century],
         "about around" => %i[about space about],
         "approximately estimated" => %i[approximate space approximate],

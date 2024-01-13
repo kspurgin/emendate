@@ -25,7 +25,9 @@ module Emendate
 
       def add_error(testname, err)
         errors.key?(testname) ? @errors[testname] =
+                                  # rubocop:todo Layout/LineLength
                                   "#{errors[testname]}|#{err}" : @errors[testname] =
+                                  # rubocop:enable Layout/LineLength
                                                                    err
       end
 
@@ -109,7 +111,9 @@ module Emendate
       def type_pattern(date_only: false, stage: :tokens)
         return [:date_string_not_processed] unless testable?
 
+        # rubocop:todo Layout/LineLength
         date_only ? processed.send(stage).date_part_types : processed.send(stage).types
+        # rubocop:enable Layout/LineLength
       end
 
       private

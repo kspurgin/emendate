@@ -126,11 +126,10 @@ module Emendate
       when :forward
         if addable
           datetype.prepend_source_token(modifier)
-          result << datetype
         else
           add_as_unprocessable(modifier)
-          result << datetype
         end
+        result << datetype
         working.shift(2)
       when :backward
         if addable
@@ -195,7 +194,9 @@ module Emendate
         recursive_parse
       elsif working.types[0..1].sort == %i[season year] &&
           working.types[2] == :range_indicator
+        # rubocop:todo Layout/LineLength
         parts = Emendate::SegmentSets::SegmentSet.new(segments: working.shift(2))
+        # rubocop:enable Layout/LineLength
         result << create_year_season_datetype(parts)
         recursive_parse
       else

@@ -172,7 +172,9 @@ RSpec.describe Emendate::DateUtils do
       end
     end
 
+    # rubocop:todo Layout/LineLength
     # a range of dates in October 1582 do not exist/are not valid using the default
+    # rubocop:enable Layout/LineLength
     #  (Italian) Gregorian date adoption assumptions.
     context "with date invalid in Italy, valid in England - 1582-10-14" do
       let(:val) { "1582-10-14" }

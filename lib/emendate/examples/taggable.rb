@@ -15,7 +15,9 @@ module Emendate
       end
 
       def tags_to_s
+        # rubocop:todo Layout/LineLength
         "(data_sets: #{data_sets.join(";")}, date_types: #{date_types.join(";")})"
+        # rubocop:enable Layout/LineLength
       end
     end
   end

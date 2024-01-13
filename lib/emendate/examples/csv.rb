@@ -5,7 +5,9 @@ require_relative "row"
 
 module Emendate
   module Examples
+    # rubocop:todo Layout/LineLength
     # Parses examples CSV and converts each row of that table to an Examples::Row
+    # rubocop:enable Layout/LineLength
     class Csv
       class << self
         # even more convenient access to specific rows for testing
@@ -23,7 +25,9 @@ module Emendate
         end
       end
 
+      # rubocop:todo Layout/LineLength
       # convenience method to extract specific row(s) by test fingerprint (test_string + test_options)
+      # rubocop:enable Layout/LineLength
       #   for testing
       def retrieve_rows(str, opt)
         rows.select { |row| row.test_string == str }

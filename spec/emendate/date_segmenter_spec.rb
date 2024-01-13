@@ -299,7 +299,9 @@ RSpec.describe Emendate::DateSegmenter do
 
     # context 'with 1900s (as century), 19th century, 19uu' do
     #   before(:all) do
+    # rubocop:todo Layout/LineLength
     #     @s = segment('1900s 19th century 19uu', pluralized_date_interpretation: :broad)
+    # rubocop:enable Layout/LineLength
     #   end
 
     #   it 'returns century_date_types' do
@@ -321,7 +323,9 @@ RSpec.describe Emendate::DateSegmenter do
     #   before(:all){ @s = segment('1972 - 1999') }
 
     #   it 'returns: year_date_type range_indicator year_date_type' do
+    # rubocop:todo Layout/LineLength
     #     expect(@s.type_string).to eq('year_date_type range_indicator year_date_type')
+    # rubocop:enable Layout/LineLength
     #   end
     # end
   end

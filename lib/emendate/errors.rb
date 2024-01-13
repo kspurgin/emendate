@@ -92,8 +92,8 @@ module Emendate
 
     def initialize(tokens)
       m = "Using ambiguous MDY order "\
-          "#{Emendate.options.ambiguous_month_day_year} results in invalid date "\
-          "for: #{tokens.map(&:lexeme).join("-")}"
+        "#{Emendate.options.ambiguous_month_day_year} results in invalid "\
+        "date for: #{tokens.map(&:lexeme).join("-")}"
       super(m)
     end
   end
@@ -145,7 +145,9 @@ module Emendate
     def initialize(date_part, reason)
       @date_part = date_part
       @reason = reason
+      # rubocop:todo Layout/LineLength
       msg = "type: #{date_part.type}; value: #{date_part.lexeme}; reason: #{reason}"
+      # rubocop:enable Layout/LineLength
       super(msg)
     end
   end
