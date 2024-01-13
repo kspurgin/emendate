@@ -72,7 +72,7 @@ module Emendate
     end
 
     def new_date_part(type, sources)
-      Emendate::DatePart.new(type: type,
+      Emendate::DerivedToken.new(type: type,
         lexeme: sources.map(&:lexeme).join,
         literal: sources[0].literal,
         sources: sources)

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "emendate/segment/date_part"
 require "emendate/date_utils"
 
 module Emendate
@@ -18,7 +17,7 @@ module Emendate
     end
 
     def call
-      Emendate::DatePart.new(type: :year,
+      Emendate::DerivedToken.new(type: :year,
         lexeme: orig.lexeme,
         literal: full_year,
         sources: [orig])
