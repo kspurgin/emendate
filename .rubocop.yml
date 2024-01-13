@@ -1,33 +1,21 @@
-require:
-  - rubocop-performance
-  - rubocop-rspec
+inherit_gem:
+  almost_standard: .rubocop.yml
 
 AllCops:
-  TargetRubyVersion: 2.7
-  UseCache: true
-  NewCops: enable
   Exclude:
     - 'utils/test_timetwister.rb'
 
-# Layout preferences
-Layout/SpaceBeforeBlockBraces:
-  EnforcedStyle: no_space
 Naming/MethodParameterName:
   AllowedNames: n, n1, n2, yr, x
-Style/NumericLiterals:
-  Enabled: false
+# Style/NumericLiterals:
+#   Enabled: false
 
-# I am careful to not leak state between tests
-# Eventually this can be cleaned up but it is not a priority
-RSpec/InstanceVariable:
-  Enabled: false
-RSpec/BeforeAfterAll:
-  Enabled: false
-# Nested groups help create documentation from tests
-RSpec/NestedGroups:
-  Enabled: false
-
-# Temporarily disabled
-Style/Documentation:
-  # document classes after structure/design is more set
-  Enabled: false
+# # I am careful to not leak state between tests
+# # Eventually this can be cleaned up but it is not a priority
+# RSpec/InstanceVariable:
+#   Enabled: false
+# RSpec/BeforeAfterAll:
+#   Enabled: false
+# # Nested groups help create documentation from tests
+# RSpec/NestedGroups:
+#   Enabled: false
