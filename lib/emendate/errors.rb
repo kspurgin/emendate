@@ -2,7 +2,7 @@
 
 module Emendate
   Error = Module.new
-  UnconfiguredModuleError = Class.new(NameError){ include Emendate::Error }
+  UnconfiguredModuleError = Class.new(NameError) { include Emendate::Error }
 
   class DecadeTypeError < StandardError
     include Emendate::Error
@@ -30,7 +30,7 @@ module Emendate
 
     def initialize(token, meth, klass)
       type = token.type
-      verb = meth.to_s.split('_').first
+      verb = meth.to_s.split("_").first
       m = "Cannot #{verb} :#{type} segment to #{klass} sources"
       super(m)
     end
@@ -56,7 +56,7 @@ module Emendate
   class MonthDayError < StandardError
     include Emendate::Error
     def initialize(n1, n2, y)
-      m = 'Cannot determine valid month/date assignment for ' \
+      m = "Cannot determine valid month/date assignment for "\
           "#{n1.lexeme}-#{n2.lexeme}-#{y.lexeme}"
       super(m)
     end
@@ -66,8 +66,8 @@ module Emendate
     include Emendate::Error
 
     def initialize(tokens)
-      m = 'Cannot determine any valid month/day/year combination for ' \
-          "#{tokens.map(&:lexeme).join('-')}"
+      m = "Cannot determine any valid month/day/year combination for "\
+          "#{tokens.map(&:lexeme).join("-")}"
       super(m)
     end
   end
@@ -76,9 +76,9 @@ module Emendate
     include Emendate::Error
 
     def initialize(lexeme)
-      m = "Cannot assign literal for month value `#{lexeme}`. Dates will not " \
-          'be translateable until DateUtils and/or MonthAlphaToken is updated ' \
-          'to assign the appropriate literal value'
+      m = "Cannot assign literal for month value `#{lexeme}`. Dates will not "\
+          "be translateable until DateUtils and/or MonthAlphaToken is updated "\
+          "to assign the appropriate literal value"
       super(m)
     end
   end
@@ -91,9 +91,9 @@ module Emendate
     include Emendate::Error
 
     def initialize(tokens)
-      m = 'Using ambiguous MDY order ' \
-          "#{Emendate.options.ambiguous_month_day_year} results in invalid date " \
-          "for: #{tokens.map(&:lexeme).join('-')}"
+      m = "Using ambiguous MDY order "\
+          "#{Emendate.options.ambiguous_month_day_year} results in invalid date "\
+          "for: #{tokens.map(&:lexeme).join("-")}"
       super(m)
     end
   end
@@ -102,8 +102,8 @@ module Emendate
     include Emendate::Error
 
     def initialize
-      m = 'When :point is `:start`, :category cannot be `:open`. Set ' \
-          ':category to `:unknown`'
+      m = "When :point is `:start`, :category cannot be `:open`. Set "\
+          ":category to `:unknown`"
       super(m)
     end
   end
@@ -112,9 +112,9 @@ module Emendate
     include Emendate::Error
 
     def initialize(lexeme)
-      m = "Cannot assign literal for season value `#{lexeme}`. Dates will not " \
-          'be translateable until SeasonAlphaToken is updated ' \
-          'to assign the appropriate literal value'
+      m = "Cannot assign literal for season value `#{lexeme}`. Dates will not "\
+          "be translateable until SeasonAlphaToken is updated "\
+          "to assign the appropriate literal value"
       super(m)
     end
   end
@@ -133,7 +133,7 @@ module Emendate
 
     def initialize(pieces)
       @pieces = pieces
-      msg = pieces.types.join(', ')
+      msg = pieces.types.join(", ")
       super(msg)
     end
   end

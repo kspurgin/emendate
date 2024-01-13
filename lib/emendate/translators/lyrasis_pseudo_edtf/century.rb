@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../abstract'
+require_relative "../abstract"
 
 module Emendate
   module Translators
@@ -13,7 +13,7 @@ module Emendate
         private
 
         def translate_value
-          @base = "#{date.earliest_at_granularity} - " \
+          @base = "#{date.earliest_at_granularity} - "\
                   "#{date.latest_at_granularity}"
           qualify
         end

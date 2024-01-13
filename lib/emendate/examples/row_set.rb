@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'taggable'
+require_relative "taggable"
 
 module Emendate
   module Examples
@@ -13,8 +13,8 @@ module Emendate
       include Examples::Taggable
 
       attr_reader :rows
-      
-      def initialize(data_sets: '', date_types: '')
+
+      def initialize(data_sets: "", date_types: "")
         @csvrows = Examples::Csv.new.rows
         set_up_tags(data_sets, date_types)
         @rows = filter_rows
@@ -38,13 +38,15 @@ module Emendate
       def select_by_data_set
         return csvrows if data_sets.empty?
 
-        csvrows.select{ |row| row.tagged?(type: :data_sets, tags: data_sets) }
+        csvrows.select { |row| row.tagged?(type: :data_sets, tags: data_sets) }
       end
 
       def select_by_date_type(dataset_rows)
         return dataset_rows if date_types.empty?
 
-        dataset_rows.select{ |row| row.tagged?(type: :date_types, tags: date_types) }
+        dataset_rows.select do |row|
+          row.tagged?(type: :date_types, tags: date_types)
+        end
       end
 
       def select_rows

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'bundler/setup'
-require 'emendate'
-require 'pry'
+require "bundler/setup"
+require "emendate"
+require "pry"
 
 # Emendate.process('Y-170002')
 # e = Emendate.process('MXL.VIII')
@@ -13,13 +13,13 @@ require 'pry'
 # e = Emendate.examples
 # e = Emendate.examples(date_type: 'currently_unparseable')
 # e = Emendate.examples(data_set: 'ba')
-e = Emendate.examples(data_set: 'opt')
+e = Emendate.examples(data_set: "opt")
 
 e.run_tests
 # e.run_tests(test_list: %i[test_processing])
 
 f = e.group_by_pass_fail[:failures]
-f.each{ |test| puts test.full_report } if f
+f.each { |test| puts test.full_report } if f
 e.pass_fail_summary
 
 # ## token types for known unknown dates

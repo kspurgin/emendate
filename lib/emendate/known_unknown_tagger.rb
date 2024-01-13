@@ -6,7 +6,7 @@ module Emendate
 
     class << self
       def call(...)
-        self.new(...).call
+        new(...).call
       end
     end
 
@@ -21,7 +21,7 @@ module Emendate
       elsif end_of_range_unknown?
         replace_question_with_unknown
       else
-        return Success(tokens)
+        Success(tokens)
       end
     end
 
@@ -52,7 +52,7 @@ module Emendate
         type: :unknown_date,
         sources: [question]
       )
-      return Success(result)
+      Success(result)
     end
   end
 end

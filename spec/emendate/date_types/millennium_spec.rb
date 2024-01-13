@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe Emendate::DateTypes::Millennium do
-  subject{ described_class.new(**args) }
+  subject { described_class.new(**args) }
 
   let(:tokens) do
     Emendate.prepped_for(string: str, target: Emendate::DateSegmenter)
   end
-  let(:baseargs){ { sources: tokens } }
-  let(:args){ baseargs }
+  let(:baseargs) { {sources: tokens} }
+  let(:args) { baseargs }
 
-  context 'when :plural type' do
-    let(:str){ '2000s' }
-    let(:args){ baseargs }
+  context "when :plural type" do
+    let(:str) { "2000s" }
+    let(:args) { baseargs }
 
-    it 'returns expected values' do
+    it "returns expected values" do
       expect(subject.type).to eq(:millennium_date_type)
       expect(subject.millennium_type).to eq(:plural)
       expect(subject.lexeme).to eq(str)
@@ -27,11 +27,11 @@ RSpec.describe Emendate::DateTypes::Millennium do
     end
   end
 
-  context 'when :uncertainty_digits type' do
-    let(:str){ '2uuu' }
-    let(:args){ baseargs }
+  context "when :uncertainty_digits type" do
+    let(:str) { "2uuu" }
+    let(:args) { baseargs }
 
-    it 'returns expected values' do
+    it "returns expected values" do
       expect(subject.type).to eq(:millennium_date_type)
       expect(subject.millennium_type).to eq(:uncertainty_digits)
       expect(subject.lexeme).to eq(str)

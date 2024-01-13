@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'emendate/date_utils'
+require "emendate/date_utils"
 
 module Emendate
   class MonthSeasonYearAnalyzer
@@ -41,17 +41,17 @@ module Emendate
       elsif assume_year?
         @result = new_date_part(type: :year, literal: expanded_year)
         warning = if maybe_range?
-                    'Ambiguous year + month/season/year treated as_year'
-                  else
-                    'Ambiguous year + month/season/year treated as_year, but this creates invalid range'
-                  end
+          "Ambiguous year + month/season/year treated as_year"
+        else
+          "Ambiguous year + month/season/year treated as_year, but this creates invalid range"
+        end
         @warnings << warning
       elsif valid_month?(num.literal)
         @result = new_date_part(type: :month, literal: num.literal)
-        @warnings << 'Ambiguous year + month/season/year treated as_month'
+        @warnings << "Ambiguous year + month/season/year treated as_month"
       elsif valid_season?(num.literal)
         @result = new_date_part(type: :season, literal: num.literal)
-        @warnings << 'Ambiguous year + month/season/year treated as_season'
+        @warnings << "Ambiguous year + month/season/year treated as_season"
       end
     end
 
@@ -61,9 +61,9 @@ module Emendate
 
     def new_date_part(type:, literal:)
       Emendate::DatePart.new(type: type,
-                             lexeme: num.lexeme,
-                             literal: literal.to_i,
-                             sources: [num])
+        lexeme: num.lexeme,
+        literal: literal.to_i,
+        sources: [num])
     end
 
     def expanded_year

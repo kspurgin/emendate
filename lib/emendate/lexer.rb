@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'strscan'
+require "strscan"
 
-require 'emendate/date_utils'
-require 'emendate/location'
+require "emendate/date_utils"
+require "emendate/location"
 
 module Emendate
   class Lexer
@@ -19,39 +19,39 @@ module Emendate
 
     SINGLES = {
       "'" => :apostrophe,
-      ':' => :colon,
-      ',' => :comma,
-      '{' => :curly_bracket_open,
-      '}' => :curly_bracket_close,
-      '(' => :parenthesis_open,
-      ')' => :parenthesis_close,
-      '%' => :percent,
-      '+' => :plus,
-      '?' => :question,
-      '/' => :slash,
-      ' ' => :space,
-      '[' => :square_bracket_open,
-      ']' => :square_bracket_close,
-      '~' => :tilde
+      ":" => :colon,
+      "," => :comma,
+      "{" => :curly_bracket_open,
+      "}" => :curly_bracket_close,
+      "(" => :parenthesis_open,
+      ")" => :parenthesis_close,
+      "%" => :percent,
+      "+" => :plus,
+      "?" => :question,
+      "/" => :slash,
+      " " => :space,
+      "[" => :square_bracket_open,
+      "]" => :square_bracket_close,
+      "~" => :tilde
     }
     ["\u002D", "\u2010", "\u2011", "\u2012", "\u2013", "\u2014", "\u2015",
-     "\u2043"].each{ |val| SINGLES[val] = :hyphen }
+      "\u2043"].each { |val| SINGLES[val] = :hyphen }
     SINGLES.freeze
 
     ORDINAL_INDICATORS = %w[st nd rd th d].freeze
 
-    days = '^(' + ([
+    days = "^(" + ([
       Date::DAYNAMES.compact,
-      Date::ABBR_DAYNAMES.compact.map{ |val| val + '\.?' }
+      Date::ABBR_DAYNAMES.compact.map { |val| val + '\.?' }
     ].flatten
-      .join('|') + ')')
-    months = '^(' + ([
+      .join("|") + ")")
+    months = "^(" + ([
       Date::MONTHNAMES.compact,
-      Date::ABBR_MONTHNAMES.compact.map{ |val| val + '\.?' },
+      Date::ABBR_MONTHNAMES.compact.map { |val| val + '\.?' },
       'Sept\.?'
     ].flatten
-                       .join('|') + ')')
-    ordinals = '^(' + ORDINAL_INDICATORS.join('|') + ')'
+                       .join("|") + ")")
+    ordinals = "^(" + ORDINAL_INDICATORS.join("|") + ")"
 
     ALPHA = {
       /^(about|around)/i => :about,
@@ -64,13 +64,13 @@ module Emendate
       /^(before|pre|prior to)/i => :before,
       /^(century|cent\.?)/i => :century,
       /^(ca\.?|circa)/i => :circa,
-      Regexp.new(days, 'i') => :day_of_week_alpha,
+      Regexp.new(days, "i") => :day_of_week_alpha,
       /^(b\.? ?c\.? ?e\.?|b\.? ?p\.?|b\.? ?c\.?)/i => :era_bce,
       /^(c\.? ?e\.?|a\.? ?d\.?)/i => :era_ce,
       /^early/i => :early,
       /^(middle|mid)/i => :mid,
       /^late/i => :late,
-      Regexp.new(months, 'i') => :month_alpha,
+      Regexp.new(months, "i") => :month_alpha,
       /^or/i => :or,
       /^to/i => :range_indicator,
       # If additional alphabetic seasons are added, make sure to
@@ -78,7 +78,7 @@ module Emendate
       /^(winter|spring|summer|fall|autumn)/i => :season,
       /^(date unknown|unknown date|no date|not dated|undated|unknown|unk|n\.? ?d\.?)$/i =>
         :unknown_date,
-      Regexp.new(ordinals, 'i') => :ordinal_indicator,
+      Regexp.new(ordinals, "i") => :ordinal_indicator,
       /^(u+|x+)/i => :uncertainty_digits
     }
 
@@ -107,7 +107,7 @@ module Emendate
     def tokenize
       tokenize_anchored_start
       tokenization until scanner.eos?
-    rescue StandardError => e
+    rescue => e
       Failure(e)
     else
       Success()
@@ -118,14 +118,14 @@ module Emendate
       scanner.unscan
 
       token = if SINGLES.key?(nextchar)
-                tokenize_single
-              elsif nextchar == '.'
-                tokenize_dots
-              elsif digit?(nextchar)
-                tokenize_number
-              elsif alpha?(nextchar)
-                tokenize_letter(nextchar)
-              end
+        tokenize_single
+      elsif nextchar == "."
+        tokenize_dots
+      elsif digit?(nextchar)
+        tokenize_number
+      elsif alpha?(nextchar)
+        tokenize_letter(nextchar)
+      end
       return if token
 
       init = scanner.pos
@@ -156,13 +156,13 @@ module Emendate
       init = scanner.pos
       match = scanner.scan(/\.+/)
       type = case match.length
-             when 1
-               :single_dot
-             when 2
-               :double_dot
-             else
-               :unknown
-             end
+      when 1
+        :single_dot
+      when 2
+        :double_dot
+      else
+        :unknown
+      end
       add_token(match, type, init)
       true
     end
@@ -177,7 +177,7 @@ module Emendate
     end
 
     def tokenize_ordinal_indicator
-      indicator = ORDINAL_INDICATORS.find{ |ind| ordinal_val_match?(ind) }
+      indicator = ORDINAL_INDICATORS.find { |ind| ordinal_val_match?(ind) }
       return true unless indicator
 
       init = scanner.pos
@@ -207,7 +207,7 @@ module Emendate
 
     def alpha_matcher
       chk = scanner.rest
-      ALPHA.keys.find{ |regexp| regexp.match?(chk) }
+      ALPHA.keys.find { |regexp| regexp.match?(chk) }
     end
 
     def tokenize_alpha_pattern(pattern)
@@ -262,7 +262,7 @@ module Emendate
     def tokenize_single_alpha
       init = scanner.pos
       char = scanner.scan(/./)
-      type = "letter_#{char.downcase}".to_sym
+      type = :"letter_#{char.downcase}"
       add_token(char, type, init)
     end
 
@@ -287,7 +287,7 @@ module Emendate
     end
 
     def digit?(char)
-      char >= '0' && char <= '9'
+      char >= "0" && char <= "9"
     end
 
     def alpha?(char)

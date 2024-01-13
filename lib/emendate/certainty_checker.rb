@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'emendate/result_editable'
+require "emendate/result_editable"
 
 module Emendate
   class CertaintyChecker
@@ -202,12 +202,12 @@ module Emendate
     def process_segment(idx, direction)
       indicator = result[idx]
       cert = certainty_val(indicator)
-      targetidx = direction == :forward ? idx + 1 : idx - 1
+      targetidx = (direction == :forward) ? idx + 1 : idx - 1
       target = result[targetidx]
       cert.each do |certval|
-        result.add_certainty("#{certval}_#{target.type}".to_sym)
+        result.add_certainty(:"#{certval}_#{target.type}")
       end
-      srcs = direction == :forward ? [indicator, target] : [target, indicator]
+      srcs = (direction == :forward) ? [indicator, target] : [target, indicator]
       collapse_token_pair(srcs[0], srcs[1], direction)
     end
 
@@ -220,7 +220,7 @@ module Emendate
       if nxt.nil?
         passthrough
       elsif uncertainty_indicator?(1)
-        certainty = certainty_val(nxt).map{ |v| "leftward_#{v}".to_sym }
+        certainty = certainty_val(nxt).map { |v| :"leftward_#{v}" }
         number.add_certainty(certainty)
         result << number
         result << nxt
@@ -235,8 +235,8 @@ module Emendate
       indicator = working.shift
       certainty = certainty_val(indicator)
       if working.first.nil?
-        result.warnings << "#{indicator.lexeme} appears at end of string and " \
-                           'was not handled by whole-value processor'
+        result.warnings << "#{indicator.lexeme} appears at end of string and "\
+                           "was not handled by whole-value processor"
         result << indicator
       elsif working.first.is_a?(Emendate::NumberToken)
         number = working.shift
@@ -254,8 +254,8 @@ module Emendate
     def set_set_certainty
       certainty = certainty_val(working[0])
       if nxt.nil?
-        result.warnings << "#{working[0].lexeme} appears at end of string and " \
-                           'was not handled by whole-value processor'
+        result.warnings << "#{working[0].lexeme} appears at end of string and "\
+                           "was not handled by whole-value processor"
         passthrough
       else
         result.add_certainty(certainty)

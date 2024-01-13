@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'datetypeable'
+require_relative "datetypeable"
 
 module Emendate
   module DateTypes
@@ -85,8 +85,8 @@ module Emendate
       end
 
       def start_year
-        base = (literal.to_s + '00').to_i
-        century_type == :name ? base + 1 : base
+        base = (literal.to_s + "00").to_i
+        (century_type == :name) ? base + 1 : base
       end
     end
   end

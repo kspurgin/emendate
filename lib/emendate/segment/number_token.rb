@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'emendate/segment/token'
-require 'emendate/date_utils'
+require "emendate/segment/token"
+require "emendate/date_utils"
 
 module Emendate
   class NumberToken < Token
@@ -29,7 +29,8 @@ module Emendate
       super
 
       unless lexeme.match?(/^\d+$/)
-        raise Emendate::TokenLexemeError, 'Number token must be created with lexeme containing only numeric digits'
+        raise Emendate::TokenLexemeError,
+          "Number token must be created with lexeme containing only numeric digits"
       end
 
       @digits = opts[:digits] || default_digits
@@ -41,14 +42,14 @@ module Emendate
         @type = :standalone_zero
         @literal = nil
       elsif allowed_digits?
-        @type = digits <= 2 ? :number1or2 : "number#{digits}".to_sym
+        @type = (digits <= 2) ? :number1or2 : :"number#{digits}"
       else
         @type = :unknown
       end
     end
 
     def zero?
-      digits == 1 && lexeme == '0'
+      digits == 1 && lexeme == "0"
     end
   end
 end

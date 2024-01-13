@@ -38,7 +38,7 @@ module Emendate
         vals = pdate.certainty.dup
         if pdate.approximate_and_uncertain?
           @qualified = method(:approximate_and_uncertain).call
-          %i[approximate uncertain].each{ |val| vals.delete(val) }
+          %i[approximate uncertain].each { |val| vals.delete(val) }
         end
         return if vals.empty?
 
@@ -54,7 +54,8 @@ module Emendate
       end
 
       def translate_value
-        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+        raise NotImplementedError,
+          "#{self.class} has not implemented method '#{__method__}'"
       end
     end
   end

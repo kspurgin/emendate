@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'emendate'
+require "emendate"
 
 module Helpers
   module_function
@@ -11,6 +11,6 @@ module Helpers
 
   def test_rows(str, opt)
     Emendate::Examples::Csv.rows(str, opt)
-      .sort_by{ |row| row.dateval_occurrence }
+      .sort_by { |row| row.dateval_occurrence }
   end
 end

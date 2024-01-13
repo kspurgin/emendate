@@ -23,8 +23,8 @@ module Emendate
         error_type: :untokenizable,
         sources: tokens
       )
-      result.warnings << 'Untokenizable sequences: ' \
-                         "#{untokenizable_strings.join('; ')}"
+      result.warnings << "Untokenizable sequences: "\
+                         "#{untokenizable_strings.join("; ")}"
       Failure(result)
     end
 
@@ -33,7 +33,7 @@ module Emendate
     attr_reader :tokens
 
     def untokenizable_strings
-      tokens.select{ |token| token.type == :unknown }.segments.map(&:lexeme)
+      tokens.select { |token| token.type == :unknown }.segments.map(&:lexeme)
     end
 
     def untokenizable?

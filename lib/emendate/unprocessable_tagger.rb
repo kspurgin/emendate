@@ -38,7 +38,7 @@ module Emendate
         error_type: :unprocessable,
         sources: tokens
       )
-      result.warnings << 'Unprocessable string'
+      result.warnings << "Unprocessable string"
       Failure(result)
     end
 

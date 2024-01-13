@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 # Specify your gem's dependencies in emendate.gemspec
 gemspec
 
 group :documentation do
-  gem 'asciidoctor'
-  gem 'redcarpet', '~>3.5' # markdown parser for generating documentation
-  gem 'yard'
+  gem "asciidoctor"
+  gem "redcarpet", "~>3.5" # markdown parser for generating documentation
+  gem "yard"
 end
 
 group :test do
-  gem 'rspec'
-  gem 'simplecov', '~> 0.21', require: false
+  gem "rspec"
+  gem "simplecov", "~> 0.21", require: false
 end
 
 group :development do

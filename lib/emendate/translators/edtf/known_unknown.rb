@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../abstract'
+require_relative "../abstract"
 
 module Emendate
   module Translators
@@ -9,7 +9,7 @@ module Emendate
         private
 
         def translate_value
-          @base = 'XXXX'
+          @base = "XXXX"
         end
       end
     end

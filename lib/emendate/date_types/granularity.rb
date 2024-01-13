@@ -7,7 +7,7 @@ module Emendate
     # NOTHING FROM THIS IS IMPLEMENTED ANYWHERE YET
     module Granularity
       extend self
-      
+
       Registry = {
         century: :year,
         decade: :year,
@@ -21,15 +21,14 @@ module Emendate
         yearmonthday: :day,
         yearseason: :month
       }
-      
+
       def granularity
-        datetype = type.to_s.delete_suffix('_date_type').to_sym
+        datetype = type.to_s.delete_suffix("_date_type").to_sym
         Registry[datetype]
       end
 
       def granular_date(side:, date_type:)
       end
-      
     end
   end
 end

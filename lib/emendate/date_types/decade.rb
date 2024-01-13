@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'datetypeable'
+require_relative "datetypeable"
 
 module Emendate
   module DateTypes
@@ -58,7 +58,7 @@ module Emendate
       end
 
       def decade_earliest_year
-        (literal.to_s + '0').to_i
+        (literal.to_s + "0").to_i
       end
 
       def earliest_year

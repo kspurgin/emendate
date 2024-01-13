@@ -1,28 +1,29 @@
 # frozen_string_literal: true
 
-require 'csv'
-require 'optparse'
+require "csv"
+require "optparse"
 
-require 'bundler/setup'
-require 'emendate'
-require 'pry'
+require "bundler/setup"
+require "emendate"
+require "pry"
 
 options = {}
-OptionParser.new{ |opts|
-  opts.banner = 'Usage: ruby translate_to_cspace_csv.rb -i {input_csv}'
+OptionParser.new do |opts|
+  opts.banner = "Usage: ruby translate_to_cspace_csv.rb -i {input_csv}"
 
-  opts.on('-i', '--input PATH', 'Path to csv file containing date_strings'){ |i|
+  opts.on("-i", "--input PATH",
+    "Path to csv file containing date_strings") do |i|
     options[:input] = i
-    unless File::exist?(i)
+    unless File.exist?(i)
       puts "Not a valid input file: #{i}"
       exit
     end
-  }
+  end
   opts.on(
-    '-o',
-    '--optargs OPTARGS',
-    'Options hash, in curly brackets, in quotes'
-  ){ |o|
+    "-o",
+    "--optargs OPTARGS",
+    "Options hash, in curly brackets, in quotes"
+  ) do |o|
     optargs = to_h(o)
     if optargs == :cannot_eval
       puts "Cannot parse options to Hash.\nEnter wrapped in quotes and curly "\
@@ -33,50 +34,50 @@ OptionParser.new{ |opts|
       Emendate::Options.new(optargs)
       options[:optargs] = optargs.merge({dialect: :collectionspace})
     end
-  }
-  opts.on('-h', '--help', 'Prints this help'){
+  end
+  opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit
-  }
-}.parse!
+  end
+end.parse!
 
-outfile = options[:input].sub('.csv', '_translated.csv')
+outfile = options[:input].sub(".csv", "_translated.csv")
 HEADERS = %i[orig warnings
-             dateDisplayDate datePeriod dateAssociation dateNote
-             dateEarliestSingleYear dateEarliestSingleMonth
-             dateEarliestSingleDay dateEarliestSingleEra
-             dateEarliestSingleCertainty dateEarliestSingleQualifier
-             dateEarliestSingleQualifierValue dateEarliestSingleQualifierUnit
-             dateLatestYear dateLatestMonth dateLatestDay dateLatestEra
-             dateLatestCertainty dateLatestQualifier dateLatestQualifierValue
-             dateLatestQualifierUnit dateEarliestScalarValue
-             dateLatestScalarValue scalarValuesComputed]
+  dateDisplayDate datePeriod dateAssociation dateNote
+  dateEarliestSingleYear dateEarliestSingleMonth
+  dateEarliestSingleDay dateEarliestSingleEra
+  dateEarliestSingleCertainty dateEarliestSingleQualifier
+  dateEarliestSingleQualifierValue dateEarliestSingleQualifierUnit
+  dateLatestYear dateLatestMonth dateLatestDay dateLatestEra
+  dateLatestCertainty dateLatestQualifier dateLatestQualifierValue
+  dateLatestQualifierUnit dateEarliestScalarValue
+  dateLatestScalarValue scalarValuesComputed]
 
-CSV.open(outfile, 'wb') do |csvout|
+CSV.open(outfile, "wb") do |csvout|
   csvout << HEADERS
 end
 
-strings = CSV.foreach(options[:input]).map{ |row| row.first.strip }
+strings = CSV.foreach(options[:input]).map { |row| row.first.strip }
 optargs = options[:optargs] ||= {dialect: :collectionspace}
 
 # @param row [Hash]
 def pad_row(row)
   missing = HEADERS - row.keys
-  row.merge(missing.map{ |field| [field, nil] }.to_h)
+  row.merge(missing.map { |field| [field, nil] }.to_h)
 end
 
 # @param translated [Hash] single values element from translation
 # @param translation [Emendate::Translation]
 # @param idx [Integer]
 def create_row(translated, translation, idx)
-    row = { orig: translation.orig }.merge(translated)
-    unless translation.warnings[idx].empty?
-      row[:warnings] = translation.warnings.join('; ')
-    end
-    pad_row(row)
+  row = {orig: translation.orig}.merge(translated)
+  unless translation.warnings[idx].empty?
+    row[:warnings] = translation.warnings.join("; ")
+  end
+  pad_row(row)
 end
 
-CSV.open(outfile, 'a') do |csvout|
+CSV.open(outfile, "a") do |csvout|
   Emendate.batch_translate(strings, optargs) do |translation|
     translation.values.each_with_index do |translated, idx|
       row = create_row(translated, translation, idx)

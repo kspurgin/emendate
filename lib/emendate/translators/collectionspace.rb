@@ -12,7 +12,7 @@ module Emendate
         bce_handling: :naive,
         before_date_treatment: :point
       }
-      SUFFIX = 'T00:00:00.000Z'
+      SUFFIX = "T00:00:00.000Z"
 
       def date
         pdate
@@ -25,7 +25,7 @@ module Emendate
       def base_value
         {
           dateDisplayDate: processed.orig_string,
-          scalarValuesComputed: 'false'
+          scalarValuesComputed: "false"
         }
       end
 
@@ -38,7 +38,7 @@ module Emendate
       end
 
       def unknown_value
-        base_value.merge({ dateEarliestSingleCertainty: 'no date' })
+        base_value.merge({dateEarliestSingleCertainty: "no date"})
       end
 
       def computed
@@ -57,32 +57,32 @@ module Emendate
         end_date = date.latest
 
         base_value.merge({
-                           scalarValuesComputed: 'true',
-                           dateEarliestScalarValue: "#{start_date.iso8601}#{SUFFIX}",
-                           dateEarliestSingleYear: start_date.year.to_s,
-                           dateEarliestSingleMonth: start_date.month.to_s,
-                           dateEarliestSingleDay: start_date.day.to_s,
-                           dateEarliestSingleEra: 'CE',
-                           dateLatestScalarValue: "#{end_date.iso8601}#{SUFFIX}",
-                           dateLatestYear: end_date.year.to_s,
-                           dateLatestMonth: end_date.month.to_s,
-                           dateLatestDay: end_date.day.to_s,
-                           dateLatestEra: 'CE'
-                         })
+          scalarValuesComputed: "true",
+          dateEarliestScalarValue: "#{start_date.iso8601}#{SUFFIX}",
+          dateEarliestSingleYear: start_date.year.to_s,
+          dateEarliestSingleMonth: start_date.month.to_s,
+          dateEarliestSingleDay: start_date.day.to_s,
+          dateEarliestSingleEra: "CE",
+          dateLatestScalarValue: "#{end_date.iso8601}#{SUFFIX}",
+          dateLatestYear: end_date.year.to_s,
+          dateLatestMonth: end_date.month.to_s,
+          dateLatestDay: end_date.day.to_s,
+          dateLatestEra: "CE"
+        })
       end
 
       def computed_before
         end_date = date.latest + 1
 
         base_value.merge({
-                           scalarValuesComputed: 'true',
-                           dateLatestScalarValue: "#{end_date + 1}#{SUFFIX}",
-                           dateLatestYear: end_date.year.to_s,
-                           dateLatestMonth: end_date.month.to_s,
-                           dateLatestDay: end_date.day.to_s,
-                           dateLatestEra: 'CE',
-                           dateLatestCertainty: 'Before'
-                         })
+          scalarValuesComputed: "true",
+          dateLatestScalarValue: "#{end_date + 1}#{SUFFIX}",
+          dateLatestYear: end_date.year.to_s,
+          dateLatestMonth: end_date.month.to_s,
+          dateLatestDay: end_date.day.to_s,
+          dateLatestEra: "CE",
+          dateLatestCertainty: "Before"
+        })
       end
 
       def computed_after
@@ -90,68 +90,69 @@ module Emendate
         end_date = date.latest
 
         base_value.merge({
-                           scalarValuesComputed: 'true',
-                           dateEarliestScalarValue: "#{start_date.iso8601}#{SUFFIX}",
-                           dateEarliestSingleYear: start_date.year.to_s,
-                           dateEarliestSingleMonth: start_date.month.to_s,
-                           dateEarliestSingleDay: start_date.day.to_s,
-                           dateEarliestSingleEra: 'CE',
-                           dateEarliestSingleCertainty: 'After',
-                           dateLatestScalarValue: "#{end_date}#{SUFFIX}",
-                           dateLatestYear: end_date.year.to_s,
-                           dateLatestMonth: end_date.month.to_s,
-                           dateLatestDay: end_date.day.to_s,
-                           dateLatestEra: 'CE',
-                           dateLatestCertainty: 'After'
-                         })
+          scalarValuesComputed: "true",
+          dateEarliestScalarValue: "#{start_date.iso8601}#{SUFFIX}",
+          dateEarliestSingleYear: start_date.year.to_s,
+          dateEarliestSingleMonth: start_date.month.to_s,
+          dateEarliestSingleDay: start_date.day.to_s,
+          dateEarliestSingleEra: "CE",
+          dateEarliestSingleCertainty: "After",
+          dateLatestScalarValue: "#{end_date}#{SUFFIX}",
+          dateLatestYear: end_date.year.to_s,
+          dateLatestMonth: end_date.month.to_s,
+          dateLatestDay: end_date.day.to_s,
+          dateLatestEra: "CE",
+          dateLatestCertainty: "After"
+        })
       end
 
       def approximate_term
         lexed = processed.history[:lexed]
         types = lexed.types
         if types.any?(:about)
-          'about'
+          "about"
         elsif types.any?(:circa)
-          'Circa'
+          "Circa"
         else
-          'Approximate'
+          "Approximate"
         end
       end
 
       def approximate
         term = approximate_term
         computed.merge({
-                         dateEarliestSingleCertainty: term,
-                         dateLatestCertainty: term
-                       })
+          dateEarliestSingleCertainty: term,
+          dateLatestCertainty: term
+        })
       end
 
       def approximate_and_uncertain
-        term = 'approximate and possibly'
+        term = "approximate and possibly"
         computed.merge({
-                         dateEarliestSingleCertainty: term,
-                         dateLatestCertainty: term
-                       })
+          dateEarliestSingleCertainty: term,
+          dateLatestCertainty: term
+        })
       end
 
       def one_of_range_set
-        raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+        raise NotImplementedError,
+          "#{self.class} has not implemented method '#{__method__}'"
       end
 
       def all_of_set
-        { dateNote: 'Inclusive date' }
+        {dateNote: "Inclusive date"}
       end
 
       def one_of_set
-        { dateNote: 'Alternate date' }
+        {dateNote: "Alternate date"}
       end
 
       def uncertain
-        term = 'Possibly'
+        term = "Possibly"
         base.merge({
-                     dateEarliestSingleCertainty: term,
-                     dateLatestCertainty: term
-                   })
+          dateEarliestSingleCertainty: term,
+          dateLatestCertainty: term
+        })
       end
 
       private
@@ -172,10 +173,10 @@ module Emendate
       end
 
       def set_bce_eras
-        qualified.merge!({ dateLatestEra: 'BCE' })
+        qualified.merge!({dateLatestEra: "BCE"})
         return if date.range_switch == :before
 
-        qualified.merge!({ dateEarliestSingleEra: 'BCE' })
+        qualified.merge!({dateEarliestSingleEra: "BCE"})
       end
     end
   end

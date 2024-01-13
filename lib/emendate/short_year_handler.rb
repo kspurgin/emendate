@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'emendate/segment/date_part'
-require 'emendate/date_utils'
+require "emendate/segment/date_part"
+require "emendate/date_utils"
 
 module Emendate
   class ShortYearHandler
@@ -19,9 +19,9 @@ module Emendate
 
     def call
       Emendate::DatePart.new(type: :year,
-                             lexeme: orig.lexeme,
-                             literal: full_year,
-                             sources: [orig])
+        lexeme: orig.lexeme,
+        literal: full_year,
+        sources: [orig])
     end
 
     private
@@ -33,11 +33,11 @@ module Emendate
     end
 
     def coerce_current_century
-      "#{current_century}#{orig.literal.to_s.rjust(2, '0')}".to_i
+      "#{current_century}#{orig.literal.to_s.rjust(2, "0")}".to_i
     end
 
     def coerce_previous_century
-      "#{previous_century}#{orig.literal.to_s.rjust(2, '0')}".to_i
+      "#{previous_century}#{orig.literal.to_s.rjust(2, "0")}".to_i
     end
 
     def full_year

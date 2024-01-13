@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/string/inflections'
+require "active_support/core_ext/string/inflections"
 
-require_relative 'translation'
-require_relative 'translated_date'
+require_relative "translation"
+require_relative "translated_date"
 
 module Emendate
   class Translator
@@ -17,7 +17,7 @@ module Emendate
     def initialize(processed)
       @dialect = Emendate.options.dialect
       unless dialect
-        puts 'ERROR: You must pass in a `dialect` option when using `translate`'
+        puts "ERROR: You must pass in a `dialect` option when using `translate`"
         exit
       end
       extend dialect_module.constantize
@@ -30,9 +30,9 @@ module Emendate
       return translate_failure(processed) if processed.state == :final_check_failed
 
       processed.result
-               .dates
-               .map{ |pdate| translate_date(pdate) }
-               .each{ |result| translation.add_value(result) }
+        .dates
+        .map { |pdate| translate_date(pdate) }
+        .each { |result| translation.add_value(result) }
 
       translation
     end
@@ -46,14 +46,14 @@ module Emendate
     end
 
     def translate_failure(_failure)
-      type = 'ProcessingError'
+      type = "ProcessingError"
       translator = dialect_translator(type)
 
       result = if translator
-                 do_translation(translator, nil)
-               else
-                 no_translation(type)
-               end
+        do_translation(translator, nil)
+      else
+        no_translation(type)
+      end
       translation.add_value(result)
       translation
     end
@@ -86,7 +86,7 @@ module Emendate
       klass = "#{dialect_module}::#{type_class}".constantize
       klass.include(dialect_module.constantize)
       klass.new
-    rescue StandardError
+    rescue
       nil
     end
 
@@ -102,7 +102,7 @@ module Emendate
 
     def do_translation(translator, pdate)
       translator.translate(processed, pdate)
-    rescue StandardError => e
+    rescue => e
       TranslatedDate.new(
         orig: processed.orig_string,
         value: empty_value,
@@ -120,28 +120,28 @@ module Emendate
     end
 
     def determine_indiv_date_types
-      tokens.select{ |token| token.date_type? }
-            .map{ |datetype| datetype.class.name.split('::')[-1] }
+      tokens.select { |token| token.date_type? }
+        .map { |datetype| datetype.class.name.split("::")[-1] }
     end
 
     def determine_combined_date_type
-      case tokens.types.join(' ')
-      when 'century_date_type'
-        'Century'
-      when 'decade_date_type'
-        'Decade'
-      when 'year_date_type'
-        'Year'
-      when 'yearmonth_date_type'
-        'YearMonth'
-      when 'yearmonthday_date_type'
-        'YearMonthDay'
-      when 'range_date_type'
-        'Range'
+      case tokens.types.join(" ")
+      when "century_date_type"
+        "Century"
+      when "decade_date_type"
+        "Decade"
+      when "year_date_type"
+        "Year"
+      when "yearmonth_date_type"
+        "YearMonth"
+      when "yearmonthday_date_type"
+        "YearMonthDay"
+      when "range_date_type"
+        "Range"
       else
         case processed.state
         when :known_unknown_tagged_failure
-          'KnownUnknown'
+          "KnownUnknown"
         end
       end
     end

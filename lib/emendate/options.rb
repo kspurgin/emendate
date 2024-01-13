@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'options_contract'
+require_relative "options_contract"
 
 module Emendate
   # To add or update an option there are several places to edit:
@@ -11,7 +11,7 @@ module Emendate
     attr_reader :options
 
     def self.list
-      Emendate.config.options.values.each{ |opt, val| puts "#{opt}: #{val}" }
+      Emendate.config.options.values.each { |opt, val| puts "#{opt}: #{val}" }
     end
 
     def initialize(opthash = {})
@@ -38,25 +38,27 @@ module Emendate
     attr_reader :opthash
 
     def report_errors_and_exit(errs)
-      errs.each{ |key, errs| puts ":#{key} option #{errs.join('; ')}" }
-      puts 'Exiting...'
+      errs.each { |key, errs| puts ":#{key} option #{errs.join("; ")}" }
+      puts "Exiting..."
       exit(1)
     end
 
     def map_errors(errs)
-      errs.map{ |err| map_error(err) }
+      errs.map { |err| map_error(err) }
     end
 
     def map_error(err)
       return err if err.is_a?(String)
 
       err.map do |_errval|
-        raise StandardError, 'not implemented'
+        raise StandardError, "not implemented"
       end
     end
 
     def set_options(opts = opthash)
-      opts.each{ |key, val| Emendate.config.options.send("#{key}=".to_sym, val) }
+      opts.each do |key, val|
+        Emendate.config.options.send(:"#{key}=", val)
+      end
     end
 
     def handle_collectionspace

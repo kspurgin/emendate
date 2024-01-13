@@ -17,7 +17,7 @@ module Emendate
 
     def call
       if result[0].type == :ordinal_indicator
-        result.warnings << 'Ordinal indicator unexpectedly appears at beginning of date string'
+        result.warnings << "Ordinal indicator unexpectedly appears at beginning of date string"
         collapse_token_pair_forward(result[0], result[1])
       end
 

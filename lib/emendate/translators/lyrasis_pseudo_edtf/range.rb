@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../abstract'
+require_relative "../abstract"
 
 module Emendate
   module Translators
@@ -12,7 +12,7 @@ module Emendate
           range = date.source
           start = range.startdate
           enddate = range.enddate
-          @base = "#{start.earliest_at_granularity} - " \
+          @base = "#{start.earliest_at_granularity} - "\
                   "#{enddate.latest_at_granularity}"
           qualify
         end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'emendate/date_utils'
-require 'emendate/result_editable'
+require "emendate/date_utils"
+require "emendate/result_editable"
 
 module Emendate
   class TokenCollapser
@@ -46,18 +46,18 @@ module Emendate
       return actions unless actions.nil?
 
       if result[0].collapsible?
-        proc{ collapse_forward }
+        proc { collapse_forward }
       else
-        proc{ collapse_backward }
+        proc { collapse_backward }
       end
     end
 
     def full_match_collapsers
       case result.types
       when %i[number1or2 slash number4]
-        proc{ collapse_segments_backward(%i[number1or2 slash]) }
+        proc { collapse_segments_backward(%i[number1or2 slash]) }
       when %i[month_alpha comma space number4]
-        proc{ collapse_segments_backward(%i[month_alpha comma]) }
+        proc { collapse_segments_backward(%i[month_alpha comma]) }
       when %i[month_alpha comma space number1or2 comma space number4]
         proc do
           collapse_segments_backward(%i[number1or2 comma])
@@ -69,13 +69,13 @@ module Emendate
     def partial_match_collapsers
       case result.type_string
       when /.*apostrophe letter_s.*/
-        proc{ collapse_segments_forward(%i[apostrophe letter_s]) }
+        proc { collapse_segments_forward(%i[apostrophe letter_s]) }
       when /.*apostrophe number1or2.*/
-        proc{ collapse_segments_forward(%i[apostrophe number1or2]) }
+        proc { collapse_segments_forward(%i[apostrophe number1or2]) }
       when /.*before hyphen.*/
-        proc{ collapse_segments_backward(%i[before hyphen]) }
+        proc { collapse_segments_backward(%i[before hyphen]) }
       when /.*partial hyphen.*/
-        proc{ collapse_segments_backward(%i[partial hyphen]) }
+        proc { collapse_segments_backward(%i[partial hyphen]) }
       when /.*month_abbr_alpha single_dot space.*/
         proc {
           collapse_segments_backward(
@@ -83,7 +83,7 @@ module Emendate
           )
         }
       when /.*parenthesis_open [^ ]+ parenthesis_close.*/
-        proc{ collapse_single_element_parenthetical }
+        proc { collapse_single_element_parenthetical }
       end
     end
 
@@ -99,9 +99,9 @@ module Emendate
 
     def collapse_single_element_parenthetical
       matches = result.type_string
-                      .match(/.*(parenthesis_open ([^ ]+) parenthesis_close).*/)
+        .match(/.*(parenthesis_open ([^ ]+) parenthesis_close).*/)
       replace_segments_with_derived_new_type(
-        segment_types: matches[1].split(' ').map(&:to_sym),
+        segment_types: matches[1].split(" ").map(&:to_sym),
         type: matches[2].to_sym
       )
     end
