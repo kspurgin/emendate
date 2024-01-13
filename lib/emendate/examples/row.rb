@@ -51,7 +51,9 @@ module Emendate
 
       private
 
+      # rubocop:todo Layout/LineLength
       # metaprogramming bit to avoid manually declaring attr_reader for every column in row
+      # rubocop:enable Layout/LineLength
       def method_missing(symbol, *args)
         instance_variable_get(:"@#{symbol}")
       rescue

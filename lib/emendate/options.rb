@@ -18,7 +18,9 @@ module Emendate
       return if opthash.empty?
 
       @opthash = opthash
+      # rubocop:todo Layout/LineLength
       validation_errs = Emendate::OptionsContract.new.call(**opthash).errors.to_h
+      # rubocop:enable Layout/LineLength
       if validation_errs.empty?
         set_options
         handle_edtf_shortcut if Emendate.options.edtf

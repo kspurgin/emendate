@@ -5,7 +5,9 @@ module Emendate
   # This is not the final result
   # Classes including this module must have a `result` attr_reader
   module ResultEditable
+    # rubocop:todo Layout/LineLength
     # derives a single token from 2 or more tokens, keeping the first token's type
+    # rubocop:enable Layout/LineLength
     # @param ary [Array<Symbol>]
     def collapse_segments_backward(ary)
       segs = result.extract(ary).segments
@@ -13,7 +15,9 @@ module Emendate
       replace_segments_with_new(segments: segs, new: derived)
     end
 
+    # rubocop:todo Layout/LineLength
     # derives a single token from 2 or more tokens, keeping the final token's type
+    # rubocop:enable Layout/LineLength
     # @param ary [Array<Symbol>]
     def collapse_segments_forward(ary)
       segs = result.extract(ary).segments
@@ -84,7 +88,9 @@ module Emendate
       segments.each { |segment| result.delete(segment) }
     end
 
+    # rubocop:todo Layout/LineLength
     # given an array of segments and a new (derived) segment, replaces the former with the latter
+    # rubocop:enable Layout/LineLength
     def replace_segments_with_new(segments:, new:)
       ins_pt = result.find_index(segments[-1]) + 1
       result.insert(ins_pt, new)

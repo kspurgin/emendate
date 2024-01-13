@@ -148,8 +148,7 @@ module Emendate
 
       def first_numeric_literal
         sources.map(&:literal)
-          .select { |literal| literal.is_a?(Integer) }
-          .first
+          .find { |literal| literal.is_a?(Integer) }
       end
 
       # Override in any including class that shouldn't allow append/prepend of

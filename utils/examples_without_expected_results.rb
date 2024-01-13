@@ -7,7 +7,9 @@ examples_table = CSV.parse(
   File.read(File.expand_path("../spec/support/examples.csv")), headers: true
 )
 results_table = CSV.parse(
+  # rubocop:todo Layout/LineLength
   File.read(File.expand_path("../spec/support/expected_emendate_results.csv")), headers: true
+  # rubocop:enable Layout/LineLength
 )
 
 examples = examples_table["examplestring"]

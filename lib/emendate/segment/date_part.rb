@@ -13,7 +13,9 @@ module Emendate
   class DatePart < Emendate::Segment
     include DerivedSegment
 
+    # rubocop:todo Layout/LineLength
     # allows any subclass of SegmentSet to return a list of segments representing date parts
+    # rubocop:enable Layout/LineLength
     def date_part?
       true
     end

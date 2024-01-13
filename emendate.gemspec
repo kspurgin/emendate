@@ -20,7 +20,9 @@ Gem::Specification.new do |spec|
   spec.metadata["changelog_uri"] = "https://github.com/kspurgin/emendate"
 
   # Specify which files should be added to the gem when it is released.
+  # rubocop:todo Layout/LineLength
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
+  # rubocop:enable Layout/LineLength
   spec.files = Dir.chdir(File.expand_path("..", __FILE__)) do
     `git ls-files -z`.split("\x0").reject do |f|
       f.match(%r{^(test|spec|features)/})

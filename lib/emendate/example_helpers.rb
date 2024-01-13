@@ -79,7 +79,9 @@ module ExampleHelpers
       pm.state == :failed
     end
     processed = parsed.map(&:tokens)
+    # rubocop:todo Layout/LineLength
     tokens = (token_types == :date) ? processed.map(&:date_part_types) : processed.map(&:types)
+    # rubocop:enable Layout/LineLength
     ex = parsed.map { |pm| pm.orig_string }
     ex.zip(tokens)
   end
@@ -92,17 +94,25 @@ module ExampleHelpers
 
   # def example_tokens_by_str
   #   results = tokenize_examples.sort
+  # rubocop:todo Layout/LineLength
   #   results.each{ |str, tokens| puts "#{str.ljust(example_length)}\t#{tokens.inspect}" }
+  # rubocop:enable Layout/LineLength
   # end
 
   # def example_tokens_by_token
   #   results = tokenize_examples.sort_by{ |ex| ex[1] }
+  # rubocop:todo Layout/LineLength
   #   results.each{ |str, tokens| puts "#{tokens.join(' ')}  -- String: #{str}" }
+  # rubocop:enable Layout/LineLength
   # end
 
   # def parsed_tokens_by_token(data_set: '', stage: :final)
+  # rubocop:todo Layout/LineLength
   #   results = parsed_example_tokens(data_set: data_set, stage: stage, date_type: date_type).sort_by{ |ex| ex[1] }
+  # rubocop:enable Layout/LineLength
+  # rubocop:todo Layout/LineLength
   #   results.each{ |str, tokens| puts "#{tokens.join(' ')}  -- String: #{str}" }
+  # rubocop:enable Layout/LineLength
   # end
 
   # stage should be a SegmentSet-holding instance variable of ProcessingManager

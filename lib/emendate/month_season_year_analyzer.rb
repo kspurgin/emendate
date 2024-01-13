@@ -43,7 +43,9 @@ module Emendate
         warning = if maybe_range?
           "Ambiguous year + month/season/year treated as_year"
         else
+          # rubocop:todo Layout/LineLength
           "Ambiguous year + month/season/year treated as_year, but this creates invalid range"
+          # rubocop:enable Layout/LineLength
         end
         @warnings << warning
       elsif valid_month?(num.literal)

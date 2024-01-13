@@ -4,11 +4,17 @@ require_relative "taggable"
 
 module Emendate
   module Examples
+    # rubocop:todo Layout/LineLength
     # Optionally filters Csv rows by date type and/or data set tags. If those are not given,
+    # rubocop:enable Layout/LineLength
     #   returns all Csv rows
     #
+    # rubocop:todo Layout/LineLength
     # A Row is literally one row of data, which may or may not be a testable example set on
+    # rubocop:enable Layout/LineLength
+    # rubocop:todo Layout/LineLength
     #   its own. Examples::ExampleSet handles grouping rows into TestableExample objects
+    # rubocop:enable Layout/LineLength
     class RowSet
       include Examples::Taggable
 

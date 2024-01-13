@@ -14,7 +14,9 @@ RSpec.describe Emendate::Translators::LyrasisPseudoEdtf::Range do
     let(:str) { "1910-11" }
     it "translates as expected" do
       expect(value).to eq("1910 - 1911")
+      # rubocop:todo Layout/LineLength
       expect(warnings).to eq(["Ambiguous year + month/season/year treated as_year"])
+      # rubocop:enable Layout/LineLength
     end
   end
 end

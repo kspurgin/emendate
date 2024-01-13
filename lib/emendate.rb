@@ -31,7 +31,9 @@ module Emendate
   LQ = "\u201C"
   RQ = "\u201D"
 
+  # rubocop:todo Layout/LineLength
   # these tokens should only appear in EDTF dates, and will switch some of the options
+  # rubocop:enable Layout/LineLength
   #  to support assumptions about processing EDTF
   EDTF_TYPES = %i[double_dot percent tilde curly_bracket_open letter_y letter_t
     letter_z letter_e]
@@ -79,7 +81,9 @@ module Emendate
                            }, reader: true
     setting :file_name, default: "examples.csv", reader: true
     setting :file_path, default: -> {
+                                   # rubocop:todo Layout/LineLength
                                    "#{Emendate.examples.dir.call}/#{Emendate.examples.file_name}"
+                                   # rubocop:enable Layout/LineLength
                                  }, reader: true
     setting :tests,
       default: %w[date_start_full date_end_full

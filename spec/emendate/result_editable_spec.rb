@@ -21,7 +21,9 @@ RSpec.describe Emendate::ResultEditable do
       )
       e = Editable.new(tokens)
       e.collapse_segments_backward(%i[month_alpha question space])
+      # rubocop:todo Layout/LineLength
       expect(e.result.type_string).to eq("month_alpha number1or2 comma space number4")
+      # rubocop:enable Layout/LineLength
       derived = e.result.segments.first
       expect(derived.lexeme).to eq("Oct.? ")
       expect(derived.literal).to eq(10)
