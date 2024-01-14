@@ -7,7 +7,7 @@ RSpec.describe Emendate::ShortYearHandler do
 
   let(:str) { "21" }
   let(:token) do
-    Emendate::Token.new(type: :stub, lexeme: str, literal: str.to_i)
+    Emendate::Segment.new(type: :stub, lexeme: str, literal: str.to_i)
   end
   let(:result) { subject.call(token) }
 

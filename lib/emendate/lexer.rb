@@ -231,19 +231,19 @@ module Emendate
             location: location(init)
           )
         when :early
-          tokens << Emendate::Token.new(
+          tokens << Emendate::Segment.new(
             lexeme: match,
             literal: :early,
             type: :partial
           )
         when :mid
-          tokens << Emendate::Token.new(
+          tokens << Emendate::Segment.new(
             lexeme: match,
             literal: :mid,
             type: :partial
           )
         when :late
-          tokens << Emendate::Token.new(
+          tokens << Emendate::Segment.new(
             lexeme: match,
             literal: :late,
             type: :partial
@@ -276,7 +276,7 @@ module Emendate
     # @param type [Symbol]
     # @param init [Integer]
     def add_token(lexeme, type, init)
-      tokens << Token.new(
+      tokens << Emendate::Segment.new(
         lexeme: lexeme, type: type, location: location(init)
       )
     end

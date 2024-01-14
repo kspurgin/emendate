@@ -6,7 +6,7 @@ RSpec.describe Emendate::SegmentSets::SegmentSet do
   subject(:set) { described_class }
 
   let(:segments) do
-    %i[a b c d].map { |t| Emendate::Token.new(type: t, lexeme: t.to_s) }
+    %i[a b c d].map { |t| Emendate::Segment.new(type: t, lexeme: t.to_s) }
   end
   let(:string) { "str" }
   let(:segset) { set.new(string: string, segments: segments) }
@@ -47,7 +47,7 @@ RSpec.describe Emendate::SegmentSets::SegmentSet do
 
   describe "#<<" do
     it "adds segment as expected" do
-      segset << Emendate::Token.new(type: :z, lexeme: "z")
+      segset << Emendate::Segment.new(type: :z, lexeme: "z")
       expect(segset.length).to eq(5)
       expect(segset.last.type).to eq(:z)
       expect(segset.lexeme).to eq("abcdz")
@@ -56,7 +56,7 @@ RSpec.describe Emendate::SegmentSets::SegmentSet do
 
   describe "#unshift" do
     it "adds segment as expected" do
-      segset.unshift(Emendate::Token.new(type: :z, lexeme: "z"))
+      segset.unshift(Emendate::Segment.new(type: :z, lexeme: "z"))
       expect(segset.length).to eq(5)
       expect(segset.first.type).to eq(:z)
       expect(segset.lexeme).to eq("zabcd")

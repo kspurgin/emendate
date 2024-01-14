@@ -163,7 +163,7 @@ module Emendate
             %i[month number1or2 hyphen yearmonthday_date_type]
           ).segments
           ymd = tokens[3]
-          yr = Emendate::Token.new(type: :dummy, literal: ymd.year)
+          yr = Emendate::Segment.new(type: :dummy, literal: ymd.year)
           dt = new_datetype(type: :ymd,
             sources: [yr, tokens[0], tokens[1]],
             ind: [0, 1, 2],
@@ -480,7 +480,7 @@ module Emendate
 
     def replace_slash_with_hyphen
       slash = result.when_type(:slash)[0]
-      ht = Emendate::Token.new(type: :hyphen,
+      ht = Emendate::Segment.new(type: :hyphen,
         lexeme: slash.lexeme,
         location: slash.location)
       replace_x_with_new(x: slash, new: ht)
