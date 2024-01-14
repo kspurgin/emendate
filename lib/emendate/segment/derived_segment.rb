@@ -9,14 +9,10 @@ module Emendate
   # Segments using this module will call `derive(opts)` from their
   # `post_initialize` method
   module DerivedSegment
-    def sources
-      @sources
-    end
-
     private
 
-    def derive(opts)
-      set_sources(opts)
+    def derive
+      set_sources
       derive_values
     end
 
@@ -74,24 +70,26 @@ module Emendate
       end
     end
 
-    def set_sources(opts)
-      @sources = Emendate::SegmentSets::SegmentSet.new
-      return if opts[:sources].nil?
-      return if opts[:sources].empty?
+    def set_sources
+      target = Emendate::SegmentSets::SegmentSet.new
+      return if sources.nil?
+      return if sources.empty?
 
-      srcs = if opts[:sources].respond_to?(:segments)
-        opts[:sources].segments
+      srcs = if sources.respond_to?(:segments)
+        sources.segments
       else
-        opts[:sources]
+        sources
       end
 
       srcs.map { |src| subsources(src) }
         .flatten
-        .each { |t| @sources << t }
+        .each { |t| target << t }
+
+      @sources = target
     end
 
     def subsources(src)
-      return src unless src.respond_to?(:sources)
+      return src unless src.sources
 
       src.sources.segments
     end

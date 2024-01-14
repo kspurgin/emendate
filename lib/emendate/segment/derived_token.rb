@@ -12,10 +12,18 @@ module Emendate
   class DerivedToken < Emendate::Segment
     include DerivedSegment
 
-    private
+    # @param type [Symbol]
+    # @param lexeme [String, NilClass]
+    # @param literal [Integer, Symbol, NilClass]
+    # @param sources [Array<Segment>, Emendate::SegmentSets::SegmentSet,
+    #   NilClass]
+    # @raise Emendate::DeriveFromNothingError if initialized with nil or
+    #   empty sources
+    def initialize(type:, sources:, lexeme: nil, literal: nil)
+      super
 
-    def post_initialize(opts)
-      derive(opts)
+      raise Emendate::DeriveFromNothingError if sources.nil? || sources.empty?
+      derive
     end
   end
 end

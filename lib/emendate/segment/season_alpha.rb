@@ -4,6 +4,18 @@ require "emendate/segment/segment"
 
 module Emendate
   class SeasonAlpha < Segment
+    # (see Segment#initialize)
+    def initialize(...)
+      super
+
+      unless type == :season
+        raise Emendate::TokenTypeError,
+          "SeasonAlpha must be created with type = :season"
+      end
+
+      @literal = default_literal if default_literal
+    end
+
     private
 
     LITERALS = {
@@ -19,17 +31,6 @@ module Emendate
       raise Emendate::SeasonLiteralError, lexeme unless result
 
       result
-    end
-
-    def post_initialize(opts)
-      super
-
-      unless type == :season
-        raise Emendate::TokenTypeError,
-          "SeasonAlpha must be created with type = :season"
-      end
-
-      @literal = default_literal if default_literal
     end
   end
 end

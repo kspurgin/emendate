@@ -7,35 +7,26 @@ module Emendate
   class Number < Segment
     include DateUtils
 
-    attr_reader :digits
-
-    private
-
-    # allowable length of number in digits
-    def allowed_digits?
-      [1, 2, 3, 4, 6, 8].include?(digits)
-    end
-
-    def default_digits
-      lexeme.length
-    end
-
-    def default_literal
-      lexeme.to_i
-    end
-
-    # @todo Does opts[:digits] ever get passed in?
-    def post_initialize(opts)
-      super
-
+    # @param lexeme [String] of numerals reflecting how number
+    #    originally appeared in string (with leading zeroes, etc.)
+    def initialize(lexeme:)
+      super(type: :number, lexeme: lexeme)
       unless lexeme.match?(/^\d+$/)
         raise Emendate::TokenLexemeError,
           "Number token must be created with lexeme containing only numeric "\
           "digits"
       end
 
-      @digits = opts[:digits] || default_digits
+      @digits = lexeme.length
+      @literal = lexeme.to_i
       reset_type
+    end
+
+    private
+
+    # allowable length of number in digits
+    def allowed_digits?
+      [1, 2, 3, 4, 6, 8].include?(digits)
     end
 
     def reset_type

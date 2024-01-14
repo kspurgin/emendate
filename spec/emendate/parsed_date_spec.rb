@@ -19,7 +19,7 @@ RSpec.describe Emendate::ParsedDate do
   describe "#new" do
     context "with non-date type passed in" do
       let(:args) do
-        token = Emendate::Segment.new
+        token = Emendate::Segment.new(type: :foo)
         {date: token, orig: "token"}
       end
 

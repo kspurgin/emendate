@@ -2,21 +2,27 @@
 
 require "spec_helper"
 
-class Derivable < Emendate::Segment
-  include Emendate::DerivedSegment
-
-  private
-
-  def post_initialize(opts)
-    derive(opts)
-  end
-end
-
-RSpec.describe Emendate::DerivedSegment do
+RSpec.describe Emendate::DerivedToken do
+  subject { described_class.new(type: derived_type, sources: sources) }
   let(:derived_type) { :newtype }
-  let(:klass) { Derivable.new(type: derived_type, sources: sources) }
 
   describe "#derive" do
+    context "when nil sources" do
+      let(:sources) { nil }
+
+      it "raises error" do
+        expect { subject }.to raise_error(Emendate::DeriveFromNothingError)
+      end
+    end
+
+    context "when empty sources" do
+      let(:sources) { [] }
+
+      it "raises error" do
+        expect { subject }.to raise_error(Emendate::DeriveFromNothingError)
+      end
+    end
+
     context "when one source" do
       let(:sources) do
         orig_token = Emendate::Segment.new(type: :sym, lexeme: "str",
@@ -26,9 +32,9 @@ RSpec.describe Emendate::DerivedSegment do
       end
 
       it "derives values as expected" do
-        expect(klass.type).to eq(:newtype)
-        expect(klass.lexeme).to eq("str")
-        expect(klass.literal).to eq(1)
+        expect(subject.type).to eq(:newtype)
+        expect(subject.lexeme).to eq("str")
+        expect(subject.literal).to eq(1)
       end
     end
 
@@ -43,26 +49,26 @@ RSpec.describe Emendate::DerivedSegment do
         end
 
         it "derives values as expected" do
-          expect(klass.type).to eq(:newtype)
-          expect(klass.lexeme).to eq("a cat sat")
-          expect(klass.literal).to eq(123)
+          expect(subject.type).to eq(:newtype)
+          expect(subject.lexeme).to eq("a cat sat")
+          expect(subject.literal).to eq(123)
         end
       end
 
       context "when sources have numeric and nil literals (1985.0)" do
         let(:sources) do
           [
-            Emendate::Number.new(type: :number, lexeme: "1985"),
+            Emendate::Number.new(lexeme: "1985"),
             Emendate::Segment.new(type: :single_dot, lexeme: "."),
-            Emendate::Number.new(type: :number, lexeme: "0")
+            Emendate::Number.new(lexeme: "0")
           ]
         end
-        let(:derived_type) { :number }
+        let(:derived_type) { :number4 }
 
         it "derives values as expected" do
-          expect(klass.type).to eq(:number)
-          expect(klass.lexeme).to eq("1985.0")
-          expect(klass.literal).to eq(1985)
+          expect(subject.type).to eq(:number4)
+          expect(subject.lexeme).to eq("1985.0")
+          expect(subject.literal).to eq(1985)
         end
       end
 
@@ -76,9 +82,9 @@ RSpec.describe Emendate::DerivedSegment do
         let(:derived_type) { :partial }
 
         it "derives values as expected" do
-          expect(klass.type).to eq(:partial)
-          expect(klass.lexeme).to eq("mid ")
-          expect(klass.literal).to eq(:mid)
+          expect(subject.type).to eq(:partial)
+          expect(subject.lexeme).to eq("mid ")
+          expect(subject.literal).to eq(:mid)
         end
       end
 
@@ -92,9 +98,9 @@ RSpec.describe Emendate::DerivedSegment do
         let(:derived_type) { :comma }
 
         it "derives values as expected" do
-          expect(klass.type).to eq(:comma)
-          expect(klass.lexeme).to eq(", ")
-          expect(klass.literal).to be_nil
+          expect(subject.type).to eq(:comma)
+          expect(subject.lexeme).to eq(", ")
+          expect(subject.literal).to be_nil
         end
       end
 
@@ -102,12 +108,12 @@ RSpec.describe Emendate::DerivedSegment do
         let(:sources) do
           [
             Emendate::Segment.new(type: :partial, lexeme: "mid", literal: :mid),
-            Emendate::Number.new(type: :number, lexeme: "1985")
+            Emendate::Number.new(lexeme: "1985")
           ]
         end
 
         it "raises error" do
-          expect { klass }.to raise_error(Emendate::DerivedSegmentError,
+          expect { subject }.to raise_error(Emendate::DerivedSegmentError,
             /Cannot derive literal from mixed Integers and Symbols/)
         end
       end
@@ -121,7 +127,7 @@ RSpec.describe Emendate::DerivedSegment do
         end
 
         it "raises error" do
-          expect { klass }.to raise_error(Emendate::DerivedSegmentError,
+          expect { subject }.to raise_error(Emendate::DerivedSegmentError,
             /Cannot derive literal from multiple symbols/)
         end
       end
@@ -136,7 +142,7 @@ RSpec.describe Emendate::DerivedSegment do
         end
 
         it "raises error" do
-          expect { klass }.to raise_error(Emendate::DerivedSegmentError,
+          expect { subject }.to raise_error(Emendate::DerivedSegmentError,
             /Cannot derive literal for unknown reason/)
         end
       end
@@ -144,18 +150,18 @@ RSpec.describe Emendate::DerivedSegment do
       context "with multiple levels of derivation" do
         it "foo" do
           sub_a_srcs = [
-            Emendate::Number.new(type: :number, lexeme: "2"),
+            Emendate::Number.new(lexeme: "2"),
             Emendate::Segment.new(type: :hyphen, lexeme: "/")
           ]
-          sub_a = Derivable.new(type: :sub_a, sources: sub_a_srcs)
+          sub_a = described_class.new(type: :sub_a, sources: sub_a_srcs)
 
           sub_b_srcs = [
             Emendate::Segment.new(type: :question, lexeme: "?"),
             Emendate::Segment.new(type: :space, lexeme: " ")
           ]
-          sub_b = Derivable.new(type: :sub_b, sources: sub_b_srcs)
+          sub_b = described_class.new(type: :sub_b, sources: sub_b_srcs)
 
-          parent = Derivable.new(type: :nested, sources: [sub_a, sub_b])
+          parent = described_class.new(type: :nested, sources: [sub_a, sub_b])
           expect(parent.type).to eq(:nested)
           expect(parent.sources.length).to eq(4)
         end
