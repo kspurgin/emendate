@@ -297,7 +297,7 @@ module Emendate
 
     def consume_non_date_parts
       pieces = []
-      until current.is_a?(Emendate::NumberToken)
+      until current.is_a?(Emendate::Number)
         pieces << current
         working.delete(current)
       end

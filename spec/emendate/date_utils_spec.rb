@@ -7,8 +7,8 @@ RSpec.describe Emendate::DateUtils do
 
   describe "#expand_shorter_digits" do
     def result(yr, num)
-      year = Emendate::NumberToken.new(lexeme: yr)
-      num = Emendate::NumberToken.new(lexeme: num)
+      year = Emendate::Number.new(lexeme: yr)
+      num = Emendate::Number.new(lexeme: num)
       dateutils.send(:expand_shorter_digits, year, num)
     end
 
@@ -23,8 +23,8 @@ RSpec.describe Emendate::DateUtils do
 
   describe "#is_range?" do
     def result(yr, num)
-      year = Emendate::NumberToken.new(lexeme: yr)
-      num = Emendate::NumberToken.new(lexeme: num)
+      year = Emendate::Number.new(lexeme: yr)
+      num = Emendate::Number.new(lexeme: num)
       dateutils.send(:is_range?, year, num)
     end
 
@@ -115,8 +115,8 @@ RSpec.describe Emendate::DateUtils do
 
   describe "#possible_range" do
     def result(yr, num)
-      year = Emendate::NumberToken.new(lexeme: yr)
-      num = Emendate::NumberToken.new(lexeme: num)
+      year = Emendate::Number.new(lexeme: yr)
+      num = Emendate::Number.new(lexeme: num)
       dateutils.send(:possible_range?, year, num)
     end
 

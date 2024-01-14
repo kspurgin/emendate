@@ -77,7 +77,7 @@ module Emendate
 
     def initialize(lexeme)
       m = "Cannot assign literal for month value `#{lexeme}`. Dates will not "\
-          "be translateable until DateUtils and/or MonthAlphaToken is updated "\
+          "be translateable until DateUtils and/or MonthAlpha is updated "\
           "to assign the appropriate literal value"
       super(m)
     end
@@ -113,7 +113,7 @@ module Emendate
 
     def initialize(lexeme)
       m = "Cannot assign literal for season value `#{lexeme}`. Dates will not "\
-          "be translateable until SeasonAlphaToken is updated "\
+          "be translateable until SeasonAlpha is updated "\
           "to assign the appropriate literal value"
       super(m)
     end

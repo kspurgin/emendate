@@ -3,7 +3,7 @@
 require "emendate/segment/segment"
 
 module Emendate
-  class SeasonAlphaToken < Segment
+  class SeasonAlpha < Segment
     private
 
     LITERALS = {
@@ -26,7 +26,7 @@ module Emendate
 
       unless type == :season
         raise Emendate::TokenTypeError,
-          "SeasonAlphaToken must be created with type = :season"
+          "SeasonAlpha must be created with type = :season"
       end
 
       @literal = default_literal if default_literal

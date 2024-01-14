@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Emendate::SeasonAlphaToken do
+RSpec.describe Emendate::SeasonAlpha do
   subject { described_class }
 
   let(:type) { :season }
