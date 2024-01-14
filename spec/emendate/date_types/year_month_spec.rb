@@ -8,7 +8,7 @@ RSpec.describe Emendate::DateTypes::YearMonth do
   context "with `Feb. 2020`" do
     let(:tokens) do
       [
-        Emendate::Token.new(type: :month, lexeme: "Feb. ", literal: 2),
+        Emendate::Segment.new(type: :month, lexeme: "Feb. ", literal: 2),
         Emendate::Number.new(type: :number, lexeme: "2020")
       ]
     end

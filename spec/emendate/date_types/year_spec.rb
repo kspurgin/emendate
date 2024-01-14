@@ -27,7 +27,8 @@ RSpec.describe Emendate::DateTypes::Year do
   context "with `early 2021`" do
     let(:tokens) do
       [
-        Emendate::Token.new(type: :partial, lexeme: "early ", literal: :early),
+        Emendate::Segment.new(type: :partial, lexeme: "early ",
+          literal: :early),
         Emendate::Number.new(type: :number, lexeme: "2021")
       ]
     end
@@ -47,7 +48,7 @@ RSpec.describe Emendate::DateTypes::Year do
   context "with `mid 2021`" do
     let(:tokens) do
       [
-        Emendate::Token.new(type: :partial, lexeme: "mid ", literal: :mid),
+        Emendate::Segment.new(type: :partial, lexeme: "mid ", literal: :mid),
         Emendate::Number.new(type: :number, lexeme: "2021")
       ]
     end
@@ -67,7 +68,7 @@ RSpec.describe Emendate::DateTypes::Year do
   context "with `late 2021`" do
     let(:tokens) do
       [
-        Emendate::Token.new(type: :partial, lexeme: "late ", literal: :late),
+        Emendate::Segment.new(type: :partial, lexeme: "late ", literal: :late),
         Emendate::Number.new(type: :number, lexeme: "2021")
       ]
     end
@@ -87,7 +88,7 @@ RSpec.describe Emendate::DateTypes::Year do
   context "with `before 2021`" do
     let(:tokens) do
       [
-        Emendate::Token.new(type: :before, lexeme: "before "),
+        Emendate::Segment.new(type: :before, lexeme: "before "),
         Emendate::Number.new(type: :number, lexeme: "2021")
       ]
     end
@@ -138,7 +139,7 @@ RSpec.describe Emendate::DateTypes::Year do
     end
 
     context "with bce set" do
-      let(:bce) { Emendate::Token.new(type: :era_bce, lexeme: "BCE") }
+      let(:bce) { Emendate::Segment.new(type: :era_bce, lexeme: "BCE") }
 
       context "and with precise handling" do
         before { Emendate.config.options.bce_handling = :precise }
@@ -177,7 +178,7 @@ RSpec.describe Emendate::DateTypes::Year do
 
     let(:tokens) do
       [
-        Emendate::Token.new(type: :after, lexeme: "after "),
+        Emendate::Segment.new(type: :after, lexeme: "after "),
         Emendate::Number.new(type: :number, lexeme: "2021")
       ]
     end
@@ -193,8 +194,9 @@ RSpec.describe Emendate::DateTypes::Year do
 
     let(:tokens) do
       [
-        Emendate::Token.new(type: :after, lexeme: "after "),
-        Emendate::Token.new(type: :partial, lexeme: "early ", literal: :early),
+        Emendate::Segment.new(type: :after, lexeme: "after "),
+        Emendate::Segment.new(type: :partial, lexeme: "early ",
+          literal: :early),
         Emendate::Number.new(type: :number, lexeme: "2021")
       ]
     end
@@ -210,8 +212,8 @@ RSpec.describe Emendate::DateTypes::Year do
 
     let(:tokens) do
       [
-        Emendate::Token.new(type: :before, lexeme: "before "),
-        Emendate::Token.new(type: :partial, lexeme: "mid ", literal: :mid),
+        Emendate::Segment.new(type: :before, lexeme: "before "),
+        Emendate::Segment.new(type: :partial, lexeme: "mid ", literal: :mid),
         Emendate::Number.new(type: :number, lexeme: "2021")
       ]
     end

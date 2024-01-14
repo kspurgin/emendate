@@ -71,7 +71,7 @@ RSpec.describe Emendate::DateTypes::Decade do
     let(:str) { "1990s" }
 
     it "returns expected values for early" do
-      t = Emendate::Token.new(type: :partial, literal: :early,
+      t = Emendate::Segment.new(type: :partial, literal: :early,
         lexeme: "early ")
       subject.prepend_source_token(t)
       expect(subject.earliest).to eq(Date.new(1990, 1, 1))
@@ -79,7 +79,7 @@ RSpec.describe Emendate::DateTypes::Decade do
     end
 
     it "returns expected values for mid" do
-      t = Emendate::Token.new(type: :partial, literal: :mid,
+      t = Emendate::Segment.new(type: :partial, literal: :mid,
         lexeme: "mid ")
       subject.prepend_source_token(t)
       expect(subject.earliest).to eq(Date.new(1994, 1, 1))
@@ -87,7 +87,7 @@ RSpec.describe Emendate::DateTypes::Decade do
     end
 
     it "returns expected values for late" do
-      t = Emendate::Token.new(type: :partial, literal: :late,
+      t = Emendate::Segment.new(type: :partial, literal: :late,
         lexeme: "late ")
       subject.prepend_source_token(t)
       expect(subject.earliest).to eq(Date.new(1997, 1, 1))

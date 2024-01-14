@@ -26,7 +26,7 @@ RSpec.describe Emendate::DateTypes::Century do
 
     context "when early" do
       it "returns expected values" do
-        t = Emendate::Token.new(type: :partial, literal: :early,
+        t = Emendate::Segment.new(type: :partial, literal: :early,
           lexeme: "early ")
         subject.prepend_source_token(t)
         expect(subject.partial_indicator).to eq(:early)
@@ -39,7 +39,7 @@ RSpec.describe Emendate::DateTypes::Century do
 
     context "when mid" do
       it "returns expected values" do
-        t = Emendate::Token.new(type: :partial, literal: :mid,
+        t = Emendate::Segment.new(type: :partial, literal: :mid,
           lexeme: "mid ")
         subject.prepend_source_token(t)
         expect(subject.earliest).to eq(Date.new(1834, 1, 1))
@@ -51,7 +51,7 @@ RSpec.describe Emendate::DateTypes::Century do
 
     context "when late" do
       it "returns expected values" do
-        t = Emendate::Token.new(type: :partial, literal: :late,
+        t = Emendate::Segment.new(type: :partial, literal: :late,
           lexeme: "late ")
         subject.prepend_source_token(t)
         expect(subject.earliest).to eq(Date.new(1867, 1, 1))
@@ -77,7 +77,7 @@ RSpec.describe Emendate::DateTypes::Century do
     end
 
     it "returns expected values when early" do
-      t = Emendate::Token.new(type: :partial, literal: :early,
+      t = Emendate::Segment.new(type: :partial, literal: :early,
         lexeme: "early ")
       subject.prepend_source_token(t)
       expect(subject.earliest).to eq(Date.new(1900, 1, 1))
@@ -87,7 +87,7 @@ RSpec.describe Emendate::DateTypes::Century do
     end
 
     it "returns expected values when mid" do
-      t = Emendate::Token.new(type: :partial, literal: :mid,
+      t = Emendate::Segment.new(type: :partial, literal: :mid,
         lexeme: "mid ")
       subject.prepend_source_token(t)
       expect(subject.earliest).to eq(Date.new(1933, 1, 1))
@@ -97,7 +97,7 @@ RSpec.describe Emendate::DateTypes::Century do
     end
 
     it "returns expected values when late" do
-      t = Emendate::Token.new(type: :partial, literal: :late,
+      t = Emendate::Segment.new(type: :partial, literal: :late,
         lexeme: "late ")
       subject.prepend_source_token(t)
       expect(subject.earliest).to eq(Date.new(1966, 1, 1))

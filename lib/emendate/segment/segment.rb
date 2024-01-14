@@ -5,7 +5,7 @@ require "forwardable"
 module Emendate
   # Tokens, tagged date parts, tagged dates are subclasses of Segment
   class Segment
-    attr_reader :type, :lexeme, :literal, :certainty, :digits
+    attr_reader :type, :lexeme, :literal, :certainty, :digits, :location
 
     COLLAPSIBLE_TYPES = %i[space single_dot standalone_zero]
 
@@ -21,6 +21,7 @@ module Emendate
       @literal = opts[:literal] || default_literal
       @certainty = default_certainty
       @digits = nil
+      @location = opts[:location]
       post_initialize(opts)
     end
 
@@ -56,6 +57,20 @@ module Emendate
 
     # @return [String]
     def to_s = "#{type} #{lexeme} #{literal}"
+
+    # @deprecated Location functions are being removed
+    def col
+      return nil unless location
+
+      location.col
+    end
+
+    # @deprecated Location functions are being removed
+    def length
+      return nil unless location
+
+      location.length
+    end
 
     private
 
