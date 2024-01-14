@@ -168,11 +168,8 @@ module Emendate
     end
 
     def tokenize_number
-      init = scanner.pos
       match = scanner.scan(/\d+/)
-      tokens << Number.new(
-        type: :number, lexeme: match, location: location(init)
-      )
+      tokens << Number.new(lexeme: match)
       tokenize_ordinal_indicator
     end
 
