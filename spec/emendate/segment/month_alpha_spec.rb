@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Emendate::MonthAlphaToken do
+RSpec.describe Emendate::MonthAlpha do
   subject { described_class }
 
   let(:type) { :month_alpha }

@@ -4,7 +4,7 @@ require "emendate/segment/segment"
 require "emendate/date_utils"
 
 module Emendate
-  class NumberToken < Segment
+  class Number < Segment
     include DateUtils
 
     attr_reader :digits

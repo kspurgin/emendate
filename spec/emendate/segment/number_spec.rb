@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Emendate::NumberToken do
+RSpec.describe Emendate::Number do
   let(:t) { described_class.new(lexeme: lexeme) }
 
   context "with an allowed length" do

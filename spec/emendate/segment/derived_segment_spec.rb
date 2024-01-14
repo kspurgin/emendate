@@ -51,9 +51,9 @@ RSpec.describe Emendate::DerivedSegment do
       context "when sources have numeric and nil literals (1985.0)" do
         let(:sources) do
           [
-            Emendate::NumberToken.new(type: :number, lexeme: "1985"),
+            Emendate::Number.new(type: :number, lexeme: "1985"),
             Emendate::Token.new(type: :single_dot, lexeme: "."),
-            Emendate::NumberToken.new(type: :number, lexeme: "0")
+            Emendate::Number.new(type: :number, lexeme: "0")
           ]
         end
         let(:derived_type) { :number }
@@ -101,7 +101,7 @@ RSpec.describe Emendate::DerivedSegment do
         let(:sources) do
           [
             Emendate::Token.new(type: :partial, lexeme: "mid", literal: :mid),
-            Emendate::NumberToken.new(type: :number, lexeme: "1985")
+            Emendate::Number.new(type: :number, lexeme: "1985")
           ]
         end
 
@@ -142,7 +142,7 @@ RSpec.describe Emendate::DerivedSegment do
       context "with multiple levels of derivation" do
         it "foo" do
           sub_a_srcs = [
-            Emendate::NumberToken.new(type: :number, lexeme: "2"),
+            Emendate::Number.new(type: :number, lexeme: "2"),
             Emendate::Token.new(type: :hyphen, lexeme: "/")
           ]
           sub_a = Derivable.new(type: :sub_a, sources: sub_a_srcs)

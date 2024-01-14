@@ -4,7 +4,7 @@ require "emendate/segment/segment"
 require "emendate/date_utils"
 
 module Emendate
-  class MonthAlphaToken < Segment
+  class MonthAlpha < Segment
     include DateUtils
 
     private
@@ -21,7 +21,7 @@ module Emendate
 
       unless type == :month_alpha
         raise Emendate::TokenTypeError,
-          "MonthAlphaToken must be created with type = :month_alpha"
+          "MonthAlpha must be created with type = :month_alpha"
       end
 
       @literal = default_literal if default_literal

@@ -74,7 +74,7 @@ module Emendate
       /^or/i => :or,
       /^to/i => :range_indicator,
       # If additional alphabetic seasons are added, make sure to
-      #   update the mapping to literals in Segments::SeasonAlphaToken
+      #   update the mapping to literals in Segments::SeasonAlpha
       /^(winter|spring|summer|fall|autumn)/i => :season,
       /^(date\sunknown|unknown\sdate|no\sdate|not\sdated|undated|
       unknown|unk|n\.?\s?d\.?)$/ix => :unknown_date,
@@ -170,7 +170,7 @@ module Emendate
     def tokenize_number
       init = scanner.pos
       match = scanner.scan(/\d+/)
-      tokens << NumberToken.new(
+      tokens << Number.new(
         type: :number, lexeme: match, location: location(init)
       )
       tokenize_ordinal_indicator
@@ -219,13 +219,13 @@ module Emendate
       else
         case ALPHA[pattern]
         when :month_alpha
-          tokens << Emendate::MonthAlphaToken.new(
+          tokens << Emendate::MonthAlpha.new(
             lexeme: match,
             type: :month_alpha,
             location: location(init)
           )
         when :season
-          tokens << Emendate::SeasonAlphaToken.new(
+          tokens << Emendate::SeasonAlpha.new(
             lexeme: match,
             type: :season,
             location: location(init)

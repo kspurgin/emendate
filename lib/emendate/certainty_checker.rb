@@ -130,7 +130,7 @@ module Emendate
     def processing_function
       return nil if working.empty?
 
-      if working[0].is_a?(Emendate::NumberToken)
+      if working[0].is_a?(Emendate::Number)
         :check_after_number
       elsif uncertainty_indicator?
         :set_date_certainty
@@ -242,7 +242,7 @@ module Emendate
         result.warnings << "#{indicator.lexeme} appears at end of string and "\
                            "was not handled by whole-value processor"
         result << indicator
-      elsif working.first.is_a?(Emendate::NumberToken)
+      elsif working.first.is_a?(Emendate::Number)
         number = working.shift
         number.add_certainty(certainty)
         result << indicator
