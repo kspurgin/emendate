@@ -21,6 +21,7 @@ RSpec.describe Emendate::Segment do
         expect(subject.type).to eq(:newtype)
         expect(subject.lexeme).to eq("str")
         expect(subject.literal).to eq(1)
+        expect(subject.certainty).to eq([:approximate])
       end
     end
 
@@ -30,6 +31,7 @@ RSpec.describe Emendate::Segment do
           t1 = Emendate::Segment.new(type: :sym, lexeme: "a ", literal: 1)
           t1.add_certainty(:approximate)
           t2 = Emendate::Segment.new(type: :foo, lexeme: "cat ", literal: 2)
+          t2.add_certainty(:uncertain)
           t3 = Emendate::Segment.new(type: :bar, lexeme: "sat", literal: 3)
           [t1, t2, t3]
         end
@@ -38,6 +40,7 @@ RSpec.describe Emendate::Segment do
           expect(subject.type).to eq(:newtype)
           expect(subject.lexeme).to eq("a cat sat")
           expect(subject.literal).to eq(123)
+          expect(subject.certainty).to eq([:approximate, :uncertain])
         end
       end
 

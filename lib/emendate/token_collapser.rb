@@ -76,12 +76,6 @@ module Emendate
         proc { collapse_segments_backward(%i[before hyphen]) }
       when /.*partial hyphen.*/
         proc { collapse_segments_backward(%i[partial hyphen]) }
-      when /.*month_abbr_alpha single_dot space.*/
-        proc {
-          collapse_segments_backward(
-            %i[month_abbr_alpha single_dot space]
-          )
-        }
       when /.*parenthesis_open [^ ]+ parenthesis_close.*/
         proc { collapse_single_element_parenthetical }
       end

@@ -53,11 +53,17 @@ module Emendate
     # meaning in the pattern.
     COLLAPSIBLE_TYPES = %i[space single_dot standalone_zero]
 
-    # Segments having these types will return true for :date_part?
-    DATE_PART_TYPES = %i[number1or2 number3 number4 number6 number8 s century
-      uncertainty_digits era
-      number_month month_alpha month_abbr_alpha
-      year month season day]
+    # List of initial/most granular types of segments that should be considered
+    # potentially part of an actual date value (e.g. not a date qualifier,
+    # date separator, partial indicator, era, punctuation, etc.)
+    INITIAL_DATE_PARTS = %i[number1or2 number3 number4 number6 number8 s
+      uncertainty_digits month_alpha season]
+
+    # List of segment types indicating the segment represents a known date part
+    TAGGED_DATE_PARTS = %i[millennium century decade year month season day]
+
+    # All segments types considered to be date parts
+    DATE_PART_TYPES = [INITIAL_DATE_PARTS, TAGGED_DATE_PARTS].flatten
 
     # @param type [Symbol]
     # @param lexeme [String, NilClass]
@@ -146,7 +152,6 @@ module Emendate
       @lexeme = src.lexeme if lexeme.nil?
       @literal = src.literal if literal.nil?
       @certainty = src.certainty if certainty.nil? || certainty.empty?
-      # @type = src.type if type.nil?
       @digits = src.digits
     end
 
