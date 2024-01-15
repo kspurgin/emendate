@@ -53,16 +53,14 @@ module Emendate
     ordinals = "^(" + ORDINAL_INDICATORS.join("|") + ")"
 
     ALPHA = {
-      /^(about|around)/i => :about,
       /^(after|post)/i => :after,
       /^(&|and)/i => :and,
-      /^(probably|probable|prob\.)/i => :probably,
-      /^(possibly|possible|poss\.)/i => :possibly,
-      /^(approximate(ly|)|estimated?|est\.?)/i => :approximate,
+      /^(about|around|approximate(ly|)|ca\.?|circa|estimated?|est\.?)/i =>
+        :approximate,
+      /^(probably|probable|prob\.|possibly|possible|poss\.)/i => :uncertain,
       /^present/i => :present,
       /^(before|pre|prior to)/i => :before,
       /^(century|cent\.?)/i => :century,
-      /^(ca\.?|circa)/i => :circa,
       Regexp.new(days, "i") => :day_of_week_alpha,
       /^(b\.? ?c\.? ?e\.?|b\.? ?p\.?|b\.? ?c\.?)/i => :era_bce,
       /^(c\.? ?e\.?|a\.? ?d\.?)/i => :era_ce,
@@ -141,7 +139,7 @@ module Emendate
     def tokenize_starting_circa
       init = scanner.pos
       match = scanner.scan(/^c\.? ?/i)
-      add_token(match, :circa, init)
+      add_token(match, :approximate, init)
     end
 
     def tokenize_single
