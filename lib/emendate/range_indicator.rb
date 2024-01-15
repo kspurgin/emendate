@@ -42,10 +42,7 @@ module Emendate
       startdate = datetypes[0]
       enddate = datetypes[-1]
       [startdate, enddate].each { |token| working.delete(token) }
-      indicator = DerivedToken.new(
-        type: :range_indicator,
-        sources: working.segments
-      )
+      indicator = Segment.new(type: :range_indicator, sources: working.segments)
       sources = working.class.new.copy(working)
       sources.clear
       [startdate, indicator, enddate].each { |token| sources << token }

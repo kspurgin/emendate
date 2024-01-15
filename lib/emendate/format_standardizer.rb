@@ -334,7 +334,7 @@ module Emendate
       indicator:, category:
     )
       unless indicator.type == :range_indicator
-        new_ind = Emendate::DerivedToken.new(
+        new_ind = Emendate::Segment.new(
           type: :range_indicator,
           sources: [indicator]
         )
@@ -381,10 +381,11 @@ module Emendate
       result.delete_at(y_ind)
     end
 
+    # @todo simplify with result_editable methods?
     def pad_3_to_4_digits
       t3 = result.find { |t| t.type == :number3 }
       t3i = result.find_index(t3)
-      t4 = Emendate::DerivedToken.new(
+      t4 = Emendate::Segment.new(
         type: :number4,
         sources: [t3]
       )
@@ -408,7 +409,7 @@ module Emendate
     end
 
     def remove_time_parts
-      t = Emendate::DerivedToken.new(type: :time, sources: time_parts)
+      t = Emendate::Segment.new(type: :time, sources: time_parts)
       replace_segments_with_new(segments: time_parts, new: t)
       collapse_last_token
     end
@@ -490,7 +491,7 @@ module Emendate
       zero = result.segments[-1]
       dot = result.segments[-2]
       previous = result.segments[-3]
-      derived = Emendate::DerivedToken.new(
+      derived = Emendate::Segment.new(
         type: previous.type,
         sources: [previous, dot, zero]
       )

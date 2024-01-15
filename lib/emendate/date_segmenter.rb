@@ -146,7 +146,7 @@ module Emendate
     end
 
     def add_as_unprocessable(modifier)
-      result << Emendate::DerivedToken.new(
+      result << Emendate::Segment.new(
         type: "unprocessable_#{modifier_type}", sources: [modifier]
       )
     end

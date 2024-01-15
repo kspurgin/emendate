@@ -13,15 +13,6 @@ module Emendate
     end
   end
 
-  class DeriveFromNothingError < StandardError
-    include Emendate::Error
-
-    def initialize
-      m = "Cannot derive Segment from no sources"
-      super(m)
-    end
-  end
-
   class DerivedSegmentError < StandardError
     include Emendate::Error
 

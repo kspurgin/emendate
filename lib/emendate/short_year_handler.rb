@@ -17,7 +17,7 @@ module Emendate
     end
 
     def call
-      Emendate::DerivedToken.new(type: :year,
+      Emendate::Segment.new(type: :year,
         lexeme: orig.lexeme,
         literal: full_year,
         sources: [orig])

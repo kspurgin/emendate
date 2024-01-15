@@ -11,7 +11,7 @@ module Emendate
     # @param ary [Array<Symbol>]
     def collapse_segments_backward(ary)
       segs = result.extract(ary).segments
-      derived = Emendate::DerivedToken.new(type: segs.first.type, sources: segs)
+      derived = Emendate::Segment.new(type: segs.first.type, sources: segs)
       replace_segments_with_new(segments: segs, new: derived)
     end
 
@@ -21,19 +21,19 @@ module Emendate
     # @param ary [Array<Symbol>]
     def collapse_segments_forward(ary)
       segs = result.extract(ary).segments
-      derived = Emendate::DerivedToken.new(type: segs.last.type, sources: segs)
+      derived = Emendate::Segment.new(type: segs.last.type, sources: segs)
       replace_segments_with_new(segments: segs, new: derived)
     end
 
     # derives a single token from two tokens, keeping the first token's type
     def collapse_token_pair_backward(s1, s2)
-      new = Emendate::DerivedToken.new(type: s1.type, sources: [s1, s2])
+      new = Emendate::Segment.new(type: s1.type, sources: [s1, s2])
       replace_segments_with_new(segments: [s1, s2], new: new)
     end
 
     # derives a single token from two tokens, keeping the second token's type
     def collapse_token_pair_forward(s1, s2)
-      new = Emendate::DerivedToken.new(type: s2.type, sources: [s1, s2])
+      new = Emendate::Segment.new(type: s2.type, sources: [s1, s2])
       replace_segments_with_new(segments: [s1, s2], new: new)
     end
 
@@ -71,8 +71,9 @@ module Emendate
       collapse_last_token
     end
 
+    # @todo do we need to set lexeme and literal like this?
     def new_date_part(type, sources)
-      Emendate::DerivedToken.new(type: type,
+      Emendate::Segment.new(type: type,
         lexeme: sources.map(&:lexeme).join,
         literal: sources[0].literal,
         sources: sources)
@@ -83,14 +84,13 @@ module Emendate
     def replace_segments_with_derived_new_type(segment_types:, type:)
       segments = result.extract(segment_types)
       ins_pt = result.find_index(segments[-1]) + 1
-      newsegment = Emendate::DerivedToken.new(type: type, sources: segments)
+      newsegment = Emendate::Segment.new(type: type, sources: segments)
       result.insert(ins_pt, newsegment)
       segments.each { |segment| result.delete(segment) }
     end
 
-    # rubocop:todo Layout/LineLength
-    # given an array of segments and a new (derived) segment, replaces the former with the latter
-    # rubocop:enable Layout/LineLength
+    # Given an array of segments and a new (derived) segment, replaces
+    # the former with the latter
     def replace_segments_with_new(segments:, new:)
       ins_pt = result.find_index(segments[-1]) + 1
       result.insert(ins_pt, new)
@@ -101,7 +101,7 @@ module Emendate
     # @param type [Symbol] type of the new segment
     def replace_x_with_derived_new_type(x:, type:)
       ins_pt = result.find_index(x) + 1
-      newsegment = Emendate::DerivedToken.new(type: type, sources: [x])
+      newsegment = Emendate::Segment.new(type: type, sources: [x])
       result.insert(ins_pt, newsegment)
       result.delete(x)
     end
@@ -121,6 +121,7 @@ module Emendate
 
     def replace_x_with_date_part_type(x:, date_part_type:)
       new_date_part = new_date_part(date_part_type, [x])
+      #      binding.pry
       x_ind = result.find_index(x)
       result.insert(x_ind + 1, new_date_part)
       result.delete(x)

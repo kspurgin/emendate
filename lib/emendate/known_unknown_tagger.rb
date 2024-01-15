@@ -48,7 +48,7 @@ module Emendate
 
     def replace_question_with_unknown
       question = result.pop
-      result << Emendate::DerivedToken.new(
+      result << Emendate::Segment.new(
         type: :unknown_date,
         sources: [question]
       )
