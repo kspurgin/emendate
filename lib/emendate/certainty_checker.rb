@@ -99,6 +99,10 @@ module Emendate
         process_square_brackets(remain)
       in [:curly_bracket_open, *remain, :curly_bracket_close]
         process_curly_brackets(remain)
+      in [:approximate, :uncertain, *]
+        process_approximate_and_uncertain
+      in [:uncertain, :approximate, *]
+        process_approximate_and_uncertain
       in [:approximate, *]
         process_approximate
       in [*, :approximate]
@@ -193,6 +197,12 @@ module Emendate
     def process_uncertain
       result.add_certainty(:uncertain)
       collapse_last_token
+    end
+
+    def process_approximate_and_uncertain
+      result.add_certainty(:approximate)
+      result.add_certainty(:uncertain)
+      2.times { collapse_first_token }
     end
 
     def process_edtf_approximate_and_uncertain
