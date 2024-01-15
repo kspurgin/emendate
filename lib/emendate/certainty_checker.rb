@@ -18,7 +18,12 @@ module Emendate
     end
 
     def call
-      process_whole_certainty while indicators_left?
+      while indicators_left?
+        pre = result.types.dup
+        process_whole_certainty
+
+        break if result.types == pre
+      end
 
       @working = result.class.new.copy(result)
       result.clear
