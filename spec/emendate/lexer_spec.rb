@@ -8,10 +8,10 @@ RSpec.describe Emendate::Lexer do
   describe ".call" do
     it "returns expected tokens" do
       examples = {
-        "c." => [:circa],
-        "c 1947" => %i[circa number4],
+        "c." => [:approximate],
+        "c 1947" => %i[approximate number4],
         "2nd" => %i[number1or2 ordinal_indicator],
-        "c1947" => %i[circa number4],
+        "c1947" => %i[approximate number4],
         "1919 andor 1950" => %i[number4 space unknown space number4],
         "@" => [:unknown],
         "Sep. 1" => %i[month_alpha space number1or2],
@@ -31,15 +31,13 @@ RSpec.describe Emendate::Lexer do
         "Mon Tuesday" => %i[day_of_week_alpha space day_of_week_alpha],
         "x xx uuu" => %i[uncertainty_digits space uncertainty_digits space
           uncertainty_digits],
-        # # NOTE: c isn't first in string or it'd get normalized to circa
-        # rubocop:todo Layout/LineLength
-        "e c s t y z" => %i[letter_e space letter_c space letter_s space letter_t
-          space letter_y space letter_z],
-        # rubocop:enable Layout/LineLength
+        # # NOTE: c isn't first in string or it'd get normalized to approximate
+        "e c s t y z" => %i[letter_e space letter_c space letter_s space
+          letter_t space letter_y space letter_z],
         "cent century" => %i[century space century],
-        "about around" => %i[about space about],
+        "approximate around" => %i[approximate space approximate],
         "approximately estimated" => %i[approximate space approximate],
-        "c ca circa" => %i[circa circa space circa],
+        "c ca approximate" => %i[approximate approximate space approximate],
         "unknown" => [:unknown_date],
         "n.d." => [:unknown_date],
         "n. d." => [:unknown_date],
