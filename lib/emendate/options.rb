@@ -4,8 +4,9 @@ require_relative "options_contract"
 
 module Emendate
   # To add or update an option there are several places to edit:
-  # - Emendate::OptionsContract -- used to validate configs
+  #
   # - Emendate (lib/emendate.rb) -- register the options with dry-configurable
+  # - Emendate::OptionsContract -- used to validate configs
   # - docs/options.adoc
   class Options
     attr_reader :options
@@ -18,9 +19,10 @@ module Emendate
       return if opthash.empty?
 
       @opthash = opthash
-      # rubocop:todo Layout/LineLength
-      validation_errs = Emendate::OptionsContract.new.call(**opthash).errors.to_h
-      # rubocop:enable Layout/LineLength
+      validation_errs = Emendate::OptionsContract.new
+        .call(**opthash)
+        .errors
+        .to_h
       if validation_errs.empty?
         set_options
         handle_edtf_shortcut if Emendate.options.edtf

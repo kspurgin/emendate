@@ -162,9 +162,8 @@ module Emendate
     ##################
 
     def process_square_brackets(remain)
-      # rubocop:todo Layout/LineLength
-      return if remain.include?(:square_bracket_open) || remain.include?(:square_bracket_close)
-      # rubocop:enable Layout/LineLength
+      return if remain.include?(:square_bracket_open) ||
+        remain.include?(:square_bracket_close)
 
       if Emendate.options.square_bracket_interpretation == :edtf_set
         result.add_certainty(:one_of_set) unless collapse_set?
@@ -176,9 +175,8 @@ module Emendate
     end
 
     def process_curly_brackets(remain)
-      # rubocop:todo Layout/LineLength
-      return if remain.include?(:curly_bracket_open) || remain.include?(:curly_bracket_close)
-      # rubocop:enable Layout/LineLength
+      return if remain.include?(:curly_bracket_open) ||
+        remain.include?(:curly_bracket_close)
 
       result.add_certainty(:all_of_set) unless collapse_set?
       collapse_enclosing_tokens
