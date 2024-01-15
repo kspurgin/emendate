@@ -3,7 +3,6 @@
 require "strscan"
 
 require "emendate/date_utils"
-require "emendate/location"
 
 module Emendate
   class Lexer
@@ -218,14 +217,12 @@ module Emendate
         when :month_alpha
           tokens << Emendate::MonthAlpha.new(
             lexeme: match,
-            type: :month_alpha,
-            location: location(init)
+            type: :month_alpha
           )
         when :season
           tokens << Emendate::SeasonAlpha.new(
             lexeme: match,
-            type: :season,
-            location: location(init)
+            type: :season
           )
         when :early
           tokens << Emendate::Segment.new(
@@ -274,13 +271,8 @@ module Emendate
     # @param init [Integer]
     def add_token(lexeme, type, init)
       tokens << Emendate::Segment.new(
-        lexeme: lexeme, type: type, location: location(init)
+        lexeme: lexeme, type: type
       )
-    end
-
-    def location(startpos)
-      length = scanner.pos - startpos
-      Emendate::Location.new(startpos, length)
     end
 
     def digit?(char)

@@ -481,9 +481,7 @@ module Emendate
 
     def replace_slash_with_hyphen
       slash = result.when_type(:slash)[0]
-      ht = Emendate::Segment.new(type: :hyphen,
-        lexeme: slash.lexeme,
-        location: slash.location)
+      ht = Emendate::Segment.new(type: :hyphen, lexeme: slash.lexeme)
       replace_x_with_new(x: slash, new: ht)
     end
 

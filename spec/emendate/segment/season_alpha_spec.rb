@@ -6,13 +6,12 @@ RSpec.describe Emendate::SeasonAlpha do
   subject { described_class }
 
   let(:type) { :season }
-  let(:loc) { "loc" }
   let(:t) do
-    described_class.new(type: :season, lexeme: lexeme, location: loc)
+    described_class.new(type: :season, lexeme: lexeme)
   end
 
   describe "#.new" do
-    let(:result) { subject.new(type: type, lexeme: lexeme, location: loc) }
+    let(:result) { subject.new(type: type, lexeme: lexeme) }
 
     context "with Winter" do
       let(:lexeme) { "Winter" }

@@ -6,13 +6,12 @@ RSpec.describe Emendate::MonthAlpha do
   subject { described_class }
 
   let(:type) { :month_alpha }
-  let(:loc) { "loc" }
   let(:t) do
-    described_class.new(type: :month_alpha, lexeme: lexeme, location: loc)
+    described_class.new(type: :month_alpha, lexeme: lexeme)
   end
 
   describe "#.new" do
-    let(:result) { subject.new(type: type, lexeme: lexeme, location: loc) }
+    let(:result) { subject.new(type: type, lexeme: lexeme) }
 
     context "with September" do
       let(:lexeme) { "September" }
