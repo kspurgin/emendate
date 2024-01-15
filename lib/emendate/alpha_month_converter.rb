@@ -24,8 +24,6 @@ module Emendate
         case t.type
         when :month_alpha
           replace_x_with_new(x: t, new: convert_month(t))
-        when :month_abbr_alpha
-          replace_x_with_new(x: t, new: convert_month(t))
         when :season
           replace_x_with_new(x: t, new: season_token_with_literal(t))
         else
