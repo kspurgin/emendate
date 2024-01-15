@@ -48,8 +48,6 @@ module Emendate
     attr_reader :sources
     # @return [Integer, NilClass]
     attr_reader :digits
-    # @return [Location, NilClass]
-    attr_reader :location
 
     # Segment types that can be collapsed without considering possible
     # meaning in the pattern.
@@ -67,16 +65,14 @@ module Emendate
     # @param certainty [Array<Symbol>]
     # @param sources [Array<Segment>, Emendate::SegmentSets::SegmentSet,
     #   NilClass]
-    # @param location [Location, NilClass]
     def initialize(type:, lexeme: nil, literal: nil, certainty: [],
-      sources: nil, location: nil)
+      sources: nil)
       @type = type
       @lexeme = lexeme
       @literal = literal
       @certainty = certainty
       @sources = set_sources(sources)
       @digits = nil
-      @location = location
       derive_values if @sources
     end
 
@@ -101,6 +97,8 @@ module Emendate
       true if DATE_PART_TYPES.include?(type)
     end
 
+    # This method exists so that Segments and date type classes can
+    # coexist in SegmentSets
     # @return [FalseClass]
     def date_type? = false
 
@@ -112,20 +110,6 @@ module Emendate
 
     # @return [String]
     def to_s = "#{type} #{lexeme} #{literal}"
-
-    # @deprecated Location functions are being removed
-    def col
-      return nil unless location
-
-      location.col
-    end
-
-    # @deprecated Location functions are being removed
-    def length
-      return nil unless location
-
-      location.length
-    end
 
     private
 
