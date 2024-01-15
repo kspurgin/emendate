@@ -125,9 +125,8 @@ module Emendate
       end
       return if token
 
-      init = scanner.pos
       match = scanner.getch
-      add_token(match, :unknown, init)
+      add_token(match, :unknown)
     end
 
     def tokenize_anchored_start
@@ -137,20 +136,17 @@ module Emendate
     end
 
     def tokenize_starting_circa
-      init = scanner.pos
       match = scanner.scan(/^c\.? ?/i)
-      add_token(match, :approximate, init)
+      add_token(match, :approximate)
     end
 
     def tokenize_single
-      init = scanner.pos
       match = scanner.getch
-      add_token(match, SINGLES[match], init)
+      add_token(match, SINGLES[match])
       true
     end
 
     def tokenize_dots
-      init = scanner.pos
       match = scanner.scan(/\.+/)
       type = case match.length
       when 1
@@ -160,7 +156,7 @@ module Emendate
       else
         :unknown
       end
-      add_token(match, type, init)
+      add_token(match, type)
       true
     end
 
@@ -174,10 +170,9 @@ module Emendate
       indicator = ORDINAL_INDICATORS.find { |ind| ordinal_val_match?(ind) }
       return true unless indicator
 
-      init = scanner.pos
       pattern = Regexp.new(indicator, Regexp::IGNORECASE)
       match = scanner.scan(pattern)
-      add_token(match, :ordinal_indicator, init)
+      add_token(match, :ordinal_indicator)
       true
     end
 
@@ -205,11 +200,10 @@ module Emendate
     end
 
     def tokenize_alpha_pattern(pattern)
-      init = scanner.pos
       match = scanner.scan(pattern)
       if alpha?(scanner.peek(1))
         addtl = scanner.scan(/[a-z]+/i)
-        add_token(match + addtl, :unknown, init)
+        add_token(match + addtl, :unknown)
       else
         case ALPHA[pattern]
         when :month_alpha
@@ -241,7 +235,7 @@ module Emendate
             type: :partial
           )
         else
-          add_token(match, ALPHA[pattern], init)
+          add_token(match, ALPHA[pattern])
         end
       end
     end
@@ -252,22 +246,19 @@ module Emendate
     end
 
     def tokenize_single_alpha
-      init = scanner.pos
       char = scanner.scan(/./)
       type = :"letter_#{char.downcase}"
-      add_token(char, type, init)
+      add_token(char, type)
     end
 
     def tokenize_unknown_alpha
-      init = scanner.pos
       match = scanner.scan(/[a-z]+/i)
-      add_token(match, :unknown, init)
+      add_token(match, :unknown)
     end
 
     # @param lexeme [String]
     # @param type [Symbol]
-    # @param init [Integer]
-    def add_token(lexeme, type, init)
+    def add_token(lexeme, type)
       tokens << Emendate::Segment.new(
         lexeme: lexeme, type: type
       )
