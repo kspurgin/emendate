@@ -187,7 +187,6 @@ module Emendate
       Emendate::UntokenizableTagger,
       Emendate::UnprocessableTagger,
       Emendate::KnownUnknownTagger,
-      Emendate::TokenReplacer,
       Emendate::TokenCollapser,
       Emendate::AlphaMonthConverter,
       Emendate::OrdinalTranslator,

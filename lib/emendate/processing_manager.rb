@@ -43,10 +43,6 @@ module Emendate
         state: :known_unknown_tagged,
         proc: -> { Emendate::KnownUnknownTagger.call(tokens) }
       )
-      _tokens_replaced = yield handle_step(
-        state: :tokens_replaced,
-        proc: -> { Emendate::TokenReplacer.call(tokens) }
-      )
       _tokens_collapsed = yield handle_step(
         state: :tokens_collapsed,
         proc: -> { Emendate::TokenCollapser.call(tokens) }
