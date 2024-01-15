@@ -102,7 +102,6 @@ module Emendate
         transform_part(part, preferred_order[ind])
       end
       parts = %i[year month day].map { |type| result.when_type(type)[0] }
-
       if valid_date?(*parts)
         @warnings << "Ambiguous two-digit month/day/year treated #{opt}"
         derive_datetype
@@ -140,7 +139,7 @@ module Emendate
 
     def transform_year(part)
       expanded = expand_year(part)
-      yr = Emendate::DerivedToken.new(type: :year,
+      yr = Emendate::Segment.new(type: :year,
         literal: expanded.to_i,
         sources: [part])
       replace_x_with_new(x: part, new: yr)

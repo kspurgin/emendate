@@ -262,9 +262,8 @@ module Emendate
                            "was not handled by whole-value processor"
       else
         result.add_certainty(certainty)
-        result << Emendate::DerivedToken.new(
-          type: :date_separator,
-          sources: [working[0]]
+        result << Emendate::Segment.new(
+          type: :date_separator, sources: [working[0]]
         )
         working.shift
       end

@@ -74,9 +74,10 @@ module Emendate
       @lexeme = lexeme
       @literal = literal
       @certainty = certainty
-      @sources = sources
+      @sources = set_sources(sources)
       @digits = nil
       @location = location
+      derive_values if @sources
     end
 
     # @param val [Symbol]
@@ -124,6 +125,82 @@ module Emendate
       return nil unless location
 
       location.length
+    end
+
+    private
+
+    def set_sources(sources)
+      return nil if sources.nil? || sources.empty?
+
+      segset = Emendate::SegmentSets::SegmentSet.new
+
+      srcs = if sources.respond_to?(:segments)
+        sources.segments
+      else
+        sources
+      end
+
+      srcs.map { |src| subsources(src) }
+        .flatten
+        .each { |t| segset << t }
+
+      segset
+    end
+
+    def subsources(src)
+      return src unless src.sources
+
+      src.sources.segments
+    end
+
+    def derive_values
+      (sources.length == 1) ? derive_from_single_val : derive_from_multiple_vals
+    end
+
+    def derive_from_single_val
+      src = sources[0]
+      @lexeme = src.lexeme if lexeme.nil?
+      @literal = src.literal if literal.nil?
+      @certainty = src.certainty if certainty.nil? || certainty.empty?
+      # @type = src.type if type.nil?
+      @digits = src.digits
+    end
+
+    def derive_from_multiple_vals
+      @lexeme = sources.map(&:lexeme).join("") if lexeme.nil?
+      @literal = derive_literal if literal.nil?
+      @certainty = sources.map(&:certainty).flatten.uniq.sort
+      @digits = sources.map(&:digits).compact.sum
+    end
+
+    def derive_literal
+      literal = sources.map(&:literal).compact
+      return nil if literal.empty?
+
+      if literal.any? { |val| val.is_a?(Integer) } &&
+          literal.any? { |val| val.is_a?(Symbol) }
+        raise Emendate::DerivedSegmentError.new(
+          sources, "Cannot derive literal from mixed Integers and Symbols"
+        )
+      elsif literal.all? { |val| val.is_a?(Integer) }
+        literal.select { |val| val.is_a?(Integer) }
+          .join("")
+          .to_i
+      elsif literal.all? { |val| val.is_a?(Symbol) }
+        syms = literal.select { |val| val.is_a?(Symbol) }
+        case syms.length
+        when 1
+          syms[0]
+        else
+          raise Emendate::DerivedSegmentError.new(
+            sources, "Cannot derive literal from multiple symbols"
+          )
+        end
+      else
+        raise Emendate::DerivedSegmentError.new(
+          sources, "Cannot derive literal for unknown reason"
+        )
+      end
     end
   end
 end

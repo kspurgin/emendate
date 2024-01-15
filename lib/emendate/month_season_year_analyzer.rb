@@ -62,10 +62,12 @@ module Emendate
     end
 
     def new_date_part(type:, literal:)
-      Emendate::DerivedToken.new(type: type,
+      Emendate::Segment.new(
+        type: type,
         lexeme: num.lexeme,
         literal: literal.to_i,
-        sources: [num])
+        sources: [num]
+      )
     end
 
     def expanded_year

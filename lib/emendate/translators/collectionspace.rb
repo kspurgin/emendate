@@ -161,7 +161,7 @@ module Emendate
         segs = date.sources
         segs.when_type(:era_bce).each do |orig|
           ind = segs.find_index(orig)
-          newseg = Emendate::DerivedToken.new(type: :dummy_bce, sources: [orig])
+          newseg = Emendate::Segment.new(type: :dummy_bce, sources: [orig])
           segs.fill(newseg, ind, 1)
         end
       end

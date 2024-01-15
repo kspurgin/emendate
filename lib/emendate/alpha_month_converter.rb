@@ -2,7 +2,6 @@
 
 require "emendate/date_utils"
 require "emendate/result_editable"
-require "emendate/segment/derived_token"
 
 module Emendate
   class AlphaMonthConverter
@@ -40,8 +39,9 @@ module Emendate
 
     attr_reader :result
 
+    # @todo need to set lexeme and literal here?
     def convert_month(token)
-      Emendate::DerivedToken.new(type: :month,
+      Emendate::Segment.new(type: :month,
         lexeme: token.lexeme,
         literal: token.literal,
         sources: [token])
@@ -59,9 +59,10 @@ module Emendate
       lookup[token.lexeme.downcase]
     end
 
+    # @todo need to set lexeme here?
     def season_token_with_literal(token)
       literal = get_season_literal(token)
-      Emendate::DerivedToken.new(type: :season,
+      Emendate::Segment.new(type: :season,
         lexeme: token.lexeme,
         literal: literal,
         sources: [token])

@@ -108,7 +108,7 @@ module Emendate
     end
 
     def hyphen_to_range_indicator(source:)
-      ri = Emendate::DerivedToken.new(type: :range_indicator,
+      ri = Emendate::Segment.new(type: :range_indicator,
         sources: [source])
       replace_x_with_given_segment(x: source, segment: ri)
     end

@@ -51,15 +51,11 @@ module Emendate
       # @return [TrueClass]
       # All DateType segments are date parts. Supports expected behavior as
       # member of a {SegmentSets::SegmentSet}
-      def date_part?
-        true
-      end
+      def date_part? = true
 
       # @return [TrueClass]
       # Supports expected behavior as member of a {SegmentSets::SegmentSet}
-      def date_type?
-        true
-      end
+      def date_type? = true
 
       # @return [TrueClass]
       # Supports ProcessingManager's checking for unprocessed segments while

@@ -2,26 +2,12 @@
 
 require "spec_helper"
 
-RSpec.describe Emendate::DerivedToken do
-  subject { described_class.new(type: derived_type, sources: sources) }
-  let(:derived_type) { :newtype }
+RSpec.describe Emendate::Segment do
+  subject { described_class.new(**args) }
 
-  describe "#derive" do
-    context "when nil sources" do
-      let(:sources) { nil }
-
-      it "raises error" do
-        expect { subject }.to raise_error(Emendate::DeriveFromNothingError)
-      end
-    end
-
-    context "when empty sources" do
-      let(:sources) { [] }
-
-      it "raises error" do
-        expect { subject }.to raise_error(Emendate::DeriveFromNothingError)
-      end
-    end
+  context "with sources" do
+    let(:args) { {type: derived_type, sources: sources} }
+    let(:derived_type) { :newtype }
 
     context "when one source" do
       let(:sources) do
