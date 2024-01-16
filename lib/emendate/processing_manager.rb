@@ -55,6 +55,10 @@ module Emendate
         state: :ordinals_translated,
         proc: -> { Emendate::OrdinalTranslator.call(tokens) }
       )
+      _edtf_sets_handled = yield handle_step(
+        state: :edtf_sets_handled,
+        proc: -> { Emendate::EdtfSetHandler.call(tokens) }
+      )
       _certainty_checked = yield handle_step(
         state: :certainty_checked,
         proc: -> { Emendate::CertaintyChecker.call(tokens) }
