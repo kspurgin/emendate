@@ -44,6 +44,8 @@ module Emendate
     attr_reader :literal
     # @return [Array<Symbol>]
     attr_reader :certainty
+    # @return [Array<Emendate::Qualifier>]
+    attr_reader :qualifiers
     # @return [Array<Segment>, Emendate::SegmentSets::SegmentSet, NilClass]
     attr_reader :sources
     # @return [Integer, NilClass]
@@ -69,14 +71,16 @@ module Emendate
     # @param lexeme [String, NilClass]
     # @param literal [Integer, Symbol, NilClass]
     # @param certainty [Array<Symbol>]
+    # @param qualifiers [Array<Emendate::Qualifier>]
     # @param sources [Array<Segment>, Emendate::SegmentSets::SegmentSet,
     #   NilClass]
     def initialize(type:, lexeme: nil, literal: nil, certainty: [],
-      sources: nil)
+      qualifiers: [], sources: nil)
       @type = type
       @lexeme = lexeme
       @literal = literal
       @certainty = certainty
+      @qualifiers = qualifiers
       @sources = set_sources(sources)
       @digits = nil
       derive_values if @sources
@@ -86,6 +90,11 @@ module Emendate
     def add_certainty(val)
       certainty << val
       certainty.flatten!
+    end
+
+    # @param qual [Emendate::Qualifier]
+    def add_qualifier(qual)
+      qualifiers << qual
     end
 
     # Mainly used to clear the lexeme in dummy Segments used to standardize
@@ -151,6 +160,7 @@ module Emendate
       src = sources[0]
       @lexeme = src.lexeme if lexeme.nil?
       @literal = src.literal if literal.nil?
+      @qualifiers = src.qualifiers if qualifiers.empty?
       @certainty = src.certainty if certainty.nil? || certainty.empty?
       @digits = src.digits
     end
@@ -158,6 +168,7 @@ module Emendate
     def derive_from_multiple_vals
       @lexeme = sources.map(&:lexeme).join("") if lexeme.nil?
       @literal = derive_literal if literal.nil?
+      @qualifiers = sources.map(&:qualifiers).flatten.uniq
       @certainty = sources.map(&:certainty).flatten.uniq.sort
       @digits = sources.map(&:digits).compact.sum
     end
