@@ -192,6 +192,15 @@ Default value:: `:months` - largest number that can be a month is 12
 
 NOTE: Numbers 13-20 are never treated as months
 
+== mismatched_bracket_handling
+
+What is this?:: How the application should handle missing open or close brackets
+Default value:: `:absorb` - merge the mismatched bracket segment into the nearest meaningful segment. This keeps the bracket in generated string date values derived from orig_string, but otherwise ignores the bracket for processing.
+
+**Alternate values**
+
+* `:failure` - Date processing will fail with a mismatched bracket error
+
 == open_unknown_end_date
 
 Date ranges may have open or unknown end dates.
