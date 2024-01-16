@@ -19,6 +19,7 @@ module Emendate
       optional(:ending_hyphen).value(:symbol)
       optional(:ending_slash).value(:symbol)
       optional(:hemisphere).value(:symbol)
+      optional(:initial_c_handling).value(:symbol)
       optional(:max_output_dates).value(:integer)
       optional(:max_month_number_handling).value(:symbol)
       optional(:open_unknown_end_date).value(:string)

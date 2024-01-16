@@ -110,10 +110,9 @@ module Emendate
 
       def type_pattern(date_only: false, stage: :tokens)
         return [:date_string_not_processed] unless testable?
+        return processed.send(stage).date_part_types if date_only
 
-        # rubocop:todo Layout/LineLength
-        date_only ? processed.send(stage).date_part_types : processed.send(stage).types
-        # rubocop:enable Layout/LineLength
+        processed.send(stage).types
       end
 
       private

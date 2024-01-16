@@ -11,8 +11,6 @@ module Emendate
       attr_reader :literal
       # @return [:plural, :uncertainty_digits]
       attr_reader :millennium_type
-      # @return [SegmentSets::SegmentSet
-      attr_reader :sources
 
       # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
       #   included in the date type
@@ -39,7 +37,8 @@ module Emendate
       private
 
       def set_type
-        case sources.source_type_string
+        mill = sources.when_type(:millennium).first
+        case mill.sources.date_parts.map(&:type).join(" ")
         when /uncertainty_digits$/
           :uncertainty_digits
         when /letter_s$/

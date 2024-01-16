@@ -12,6 +12,10 @@ RSpec.describe Emendate::DateTypes::Millennium do
   let(:args) { baseargs }
 
   context "when :plural type" do
+    before do
+      Emendate.config.options.pluralized_date_interpretation = :broad
+    end
+
     let(:str) { "2000s" }
     let(:args) { baseargs }
 
