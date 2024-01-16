@@ -22,6 +22,7 @@ module Emendate
       optional(:initial_c_handling).value(:symbol)
       optional(:max_output_dates).value(:integer)
       optional(:max_month_number_handling).value(:symbol)
+      optional(:mismatched_bracket_handling).value(:symbol)
       optional(:open_unknown_end_date).value(:string)
       optional(:open_unknown_start_date).value(:string)
       optional(:pluralized_date_interpretation).value(:symbol)
@@ -124,6 +125,14 @@ module Emendate
       if key?
         allowed = %i[months edtf_level_1 edtf_level_2]
         val = values[:max_month_number_handling]
+        key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
+      end
+    end
+
+    rule(:mismatched_bracket_handling) do
+      if key?
+        allowed = %i[absorb failure]
+        val = values[:mismatched_bracket_handling]
         key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
       end
     end

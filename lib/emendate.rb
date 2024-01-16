@@ -58,6 +58,7 @@ module Emendate
     setting :hemisphere, default: :northern, reader: true
     setting :max_output_dates, default: 999, reader: true
     setting :max_month_number_handling, default: :months, reader: true
+    setting :mismatched_bracket_handling, default: :absorb, reader: true
     setting :open_unknown_end_date,
       default: "2999-12-31",
       reader: true,
