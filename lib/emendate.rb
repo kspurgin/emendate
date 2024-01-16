@@ -77,16 +77,15 @@ module Emendate
 
   setting :examples, reader: true do
     setting :dir, default: -> {
-                             File.join(Emendate.basedir, "spec", "support")
-                           }, reader: true
+      File.join(Emendate.basedir, "spec", "support")
+    }, reader: true
     setting :file_name, default: "examples.csv", reader: true
-    setting :file_path, default: -> {
-                                   # rubocop:todo Layout/LineLength
-                                   "#{Emendate.examples.dir.call}/#{Emendate.examples.file_name}"
-                                   # rubocop:enable Layout/LineLength
-                                 }, reader: true
+    setting :file_path,
+      default: -> {
+        "#{Emendate.examples.dir.call}/#{Emendate.examples.file_name}"
+      }, reader: true
     setting :tests,
-      default: %w[date_start_full date_end_full
+      default: %w[date_start_full date_end_full date_certainty
         result_warnings
         translation_lyrasis_pseudo_edtf],
       reader: true

@@ -56,8 +56,8 @@ module Emendate
     # List of initial/most granular types of segments that should be considered
     # potentially part of an actual date value (e.g. not a date qualifier,
     # date separator, partial indicator, era, punctuation, etc.)
-    INITIAL_DATE_PARTS = %i[number1or2 number3 number4 number6 number8 s
-      uncertainty_digits month_alpha season]
+    INITIAL_DATE_PARTS = %i[number1or2 number3 number4 number6 number8
+      letter_s uncertainty_digits month_alpha season]
 
     # List of segment types indicating the segment represents a known date part
     TAGGED_DATE_PARTS = %i[millennium century decade year month season day]

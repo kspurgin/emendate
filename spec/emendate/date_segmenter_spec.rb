@@ -253,6 +253,20 @@ RSpec.describe Emendate::DateSegmenter do
       end
     end
 
+    context "with [ca. 2000s] treated as millennium" do
+      before do
+        Emendate.config.options.pluralized_date_interpretation = :broad
+      end
+
+      let(:str) { "[ca. 2000s]" }
+
+      it "segments as expected" do
+        expect(types).to eq(%i[millennium_date_type])
+        expect(subject.lexeme).to eq(str)
+        expect(subject.certainty.sort).to eq(%i[approximate inferred])
+      end
+    end
+
     context "with Spring 20" do
       before do
         Emendate.config.options.two_digit_year_handling = :coerce

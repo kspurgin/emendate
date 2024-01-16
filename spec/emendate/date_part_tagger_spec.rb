@@ -338,4 +338,18 @@ RSpec.describe Emendate::DatePartTagger do
       end
     end
   end
+
+  context "with [ca. 2000s] treated as millennium" do
+    before do
+      Emendate.config.options.pluralized_date_interpretation = :broad
+    end
+
+    let(:string) { "[ca. 2000s]" }
+
+    it "segments as expected" do
+      expect(types).to eq(%i[millennium])
+      expect(result.lexeme).to eq(string)
+      expect(result[0].sources.types).to include(:letter_s)
+    end
+  end
 end
