@@ -11,6 +11,9 @@ module Emendate
       attr_reader :orig_string, :norm, :segments,
         :certainty, :inferred_date, :warnings
 
+      # @return [:alternate, :inclusive, NilClass]
+      attr_reader :set_type
+
       def_delegator :@segments, :[], :[]
       def_delegators :@segments, :any?, :clear, :delete, :delete_at, :empty?,
         :fill, :find, :find_index, :first, :insert, :last, :length, :pop,
@@ -20,6 +23,7 @@ module Emendate
         @orig_string = string
         @norm = norm
         @segments = segments ? Array.new(segments) : []
+        @set_type = nil
         @certainty = []
         @inferred_date = false
         @warnings = []
@@ -35,6 +39,10 @@ module Emendate
         @certainty = certainty.flatten.uniq.sort
       end
 
+      def add_set_type(val)
+        @set_type = val
+      end
+
       def clear_set_certainty
         certainty.delete(:all_of_set)
         certainty.delete(:one_of_set)
@@ -45,6 +53,7 @@ module Emendate
         @orig_string = other_set.orig_string
         @norm = other_set.norm
         other_set.segments.each { |s| segments << s.dup }
+        @set_type = other_set.set_type
         other_set.certainty.each { |c| @certainty << c.dup }
         other_set.warnings.each { |w| warnings << w.dup }
         @inferred_date = other_set.inferred_date
