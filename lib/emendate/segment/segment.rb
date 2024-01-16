@@ -117,6 +117,10 @@ module Emendate
     # @return [FalseClass]
     def date_type? = false
 
+    # @return [TrueClass] if type starts with `number`
+    # @return [FalseClass] otherwise
+    def number? = type.to_s.start_with?("number")
+
     # @return [TrueClass] when segment is a DateType or has type :and or :or
     # @return [FalseClass] otherwise
     def processed?

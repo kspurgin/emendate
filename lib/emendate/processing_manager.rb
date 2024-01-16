@@ -59,6 +59,10 @@ module Emendate
         state: :edtf_sets_handled,
         proc: -> { Emendate::EdtfSetHandler.call(tokens) }
       )
+      _edtf_qualified = yield handle_step(
+        state: :edtf_qualified,
+        proc: -> { Emendate::EdtfQualifier.call(tokens) }
+      )
       _certainty_checked = yield handle_step(
         state: :certainty_checked,
         proc: -> { Emendate::CertaintyChecker.call(tokens) }

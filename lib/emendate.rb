@@ -190,6 +190,7 @@ module Emendate
       Emendate::AlphaMonthConverter,
       Emendate::OrdinalTranslator,
       Emendate::EdtfSetHandler,
+      Emendate::EdtfQualifier,
       Emendate::CertaintyChecker,
       Emendate::FormatStandardizer,
       Emendate::DatePartTagger,

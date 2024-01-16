@@ -22,6 +22,9 @@ module Emendate
       reset_type
     end
 
+    # @return [TrueClass]
+    def number? = true
+
     private
 
     # allowable length of number in digits
