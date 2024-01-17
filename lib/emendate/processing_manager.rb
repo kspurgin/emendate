@@ -63,6 +63,10 @@ module Emendate
         state: :edtf_qualified,
         proc: -> { Emendate::EdtfQualifier.call(tokens) }
       )
+      _inferred_dates_handled = yield handle_step(
+        state: :inferred_dates_handled,
+        proc: -> { Emendate::InferredDateHandler.call(tokens) }
+      )
       _certainty_checked = yield handle_step(
         state: :certainty_checked,
         proc: -> { Emendate::CertaintyChecker.call(tokens) }

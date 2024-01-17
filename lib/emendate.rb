@@ -192,6 +192,7 @@ module Emendate
       Emendate::OrdinalTranslator,
       Emendate::EdtfSetHandler,
       Emendate::EdtfQualifier,
+      Emendate::InferredDateHandler,
       Emendate::CertaintyChecker,
       Emendate::FormatStandardizer,
       Emendate::DatePartTagger,

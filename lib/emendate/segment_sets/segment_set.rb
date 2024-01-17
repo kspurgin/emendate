@@ -11,13 +11,15 @@ module Emendate
       attr_reader :orig_string, :norm, :segments,
         :certainty, :inferred_date, :warnings
 
+      attr_reader :qualifiers
+
       # @return [:alternate, :inclusive, NilClass]
       attr_reader :set_type
 
       def_delegator :@segments, :[], :[]
       def_delegators :@segments, :any?, :clear, :delete, :delete_at, :empty?,
         :fill, :find, :find_index, :first, :insert, :last, :length, :pop,
-        :shift, :unshift
+        :reverse_each, :shift, :unshift
 
       def initialize(string: nil, norm: nil, segments: nil)
         @orig_string = string
@@ -25,6 +27,7 @@ module Emendate
         @segments = segments ? Array.new(segments) : []
         @set_type = nil
         @certainty = []
+        @qualifiers = []
         @inferred_date = false
         @warnings = []
         @lexeme_order = []
@@ -37,6 +40,10 @@ module Emendate
       def add_certainty(val)
         @certainty << val
         @certainty = certainty.flatten.uniq.sort
+      end
+
+      def add_qualifier(qual)
+        qualifiers << qual
       end
 
       def add_set_type(val)
@@ -55,6 +62,7 @@ module Emendate
         other_set.segments.each { |s| segments << s.dup }
         @set_type = other_set.set_type
         other_set.certainty.each { |c| @certainty << c.dup }
+        other_set.qualifiers.each { |q| @qualifiers << q }
         other_set.warnings.each { |w| warnings << w.dup }
         @inferred_date = other_set.inferred_date
         self
@@ -141,6 +149,7 @@ module Emendate
             @norm=#{norm.inspect},
             segments: #{types.inspect},
             @certainty: #{certainty.inspect},
+            @qualifiers: #{qualifiers.inspect},
             @inferred_date: #{inferred_date},
             @warnings: #{warnings.inspect}>
         OBJ

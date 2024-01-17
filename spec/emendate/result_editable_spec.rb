@@ -94,7 +94,7 @@ RSpec.describe Emendate::ResultEditable do
     it "tags as expected" do
       tokens = Emendate.prepped_for(
         string: string,
-        target: Emendate::CertaintyChecker
+        target: Emendate::InferredDateHandler
       )
       e = Editable.new(tokens)
       e.collapse_first_token
@@ -111,7 +111,7 @@ RSpec.describe Emendate::ResultEditable do
     it "tags as expected" do
       tokens = Emendate.prepped_for(
         string: string,
-        target: Emendate::CertaintyChecker
+        target: Emendate::InferredDateHandler
       )
       e = Editable.new(tokens)
       e.collapse_last_token
@@ -126,7 +126,7 @@ RSpec.describe Emendate::ResultEditable do
     it "tags as expected" do
       tokens = Emendate.prepped_for(
         string: string,
-        target: Emendate::CertaintyChecker
+        target: Emendate::InferredDateHandler
       )
       e = Editable.new(tokens)
       e.collapse_enclosing_tokens
