@@ -26,6 +26,9 @@ module Emendate
     include Dry::Monads[:result]
     include ResultEditable
 
+    EDTF_CHARS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+      "?", "~", "%", " ", "-", "X", "/", "."]
+
     class << self
       def call(...)
         new(...).call
@@ -38,6 +41,7 @@ module Emendate
 
     def call
       return Success(result) unless indicators?
+      return Success(result) unless edtf?
 
       @working = result.class.new.copy(result)
       result.clear
@@ -59,6 +63,11 @@ module Emendate
 
     def indicator?(seg) = indicators.include?(seg.type)
 
+    def edtf?
+      chk = result.orig_string.chars.uniq - EDTF_CHARS
+      chk.empty?
+    end
+
     def process_working
       return nil if working.empty?
 
@@ -79,11 +88,12 @@ module Emendate
     def qualify_next_segment
       qual_seg = working.shift
       num_seg = working.shift
-      num_seg.add_qualifier(Emendate::Qualifier.new(
-        type: qualifier_type(qual_seg),
-        precision: :single_segment,
-        sources: [qual_seg]
-      ))
+      num_seg.add_qualifier(
+        Emendate::Qualifier.new(
+          type: qualifier_type(qual_seg),
+          precision: :single_segment
+        )
+      )
       result << qual_seg
       result << num_seg
       collapse_token_pair_forward(qual_seg, num_seg)
@@ -94,8 +104,7 @@ module Emendate
       qual_seg = working.shift
       num_seg.add_qualifier(Emendate::Qualifier.new(
         type: qualifier_type(qual_seg),
-        precision: :leftward,
-        sources: [qual_seg]
+        precision: :leftward
       ))
       result << num_seg
       result << qual_seg

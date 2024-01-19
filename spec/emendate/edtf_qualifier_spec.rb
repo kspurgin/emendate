@@ -8,6 +8,14 @@ RSpec.describe Emendate::EdtfQualifier do
   describe ".call" do
     let(:tokens) { prepped_for(string: string, target: described_class) }
 
+    context "with non-EDTF question mark" do
+      let(:string) { "circa 2002?" }
+
+      it "passes through" do
+        expect(subject.types).to eq(tokens.types)
+      end
+    end
+
     context "with 2004-06~" do
       let(:string) { "2004-06~" }
 

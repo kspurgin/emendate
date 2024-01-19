@@ -80,11 +80,9 @@ module Emendate
     end
 
     def process_whole_string
-      result.add_qualifier(Emendate::Qualifier.new(
-        type: :inferred,
-        precision: :whole,
-        sources: [result[0], result[-1]]
-      ))
+      result.add_qualifier(
+        Emendate::Qualifier.new(type: :inferred, precision: :whole)
+      )
       collapse_enclosing_tokens
     end
 
@@ -102,11 +100,9 @@ module Emendate
     end
 
     def add_qualifier(segment, precision, sources)
-      segment.add_qualifier(Emendate::Qualifier.new(
-        type: :inferred,
-        precision: precision,
-        sources: sources
-      ))
+      segment.add_qualifier(
+        Emendate::Qualifier.new(type: :inferred, precision: precision)
+      )
     end
 
     def process_mismatched

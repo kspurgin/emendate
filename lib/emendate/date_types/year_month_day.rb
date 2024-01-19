@@ -25,8 +25,13 @@ module Emendate
         @month = month.to_i
         @day = day.to_i
         common_setup(binding)
-        validate
       end
+
+      # @return [TrueClass]
+      def qualifiable? = true
+
+      # @return [TrueClass]
+      def validatable? = true
 
       def earliest
         Date.new(year, month, day)
@@ -56,6 +61,21 @@ module Emendate
       private
 
       def validate
+        check_date_validity
+        has_x_date_parts(3)
+        has_one_part_of_type(:year)
+        has_one_part_of_type(:month)
+        has_one_part_of_type(:day)
+      end
+
+      def process_qualifiers
+        add_source_segment_set_qualifiers
+        begin_and_end_qualifiers.each { |qual| add_qualifier_as_whole(qual) }
+        process_directional_qualifiers(:year, :month, :day)
+        process_single_segment_qualifiers
+      end
+
+      def check_date_validity
         earliest
       rescue Date::Error
         fail Emendate::InvalidDateError,

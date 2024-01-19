@@ -38,7 +38,7 @@ module Emendate
         t = determine_tagger
         break if t.nil?
 
-        t.is_a?(Symbol) ? send(t) : send(t.shift, *t)
+        t.call
       end
     rescue Emendate::Error => e
       Failure(e)
@@ -58,38 +58,40 @@ module Emendate
     def full_match_tagger
       case result.type_string
       when /^number1or2 year$/
-        :tag_numeric_month
+        proc { tag_numeric_month }
+      when /^number4 month$/
+        proc { replace_x_with_derived_new_type(x: result[0], type: :year) }
       end
     end
 
     def partial_match_tagger
       case result.type_string
       when /.*year letter_s.*/
-        :tag_pluralized_year
+        proc { tag_pluralized_year }
       when /.*uncertainty_digits.*/
-        :tag_with_uncertainty_digits
+        proc { tag_with_uncertainty_digits }
       when /.*number1or2 century.*/
-        :tag_century_num
+        proc { tag_century_num }
       when /.*month number1or2 year.*/
-        :tag_day_in_mdy
+        proc { tag_day_in_mdy }
       when /.*season number1or2.*/
-        :tag_year_in_season_short_year
+        proc { tag_year_in_season_short_year }
       when /.*month number1or2.*/
-        :tag_year_in_month_short_year
+        proc { tag_year_in_month_short_year }
         # this needs to happen before...
       when /.*number1or2 hyphen number1or2 hyphen number1or2.*/
-        :tag_numeric_month_day_short_year
+        proc { tag_numeric_month_day_short_year }
       when /.*year hyphen number1or2 hyphen number1or2.*/
-        :tag_year_numeric_month_day
+        proc { tag_year_numeric_month_day }
         # ...this
       when /.*number1or2 hyphen number1or2 hyphen year.*/
-        :tag_numeric_month_day_year
+        proc { tag_numeric_month_day_year }
       when /.*year hyphen number1or2 hyphen year hyphen number1or2.*/
-        :tag_year_plus_numeric_month_or_season
+        proc { tag_year_plus_numeric_month_or_season }
       when /.*year hyphen number1or2.*/
-        :tag_year_plus_numeric_month_season_or_year
+        proc { tag_year_plus_numeric_month_season_or_year }
       when /.* hyphen .*/
-        :tag_hyphen_as_range_indicator
+        proc { tag_hyphen_as_range_indicator }
       end
     end
 
@@ -211,11 +213,10 @@ module Emendate
       to_convert = result.extract(%i[number1or2 hyphen number1or2 hyphen
         number1or2])
 
-      analyzer = Emendate::AllShortMdyAnalyzer.call(to_convert)
+      analyzed = Emendate::AllShortMdyAnalyzer.call(to_convert)
 
-      analyzer.warnings.each { |warn| result.warnings << warn }
-      replace_segments_with_new(segments: to_convert.segments,
-        new: analyzer.datetype)
+      replace_segments_with_new_segment_set(segments: to_convert.segments,
+        new: analyzed)
     end
 
     def tag_year_numeric_month_day

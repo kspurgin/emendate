@@ -12,30 +12,24 @@ module Emendate
     include ResultEditable
 
     class << self
-      def call(tokens)
-        new(tokens).call
-      end
+      def call(tokens) = new(tokens).call
     end
-
-    attr_reader :datetype, :warnings
 
     # @param tokens [Array<Emendate::Segment>] (or subclasses)
     def initialize(tokens)
       @result = Emendate::SegmentSets::SegmentSet.new.copy(tokens)
-      @lexeme = result.lexeme
       @numbers = [result[0], result[2], result[4]]
       @opt = Emendate.options.ambiguous_month_day_year
-      @warnings = []
     end
 
     def call
       analyze
-      self
+      result
     end
 
     private
 
-    attr_reader :result, :lexeme, :numbers, :opt
+    attr_reader :result, :numbers, :opt
 
     def analyze
       case valid_permutations.length
@@ -54,60 +48,27 @@ module Emendate
       end
     end
 
-    def collapse_hyphen(part)
-      return part if result[-1] == part
-
-      ind = result.find_index(part)
-      to_collapse = [result[ind], result[ind + 1]]
-      collapse_token_pair_backward(*to_collapse)
-      result[ind]
+    def valid_permutations
+      numbers.permutation(3)
+        .map { |per| permutation_valid?(per) }
+        .compact
     end
 
-    def derive_datetype
-      year = result.when_type(:year)[0]
-      month = result.when_type(:month)[0]
-      day = result.when_type(:day)[0]
-
-      @datetype = Emendate::DateTypes::YearMonthDay.new(
-        year: year.literal,
-        month: month.literal,
-        day: day.literal,
-        sources: result
-      )
+    def permutation_valid?(per)
+      Date.new(expand_year(per[0]), per[1].literal, per[2].literal)
+      per
+    rescue
+      nil
     end
 
     def expand_year(n)
       Emendate::ShortYearHandler.call(n).literal
     end
 
-    def permutation_valid?(per)
-      yr = expand_year(per[0])
-      prepped = [yr.to_i, per[1..2].map(&:literal)].flatten
-      Date.new(prepped[0], prepped[1], prepped[2])
-    rescue
-      nil
-    else
-      per
-    end
-
-    def preferred_order
-      Emendate.options.ambiguous_month_day_year
-        .to_s
-        .split("_")
-        .map(&:to_sym)
-    end
-
-    def transform_all_ambiguous
-      numbers.each_with_index do |part, ind|
-        transform_part(part, preferred_order[ind])
-      end
-      parts = %i[year month day].map { |type| result.when_type(type)[0] }
-      if valid_date?(*parts)
-        @warnings << "Ambiguous two-digit month/day/year treated #{opt}"
-        derive_datetype
-      else
-        raise PreferredMdyOrderInvalidError, result.segments
-      end
+    def transform_unambiguous(parts)
+      transform_part(parts[0], :year)
+      transform_part(parts[1], :month)
+      transform_part(parts[2], :day)
     end
 
     def transform_ambiguous_pair(part)
@@ -117,15 +78,19 @@ module Emendate
 
       transform_part(analyzer.month, :month)
       transform_part(analyzer.day, :day)
-      analyzer.warnings.each { |warn| @warnings << warn }
-      derive_datetype
+      analyzer.warnings.each { |warn| result.add_warning(warn) }
     end
 
-    def transform_unambiguous(parts)
-      transform_part(parts[0], :year)
-      transform_part(parts[1], :month)
-      transform_part(parts[2], :day)
-      derive_datetype
+    def transform_all_ambiguous
+      numbers.each_with_index do |part, ind|
+        transform_part(part, preferred_order[ind])
+      end
+      parts = %i[year month day].map { |type| result.when_type(type)[0] }
+      if valid_date?(*parts)
+        result.add_warning("Ambiguous two-digit month/day/year treated #{opt}")
+      else
+        raise PreferredMdyOrderInvalidError, result.segments
+      end
     end
 
     def transform_part(part, type)
@@ -137,18 +102,28 @@ module Emendate
       end
     end
 
-    def transform_year(part)
-      expanded = expand_year(part)
-      yr = Emendate::Segment.new(type: :year,
-        literal: expanded.to_i,
-        sources: [part])
-      replace_x_with_new(x: part, new: yr)
+    def collapse_hyphen(part)
+      return part if result[-1] == part
+
+      ind = result.find_index(part)
+      to_collapse = [result[ind], result[ind + 1]]
+      collapse_token_pair_backward(*to_collapse)
+      result[ind]
     end
 
-    def valid_permutations
-      numbers.permutation(3)
-        .map { |per| permutation_valid?(per) }
-        .compact
+    def transform_year(part)
+      replace_x_with_new(
+        x: part,
+        new: Emendate::Segment.new(type: :year, literal: expand_year(part),
+          sources: [part])
+      )
+    end
+
+    def preferred_order
+      Emendate.options.ambiguous_month_day_year
+        .to_s
+        .split("_")
+        .map(&:to_sym)
     end
   end
 end

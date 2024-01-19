@@ -7,20 +7,38 @@ RSpec.describe Emendate::DateTypes::Year do
 
   let(:args) { {sources: tokens} }
 
-  context "with `2021`" do
+  context "with more than one date part" do
+    let(:string) { "2020, 2021" }
     let(:tokens) do
-      [Emendate::Number.new(lexeme: "2021")]
+      Emendate.prepped_for(
+        string: string, target: Emendate::DateSegmenter
+      )
+    end
+
+    it "returns as expected" do
+      expect { yr }.to raise_error(Emendate::DateTypeCreationError)
+    end
+  end
+
+  context "with `[2021?]`" do
+    let(:string) { "[2021?]" }
+    let(:tokens) do
+      Emendate.prepped_for(
+        string: string, target: Emendate::DateSegmenter
+      )
     end
 
     it "returns as expected" do
       expect(yr.type).to eq(:year_date_type)
-      expect(yr.lexeme).to eq("2021")
+      expect(yr.lexeme).to eq(string)
       expect(yr.literal).to eq(2021)
       expect(yr.range?).to be_falsey
       expect(yr.earliest).to eq(Date.new(2021, 1, 1))
       expect(yr.earliest_at_granularity).to eq("2021")
       expect(yr.latest).to eq(Date.new(2021, 12, 31))
       expect(yr.latest_at_granularity).to eq("2021")
+      expect(yr.inferred?).to be true
+      expect(yr.uncertain?).to be true
     end
   end
 

@@ -3,12 +3,12 @@
 require "forwardable"
 require "json"
 
-require_relative "segment_sets/certainty_helpers"
+require_relative "qualifiable"
 
 module Emendate
   # Wrapper around a DateType segment, used as part of Result
   class ParsedDate
-    include Emendate::SegmentSets::CertaintyHelpers
+    include Emendate::Qualifiable
     extend Forwardable
 
     attr_reader :original_string, :index_dates,
@@ -21,7 +21,7 @@ module Emendate
       :lexeme, :orig_string,
       :earliest, :earliest_at_granularity,
       :latest, :latest_at_granularity,
-      :range_switch, :era
+      :range_switch, :era, :qualifiers
 
     # @param date [Emendate::DateTypes::DateType]
     # @param orig [String]

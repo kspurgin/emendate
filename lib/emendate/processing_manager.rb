@@ -67,9 +67,9 @@ module Emendate
         state: :inferred_dates_handled,
         proc: -> { Emendate::InferredDateHandler.call(tokens) }
       )
-      _certainty_checked = yield handle_step(
-        state: :certainty_checked,
-        proc: -> { Emendate::CertaintyChecker.call(tokens) }
+      _unstructured_certainty_handled = yield handle_step(
+        state: :unstructured_certainty_handled,
+        proc: -> { Emendate::UnstructuredCertaintyHandler.call(tokens) }
       )
       _format_standardized = yield handle_step(
         state: :format_standardized,

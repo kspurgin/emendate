@@ -40,19 +40,10 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
-    context "with 2020, Feb." do
-      let(:string) { "2020, Feb." }
-
-      it "reorders segments" do
-        expect(subject.lexeme).to eq(string)
-        expect(result).to eq(%i[yearmonth_date_type])
-      end
-    end
-
     context "with 1968-Mar" do
       let(:string) { "1968-Mar" }
 
-      it "reorders segments" do
+      it "formats as expected" do
         expect(subject.lexeme).to eq(string)
         expect(result).to eq(%i[yearmonth_date_type])
       end
@@ -61,18 +52,9 @@ RSpec.describe Emendate::FormatStandardizer do
     context "with 2020, Feb 15" do
       let(:string) { "2020, Feb 15" }
 
-      it "creates date type" do
+      it "returns as expected" do
         expect(subject.lexeme).to eq(string)
-        expect(result).to eq(%i[yearmonthday_date_type])
-      end
-    end
-
-    context "with 2020, summer" do
-      let(:string) { "2020, summer" }
-
-      it "reorders segments" do
-        expect(subject.lexeme).to eq(string)
-        expect(result).to eq(%i[yearseason_date_type])
+        expect(result).to eq(%i[year month day])
       end
     end
 
@@ -100,7 +82,7 @@ RSpec.describe Emendate::FormatStandardizer do
       it "adds century after 18th" do
         expect(subject.lexeme).to eq(string)
         expect(result).to eq(
-          %i[number1or2 century date_separator number1or2 century]
+          %i[number1or2 century or number1or2 century]
         )
       end
     end
@@ -164,7 +146,7 @@ RSpec.describe Emendate::FormatStandardizer do
 
       it "move first month to front; copy year to end" do
         expect(subject.lexeme).to eq(string)
-        expect(result).to eq(%i[yearmonth_date_type hyphen month number4])
+        expect(result).to eq(%i[yearmonth_date_type hyphen month year])
       end
     end
 
@@ -306,9 +288,7 @@ RSpec.describe Emendate::FormatStandardizer do
 
       it "segments as expected" do
         expect(subject.lexeme).to eq(string)
-        expect(result).to eq(%i[number1or2 century
-          date_separator
-          number1or2 century])
+        expect(result).to eq(%i[number1or2 century or number1or2 century])
       end
     end
 

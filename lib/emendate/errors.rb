@@ -4,6 +4,10 @@ module Emendate
   Error = Module.new
   UnconfiguredModuleError = Class.new(NameError) { include Emendate::Error }
 
+  class DateTypeCreationError < StandardError
+    include Emendate::Error
+  end
+
   class DecadeTypeError < StandardError
     include Emendate::Error
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../qualifiable"
+
 module Emendate
   module DateTypes
     # Mixin module for DateType classes
@@ -17,6 +19,8 @@ module Emendate
       attr_reader :certainty
       # @return [SegmentSets::SegmentSet]
       attr_reader :sources
+      # @return [Array<Emendate::Qualifier>]
+      attr_reader :qualifiers
 
       # Allows a source segment to be added to beginning of sources
       # after date type has been created
@@ -46,6 +50,13 @@ module Emendate
         @sources << token
         # @todo Check if this actually needs to return self
         self
+      end
+
+      # Allows a qualifier to be added to end of qualifiers after
+      # date type has been created
+      # @param qual [Emendate::Qualifier]
+      def add_qualifier(qual)
+        @qualifiers << qual
       end
 
       # @return [TrueClass]
@@ -122,6 +133,17 @@ module Emendate
         chk.first.type
       end
 
+      # Override to true and define `:process_qualifiers` method in including
+      # classes that are qualifiable dates (e.g. with approximate and/or
+      # uncertain qualifiers)
+      # @return [FalseClass]
+      def qualifiable? = false
+
+      # Override to true and define `:validate` method in including classes
+      #   that should verify assumptions about sources on initialization.
+      # @return [FalseClass]
+      def validatable? = false
+
       private
 
       def set_sources(context)
@@ -140,6 +162,12 @@ module Emendate
       def common_setup(context)
         set_sources(context)
         instance_variable_set(:@certainty, [])
+        instance_variable_set(:@qualifiers, [])
+        validate if validatable?
+        if qualifiable?
+          self.class.include Emendate::Qualifiable
+          process_qualifiers
+        end
       end
 
       def first_numeric_literal
@@ -151,6 +179,34 @@ module Emendate
       #   any of these default token types, or that needs to allow
       #   append/prepend of additional types
       def addable_token_types = %i[partial before after]
+
+      def validate
+        raise Emendate::DateTypeCreationError, "#{self.class}: implement "\
+          "`:validate` method or remove override of `:validatable?` to true"
+      end
+
+      def has_x_date_parts(num)
+        parts = sources.date_part_types
+        unless parts.length == num
+          raise Emendate::DateTypeCreationError, "#{self.class}: Expected "\
+            "creation with #{num} date_parts. Received #{parts.length}: "\
+            "#{parts.join(", ")}"
+        end
+      end
+
+      def process_qualifiers
+        raise Emendate::DateTypeCreationError, "#{self.class}: implement "\
+          "`:process_qualifiers` method or remove override of `:qualifiable?` "\
+          "to true"
+      end
+
+      def has_one_part_of_type(type)
+        segs = sources.select { |seg| seg.type == type }
+        unless segs.length == 1
+          raise Emendate::DateTypeCreationError, "#{self.class}: Expected "\
+            "one #{type} date part. Found #{segs.length}"
+        end
+      end
     end
   end
 end

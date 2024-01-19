@@ -7,9 +7,6 @@ module Emendate
     class Year
       include Datetypeable
 
-      # @return [SegmentSets::SegmentSet
-      attr_reader :sources
-
       # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
       #   included in the date type
       def initialize(sources:)
@@ -22,6 +19,12 @@ module Emendate
 
         adjusted_literal * -1
       end
+
+      # @return [TrueClass]
+      def qualifiable? = true
+
+      # @return [TrueClass]
+      def validatable? = true
 
       def range?
         return false if range_switch == :before &&
@@ -73,6 +76,26 @@ module Emendate
       private
 
       attr_reader :orig_literal
+
+      def validate
+        parts = sources.date_part_types
+        if parts.length > 1
+          raise Emendate::DateTypeCreationError, "#{self.class}: Expected "\
+            "creation with 1 date_part. Received #{parts.length}: "\
+            "#{parts.join(", ")}"
+        end
+      end
+
+      def process_qualifiers
+        add_source_segment_set_qualifiers
+        sources.date_parts.first.qualifiers.each do |qual|
+          add_qualifier(Emendate::Qualifier.new(
+            type: qual.type,
+            precision: :whole,
+            lexeme: qual.lexeme
+          ))
+        end
+      end
 
       def adjusted_literal
         if era == :bce && Emendate.options.bce_handling == :precise
