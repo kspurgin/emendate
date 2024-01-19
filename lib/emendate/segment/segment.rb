@@ -48,6 +48,8 @@ module Emendate
     attr_reader :qualifiers
     # @return [Array<Segment>, Emendate::SegmentSets::SegmentSet, NilClass]
     attr_reader :sources
+    # @return [Emendate::SegmentSets::SegmentSet, NilClass]
+    attr_reader :subsources
     # @return [Integer, NilClass]
     attr_reader :digits
 
@@ -81,7 +83,8 @@ module Emendate
       @literal = literal
       @certainty = certainty
       @qualifiers = qualifiers
-      @sources = set_sources(sources)
+      @sources = get_sources(sources)
+      @subsources = get_subsources
       @digits = nil
       derive_values if @sources
     end
@@ -128,11 +131,21 @@ module Emendate
     end
 
     # @return [String]
-    def to_s = "#{type} #{lexeme} #{literal}"
+    def to_s
+      "#<#{self.class.name}:#{object_id} "\
+        "@type: #{type.inspect}, "\
+        "@lexeme: #{lexeme.inspect}, "\
+        "@literal: #{literal.inspect}, "\
+        "@digits: #{digits.inspect}, "\
+        "@sources: #{sources.types.inspect}, "\
+        "@subsources: #{subsources.types.inspect}, "\
+        "@qualifiers: #{qualifiers.inspect}>"
+    end
+    alias_method :inspect, :to_s
 
     private
 
-    def set_sources(sources)
+    def get_sources(sources)
       return nil if sources.nil? || sources.empty?
 
       segset = Emendate::SegmentSets::SegmentSet.new
@@ -143,14 +156,22 @@ module Emendate
         sources
       end
 
-      srcs.map { |src| subsources(src) }
-        .flatten
-        .each { |t| segset << t }
-
+      srcs.each { |src| segset << src }
       segset
     end
 
-    def subsources(src)
+    def get_subsources
+      return nil if sources.nil? || sources.empty?
+
+      segset = Emendate::SegmentSets::SegmentSet.new
+
+      sources.segments.map { |src| subsources_for(src) }
+        .flatten
+        .each { |t| segset << t }
+      segset
+    end
+
+    def subsources_for(src)
       return src unless src.sources
 
       src.sources.segments

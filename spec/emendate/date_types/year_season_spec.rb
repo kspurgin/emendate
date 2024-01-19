@@ -5,8 +5,6 @@ require "spec_helper"
 RSpec.describe Emendate::DateTypes::YearSeason do
   let(:subject) { described_class.new(**opts) }
 
-  after { Emendate.reset_config }
-
   context "when created with month, year, and sources" do
     let(:opts) do
       segmentset = prepped_for(
@@ -51,10 +49,10 @@ RSpec.describe Emendate::DateTypes::YearSeason do
 
   context "with :include_prev_year" do
     let(:opts) do
-      segmentset = prepped_for(
+      set = prepped_for(
         string: "Winter 2019-2020", target: Emendate::DateSegmenter
       )
-      {year: 2020, season: 24, sources: segmentset.segments,
+      {year: 2020, season: 24, sources: [set[0], set[3]],
        include_prev_year: true}
     end
 
@@ -64,7 +62,6 @@ RSpec.describe Emendate::DateTypes::YearSeason do
       expect(subject.earliest_at_granularity).to eq("2019-12")
       expect(subject.latest).to eq(Date.new(2020, 3, 31))
       expect(subject.latest_at_granularity).to eq("2020-03")
-      expect(subject.lexeme).to eq("Winter 2019-2020")
       expect(subject.literal).to eq(202024)
     end
   end

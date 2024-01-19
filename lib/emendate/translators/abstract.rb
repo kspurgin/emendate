@@ -35,17 +35,18 @@ module Emendate
         @qualified = base.dup
         return if pdate.certain?
 
-        vals = pdate.certainty.dup
+        vals = pdate.qualifiers.dup
         if pdate.approximate_and_uncertain?
           @qualified = method(:approximate_and_uncertain).call
-          %i[approximate uncertain].each { |val| vals.delete(val) }
+          pdate.approximate_and_uncertain_qualifiers
+            .each { |val| vals.delete(val) }
         end
         return if vals.empty?
 
         vals.each do |val|
-          next unless respond_to?(val)
+          next unless respond_to?(val.type)
 
-          @qualified = method(val).call
+          @qualified = method(val.type).call
         end
       end
 

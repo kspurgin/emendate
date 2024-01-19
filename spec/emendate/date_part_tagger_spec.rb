@@ -164,10 +164,8 @@ RSpec.describe Emendate::DatePartTagger do
     let(:string) { "2-10-20" }
 
     it "tags month (2), day (10), and short year (1920)" do
-      expect(types).to eq(%i[yearmonthday_date_type])
-      expect(result.first.year).to eq(1920)
-      expect(result.first.month).to eq(2)
-      expect(result.first.day).to eq(10)
+      expect(types).to eq(%i[month day year])
+      expect(result.map(&:literal)).to eq([2, 10, 1920])
       expect(result.lexeme).to eq(string)
     end
   end

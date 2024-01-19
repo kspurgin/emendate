@@ -54,6 +54,12 @@ module Emendate
         )
       end
 
+      # @return [TrueClass]
+      def qualifiable? = true
+
+      # @return [TrueClass]
+      def validatable? = true
+
       def earliest
         return get_date(:start) unless include_prev_year
 
@@ -79,6 +85,19 @@ module Emendate
       private
 
       attr_reader :year, :season, :seasons, :include_prev_year
+
+      def validate
+        has_x_date_parts(2)
+        has_one_part_of_type(:year)
+        has_one_part_of_type(:season)
+      end
+
+      def process_qualifiers
+        add_source_segment_set_qualifiers
+        begin_and_end_qualifiers.each { |qual| add_qualifier_as_whole(qual) }
+        process_directional_qualifiers(:year, :season)
+        process_single_segment_qualifiers
+      end
 
       # @param type [:start, :end]
       def get_date(type)

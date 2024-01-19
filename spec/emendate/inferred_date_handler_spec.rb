@@ -102,7 +102,7 @@ RSpec.describe Emendate::InferredDateHandler do
 
     it "sets inferred qualifiers as expected" do
       expect(result.lexeme).to eq(string)
-      expect(result.type_string).to eq("approximate number4")
+      expect(result.type_string).to eq("approximate number4 question")
       expect(wholequal.length).to eq(1)
     end
   end

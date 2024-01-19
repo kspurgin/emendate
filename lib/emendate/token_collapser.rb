@@ -58,6 +58,10 @@ module Emendate
         proc { collapse_segments_backward(%i[number1or2 slash]) }
       when %i[month_alpha comma space number4]
         proc { collapse_segments_backward(%i[month_alpha comma]) }
+      when %i[number4 comma space month_alpha]
+        proc { collapse_segments_backward(%i[number4 comma]) }
+      when %i[number4 comma space season]
+        proc { collapse_segments_backward(%i[number4 comma]) }
       when %i[month_alpha comma space number1or2 comma space number4]
         proc do
           collapse_segments_backward(%i[number1or2 comma])

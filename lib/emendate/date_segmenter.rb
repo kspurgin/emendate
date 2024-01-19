@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
+require_relative "result_editable"
+
 module Emendate
   class DateSegmenter
     include DateUtils
     include Dry::Monads[:result]
+    include Emendate::ResultEditable
 
     class << self
       def call(...)
@@ -24,6 +27,15 @@ module Emendate
         working.copy(result)
         result.clear
         apply_modifiers(mod) until working.empty?
+      end
+
+      separators = result.select { |seg| %i[and or].include?(seg.type) }
+      return Success(result) if separators.empty?
+
+      if separators.map(&:type).uniq.length > 1
+        return Failure(:multiple_date_separator_types)
+      else
+        transform_separators(separators)
       end
 
       Success(result)
@@ -194,10 +206,9 @@ module Emendate
         recursive_parse
       elsif working.types[0..1].sort == %i[season year] &&
           working.types[2] == :range_indicator
-        # rubocop:todo Layout/LineLength
-        parts = Emendate::SegmentSets::SegmentSet.new(segments: working.shift(2))
-        # rubocop:enable Layout/LineLength
-        result << create_year_season_datetype(parts)
+        result << create_year_season_datetype(
+          Emendate::SegmentSets::SegmentSet.new(segments: working.shift(2))
+        )
         recursive_parse
       else
         raise Emendate::UnsegmentableDatePatternError, pieces
@@ -205,14 +216,33 @@ module Emendate
     end
 
     def two_year_winter
-      pieces = working[0..3]
-      year = pieces[3]
-      month = pieces[0]
-      result << Emendate::DateTypes::YearSeason.new(year: year.literal,
-        season: month.literal,
-        sources: pieces,
-        include_prev_year: true)
+      pos = result.length
+      working[0..3].each { |seg| result << seg }
       working.shift(4)
+
+      season = result[0 + pos]
+      prev_yr = result[1 + pos]
+      ri = result[2 + pos]
+      year = result[3 + pos]
+
+      [prev_yr, ri].each do |seg|
+        replace_x_with_new(
+          x: seg, new: Emendate::Segment.new(
+            type: :dummy, lexeme: seg.lexeme, sources: [seg]
+          )
+        )
+      end
+
+      orig = result[Range.new(pos, pos + 3)]
+      replace_segments_with_new(
+        segments: orig,
+        new: Emendate::DateTypes::YearSeason.new(
+          year: year.literal,
+          season: season.literal,
+          sources: orig,
+          include_prev_year: true
+        )
+      )
       recursive_parse
     end
 
@@ -238,16 +268,20 @@ module Emendate
     def parse_date_parts
       pieces = consume_date_parts
 
-      if pieces.types.sort == %i[day month year]
-        result << create_year_month_day_datetype(pieces)
-      elsif pieces.types.sort == %i[month year]
-        result << create_year_month_datetype(pieces)
-      elsif pieces.types.sort == %i[year]
-        result << create_year_datetype(pieces)
+      datetype = case pieces.types.sort
+      when %i[day month year]
+        create_year_month_day_datetype(pieces)
+      when %i[month year]
+        create_year_month_datetype(pieces)
+      when %i[season year]
+        create_year_season_datetype(pieces)
+      when %i[year]
+        create_year_datetype(pieces)
       else
         raise Emendate::UnsegmentableDatePatternError, pieces
       end
 
+      result << datetype
       recursive_parse
     end
 
@@ -327,10 +361,15 @@ module Emendate
 
       case date_type
       when :long_year
-        result << Emendate::DateTypes::Year.new(sources: [current])
+        yr = Emendate::Segment.new(type: :year, sources: [current])
+        result << Emendate::DateTypes::Year.new(sources: [yr])
       when :ym
+        yr = Emendate::Segment.new(
+          type: :year, literal: year, sources: [current]
+        )
+        mth = Segment.new(type: :month, literal: month)
         result << Emendate::DateTypes::YearMonth.new(
-          year: year, month: month, sources: [current]
+          year: year, month: month, sources: [yr, mth]
         )
       end
       working.delete(current)
@@ -386,6 +425,21 @@ module Emendate
 
     def current
       working[0]
+    end
+
+    def transform_separators(segments)
+      add_set_type(segments)
+      segments.each { |seg| transform_separator(seg) }
+    end
+
+    def add_set_type(segments)
+      segtype = segments.first.type
+      set_type = (segtype == :or) ? :alternate : :inclusive
+      result.add_set_type(set_type)
+    end
+
+    def transform_separator(segment)
+      replace_x_with_derived_new_type(x: segment, type: :date_separator)
     end
   end
 end

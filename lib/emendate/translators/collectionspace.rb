@@ -107,15 +107,13 @@ module Emendate
       end
 
       def approximate_term
-        lexed = processed.history[:lexed]
-        types = lexed.types
-        if types.any?(:about)
-          "about"
-        elsif types.any?(:circa)
-          "Circa"
-        else
-          "Approximate"
-        end
+        lexeme = pdate.approximate_qualifiers
+          .map(&:lexeme)
+          .reject(&:empty?)
+          .first
+        return lexeme.capitalize if lexeme
+
+        "Approximate"
       end
 
       def approximate
@@ -127,7 +125,7 @@ module Emendate
       end
 
       def approximate_and_uncertain
-        term = "approximate and possibly"
+        term = "#{approximate_term} and #{uncertain_term}"
         computed.merge({
           dateEarliestSingleCertainty: term,
           dateLatestCertainty: term
@@ -147,8 +145,18 @@ module Emendate
         {dateNote: "Alternate date"}
       end
 
+      def uncertain_term
+        lexeme = pdate.uncertain_qualifiers
+          .map(&:lexeme)
+          .reject(&:empty?)
+          .first
+        return lexeme.capitalize if lexeme
+
+        "Uncertain"
+      end
+
       def uncertain
-        term = "Possibly"
+        term = uncertain_term
         base.merge({
           dateEarliestSingleCertainty: term,
           dateLatestCertainty: term

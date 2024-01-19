@@ -3,158 +3,136 @@
 require "spec_helper"
 
 RSpec.describe Emendate::Translators::Collectionspace::Year do
-  let(:options) do
+  let(:options) { {dialect: :collectionspace} }
+  let(:translation) { Emendate.translate(str, options) }
+  let(:year) { "2012" }
+  let(:result) { translation.values[0] }
+  let(:base) do
     {
-      dialect: :collectionspace
+      dateDisplayDate: str,
+      scalarValuesComputed: "true",
+      dateEarliestScalarValue: "2012-01-01T00:00:00.000Z",
+      dateEarliestSingleYear: "2012",
+      dateEarliestSingleMonth: "1",
+      dateEarliestSingleDay: "1",
+      dateEarliestSingleEra: "CE",
+      dateLatestScalarValue: "2012-12-31T00:00:00.000Z",
+      dateLatestYear: "2012",
+      dateLatestMonth: "12",
+      dateLatestDay: "31",
+      dateLatestEra: "CE"
     }
   end
-  let(:translation) { Emendate.translate(str, options) }
-  let(:value) { translation.values[0] }
+  let(:before_base) do
+    {
+      dateDisplayDate: str,
+      scalarValuesComputed: "true",
+      dateLatestScalarValue: "2012-01-02T00:00:00.000Z",
+      dateLatestYear: "2012",
+      dateLatestMonth: "1",
+      dateLatestDay: "1",
+      dateLatestEra: "CE",
+      dateLatestCertainty: "Before"
+    }
+  end
   let(:warnings) { translation.warnings[0] }
 
   context "with 2012" do
-    let(:str) { "2012" }
-    let(:expected) do
-      {
-        dateDisplayDate: "2012",
-        scalarValuesComputed: "true",
-        dateEarliestScalarValue: "2012-01-01T00:00:00.000Z",
-        dateEarliestSingleYear: "2012",
-        dateEarliestSingleMonth: "1",
-        dateEarliestSingleDay: "1",
-        dateEarliestSingleEra: "CE",
-        dateLatestScalarValue: "2012-12-31T00:00:00.000Z",
-        dateLatestYear: "2012",
-        dateLatestMonth: "12",
-        dateLatestDay: "31",
-        dateLatestEra: "CE"
-      }
-    end
+    let(:str) { year }
 
     it "translates as expected" do
-      expect(value).to eq(expected)
+      expect(result).to eq(base)
       expect(warnings).to be_empty
     end
   end
 
   context "with 2012?" do
-    let(:str) { "2012?" }
+    let(:str) { "#{year}?" }
     let(:expected) do
-      {
-        dateDisplayDate: "2012?",
-        scalarValuesComputed: "true",
-        dateEarliestScalarValue: "2012-01-01T00:00:00.000Z",
-        dateEarliestSingleYear: "2012",
-        dateEarliestSingleMonth: "1",
-        dateEarliestSingleDay: "1",
-        dateEarliestSingleEra: "CE",
-        dateEarliestSingleCertainty: "Possibly",
-        dateLatestScalarValue: "2012-12-31T00:00:00.000Z",
-        dateLatestYear: "2012",
-        dateLatestMonth: "12",
-        dateLatestDay: "31",
-        dateLatestEra: "CE",
-        dateLatestCertainty: "Possibly"
-      }
+      base.merge({
+        dateEarliestSingleCertainty: "Uncertain",
+        dateLatestCertainty: "Uncertain"
+      })
     end
 
     it "translates as expected" do
-      expect(value).to eq(expected)
+      expect(result).to eq(expected)
       expect(warnings).to be_empty
     end
   end
 
-  context "with 2002 B.C." do
-    let(:str) { "2002 B.C." }
+  context "with possibly c. 2012" do
+    let(:str) { "possibly c. #{year}" }
     let(:expected) do
-      {
-        dateDisplayDate: "2002 B.C.",
-        scalarValuesComputed: "true",
-        dateEarliestScalarValue: "2002-01-01T00:00:00.000Z",
-        dateEarliestSingleYear: "2002",
-        dateEarliestSingleMonth: "1",
-        dateEarliestSingleDay: "1",
+      base.merge({
+        dateEarliestSingleCertainty: "Circa and Possibly",
+        dateLatestCertainty: "Circa and Possibly"
+      })
+    end
+
+    it "translates as expected" do
+      expect(result).to eq(expected)
+      expect(warnings).to be_empty
+    end
+  end
+
+  context "with 2012 B.C." do
+    let(:str) { "#{year} B.C." }
+    let(:expected) do
+      base.merge({
         dateEarliestSingleEra: "BCE",
-        dateLatestScalarValue: "2002-12-31T00:00:00.000Z",
-        dateLatestYear: "2002",
-        dateLatestMonth: "12",
-        dateLatestDay: "31",
         dateLatestEra: "BCE"
-      }
+      })
     end
 
     it "translates as expected" do
-      expect(value).to eq(expected)
+      expect(result).to eq(expected)
       expect(warnings).to be_empty
     end
   end
 
-  context "with before 2002 B.C." do
-    let(:str) { "before 2002 B.C." }
-    let(:expected) do
-      {
-        dateDisplayDate: "before 2002 B.C.",
-        scalarValuesComputed: "true",
-        dateLatestScalarValue: "2002-01-02T00:00:00.000Z",
-        dateLatestYear: "2002",
-        dateLatestMonth: "1",
-        dateLatestDay: "1",
-        dateLatestEra: "BCE",
-        dateLatestCertainty: "Before"
-      }
-    end
+  context "with pre-2012" do
+    let(:str) { "pre-#{year}" }
 
     it "translates as expected" do
-      expect(value).to eq(expected)
+      expect(result).to eq(before_base)
       expect(warnings).to be_empty
     end
   end
 
-  context "with pre-2002" do
-    let(:str) { "pre-2002" }
+  context "with before 2012 B.C." do
+    let(:str) { "before #{year} B.C." }
     let(:expected) do
-      {
-        dateDisplayDate: "pre-2002",
-        scalarValuesComputed: "true",
-        dateLatestScalarValue: "2002-01-02T00:00:00.000Z",
-        dateLatestYear: "2002",
-        dateLatestMonth: "1",
-        dateLatestDay: "1",
-        dateLatestEra: "CE",
-        dateLatestCertainty: "Before"
-      }
+      before_base.merge({
+        dateLatestEra: "BCE"
+      })
     end
 
     it "translates as expected" do
-      expect(value).to eq(expected)
+      expect(result).to eq(expected)
       expect(warnings).to be_empty
     end
   end
 
-  context "with after 1970" do
-    let(:str) { "after 1970" }
+  context "with after 2012" do
+    let(:str) { "after #{year}" }
     let(:expected) do
-      {
-        dateDisplayDate: "after 1970",
-        scalarValuesComputed: "true",
-        dateEarliestScalarValue: "1970-12-31T00:00:00.000Z",
-        dateEarliestSingleYear: "1970",
+      base.merge({
+        dateEarliestScalarValue: "#{year}-12-31T00:00:00.000Z",
         dateEarliestSingleMonth: "12",
         dateEarliestSingleDay: "31",
-        dateEarliestSingleEra: "CE",
         dateEarliestSingleCertainty: "After",
         dateLatestScalarValue: "2023-12-02T00:00:00.000Z",
         dateLatestYear: "2023",
         dateLatestMonth: "12",
         dateLatestDay: "2",
-        dateLatestEra: "CE",
         dateLatestCertainty: "After"
-      }
+      })
     end
 
     it "translates as expected" do
       allow(Date).to receive(:today).and_return(Date.new(2023, 12, 2))
-      expect(value).to eq(expected)
+      expect(result).to eq(expected)
       expect(warnings).to be_empty
     end
   end

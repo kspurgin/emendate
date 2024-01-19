@@ -36,7 +36,7 @@ module Emendate
     end
 
     def initialize(tokens)
-      @result = tokens.class.new.copy(tokens)
+      @result = Emendate::SegmentSets::SegmentSet.new.copy(tokens)
     end
 
     def call
@@ -72,26 +72,14 @@ module Emendate
 
     def full_match_standardizers
       case result.types
-      when %i[number4 comma month]
-        proc do
-          remove_post_year_comma
-          new_datetype(type: :ym, sources: result[0..1], ind: [0, 1])
-        end
       when %i[number4 hyphen month]
         proc do
           remove_post_year_hyphen
+          replace_x_with_derived_new_type(x: result[0], type: :year)
           new_datetype(type: :ym, sources: result[0..1], ind: [0, 1])
         end
-      when %i[number4 comma season]
-        proc do
-          remove_post_year_comma
-          new_datetype(type: :ys, sources: result[0..1], ind: [0, 1])
-        end
       when %i[number4 comma month number1or2]
-        proc do
-          remove_post_year_comma
-          new_datetype(type: :ymd, sources: result[0..2], ind: [0, 1, 2])
-        end
+        proc { remove_post_year_comma }
       when %i[number1or2 month number4]
         proc do
           new_datetype(type: :ymd, sources: result[0..2], ind: [2, 1, 0])
@@ -192,6 +180,8 @@ module Emendate
         end
       when %i[number4 month month]
         proc do
+          segs = result.extract_by_date_part(%i[number4 month month])
+          convert_year(segs[0])
           add_year_after_second_month
           move_year_after_first_month
         end
@@ -238,14 +228,16 @@ module Emendate
     end
 
     def year_plus_ambiguous_month_season
+      year = result[1]
       opt = Emendate.options.ambiguous_month_year.dup
       Emendate.config.options.ambiguous_month_year = :as_month
 
       analyzed = Emendate::MonthSeasonYearAnalyzer.call(
-        num: result[0], year: result[1]
+        num: result[0], year: year
       )
       Emendate.config.options.ambiguous_month_year = opt
 
+      replace_x_with_derived_new_type(x: year, type: :year)
       replace_x_with_given_segment(x: result[0], segment: analyzed.result)
       type = case analyzed.type
       when :month then :ym
@@ -279,7 +271,7 @@ module Emendate
     end
 
     def add_year_after_second_month
-      yr = result.when_type(:number4)[0].dup
+      yr = result.when_type(:year)[0].dup
       yr.reset_lexeme
       month2 = result.when_type(:month)[1]
       ins_pt = result.find_index(month2) + 1
@@ -359,8 +351,12 @@ module Emendate
       )
     end
 
+    def convert_year(segment)
+      replace_x_with_derived_new_type(x: segment, type: :year)
+    end
+
     def move_year_after_first_month
-      yr = result.when_type(:number4)[0]
+      yr = result.when_type(:year)[0]
       mth = result.when_type(:month)[0]
       dt = new_datetype(type: :ym,
         sources: [yr, mth],

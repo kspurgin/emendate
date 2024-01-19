@@ -11,6 +11,7 @@ module Emendate
       attr_reader :orig_string, :norm, :segments,
         :certainty, :inferred_date, :warnings
 
+      # @return [Array<Emendate::Qualifier>]
       attr_reader :qualifiers
 
       # @return [:alternate, :inclusive, NilClass]
@@ -30,7 +31,6 @@ module Emendate
         @qualifiers = []
         @inferred_date = false
         @warnings = []
-        @lexeme_order = []
       end
 
       def <<(segment)
@@ -42,20 +42,21 @@ module Emendate
         @certainty = certainty.flatten.uniq.sort
       end
 
+      # @param qual [Emendate::Qualifier]
       def add_qualifier(qual)
         qualifiers << qual
       end
 
+      # @param val [Symbol]
       def add_set_type(val)
         @set_type = val
       end
 
-      def clear_set_certainty
-        certainty.delete(:all_of_set)
-        certainty.delete(:one_of_set)
-        certainty
+      def add_warning(warning)
+        warnings << warning
       end
 
+      # @param other_set [Emendate::SegmentSets::SegmentSet]
       def copy(other_set)
         @orig_string = other_set.orig_string
         @norm = other_set.norm
@@ -94,36 +95,56 @@ module Emendate
         segments.map(&:lexeme).join
       end
 
-      # returns the first sequence of segments matching the pattern of types
-      #   passed in as an Array
-      def extract(*args)
-        args.flatten!
-        segsize = args.length
-
+      # @param types [Array<Symbol>] pattern of types of the segments you wish
+      #   to extract
+      # @return [Emendate::SegmentSets::SegmentSet] the first sequence of
+      #   segments matching the pattern of types passed in
+      def extract(*types)
+        types.flatten!
+        segsize = types.length
         return self.class.new if segments.length < segsize
+        return self.class.new(segments: segments) if segments.length == segsize
 
-        if segments.length == segsize
-          result = self.class.new(segments: segments)
-          return result
-        end
+        slice = segments.select { |seg| seg.type == types[0] }
+          .map { |seg| take_slice(seg, types) }
+          .compact
+          .first
+        return self.class.new unless slice
 
-        tails = segments.select { |t| t.type == args[-1] }
-        return self.class.new if tails.empty?
-
-        segment = []
-        tails.each do |tail|
-          next unless segment.empty?
-
-          tail_i = segments.find_index(tail)
-          head_i = tail_i - segsize + 1
-          seg = self.class.new(segments: segments[head_i..tail_i])
-          segment = (seg.types == args) ? seg : []
-        end
         result = self.class.new
-        segment.each { |s| result << s }
+        slice.each { |s| result << s }
         result
       end
 
+      # Extracts the first instance of the given date part pattern, plus any
+      # non-date part segments in between the beginning and ending date parts
+      # @param types [Array<Symbol>] pattern of types of the date part
+      #   segments you wish to extract
+      # @return [Emendate::SegmentSets::SegmentSet] the first sequence of
+      #   segments matching the pattern of types passed in
+      def extract_by_date_part(*types)
+        types.flatten!
+        slice = date_part_types.map
+          .with_index { |type, ind| (type == types[0]) ? ind : nil }
+          .compact
+          .map { |ind| date_parts[Range.new(ind, ind + types.length - 1)] }
+          .map { |segs| take_date_part_slice(segs) }
+          .first
+
+        result = self.class.new
+        slice.each { |s| result << s }
+        result
+      end
+
+      # @param type [Symbol] to extract
+      # @return [Array<Emendate::Segment>] matching type
+      def when_type(type)
+        segments.select { |t| t.type == type }
+      end
+
+      # @return [Emendate::SegmentSets::SegmentSet] if result includes
+      #   {Emendate::Segment}s
+      # @return [Array] otherwise
       def map(*, &block)
         results = segments.map(*, &block)
         if results.any? { |s| s.is_a?(Emendate::Segment) }
@@ -133,6 +154,8 @@ module Emendate
         end
       end
 
+      # @return [Emendate::SegmentSets::SegmentSet] all segments meeting
+      #   criteria passed in block
       def select(*, &block)
         results = segments.select(*, &block)
         if results.any? { |s| s.is_a?(Emendate::Segment) }
@@ -156,12 +179,20 @@ module Emendate
       end
       alias_method :inspect, :to_s
 
+      # The types of the segments currently in the segment set
+      # @return [Array<Symbol>]
       def types
         segments.map(&:type)
       end
 
+      # The types of the segments currently in the segment set, as a string
+      # @return [String]
       def type_string = types.join(" ")
 
+      # The types of all immediate sources of the segments currently in the
+      # segment set. That is, the top-level sources of each current segment
+      # are listed.
+      # @return [Array<Symbol>]
       def source_types
         segments
           .map { |seg| seg.sources || seg }
@@ -169,10 +200,36 @@ module Emendate
           .flatten
       end
 
+      # Source types, as described in {#source_types}, as a string
+      # @return [String]
       def source_type_string = source_types.join(" ")
 
-      def when_type(type)
-        segments.select { |t| t.type == type }
+      # The types of all segments which have been combined to arrive at the
+      # current segment set. This provides all the sources of all the derived
+      # segments in one flat list, regardless of how many levels of derivation
+      # have occurred.
+      # @return [Array<Symbol>]
+      def subsource_types
+        segments
+          .map { |seg| seg.subsources || seg }
+          .map { |obj| obj.respond_to?(:types) ? obj.types : obj.type }
+          .flatten
+      end
+
+      # Subsource types, as described in {#subsource_types}, as a string
+      # @return [String]
+      def subsource_type_string = subsource_types.join(" ")
+
+      private
+
+      def take_slice(seg, types)
+        slice = segments.slice(segments.find_index(seg), types.length)
+        slice if slice.map(&:type) == types
+      end
+
+      def take_date_part_slice(segs)
+        inds = [segs.first, segs.last].map { |seg| segments.find_index(seg) }
+        segments[Range.new(inds.first, inds.last)]
       end
     end
   end

@@ -193,7 +193,7 @@ module Emendate
       Emendate::EdtfSetHandler,
       Emendate::EdtfQualifier,
       Emendate::InferredDateHandler,
-      Emendate::CertaintyChecker,
+      Emendate::UnstructuredCertaintyHandler,
       Emendate::FormatStandardizer,
       Emendate::DatePartTagger,
       Emendate::DateSegmenter,

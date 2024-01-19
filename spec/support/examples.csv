@@ -309,3 +309,4 @@
 "Y170002","Y170002","y######","edtf;edtf1;letter_prefixed_year",,,"0",,,"170002-01-01","170002-12-31",,,"Unprocessable string",,
 "Y171010000S3","Y171010000S3","y#########s#","currently_unparseable;edtf;edtf2;letter_prefixed_year;significant_digits",,,"0","nilValue","nilValue","nilValue","nilValue",,,"Untokenizable sequences: 171010000",,
 "Y3388E2S3","Y3388E2S3","y####e#s#","currently_unparseable;edtf;edtf2;exponential_year;letter_prefixed_year;significant_digits",,,"0","nilValue","nilValue","nilValue","nilValue",,,"Unprocessable string",,
+"1947/ca. 1965","1947/ca. 1965","####/ca. ####","approximate;year_granularity;range","ccp",,"0","1947","1965","1947-01-01","1965-12-31","approximate_end",,"na",,

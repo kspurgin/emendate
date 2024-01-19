@@ -152,7 +152,8 @@ RSpec.describe Emendate::Segment do
 
           parent = described_class.new(type: :nested, sources: [sub_a, sub_b])
           expect(parent.type).to eq(:nested)
-          expect(parent.sources.length).to eq(4)
+          expect(parent.sources.length).to eq(2)
+          expect(parent.subsources.length).to eq(4)
         end
       end
     end
