@@ -16,7 +16,7 @@ module Emendate
     end
 
     def initialize(tokens)
-      @result = Emendate::SegmentSets::TokenSet.new.copy(tokens)
+      @result = Emendate::SegmentSets::SegmentSet.new.copy(tokens)
     end
 
     def call
