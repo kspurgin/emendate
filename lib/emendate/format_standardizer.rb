@@ -308,18 +308,6 @@ module Emendate
       replace_x_with_derived_new_type(x: segment, type: :year)
     end
 
-    def move_year_to_end_of_segment
-      yr = result.find do |t|
-        t.type == :number4 &&
-          result[result.find_index(t) + 1].type == :month &&
-          result[result.find_index(t) + 2].type == :number1or2
-      end
-      y_ind = result.find_index(yr)
-      ins_pt = y_ind + 3
-      result.insert(ins_pt, yr.dup)
-      result.delete_at(y_ind)
-    end
-
     # @todo simplify with result_editable methods?
     def pad_3_to_4_digits
       t3 = result.find { |t| t.type == :number3 }
@@ -330,16 +318,6 @@ module Emendate
       )
       result.delete_at(t3i)
       result.insert(t3i, t4)
-    end
-
-    def remove_post_month_comma
-      _month, day, comma = result.extract(%i[month number1or2 comma]).segments
-      collapse_token_pair_backward(day, comma)
-    end
-
-    def remove_post_year_comma
-      year, comma = result.extract(%i[number4 comma]).segments
-      collapse_token_pair_backward(year, comma)
     end
 
     def remove_post_year_hyphen
@@ -433,11 +411,6 @@ module Emendate
         sources: [previous, dot, zero]
       )
       replace_segments_with_new(segments: [previous, dot, zero], new: derived)
-    end
-
-    def remove_post_partial_hyphen
-      _p, h = result.extract(%i[partial hyphen]).segments
-      result.delete(h)
     end
 
     def remove_ce_eras

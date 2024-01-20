@@ -4,16 +4,18 @@ require "forwardable"
 
 module Emendate
   module SegmentSets
+    # @todo Get rid of norm
     class SegmentSet
       extend Forwardable
 
       attr_reader :orig_string, :norm, :segments,
-        :certainty, :inferred_date, :warnings
+        :inferred_date, :warnings
 
       # @return [Array<Emendate::Qualifier>]
       attr_reader :qualifiers
 
-      # @return [:alternate, :inclusive, NilClass]
+      # @!macro [new] set_type_attr
+      #   @return [:alternate, :inclusive, nil]
       attr_reader :set_type
 
       def_delegator :@segments, :[], :[]
@@ -26,7 +28,6 @@ module Emendate
         @norm = norm
         @segments = segments ? Array.new(segments) : []
         @set_type = nil
-        @certainty = []
         @qualifiers = []
         @inferred_date = false
         @warnings = []
@@ -36,13 +37,12 @@ module Emendate
         segments << segment
       end
 
-      def add_certainty(val)
-        @certainty << val
-        @certainty = certainty.flatten.uniq.sort
-      end
-
       # @param qual [Emendate::Qualifier]
       def add_qualifier(qual)
+        unless qual.is_a?(Emendate::Qualifier)
+          raise Emendate::QualifierTypeError
+        end
+
         qualifiers << qual
       end
 
@@ -61,7 +61,6 @@ module Emendate
         @norm = other_set.norm
         other_set.segments.each { |s| segments << s.dup }
         @set_type = other_set.set_type
-        other_set.certainty.each { |c| @certainty << c.dup }
         other_set.qualifiers.each { |q| @qualifiers << q }
         other_set.warnings.each { |w| warnings << w.dup }
         @inferred_date = other_set.inferred_date
@@ -170,7 +169,6 @@ module Emendate
             @orig_string=#{orig_string.inspect},
             @norm=#{norm.inspect},
             segments: #{types.inspect},
-            @certainty: #{certainty.inspect},
             @qualifiers: #{qualifiers.inspect},
             @set_type: #{set_type.inspect},
             @inferred_date: #{inferred_date},

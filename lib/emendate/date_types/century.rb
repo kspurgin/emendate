@@ -11,27 +11,36 @@ module Emendate
       attr_reader :century_type
       # @return [Integer]
       attr_reader :literal
+      # @macro set_type_attr
+      attr_reader :set_type
 
       # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
       #   included in the date type
       def initialize(sources:)
         cent = sources.first
         @century_type = get_century_type(cent)
+        @set_type = get_set_type
         @literal = set_literal(cent)
         common_setup(binding)
       end
 
-      def earliest
-        Date.new(earliest_year, 1, 1)
-      end
+      # @return [:year]
+      def granularity_level = :year
 
-      def latest
-        Date.new(latest_year, 12, 31)
-      end
+      # @return [Date]
+      def earliest = Date.new(earliest_year, 1, 1)
 
-      def range?
-        true
-      end
+      # @return [Date]
+      def latest = Date.new(latest_year, 12, 31)
+
+      # @return [String]
+      def earliest_at_granularity = earliest.year.to_s
+
+      # @return [String]
+      def latest_at_granularity = latest.year.to_s
+
+      # @return [true]
+      def range? = true
 
       private
 
@@ -53,6 +62,14 @@ module Emendate
           :uncertainty_digits
         else
           :name
+        end
+      end
+
+      def get_set_type
+        case century_type
+        when :name then :inclusive
+        when :plural then :inclusive
+        when :uncertainty_digits then :alternate
         end
       end
 

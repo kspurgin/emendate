@@ -7,36 +7,46 @@ require_relative "qualifiable"
 
 module Emendate
   # Wrapper around a DateType segment, used as part of Result
+  #
+  # @todo Implement index dates (see timetwister)
   class ParsedDate
     include Emendate::Qualifiable
     extend Forwardable
 
-    attr_reader :original_string, :index_dates,
-      :date_start, :date_end,
-      :date_start_full, :date_end_full,
-      :inclusive_range, :certainty,
-      :date_type, :source
+    # @return [String]
+    attr_reader :original_string
+    attr_reader :date_start
+    attr_reader :date_end
+    attr_reader :date_start_full
+    attr_reader :date_end_full
+    # @return [Boolean]
+    attr_reader :inclusive_range
+    # @return [Array<Emendate::Qualifier>]
+    attr_reader :qualifiers
+    # @return [String]
+    attr_reader :date_type
+    # @return [Emendate::DateTypes::DateType]
+    attr_reader :source
 
     def_delegators :@source, :sources, :type,
       :lexeme, :orig_string,
       :earliest, :earliest_at_granularity,
       :latest, :latest_at_granularity,
-      :range_switch, :era, :qualifiers, :set_type
+      :range_switch, :era, :qualifiers
 
     # @param date [Emendate::DateTypes::DateType]
     # @param orig [String]
-    # @param certainty [Array<Symbol>]
-    def initialize(date:, orig:, certainty: [])
+    # @param qualifiers [Array<Emendate::Qualifier>]
+    def initialize(date:, orig:, qualifiers: [])
       raise(NonDateTypeError) unless date.date_type?
 
       @original_string = get_original_string(date, orig)
-      @index_dates = []
       @date_start = nil
       @date_end = nil
       @date_start_full = date.earliest&.iso8601
       @date_end_full = date.latest&.iso8601
-      @inclusive_range = date.range? ? true : nil
-      @certainty = (certainty + date.certainty).flatten.uniq
+      @inclusive_range = date.range? ? true : false
+      @qualifiers = (qualifiers + date.qualifiers).flatten.uniq
       @date_type = date.class.name.split("::")[-1]
       @source = date
     end
@@ -52,16 +62,23 @@ module Emendate
         })
     end
 
-    def to_json(*_args)
+    def to_json
       to_h.to_json
     end
 
-    def valid_range?
-      return true unless @inclusive_range
-      return true if @date_start_full.nil? && !@date_end_full.nil?
+    # @!macro set_type_attr
+    def set_type
+      return unless source.respond_to?(:set_type)
 
-      sd = Date.parse(@date_start_full)
-      ed = Date.parse(@date_end_full)
+      source.set_type
+    end
+
+    def valid_range?
+      return true unless inclusive_range
+      return true if date_start_full.nil? && !date_end_full.nil?
+
+      sd = Date.parse(date_start_full)
+      ed = Date.parse(date_end_full)
       sd < ed
     end
 
@@ -72,8 +89,8 @@ module Emendate
     end
 
     def get_original_string(datetype, orig)
-      if datetype.respond_to?(:orig)
-        datetype.orig
+      if datetype.respond_to?(:lexeme)
+        datetype.lexeme
       else
         orig
       end

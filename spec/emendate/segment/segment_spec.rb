@@ -13,7 +13,9 @@ RSpec.describe Emendate::Segment do
       let(:sources) do
         orig_token = Emendate::Segment.new(type: :sym, lexeme: "str",
           literal: 1)
-        orig_token.add_certainty(:approximate)
+        orig_token.add_qualifier(
+          Emendate::Qualifier.new(type: :approximate, precision: :whole)
+        )
         [orig_token]
       end
 
@@ -21,7 +23,7 @@ RSpec.describe Emendate::Segment do
         expect(subject.type).to eq(:newtype)
         expect(subject.lexeme).to eq("str")
         expect(subject.literal).to eq(1)
-        expect(subject.certainty).to eq([:approximate])
+        expect(subject.qualifiers.map(&:type)).to eq([:approximate])
       end
     end
 
@@ -29,9 +31,13 @@ RSpec.describe Emendate::Segment do
       context "when all sources have numeric literals" do
         let(:sources) do
           t1 = Emendate::Segment.new(type: :sym, lexeme: "a ", literal: 1)
-          t1.add_certainty(:approximate)
+          t1.add_qualifier(
+            Emendate::Qualifier.new(type: :approximate, precision: :whole)
+          )
           t2 = Emendate::Segment.new(type: :foo, lexeme: "cat ", literal: 2)
-          t2.add_certainty(:uncertain)
+          t2.add_qualifier(
+            Emendate::Qualifier.new(type: :uncertain, precision: :whole)
+          )
           t3 = Emendate::Segment.new(type: :bar, lexeme: "sat", literal: 3)
           [t1, t2, t3]
         end
@@ -40,7 +46,9 @@ RSpec.describe Emendate::Segment do
           expect(subject.type).to eq(:newtype)
           expect(subject.lexeme).to eq("a cat sat")
           expect(subject.literal).to eq(123)
-          expect(subject.certainty).to eq([:approximate, :uncertain])
+          expect(subject.qualifiers.map(&:type)).to eq(
+            [:approximate, :uncertain]
+          )
         end
       end
 

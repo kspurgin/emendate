@@ -118,7 +118,7 @@ module Emendate
 
       def approximate
         term = approximate_term
-        computed.merge({
+        qualified.merge({
           dateEarliestSingleCertainty: term,
           dateLatestCertainty: term
         })
@@ -126,7 +126,7 @@ module Emendate
 
       def approximate_and_uncertain
         term = "#{approximate_term} and #{uncertain_term}"
-        computed.merge({
+        qualified.merge({
           dateEarliestSingleCertainty: term,
           dateLatestCertainty: term
         })
@@ -138,11 +138,11 @@ module Emendate
       end
 
       def all_of_set
-        {dateNote: "Inclusive date"}
+        qualified.merge({dateNote: "Inclusive date"})
       end
 
       def one_of_set
-        {dateNote: "Alternate date"}
+        qualified.merge({dateNote: "Alternate date"})
       end
 
       def uncertain_term
@@ -157,7 +157,7 @@ module Emendate
 
       def uncertain
         term = uncertain_term
-        base.merge({
+        qualified.merge({
           dateEarliestSingleCertainty: term,
           dateLatestCertainty: term
         })
@@ -174,7 +174,7 @@ module Emendate
         end
       end
 
-      def qualify(meth = nil)
+      def qualify
         super
 
         set_bce_eras if date.source.sources.types.include?(:dummy_bce)
@@ -182,7 +182,7 @@ module Emendate
 
       def set_bce_eras
         qualified[:dateLatestEra] = "BCE"
-        return if date.range_switch == :before
+        return qualified if date.range_switch == :before
 
         qualified.merge!({dateEarliestSingleEra: "BCE"})
       end

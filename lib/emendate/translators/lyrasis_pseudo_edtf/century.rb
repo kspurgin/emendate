@@ -6,10 +6,6 @@ module Emendate
   module Translators
     module LyrasisPseudoEdtf
       class Century < Emendate::Translators::Abstract
-        def preprocess
-          pdate.certainty << :one_of_set
-        end
-
         private
 
         def translate_value

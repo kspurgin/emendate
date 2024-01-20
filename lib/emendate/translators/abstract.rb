@@ -31,8 +31,14 @@ module Emendate
       # @return [String, Hash] qualified processed value
       attr_reader :qualified
 
-      def qualify(_meth = nil)
+      def qualify
         @qualified = base.dup
+        qualify_qualifiers
+        qualify_set
+        qualified
+      end
+
+      def qualify_qualifiers
         return if pdate.certain?
 
         vals = pdate.qualifiers.dup
@@ -48,6 +54,20 @@ module Emendate
 
           @qualified = method(val.type).call
         end
+      end
+
+      def qualify_set
+        set_type = pdate.set_type
+        return unless set_type
+
+        meth = set_qualification_method(set_type)
+        return unless respond_to?(meth)
+
+        @qualified = method(meth).call
+      end
+
+      def set_qualification_method(set_type)
+        :"#{set_type}_set"
       end
 
       def tokens
