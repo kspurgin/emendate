@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "datetypeable"
-require_relative "six_digitable"
+require_relative "year_month_or_seasonable"
 
 module Emendate
   module DateTypes
     # @todo Add earliest/latest at granularity
     class YearMonth
       include Datetypeable
-      include SixDigitable
+      include YearMonthOrSeasonable
 
       # @param year [Integer]
       # @param month [Integer]
