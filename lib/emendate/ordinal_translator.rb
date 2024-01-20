@@ -12,14 +12,13 @@ module Emendate
     end
 
     def initialize(tokens)
-      @result = Emendate::SegmentSets::TokenSet.new.copy(tokens)
+      @result = Emendate::SegmentSets::SegmentSet.new.copy(tokens)
     end
 
     def call
       if result[0].type == :ordinal_indicator
-        # rubocop:todo Layout/LineLength
-        result.warnings << "Ordinal indicator unexpectedly appears at beginning of date string"
-        # rubocop:enable Layout/LineLength
+        result.warnings << "Ordinal indicator unexpectedly appears at "\
+          "beginning of date string"
         collapse_token_pair_forward(result[0], result[1])
       end
 
@@ -31,9 +30,8 @@ module Emendate
       ois.each do |oi|
         prev = previous(oi)
         unless prev.type == :number1or2
-          # rubocop:todo Layout/LineLength
-          result.warnings << "Ordinal indicator expected after :number1or2. Found after :#{prev.type}"
-          # rubocop:enable Layout/LineLength
+          result.warnings << "Ordinal indicator expected after :number1or2. "\
+            "Found after :#{prev.type}"
         end
         collapse_token_pair_backward(prev, oi)
       end

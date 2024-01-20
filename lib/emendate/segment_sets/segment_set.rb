@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
 require "forwardable"
-require_relative "certainty_helpers"
 
 module Emendate
   module SegmentSets
     class SegmentSet
-      include Emendate::SegmentSets::CertaintyHelpers
       extend Forwardable
+
       attr_reader :orig_string, :norm, :segments,
         :certainty, :inferred_date, :warnings
 
