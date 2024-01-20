@@ -138,6 +138,9 @@ module Emendate
       )
     end
 
+    def insert_x_after_segment(x:, segment:)
+    end
+
     def replace_x_with_given_segment(x:, segment:)
       replace_x_with_new(x: x, new: segment)
     end

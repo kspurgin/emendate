@@ -129,20 +129,41 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
+  context "with 2020, Feb 15" do
+    let(:string) { "2020, Feb 15" }
+
+    it "tags as expected" do
+      expect(types).to eq(%i[year month day])
+      expect(result.lexeme).to eq(string)
+    end
+  end
+
+  context "with 2000 June 3-2001 Jan 20" do
+    let(:string) { "2000 June 3-2001 Jan 20" }
+
+    it "tags as expected" do
+      expect(types).to eq(
+        %i[year month day range_indicator year month day]
+      )
+      expect(result.lexeme).to eq(string)
+    end
+  end
+
+  context "with 15 Feb 2020" do
+    let(:string) { "15 Feb 2020" }
+
+    it "tags as expected" do
+      expect(types).to eq(%i[day month year])
+      expect(result.lexeme).to eq(string)
+    end
+  end
+
   context "with 03/2020" do
     let(:string) { "03/2020" }
 
     it "tags as expected" do
       expect(types).to eq(%i[month year])
       expect(result.lexeme).to eq(string)
-    end
-  end
-
-  context "with February 30, 2020" do
-    let(:string) { "February 30, 2020" }
-
-    it "returns error" do
-      expect(subject.failure).to be_a(Emendate::UntaggableDatePartError)
     end
   end
 
@@ -249,11 +270,29 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
+  context "with 1968-Mar" do
+    let(:string) { "1968-Mar" }
+
+    it "formats as expected" do
+      expect(result.lexeme).to eq(string)
+      expect(types).to eq(%i[year month])
+    end
+  end
+
+  context "with 12-2011" do
+    let(:string) { "12-2011" }
+
+    it "returns as expected" do
+      expect(result.lexeme).to eq(string)
+      expect(types).to eq(%i[month year])
+    end
+  end
+
   context "with 2 December 2020, 2020/02/15" do
     let(:string) { "2 December 2020, 2020/02/15" }
 
     it "tags" do
-      expect(types).to eq(%i[yearmonthday_date_type comma year month day])
+      expect(types).to eq(%i[day month year comma year month day])
       expect(result.lexeme).to eq(string)
     end
   end

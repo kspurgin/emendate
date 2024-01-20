@@ -45,16 +45,7 @@ RSpec.describe Emendate::FormatStandardizer do
 
       it "formats as expected" do
         expect(subject.lexeme).to eq(string)
-        expect(result).to eq(%i[yearmonth_date_type])
-      end
-    end
-
-    context "with 2020, Feb 15" do
-      let(:string) { "2020, Feb 15" }
-
-      it "returns as expected" do
-        expect(subject.lexeme).to eq(string)
-        expect(result).to eq(%i[year month day])
+        expect(result).to eq(%i[number4 month])
       end
     end
 
@@ -63,7 +54,7 @@ RSpec.describe Emendate::FormatStandardizer do
 
       it "returns as expected" do
         expect(subject.lexeme).to eq(string)
-        expect(result).to eq(%i[yearmonth_date_type])
+        expect(result).to eq(%i[number1or2 number4])
       end
     end
 
@@ -146,27 +137,7 @@ RSpec.describe Emendate::FormatStandardizer do
 
       it "move first month to front; copy year to end" do
         expect(subject.lexeme).to eq(string)
-        expect(result).to eq(%i[yearmonth_date_type hyphen month year])
-      end
-    end
-
-    context "with 2000 June 3-2001 Jan 20" do
-      let(:string) { "2000 June 3-2001 Jan 20" }
-
-      it "move year to end of segment" do
-        expect(subject.lexeme).to eq(string)
-        expect(result).to eq(
-          %i[yearmonthday_date_type hyphen yearmonthday_date_type]
-        )
-      end
-    end
-
-    context "with 15 Feb 2020" do
-      let(:string) { "15 Feb 2020" }
-
-      it "move month to front of segment" do
-        expect(subject.lexeme).to eq(string)
-        expect(result).to eq(%i[yearmonthday_date_type])
+        expect(result).to eq(%i[year month hyphen month year])
       end
     end
 
@@ -292,16 +263,6 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
-    context "with 2 December 2020, 2020/02/15" do
-      let(:string) { "2 December 2020, 2020/02/15" }
-
-      it "segments as expected" do
-        expect(subject.lexeme).to eq(string)
-        expect(result).to eq(%i[yearmonthday_date_type comma number4 hyphen
-          number1or2 hyphen number1or2])
-      end
-    end
-
     context "with November '73" do
       let(:string) { "November '73" }
 
@@ -309,15 +270,6 @@ RSpec.describe Emendate::FormatStandardizer do
         expect(subject.lexeme).to eq(string)
         expect(result).to eq(%i[month year])
         expect(subject[1].literal).to eq(1973)
-      end
-    end
-
-    context "with invalid YMD values" do
-      let(:string) { "1844 Jun 31" }
-
-      it "segments as expected" do
-        expect(subject.lexeme).to eq(string)
-        expect(result).to eq(%i[invalid_date_type])
       end
     end
   end

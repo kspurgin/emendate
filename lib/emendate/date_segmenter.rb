@@ -383,8 +383,11 @@ module Emendate
       month = now.month
       day = now.day
 
+      yr = Emendate::Segment.new(type: :year, literal: year, sources: [current])
+      m = Emendate::Segment.new(type: :month, literal: month)
+      d = Emendate::Segment.new(type: :day, literal: day)
       result << Emendate::DateTypes::YearMonthDay.new(
-        year: year, month: month, day: day, sources: [current]
+        year: year, month: month, day: day, sources: [yr, m, d]
       )
       working.delete(current)
       recursive_parse
@@ -408,8 +411,14 @@ module Emendate
 
       case date_type
       when :ymd
+        yr = Emendate::Segment.new(
+          type: :year, literal: year, sources: [current]
+        )
+        mth = Segment.new(type: :month, literal: month)
+        d = Segment.new(type: :day, literal: day)
+
         result << Emendate::DateTypes::YearMonthDay.new(
-          year: year, month: month, day: day, sources: pieces
+          year: year, month: month, day: day, sources: [yr, mth, d]
         )
       when :long_year
         result << Emendate::DateTypes::Year.new(sources: pieces)

@@ -72,6 +72,10 @@ module Emendate
         proc { tag_with_uncertainty_digits }
       when /.*number1or2 century.*/
         proc { tag_century_num }
+      when /.*number1or2 month year.*/
+        proc { tag_day_in_dmy }
+      when /.*year month number1or2.*/
+        proc { tag_day_in_ymd }
       when /.*month number1or2 year.*/
         proc { tag_day_in_mdy }
       when /.*season number1or2.*/
@@ -124,25 +128,32 @@ module Emendate
       collapse_pair(%i[number1or2 century], :century)
     end
 
+    def tag_day(yr:, mth:, day:)
+      replace_x_with_date_part_type(x: day, date_part_type: :day)
+    end
+
+    def tag_day_in_ymd
+      y, m, d = result.extract(:year, :month, :number1or2).segments
+      tag_day(yr: y, mth: m, day: d)
+    end
+
+    def tag_day_in_dmy
+      d, m, y = result.extract(:number1or2, :month, :year).segments
+      tag_day(yr: y, mth: m, day: d)
+    end
+
     def tag_day_in_mdy
       m, d, y = result.extract(:month, :number1or2, :year).segments
-      unless valid_date?(
-        y, m, d
-      )
-        raise UntaggableDatePartError.new(d,
-          "invalid day value")
-      end
-
-      replace_x_with_date_part_type(x: d, date_part_type: :day)
+      tag_day(yr: y, mth: m, day: d)
     end
 
     def tag_pluralized_year
       if Emendate.options.pluralized_date_interpretation == :decade
         pair = result.extract(:year, :letter_s).segments
         collapse_pair(pair, :decade)
-        # rubocop:todo Layout/LineLength
-        result.warnings << "Interpreting pluralized year as decade" if pair[0].lexeme.end_with?("00")
-        # rubocop:enable Layout/LineLength
+        if pair[0].lexeme.end_with?("00")
+          result.warnings << "Interpreting pluralized year as decade"
+        end
       else
         year, _letter_s = result.extract(%i[year letter_s]).segments
         zeros = year.lexeme.match(/(0+)/)[1]

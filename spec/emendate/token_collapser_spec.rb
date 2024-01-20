@@ -72,6 +72,15 @@ RSpec.describe Emendate::TokenCollapser do
       end
     end
 
+    context "with 2020, Feb 15" do
+      let(:string) { "2020, Feb 15" }
+
+      it "returns as expected" do
+        expect(result).to eq("number4 month_alpha number1or2")
+        expect(subject.lexeme).to eq(string)
+      end
+    end
+
     context "with `Nov. '73`" do
       let(:string) { "Nov. '73" }
 

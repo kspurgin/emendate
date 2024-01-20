@@ -6,9 +6,7 @@ require_relative "testable_example"
 
 module Emendate
   module Examples
-    # rubocop:todo Layout/LineLength
-    # Basically just a holder for a list of Examples::TestableExample objects, with some convenience
-    # rubocop:enable Layout/LineLength
+    # Holder for a list of {Examples::TestableExample}s, with some convenience
     #   methods
     class ExampleSet
       include Examples::Taggable
@@ -45,12 +43,10 @@ module Emendate
         grouped_by_test_status[:failure]
       end
 
-      # rubocop:todo Layout/LineLength
-      # @param examples_method [Symbol] name of method that returns Array of TestableExample objects
-      # rubocop:enable Layout/LineLength
-      # rubocop:todo Layout/LineLength
-      # @param data_method [Symbol] name of method to call on each TestableExample to get data
-      # rubocop:enable Layout/LineLength
+      # @param data_method [Symbol] name of method to call on each
+      #   {TestableExample} to get data
+      # @param examples_method [Symbol] name of a method that returns Array of
+      #   {TestableExample}s
       def get_example_data(data_method:, examples_method: :examples)
         exobjs = send(examples_method)
         return [] if exobjs.empty?

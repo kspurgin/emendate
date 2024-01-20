@@ -142,20 +142,6 @@ module Emendate
     end
   end
 
-  class UntaggableDatePartError < StandardError
-    include Emendate::Error
-    attr_reader :date_part, :reason
-
-    def initialize(date_part, reason)
-      @date_part = date_part
-      @reason = reason
-      # rubocop:todo Layout/LineLength
-      msg = "type: #{date_part.type}; value: #{date_part.lexeme}; reason: #{reason}"
-      # rubocop:enable Layout/LineLength
-      super(msg)
-    end
-  end
-
   class UntaggableDatePatternError < StandardError
     include Emendate::Error
     attr_reader :date_parts, :reason

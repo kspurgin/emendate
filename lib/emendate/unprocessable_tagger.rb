@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Emendate
-  # Returns a single {Emendate::DateTypes::Unprocessable} if date string
-  #   matches a known unsupported pattern
+  # Returns a single {Emendate::DateTypes::Error} with error type
+  # :unprocessable if date string matches a known unsupported pattern
   class UnprocessableTagger
     include Dry::Monads[:result]
 

@@ -12,7 +12,8 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
   describe "#call" do
     let(:result) { analyzer.call }
     let(:ymd) do
-      "#{result.datetype.year} #{result.datetype.month} #{result.datetype.day}"
+      %i[year month day].map { |type| result.when_type(type).first.literal }
+        .join(" ")
     end
     let(:wct) { result.warnings.length }
 
@@ -21,7 +22,7 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
 
       it "converts to date types" do
         expect(ymd).to eq("1987 4 13")
-        expect(result.datetype.lexeme).to eq(str)
+        expect(result.lexeme).to eq(str)
         expect(wct).to eq(0)
       end
     end

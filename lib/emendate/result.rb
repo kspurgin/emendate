@@ -3,15 +3,28 @@
 require "json"
 
 module Emendate
+  # Wrapper class around one or more {Emendate::ParsedDate}s.
+  #
+  # Presents any errors and warnings from the date parsing process, along with
+  # the {Emendate::ProcessingManager} and its detailed, step-by-step audit of
+  # the process.
+  #
+  # The public API is loosely based on
+  # {https://github.com/alexduryee/timetwister timetwister} and should remain
+  # consistent with that tool.
   class Result
-    # @return [String] the original parsed/processed string
+    # @return [String] the original string parsed to generate this {Result}
     attr_reader :original_string
-    # @return [Array]
+    # @return [Array] information about why string was unable to be parsed
+    #   successfully
     attr_reader :errors
-    # @return [Array]
+    # @return [Array] information about how ambiguous date options or other
+    #   settings were applied.
     attr_reader :warnings
     # @return [Array<Emendate::ParsedDate>]
     attr_reader :dates
+    # @return [Emendate::ProcessingManager]
+    attr_reader :pm
 
     # @param pm [Emendate::ProcessingManager]
     def initialize(pm)
@@ -33,14 +46,19 @@ module Emendate
       end
     end
 
+    # @param method [Symbol] name of {Emendate::ParsedDate} public method
+    # @param delim [String] for joining multiple values
+    # @return [String] concatenated result of calling method on all the dates
     def compile_date_info(method:, delim:)
       dates.map(&method).join(delim)
     end
 
+    # @return [Integer]
     def date_count
       dates.length
     end
 
+    # @return [Hash] representation of {Result}
     def to_h
       {
         original_string: original_string,
@@ -50,13 +68,12 @@ module Emendate
       }
     end
 
+    # @return [String]
     def to_json
       to_h.to_json
     end
 
     private
-
-    attr_reader :pm
 
     def map_errors
       pm.errors

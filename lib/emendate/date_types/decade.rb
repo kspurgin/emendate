@@ -18,7 +18,7 @@ module Emendate
       #   included in the date type
       def initialize(sources:)
         common_setup(binding)
-        @decade_type = set_type
+        @decade_type = get_decade_type
         @literal = set_literal
       end
 
@@ -36,7 +36,7 @@ module Emendate
 
       private
 
-      def set_type
+      def get_decade_type
         case sources.source_type_string
         when /uncertainty_digits/
           :uncertainty_digits
