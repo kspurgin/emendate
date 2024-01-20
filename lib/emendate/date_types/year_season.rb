@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 require_relative "datetypeable"
-require_relative "six_digitable"
+require_relative "year_month_or_seasonable"
 
 module Emendate
   module DateTypes
     class YearSeason
       include Datetypeable
-      include SixDigitable
+      include YearMonthOrSeasonable
 
       NORTHERN_SEASONS = {
         spring: {start: [:year, 4, 1], end: [:year, 6, 30]},
