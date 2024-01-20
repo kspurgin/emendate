@@ -2,7 +2,6 @@
 
 module Emendate
   Error = Module.new
-  UnconfiguredModuleError = Class.new(NameError) { include Emendate::Error }
 
   class DateTypeCreationError < StandardError
     include Emendate::Error
@@ -133,10 +132,8 @@ module Emendate
 
   class UnsegmentableDatePatternError < StandardError
     include Emendate::Error
-    attr_reader :pieces
 
     def initialize(pieces)
-      @pieces = pieces
       msg = pieces.types.join(", ")
       super(msg)
     end
@@ -144,11 +141,8 @@ module Emendate
 
   class UntaggableDatePatternError < StandardError
     include Emendate::Error
-    attr_reader :date_parts, :reason
 
     def initialize(date_parts, reason)
-      @date_parts = date_parts
-      @reason = reason
       msg = "value: #{date_parts.map(&:lexeme).join}; reason: #{reason}"
       super(msg)
     end

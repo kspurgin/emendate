@@ -174,14 +174,6 @@ module Emendate
       recursive_parse
     end
 
-    def s_date?(segment)
-      segment.sources.types.include?(:letter_s)
-    end
-
-    def uncertainty_date?(segment)
-      segment.sources.types.include?(:uncertainty_digits)
-    end
-
     def parse_millennium_date_part
       result << Emendate::DateTypes::Millennium.new(sources: [working[0]])
       working.shift
@@ -323,15 +315,6 @@ module Emendate
       pieces = Emendate::SegmentSets::SegmentSet.new
 
       until working.empty? || !current.date_part?
-        pieces << current
-        working.delete(current)
-      end
-      pieces
-    end
-
-    def consume_non_date_parts
-      pieces = []
-      until current.is_a?(Emendate::Number)
         pieces << current
         working.delete(current)
       end
