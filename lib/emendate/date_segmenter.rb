@@ -51,7 +51,7 @@ module Emendate
       parser = parse_function
       return if parser.nil?
 
-      send(parser)
+      parser.call
     end
 
     def parse_function
@@ -59,44 +59,28 @@ module Emendate
 
       case working.types.first
       when :century
-        :parse_century_date_part
+        proc { parse_century_date_part }
       when :day
-        :parse_date_parts
+        proc { parse_date_parts }
       when :decade
-        :parse_decade_date_part
+        proc { parse_decade_date_part }
       when :millennium
-        :parse_millennium_date_part
+        proc { parse_millennium_date_part }
       when :month
-        :parse_date_parts
+        proc { parse_date_parts }
       when :number6
-        :parse_yyyymm
+        proc { parse_yyyymm }
       when :number8
-        :parse_yyyymmdd
+        proc { parse_yyyymmdd }
       when :present
-        :parse_present
+        proc { parse_present }
       when :season
-        :parse_season
+        proc { parse_season }
       when :year
-        :parse_date_parts
+        proc { parse_date_parts }
       else
-        :parse_non_date_part
+        proc { parse_non_date_part }
       end
-    end
-
-    def bce? = result.types.include?(:era_bce)
-
-    def apply_bce
-      if result.type_string.match?(/.*_date_type era_bce/)
-        segments = result.extract(:year_date_type, :era_bce)
-        year = segments[0]
-        bce = segments[1]
-      else
-        segments = result.extract(:era_bce, :year_date_type)
-        year = segments[1]
-        bce = segments[0]
-      end
-      year.bce
-      result.delete(bce)
     end
 
     def apply_modifiers(type)
