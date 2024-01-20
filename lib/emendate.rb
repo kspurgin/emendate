@@ -46,13 +46,6 @@ module Emendate
     Emendate::RangeIndicator,
     Emendate::TokenCleaner
   ]
-  LQ = "\u201C"
-  RQ = "\u201D"
-
-  # These tokens should only appear in EDTF dates, and will switch
-  # some of the options to support assumptions about processing EDTF
-  EDTF_TYPES = %i[double_dot percent tilde curly_bracket_open letter_y letter_t
-    letter_z letter_e]
 
   setting :basedir, default: Gem.loaded_specs["emendate"].full_gem_path,
     reader: true
