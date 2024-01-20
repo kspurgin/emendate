@@ -39,30 +39,32 @@ module Emendate
     end
 
     def determine_action
+      actions = if result[0].collapsible?
+        proc { collapse_forward }
+      elsif result.any?(&:collapsible?)
+        proc { collapse_backward }
+      end
+      return actions unless actions.nil?
+
       actions = full_match_collapsers
       return actions unless actions.nil?
 
-      actions = partial_match_collapsers
-      return actions unless actions.nil?
-
-      if result[0].collapsible?
-        proc { collapse_forward }
-      else
-        proc { collapse_backward }
-      end
+      partial_match_collapsers
     end
 
     def full_match_collapsers
       case result.types
       when %i[number1or2 slash number4]
         proc { collapse_segments_backward(%i[number1or2 slash]) }
-      when %i[month_alpha comma space number4]
+      when %i[month_alpha comma number4]
         proc { collapse_segments_backward(%i[month_alpha comma]) }
-      when %i[number4 comma space month_alpha]
+      when %i[number4 comma month_alpha]
         proc { collapse_segments_backward(%i[number4 comma]) }
-      when %i[number4 comma space season]
+      when %i[number4 comma month_alpha number1or2]
         proc { collapse_segments_backward(%i[number4 comma]) }
-      when %i[month_alpha comma space number1or2 comma space number4]
+      when %i[number4 comma season]
+        proc { collapse_segments_backward(%i[number4 comma]) }
+      when %i[month_alpha space number1or2 comma number4]
         proc do
           collapse_segments_backward(%i[number1or2 comma])
           collapse_segments_backward(%i[month_alpha comma])

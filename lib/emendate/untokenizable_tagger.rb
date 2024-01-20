@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Emendate
+  # Returns a single {Emendate::DateTypes::Error} with error type
+  # :untokenizble if date string matches a known unsupported pattern
   class UntokenizableTagger
     include Dry::Monads[:result]
 

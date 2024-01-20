@@ -11,8 +11,8 @@ RSpec.describe Emendate::DateTypes::YearMonth do
     )
   end
   let(:args) { {month: 2, year: 2020, sources: tokens} }
-  let(:lexemes) { subject.qualifiers.map(&:lexeme).join(" ") }
-  let(:precisions) { subject.qualifiers.map(&:precision).join(" ") }
+  let(:qlexemes) { subject.qualifiers.map(&:lexeme).join(" ") }
+  let(:qprecisions) { subject.qualifiers.map(&:precision).join(" ") }
 
   context "with three date parts" do
     let(:string) { "2020-02-23" }
@@ -47,7 +47,7 @@ RSpec.describe Emendate::DateTypes::YearMonth do
 
     it "returns as expected" do
       expect(subject.uncertain?).to be true
-      expect(lexemes).to eq("possibly")
+      expect(qlexemes).to eq("possibly")
     end
   end
 
@@ -55,7 +55,7 @@ RSpec.describe Emendate::DateTypes::YearMonth do
     let(:string) { "2020, possibly February" }
 
     it "returns as expected" do
-      expect(subject.uncertain?).to be true
+      expect(subject.uncertain_qualifiers[0].precision).to eq(:month)
     end
   end
 
@@ -64,7 +64,7 @@ RSpec.describe Emendate::DateTypes::YearMonth do
 
     it "returns as expected" do
       expect(subject.uncertain?).to be true
-      expect(lexemes).to eq("possibly")
+      expect(qlexemes).to eq("possibly")
     end
   end
 
@@ -73,7 +73,7 @@ RSpec.describe Emendate::DateTypes::YearMonth do
 
     it "returns as expected" do
       expect(subject.uncertain?).to be true
-      expect(precisions).to eq("month")
+      expect(qprecisions).to eq("month")
     end
   end
 end

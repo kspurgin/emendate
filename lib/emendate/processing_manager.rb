@@ -19,7 +19,7 @@ module Emendate
       @orig_string = string
       Emendate::Options.new(options) unless options.empty?
       @history = {initialized: orig_string}
-      @tokens = Emendate::SegmentSets::TokenSet.new(
+      @tokens = Emendate::SegmentSets::SegmentSet.new(
         string: orig_string
       )
       @errors = []
@@ -116,6 +116,7 @@ module Emendate
       end
       nil
     end
+    alias_method :hr, :historical_record
 
     def to_s
       <<~OBJ

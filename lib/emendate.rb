@@ -28,13 +28,29 @@ module Emendate
   extend Dry::Configurable
   extend Dry::Monads[:result]
 
+  PROCESSING_STEPS = [
+    Emendate::Lexer,
+    Emendate::UntokenizableTagger,
+    Emendate::UnprocessableTagger,
+    Emendate::KnownUnknownTagger,
+    Emendate::TokenCollapser,
+    Emendate::AlphaMonthConverter,
+    Emendate::OrdinalTranslator,
+    Emendate::EdtfSetHandler,
+    Emendate::EdtfQualifier,
+    Emendate::InferredDateHandler,
+    Emendate::UnstructuredCertaintyHandler,
+    Emendate::FormatStandardizer,
+    Emendate::DatePartTagger,
+    Emendate::DateSegmenter,
+    Emendate::RangeIndicator,
+    Emendate::TokenCleaner
+  ]
   LQ = "\u201C"
   RQ = "\u201D"
 
-  # rubocop:todo Layout/LineLength
-  # these tokens should only appear in EDTF dates, and will switch some of the options
-  # rubocop:enable Layout/LineLength
-  #  to support assumptions about processing EDTF
+  # These tokens should only appear in EDTF dates, and will switch
+  # some of the options to support assumptions about processing EDTF
   EDTF_TYPES = %i[double_dot percent tilde curly_bracket_open letter_y letter_t
     letter_z letter_e]
 
@@ -93,82 +109,99 @@ module Emendate
   end
 
   # @param string [String] original date string
-  # @param target [Class] class you need input for
-  # @param options [Hash]
+  # @!macro [new] targetparam
+  #   @param target [Class] the {Emendate::PROCESSING_STEPS processing step}
+  #     to get input segments for. All steps prior to the target will be
+  #     carried out, and the result that would normally be passed to the target
+  #     will be returned
+  # @!macro [new] optionsparam
+  #   @param options [Hash] See
+  #     {https://github.com/kspurgin/emendate/blob/main/docs/options.adoc
+  #     options documentation}
+  # @return [Emendate::SegmentSets::SegmentSet] for all targets other than
+  #   {Emendate::Lexer}, will return the result of the processing step prior to
+  #   the target
+  # @return [String] if target is {Emendate::Lexer}
   def prepped_for(string:, target:, options: nil)
     Emendate::Options.new(options) if options
 
     to_prep = prep_steps(target)
     return string unless to_prep
 
-    tokens = to_prep.first
-      .call(string)
-      .either(
-        ->(success) { success },
-        ->(failure) { failure }
-      )
-
+    lexed = to_prep.first.call(string)
+    tokens = lexed.failure? ? nil : lexed.value!
+    return lexed.failure unless tokens
     return tokens if to_prep.length == 1
 
     to_prep.shift
     to_prep.each do |step|
-      tokens = step.call(tokens)
-        .either(
-          ->(success) { success },
-          ->(failure) { failure }
-        )
+      result = step.call(tokens)
+      tokens = result.failure? ? nil : result.value!
+      return result.failure unless tokens
     end
 
     tokens
   end
 
+  # @param str [String]
+  # @!macro optionsparam
+  # @return [Emendate::Result]
   def parse(str, options = {})
-    pm = Emendate::ProcessingManager.new(str, options)
-    pm.call
-    pm.result
+    Emendate::Options.new(options) unless options.empty?
+    process(str).result
   end
 
+  # @param str [String]
+  # @!macro optionsparam
+  # @return [Emendate::ProcessingManager]
   def process(str, options = {})
-    pm = Emendate::ProcessingManager.new(str, options)
-    pm.call
-    pm
+    Emendate::Options.new(options) unless options.empty?
+    Emendate::ProcessingManager.call(str)
+      .either(->(success) { success }, ->(failure) { failure })
   end
 
+  # @param str [String]
+  # @return [Emendate::SegmentSets::SegmentSet] the initial {Emendate::Segment}s
+  #   derived from date string
   def lex(str)
     prepped_for(string: str, target: Emendate::UntokenizableTagger)
   end
 
-  # @param str [String] to translate
-  # @param options [Hash] of {Emendate::Options}
-  # @return [Translation]
-  def translate(str, options = {})
-    pm = Emendate::ProcessingManager.new(str, options)
-    pm.call
-    translator = Emendate::Translator.new(pm)
-    translator.call
+  # @param str [String]
+  # @return [String] orig string, delim value, comma-separated list of the
+  #   types returned by calling {#lex} on str
+  def lex_inspect(str)
+    tokens = lex(str).map(&:type)
+    "#{str}\t\t#{tokens.inspect}"
   end
 
-  def tokenize(str)
-    tokens = lex(str).map(&:type)
-    puts "#{str}\t\t#{tokens.inspect}"
+  # @param str [String] to translate
+  # @param options [Hash] of {Emendate::Options}
+  # @return [Emendate::Translation]
+  def translate(str, options = {})
+    Emendate::Options.new(options) unless options.empty?
+    Emendate::Translator.call(process(str))
   end
 
   # @param strings [Array<String>]
   # @param options [Hash]
+  # @yield [Emendate::ProcessingManager]
+  # @return [Array<String>] original strings
   def batch_process(strings, options = {})
     Emendate::Options.new(options) unless options.empty?
     strings.each do |str|
-      pm = Emendate::ProcessingManager.call(str)
-      if pm.success?
-        yield pm.value!
-      else
-        yield pm.failure
-      end
+      Emendate::ProcessingManager.call(str)
+        .either(
+          ->(success) { yield success },
+          ->(failure) { yield failure }
+        )
     end
   end
 
   # @param strings [Array<String>]
   # @param options [Hash]
+  # @yield [Emendate::Translation]
+  # @return [Array<String>] original strings
   def batch_translate(strings, options = {})
     Emendate::Options.new(options) unless options.empty?
     strings.each do |str|
@@ -182,25 +215,9 @@ module Emendate
   private
 
   def processing_steps
-    [
-      Emendate::Lexer,
-      Emendate::UntokenizableTagger,
-      Emendate::UnprocessableTagger,
-      Emendate::KnownUnknownTagger,
-      Emendate::TokenCollapser,
-      Emendate::AlphaMonthConverter,
-      Emendate::OrdinalTranslator,
-      Emendate::EdtfSetHandler,
-      Emendate::EdtfQualifier,
-      Emendate::InferredDateHandler,
-      Emendate::UnstructuredCertaintyHandler,
-      Emendate::FormatStandardizer,
-      Emendate::DatePartTagger,
-      Emendate::DateSegmenter,
-      Emendate::RangeIndicator,
-      Emendate::TokenCleaner
-    ].map { |klass| [klass, ->(tokens) { klass.send(:call, tokens) }] }
-      .to_h
+    PROCESSING_STEPS.map do |klass|
+      [klass, ->(tokens) { klass.send(:call, tokens) }]
+    end.to_h
   end
 
   # @param step [Class] class you are preparing input for

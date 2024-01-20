@@ -16,7 +16,7 @@ module Emendate
       #   included in the date type
       def initialize(sources:)
         cent = sources.first
-        @century_type = set_type(cent)
+        @century_type = get_century_type(cent)
         @literal = set_literal(cent)
         common_setup(binding)
       end
@@ -46,7 +46,7 @@ module Emendate
         end
       end
 
-      def set_type(datepart)
+      def get_century_type(datepart)
         if datepart.sources.types.include?(:letter_s)
           :plural
         elsif datepart.sources.types.include?(:uncertainty_digits)

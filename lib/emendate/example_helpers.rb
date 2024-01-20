@@ -6,44 +6,67 @@ module ExampleHelpers
   include Emendate::Examples
   extend self
 
-  # Info about entire test set
+  # @!group Getting info about entire test set
+
+  # @return [Array<String>]
   def example_strings
-    puts all_examples.get_example_data(:examples, :test_string)
+    all_examples.get_example_data(data_method: :test_string)
   end
 
+  # @return [Array<String>]
   def example_fingerprints
-    puts all_examples.get_example_data(:examples, :fingerprint)
+    all_examples.get_example_data(data_method: :fingerprint)
   end
 
+  # @return [Array<String>]
   def example_patterns
-    puts all_examples.get_example_data(:examples, :test_pattern)
+    all_examples.get_example_data(data_method: :test_pattern)
   end
 
-  def example_tags
-    puts all_examples.all_tags
-  end
+  # @return [Array<String>] tag and indication of tag category
+  def example_tags = all_examples.all_tags
 
+  # @return [Array<String>]
   def example_data_set_tags
-    puts all_examples.tags("data_set")
+    all_examples.tags("data_set")
+      .map { |tag| tag.delete_suffix(" (tags_data_set)") }
   end
 
+  # @return [Array<String>]
   def example_date_type_tags
-    puts all_examples.tags("date_type")
+    all_examples.tags("date_type")
+      .map { |tag| tag.delete_suffix(" (tags_date_type)") }
   end
 
-  # Creating example sets
+  # @!endgroup
 
-  # The entire set
+  # @!group Creating/selecting example sets
+
+  # Convenience wrapper for ExampleSet.new
+  # @return [Emendate::Examples::ExampleSet] entire example set
   def all_examples
     ExampleSet.new
   end
 
-  # Filtered by tag(s)
+  # @param data_set [String] one or more data set tags, separated by
+  #   semicolon (no spaces)
+  # @param date_type [String] one or more date type tags, separated by
+  #   semicolon (no spaces)
+  # @return [Emendate::Examples::ExampleSet] examples matching specified tags
+  # @note All tags are Boolean AND-ed. That is, only examples having ALL the
+  #   specified tags will be included in the example set
+  # @example Approximate year dates in ba data set
+  #   Emendate.examples_with(
+  #     data_set: "ba", date_type: "approximate;year_granularity"
+  #   )
   def examples_with(data_set: "", date_type: "")
     ExampleSet.new(data_sets: data_set, date_types: date_type)
   end
 
-  # With one example (by string/options)
+  # @param str [String] matching test_string value from examples CSV
+  # @param opt [String] matching entire contents of test_options column in
+  #   examples CSV
+  # @return [Emendate::Examples::ExampleSet] examples matching specified tags
   def specific_example(str, opt)
     rows = Emendate::Examples::Csv.rows(str, opt)
       .sort_by { |row| row.dateval_occurrence }
@@ -55,20 +78,42 @@ module ExampleHelpers
     Emendate::Examples::ExampleSet.new(rows: rows)
   end
 
+  # @!endgroup
+
+  # @!group Processing/parsing examples in a set
+
+  # @param examples [Emendate::Examples::ExampleSet]
+  # @return [Hash{String=>Array<Symbol>}]
   def tokenize_examples(examples = ExampleSet.new)
-    ex = examples.strings
-    lexed = ex.map { |str| Emendate.lex(str) }
-    tokens = lexed.map { |t| t.tokens.types }
-    ex.zip(tokens)
+    ex = examples.get_example_data(data_method: :test_string)
+    tokens = ex.map { |str| Emendate.lex(str) }
+      .map { |t| t.types }
+    ex.zip(tokens).to_h
   end
 
-  def parse_examples(examples: ExampleSet.new, stage: nil, options: {})
-    ex = examples.strings
-    if stage.nil?
-      ex.map { |str| Emendate.process(str, options) }
+  # If no target is given, examples will be fully parsed
+  # @param examples [Emendate::Examples::ExampleSet]
+  # @!macro targetparam
+  # @!macro optionsparam
+  def parse_examples_for(examples: ExampleSet.new, target: nil, options: {})
+    Emendate::Options.new(options) unless options.empty?
+    ex = examples.get_example_data(data_method: :test_string)
+    action = if target
+      proc do
+        ex.map do |str|
+          puts str
+          Emendate.prepped_for(string: str, target: target)
+        end
+      end
     else
-      ex.map { |str| Emendate.prep_for(str, stage, options) }
+      proc do
+        ex.map do |str|
+          puts str
+          Emendate.process(str, options)
+        end
+      end
     end
+    action.call
   end
 
   # stage should be a SegmentSet-holding instance variable of ProcessingManager
@@ -137,9 +182,5 @@ module ExampleHelpers
 
   def example_results(date_type: "", options: {})
     parse_examples(tag: tag, options: options).map(&:result)
-  end
-
-  def example_length
-    EXAMPLES.keys.max_by { |k| k.length }.length
   end
 end

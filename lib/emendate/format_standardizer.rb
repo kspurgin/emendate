@@ -12,18 +12,8 @@ module Emendate
   # 2000 - Jan 5 2000). These add the necessary type and literal
   # information without changing the lexeme value.
   #
-  # The next processing step ({DatePartTagger}) assumes date parts will be in
-  # orders:
-  #
-  # * month day year
-  # * season year
-  # * month year
-  # * number century
-  #
-  # When segments are in different orders, this class directly
-  # converts them to date type segments. Changing the order of segments messes
-  # up the lexeme value, so we simplify later processing by converting
-  # directly to date type segments when we can.
+  # @todo Clean all date part tagging and date segmentation (i.e. creation of
+  #    date type objects) from this step
   class FormatStandardizer
     include DateUtils
     include Dry::Monads[:result]
@@ -73,27 +63,13 @@ module Emendate
     def full_match_standardizers
       case result.types
       when %i[number4 hyphen month]
-        proc do
-          remove_post_year_hyphen
-          replace_x_with_derived_new_type(x: result[0], type: :year)
-          new_datetype(type: :ym, sources: result[0..1], ind: [0, 1])
-        end
-      when %i[number4 comma month number1or2]
-        proc { remove_post_year_comma }
-      when %i[number1or2 month number4]
-        proc do
-          new_datetype(type: :ymd, sources: result[0..2], ind: [2, 1, 0])
-        end
+        proc { remove_post_year_hyphen }
       when %i[number1or2 hyphen number4]
-        proc do
-          collapse_token_pair_forward(result[0], result[1])
-          year_plus_ambiguous_month_season
-        end
+        proc { collapse_token_pair_backward(result[0], result[1]) }
       when %i[month number1or2]
         proc do
           yr = ShortYearHandler.call(result[1])
           replace_segments_with_new(segments: [result[1]], new: yr)
-          #          new_datetype(type: :ym, sources: result[0..1], ind: [0, 1])
         end
       when %i[partial range_indicator partial number1or2 century]
         proc { copy_number_century_after_first_partial }
@@ -131,32 +107,10 @@ module Emendate
           tokens = result.extract(%i[month number1or2 comma number4]).segments
           collapse_token_pair_backward(tokens[1], tokens[2])
         end
-      when /.*number4 month number1or2.*/
+      when /.*number4 comma month number1or2.*/
         proc do
-          tokens = result.extract(%i[number4 month number1or2]).segments
-          dt = new_datetype(type: :ymd, sources: tokens, ind: [0, 1, 2],
-            whole: false)
-          replace_segments_with_new(segments: tokens, new: dt)
-        end
-      when /.*number1or2 month number4.*/
-        proc do
-          tokens = result.extract(%i[number1or2 month number4]).segments
-          dt = new_datetype(type: :ymd, sources: tokens, ind: [2, 0, 1],
-            whole: false)
-          replace_segments_with_new(segments: tokens, new: dt)
-        end
-      when /.*month number1or2 hyphen yearmonthday_date_type.*/
-        proc do
-          tokens = result.extract(
-            %i[month number1or2 hyphen yearmonthday_date_type]
-          ).segments
-          ymd = tokens[3]
-          yr = Emendate::Segment.new(type: :dummy, literal: ymd.year)
-          dt = new_datetype(type: :ymd,
-            sources: [yr, tokens[0], tokens[1]],
-            ind: [0, 1, 2],
-            whole: false)
-          replace_segments_with_new(segments: [tokens[0], tokens[1]], new: dt)
+          tokens = result.extract(%i[number4 comma month number1or2]).segments
+          collapse_token_pair_backward(tokens[0], tokens[1])
         end
       when /.*number1or2 letter_c.*/
         proc { replace_c_with_century }
@@ -183,68 +137,67 @@ module Emendate
           segs = result.extract_by_date_part(%i[number4 month month])
           convert_year(segs[0])
           add_year_after_second_month
-          move_year_after_first_month
         end
       end
     end
 
-    def new_datetype(type:, sources:, ind:, whole: true)
-      klass = case type
-      when :ym
-        Emendate::DateTypes::YearMonth
-      when :ys
-        Emendate::DateTypes::YearSeason
-      when :ymd
-        Emendate::DateTypes::YearMonthDay
-      end
-      args = case type
-      when :ym
-        {year: sources[ind[0]].literal,
-         month: sources[ind[1]].literal,
-         sources: sources}
-      when :ys
-        {year: sources[ind[0]].literal,
-         season: sources[ind[1]].literal,
-         sources: sources}
-      when :ymd
-        {year: sources[ind[0]].literal,
-         month: sources[ind[1]].literal,
-         day: sources[ind[2]].literal,
-         sources: sources}
-      end
-      dt = get_new_datetype(klass, args)
-      return dt unless whole
+    # def new_datetype(type:, sources:, ind:, whole: true)
+    #   klass = case type
+    #   when :ym
+    #     Emendate::DateTypes::YearMonth
+    #   when :ys
+    #     Emendate::DateTypes::YearSeason
+    #   when :ymd
+    #     Emendate::DateTypes::YearMonthDay
+    #   end
+    #   args = case type
+    #   when :ym
+    #     {year: sources[ind[0]].literal,
+    #      month: sources[ind[1]].literal,
+    #      sources: sources}
+    #   when :ys
+    #     {year: sources[ind[0]].literal,
+    #      season: sources[ind[1]].literal,
+    #      sources: sources}
+    #   when :ymd
+    #     {year: sources[ind[0]].literal,
+    #      month: sources[ind[1]].literal,
+    #      day: sources[ind[2]].literal,
+    #      sources: sources}
+    #   end
+    #   dt = get_new_datetype(klass, args)
+    #   return dt unless whole
 
-      result.clear
-      result << dt
-    end
+    #   result.clear
+    #   result << dt
+    # end
 
-    def get_new_datetype(klass, args)
-      klass.new(**args)
-    rescue Emendate::InvalidDateError
-      Emendate::DateTypes::Error.new(
-        sources: args[:sources], error_type: :invalid
-      )
-    end
+    # def get_new_datetype(klass, args)
+    #   klass.new(**args)
+    # rescue Emendate::InvalidDateError
+    #   Emendate::DateTypes::Error.new(
+    #     sources: args[:sources], error_type: :invalid
+    #   )
+    # end
 
-    def year_plus_ambiguous_month_season
-      year = result[1]
-      opt = Emendate.options.ambiguous_month_year.dup
-      Emendate.config.options.ambiguous_month_year = :as_month
+    # def year_plus_ambiguous_month_season
+    #   year = result[1]
+    #   opt = Emendate.options.ambiguous_month_year.dup
+    #   Emendate.config.options.ambiguous_month_year = :as_month
 
-      analyzed = Emendate::MonthSeasonYearAnalyzer.call(
-        num: result[0], year: year
-      )
-      Emendate.config.options.ambiguous_month_year = opt
+    #   analyzed = Emendate::MonthSeasonYearAnalyzer.call(
+    #     num: result[0], year: year
+    #   )
+    #   Emendate.config.options.ambiguous_month_year = opt
 
-      replace_x_with_derived_new_type(x: year, type: :year)
-      replace_x_with_given_segment(x: result[0], segment: analyzed.result)
-      type = case analyzed.type
-      when :month then :ym
-      when :season then :ys
-      end
-      new_datetype(type: type, sources: result[0..1], ind: [1, 0])
-    end
+    #   replace_x_with_derived_new_type(x: year, type: :year)
+    #   replace_x_with_given_segment(x: result[0], segment: analyzed.result)
+    #   type = case analyzed.type
+    #   when :month then :ym
+    #   when :season then :ys
+    #   end
+    #   new_datetype(type: type, sources: result[0..1], ind: [1, 0])
+    # end
 
     def add_century_after_first_number
       century = result[-1].dup
@@ -353,16 +306,6 @@ module Emendate
 
     def convert_year(segment)
       replace_x_with_derived_new_type(x: segment, type: :year)
-    end
-
-    def move_year_after_first_month
-      yr = result.when_type(:year)[0]
-      mth = result.when_type(:month)[0]
-      dt = new_datetype(type: :ym,
-        sources: [yr, mth],
-        ind: [0, 1],
-        whole: false)
-      replace_segments_with_new(segments: [yr, mth], new: dt)
     end
 
     def move_year_to_end_of_segment

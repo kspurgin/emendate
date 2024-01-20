@@ -65,27 +65,14 @@ module Emendate
     # EXTRACTION OF QUALIFIERS (from date part sources)
     # ----------------------------------------------------------------------
 
-    def year_directional_qualifiers
-      source_type_qualifiers_by_precision(:year, %i[leftward rightward])
-    end
-
-    def month_directional_qualifiers
-      source_type_qualifiers_by_precision(:month, %i[leftward rightward])
-    end
-
-    def season_directional_qualifiers
-      source_type_qualifiers_by_precision(:season, %i[leftward rightward])
-    end
-
-    def day_directional_qualifiers
-      source_type_qualifiers_by_precision(:day, %i[leftward rightward])
-    end
-
-    def source_type_qualifiers_by_precision(type, precision)
+    # @param type [Symbol] the segment type (:year or :month), not the
+    #   qualifier type
+    # @return [Array<Emendate::Qualifier>]
+    def segment_qualifiers(type)
       sources.when_type(type)
         .map(&:qualifiers)
         .flatten
-        .select { |qual| precision.include?(qual.precision) }
+        .reject { |qual| %i[whole beginning end].include?(qual.precision) }
     end
 
     def source_qualifiers
@@ -103,10 +90,6 @@ module Emendate
 
     def begin_and_end_qualifiers
       begin_qualifiers + end_qualifiers
-    end
-
-    def single_segment_qualifiers(segment)
-      segment.qualifiers.select { |q| q.precision == :single_segment }
     end
 
     private
@@ -135,53 +118,69 @@ module Emendate
       ))
     end
 
-    def process_directional_qualifiers(*pts)
-      qdata = pts.map { |pt| [pt, send(:"#{pt}_directional_qualifiers")] }
+    def segment_qualifier_processing(*pts)
+      qdata = pts.map { |pt| [pt, segment_qualifiers(pt)] }
         .to_h
-      end_directionals(pts[-1], qdata)
-      begin_directionals(pts[0], qdata)
+      process_segment_qualifiers(-1, qdata)
+      process_segment_qualifiers(0, qdata)
+      return if pts.length == 2
+
+      process_segment_qualifiers(1, qdata)
     end
 
-    def end_directionals(part, qdata)
+    def process_segment_qualifiers(part_idx, qdata)
+      part = qdata.keys[part_idx]
       quals = qdata[part]
       return if quals.empty?
 
-      quals.each { |qual| end_directional(part, qual) }
+      quals.each { |qual| process_segment_qualifier(part, part_idx, qual) }
     end
 
-    def end_directional(part, qual)
+    def process_segment_qualifier(part, part_idx, qual)
+      case qual.precision
+      when :single_segment
+        add_qualifier_at_precision(qual, part)
+      else
+        pos = segment_position(part_idx)
+        send(:"process_#{pos}_segment_qualifier", part, qual)
+      end
+    end
+
+    def segment_position(part_idx)
+      case part_idx
+      when 0 then :initial
+      when 1 then :mid
+      when -1 then :final
+      end
+    end
+
+    def process_initial_segment_qualifier(part, qual)
+      case qual.precision
+      when :leftward
+        add_qualifier_at_precision(qual, part)
+      when :rightward
+        add_qualifier_as_whole(qual)
+      when :single_segment
+        add_qualifier_at_precision(qual, part)
+      end
+    end
+
+    def process_mid_segment_qualifier(part, qual)
+      case qual.precision
+      when :leftward
+        add_qualifier_at_precision(qual, :year_month)
+      when :rightward
+        add_qualifier_at_precision(qual, :month_day)
+      end
+    end
+
+    def process_final_segment_qualifier(part, qual)
       case qual.precision
       when :leftward
         add_qualifier_as_whole(qual)
       when :rightward
         add_qualifier_at_precision(qual, part)
       end
-    end
-
-    def begin_directionals(part, qdata)
-      quals = qdata[part]
-      return if quals.empty?
-
-      quals.each { |qual| begin_directional(part, qual) }
-    end
-
-    def begin_directional(part, qual)
-      case qual.precision
-      when :leftward
-        add_qualifier_at_precision(qual, part)
-      when :rightward
-        add_qualifier_as_whole(qual)
-      end
-    end
-
-    def process_single_segment_qualifiers
-      sources.date_parts
-        .map { |dp| [dp.type, single_segment_qualifiers(dp)] }
-        .each do |type, quals|
-          next if quals.empty?
-
-          quals.each { |q| add_qualifier_at_precision(q, type) }
-        end
     end
   end
 end

@@ -95,8 +95,7 @@ module Emendate
       def process_qualifiers
         add_source_segment_set_qualifiers
         begin_and_end_qualifiers.each { |qual| add_qualifier_as_whole(qual) }
-        process_directional_qualifiers(:year, :season)
-        process_single_segment_qualifiers
+        segment_qualifier_processing(:year, :season)
       end
 
       # @param type [:start, :end]

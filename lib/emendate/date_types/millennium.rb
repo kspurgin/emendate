@@ -16,7 +16,7 @@ module Emendate
       #   included in the date type
       def initialize(sources:)
         common_setup(binding)
-        @millennium_type = set_type
+        @millennium_type = get_millennium_type
         @literal = set_literal
       end
 
@@ -36,7 +36,7 @@ module Emendate
 
       private
 
-      def set_type
+      def get_millennium_type
         mill = sources.when_type(:millennium).first
         case mill.sources.date_parts.map(&:type).join(" ")
         when /uncertainty_digits$/

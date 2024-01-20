@@ -21,7 +21,7 @@ module Emendate
       :lexeme, :orig_string,
       :earliest, :earliest_at_granularity,
       :latest, :latest_at_granularity,
-      :range_switch, :era, :qualifiers
+      :range_switch, :era, :qualifiers, :set_type
 
     # @param date [Emendate::DateTypes::DateType]
     # @param orig [String]

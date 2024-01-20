@@ -173,6 +173,7 @@ module Emendate
             segments: #{types.inspect},
             @certainty: #{certainty.inspect},
             @qualifiers: #{qualifiers.inspect},
+            @set_type: #{set_type.inspect},
             @inferred_date: #{inferred_date},
             @warnings: #{warnings.inspect}>
         OBJ

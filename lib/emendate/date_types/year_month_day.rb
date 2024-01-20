@@ -71,8 +71,7 @@ module Emendate
       def process_qualifiers
         add_source_segment_set_qualifiers
         begin_and_end_qualifiers.each { |qual| add_qualifier_as_whole(qual) }
-        process_directional_qualifiers(:year, :month, :day)
-        process_single_segment_qualifiers
+        segment_qualifier_processing(:year, :month, :day)
       end
 
       def check_date_validity

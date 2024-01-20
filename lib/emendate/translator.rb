@@ -27,9 +27,9 @@ module Emendate
     end
 
     def call
-      # rubocop:todo Layout/LineLength
-      return translate_failure(processed) if processed.state == :final_check_failed
-      # rubocop:enable Layout/LineLength
+      if processed.state == :final_check_failed
+        return translate_failure(processed)
+      end
 
       processed.result
         .dates
