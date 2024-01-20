@@ -8,12 +8,12 @@ module Emendate
       class Century < Emendate::Translators::Abstract
         private
 
-        attr_reader :base
-
         def translate_value
           @base = computed
           qualify
         end
+
+        def qualify_set = qualified
       end
     end
   end

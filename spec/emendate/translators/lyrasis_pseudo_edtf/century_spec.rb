@@ -11,7 +11,15 @@ RSpec.describe Emendate::Translators::LyrasisPseudoEdtf::Century do
   context "with 19th c." do
     let(:str) { "19th c." }
     it "translates as expected" do
-      expect(value).to eq("1801 - 1900 (exact year unspecified)")
+      expect(value).to eq("1801 - 1900 (entire range)")
+      expect(warnings).to eq([])
+    end
+  end
+
+  context "with 19XX" do
+    let(:str) { "19XX" }
+    it "translates as expected" do
+      expect(value).to eq("1900 - 1999 (single date in range)")
       expect(warnings).to eq([])
     end
   end

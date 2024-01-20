@@ -22,8 +22,12 @@ module Emendate
         "#{qualified} (uncertain and approximate)"
       end
 
-      def one_of_set
-        "#{qualified} (exact year unspecified)"
+      def alternate_set
+        "#{qualified} (single date in range)"
+      end
+
+      def inclusive_set
+        "#{qualified} (entire range)"
       end
     end
   end

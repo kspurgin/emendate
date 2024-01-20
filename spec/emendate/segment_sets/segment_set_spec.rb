@@ -63,11 +63,25 @@ RSpec.describe Emendate::SegmentSets::SegmentSet do
     end
   end
 
-  describe "#add_certainty" do
-    it "adds certainty value(s) as expected" do
-      segset.add_certainty(:a)
-      segset.add_certainty(%i[p q])
-      expect(segset.certainty).to eq(%i[a p q])
+  describe "#add_qualifier" do
+    context "with Qualifier" do
+      it "adds qualifier as expected" do
+        segset
+        expect(segset.qualifiers).to be_empty
+        q = Emendate::Qualifier.new(type: :uncertain, precision: :whole)
+        segset.add_qualifier(q)
+        expect(segset.qualifiers.length).to eq(1)
+      end
+    end
+
+    context "with non-Qualifier" do
+      it "raises error" do
+        segset
+        expect(segset.qualifiers).to be_empty
+        expect { segset.add_qualifier(:q) }.to raise_error(
+          Emendate::QualifierTypeError
+        )
+      end
     end
   end
 

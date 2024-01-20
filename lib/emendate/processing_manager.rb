@@ -13,7 +13,11 @@ module Emendate
       end
     end
 
-    attr_reader :orig_string, :history, :tokens, :errors, :warnings
+    attr_reader :orig_string
+    attr_reader :history
+    attr_reader :tokens
+    attr_reader :errors
+    attr_reader :warnings
 
     def initialize(string, options = {})
       @orig_string = string

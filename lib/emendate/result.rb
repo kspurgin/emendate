@@ -15,6 +15,8 @@ module Emendate
   class Result
     # @return [String] the original string parsed to generate this {Result}
     attr_reader :original_string
+    # @macro set_type_attr
+    attr_reader :set_type
     # @return [Array] information about why string was unable to be parsed
     #   successfully
     attr_reader :errors
@@ -32,6 +34,7 @@ module Emendate
       @original_string = pm.orig_string
       @errors = map_errors
       @warnings = pm.warnings
+      @set_type = pm.tokens.set_type
       @dates = if pm.state == :failed
         []
       else
@@ -39,7 +42,7 @@ module Emendate
           .map do |t|
             Emendate::ParsedDate.new(
               date: t,
-              certainty: pm.tokens.certainty,
+              qualifiers: pm.tokens.qualifiers,
               orig: original_string
             )
           end

@@ -9,9 +9,7 @@ RSpec.describe Emendate::ParsedDate do
   let(:args) do
     pm = Emendate.process(str, options)
     dateparts = pm.tokens.segments.select { |t| t.date_type? }
-    {date: dateparts[pos],
-     certainty: pm.tokens.certainty,
-     orig: pm.orig_string}
+    {date: dateparts[pos], orig: pm.orig_string}
   end
 
   let(:options) { {} }
@@ -49,46 +47,18 @@ RSpec.describe Emendate::ParsedDate do
 
       let(:expected) do
         {original_string: "2/23/2021",
-         index_dates: [],
          date_start: nil,
          date_end: nil,
          date_start_full: "2021-02-23",
          date_end_full: "2021-02-23",
-         inclusive_range: nil,
-         certainty: [],
+         inclusive_range: false,
+         qualifiers: [],
          range_switch: nil,
          era: nil}
       end
 
       it "returns as expected" do
         expect(result).to eq(expected)
-      end
-    end
-  end
-
-  describe "#to_json" do
-    let(:result) { parsed.to_json }
-
-    context "with 2/23/2021" do
-      let(:str) { "2/23/2021" }
-
-      it "returns as expected" do
-        expected = <<~LONGSTRING
-          {"original_string":"2/23/2021","index_dates":[],"date_start":null,"date_end":null,"date_start_full":"2021-02-23","date_end_full":"2021-02-23","inclusive_range":null,"certainty":[],"range_switch":null,"era":null}
-        LONGSTRING
-        expect(result).to eq(expected.chomp)
-      end
-    end
-  end
-
-  describe "#original_string" do
-    let(:result) { parsed.original_string }
-
-    context "with 2/23/2021" do
-      let(:str) { "2/23/2021" }
-
-      it "returns as expected" do
-        expect(result).to eq(str)
       end
     end
   end

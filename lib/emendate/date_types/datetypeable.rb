@@ -6,14 +6,27 @@ module Emendate
   module DateTypes
     # Mixin module for DateType classes
     #
-    # *Implementation detail*
+    # == Implementation details
     #
     # Classes including this module should define the following instance
-    #   methods:
+    # methods:
     #
     # * earliest (Date)
     # * latest (Date)
     # * range? (Boolean)
+    #
+    # Validatable date types run specified checks on initialization and
+    # raise a {Emendate::DateTypeCreationError} if any checks fail. Validatable
+    # date type classes must:
+    #
+    # * override :validatable? method to true
+    # * define :validate method
+    #
+    # Qualifiable date types are those that can meaningfully be qualified as
+    # approximate, uncertain, etc. Qualifiable date type classes must:
+    #
+    # * override :qualifiable? method to true
+    # * define :process_qualifiers method
     module Datetypeable
       # @return [Array<Symbol>]
       attr_reader :certainty
@@ -22,17 +35,19 @@ module Emendate
       # @return [Array<Emendate::Qualifier>]
       attr_reader :qualifiers
 
-      # Allows a source segment to be added to beginning of sources
-      # after date type has been created
-      # @param token [{Segment}] or subclasses of {Segment}
-      def prepend_source_token(token)
-        unless addable_token_types.include?(token.type)
+      # @!group Modifying a date type
+
+      # Add a segment to beginning of sources after date type has been created
+      # @param segment [{Segment}] or subclasses of {Segment}
+      # @todo Rename to :prepend_source_segment
+      def prepend_source_token(segment)
+        unless addable?(segment.type)
           raise Emendate::DisallowedTokenAdditionError.new(
-            token, __method__, self.class
+            segment, __method__, self.class
           )
         end
 
-        @sources.unshift(token)
+        @sources.unshift(segment)
         # @todo Check if this actually needs to return self
         self
       end
@@ -59,16 +74,25 @@ module Emendate
         @qualifiers << qual
       end
 
-      # @return [TrueClass]
+      # @!endgroup
+
+      # @!group Information about date type
+
+      # @param type [Symbol] Segment type
+      # @return [Boolean] Whether or not it is an addable source type for the
+      #   date type
+      def addable?(type) = addable_token_types.include?(type)
+
+      # @return [true]
       # All DateType segments are date parts. Supports expected behavior as
       # member of a {SegmentSets::SegmentSet}
       def date_part? = true
 
-      # @return [TrueClass]
+      # @return [true]
       # Supports expected behavior as member of a {SegmentSets::SegmentSet}
       def date_type? = true
 
-      # @return [TrueClass]
+      # @return [true]
       # Supports ProcessingManager's checking for unprocessed segments while
       # finalizing result
       def processed?
@@ -98,18 +122,15 @@ module Emendate
         latest.year
       end
 
+      # @return [String]
       def orig_string = sources.first.orig_string
 
-      # @param type [Symbol] Segment type
-      # @return [Boolean] Whether or not it is an addable source type
-      def addable?(type) = addable_token_types.include?(type)
-
-      # @return [NilClass] if Date Type does not allow append/prepend of
-      #   :era_bce type
       # @return [:bce] if source types include :era_bce
+      # @return [nil] if Date Type does not allow append/prepend of
+      #   :era_bce type
       # @return [:ce] otherwise
       def era
-        return unless addable_token_types.include?(:era_bce)
+        return unless addable?(:era_bce)
         return :bce if sources.types.include?(:era_bce)
 
         :ce
@@ -136,13 +157,15 @@ module Emendate
       # Override to true and define `:process_qualifiers` method in including
       # classes that are qualifiable dates (e.g. with approximate and/or
       # uncertain qualifiers)
-      # @return [FalseClass]
+      # @return [false]
       def qualifiable? = false
 
       # Override to true and define `:validate` method in including classes
       #   that should verify assumptions about sources on initialization.
-      # @return [FalseClass]
+      # @return [false]
       def validatable? = false
+
+      # @!endgroup
 
       private
 

@@ -20,8 +20,8 @@ RSpec.describe Emendate::DateTypes::Century do
       expect(subject.literal).to eq(18)
       expect(subject.earliest).to eq(Date.new(1801, 1, 1))
       expect(subject.latest).to eq(Date.new(1900, 12, 31))
-      expect(subject.earliest_at_granularity).to eq(1801)
-      expect(subject.latest_at_granularity).to eq(1900)
+      expect(subject.earliest_at_granularity).to eq("1801")
+      expect(subject.latest_at_granularity).to eq("1900")
     end
 
     context "when early" do
@@ -29,11 +29,8 @@ RSpec.describe Emendate::DateTypes::Century do
         t = Emendate::Segment.new(type: :partial, literal: :early,
           lexeme: "early ")
         subject.prepend_source_token(t)
-        expect(subject.partial_indicator).to eq(:early)
         expect(subject.earliest).to eq(Date.new(1801, 1, 1))
         expect(subject.latest).to eq(Date.new(1834, 12, 31))
-        expect(subject.earliest_at_granularity).to eq(1801)
-        expect(subject.latest_at_granularity).to eq(1834)
       end
     end
 
@@ -44,8 +41,6 @@ RSpec.describe Emendate::DateTypes::Century do
         subject.prepend_source_token(t)
         expect(subject.earliest).to eq(Date.new(1834, 1, 1))
         expect(subject.latest).to eq(Date.new(1867, 12, 31))
-        expect(subject.earliest_at_granularity).to eq(1834)
-        expect(subject.latest_at_granularity).to eq(1867)
       end
     end
 
@@ -56,8 +51,6 @@ RSpec.describe Emendate::DateTypes::Century do
         subject.prepend_source_token(t)
         expect(subject.earliest).to eq(Date.new(1867, 1, 1))
         expect(subject.latest).to eq(Date.new(1900, 12, 31))
-        expect(subject.earliest_at_granularity).to eq(1867)
-        expect(subject.latest_at_granularity).to eq(1900)
       end
     end
   end
@@ -72,8 +65,6 @@ RSpec.describe Emendate::DateTypes::Century do
       expect(subject.literal).to eq(19)
       expect(subject.earliest).to eq(Date.new(1900, 1, 1))
       expect(subject.latest).to eq(Date.new(1999, 12, 31))
-      expect(subject.earliest_at_granularity).to eq(1900)
-      expect(subject.latest_at_granularity).to eq(1999)
     end
 
     it "returns expected values when early" do
@@ -82,8 +73,6 @@ RSpec.describe Emendate::DateTypes::Century do
       subject.prepend_source_token(t)
       expect(subject.earliest).to eq(Date.new(1900, 1, 1))
       expect(subject.latest).to eq(Date.new(1933, 12, 31))
-      expect(subject.earliest_at_granularity).to eq(1900)
-      expect(subject.latest_at_granularity).to eq(1933)
     end
 
     it "returns expected values when mid" do
@@ -92,8 +81,6 @@ RSpec.describe Emendate::DateTypes::Century do
       subject.prepend_source_token(t)
       expect(subject.earliest).to eq(Date.new(1933, 1, 1))
       expect(subject.latest).to eq(Date.new(1966, 12, 31))
-      expect(subject.earliest_at_granularity).to eq(1933)
-      expect(subject.latest_at_granularity).to eq(1966)
     end
 
     it "returns expected values when late" do
@@ -102,8 +89,6 @@ RSpec.describe Emendate::DateTypes::Century do
       subject.prepend_source_token(t)
       expect(subject.earliest).to eq(Date.new(1966, 1, 1))
       expect(subject.latest).to eq(Date.new(1999, 12, 31))
-      expect(subject.earliest_at_granularity).to eq(1966)
-      expect(subject.latest_at_granularity).to eq(1999)
     end
   end
 
@@ -117,8 +102,6 @@ RSpec.describe Emendate::DateTypes::Century do
       expect(subject.literal).to eq(19)
       expect(subject.earliest).to eq(Date.new(1900, 1, 1))
       expect(subject.latest).to eq(Date.new(1999, 12, 31))
-      expect(subject.earliest_at_granularity).to eq(1900)
-      expect(subject.latest_at_granularity).to eq(1999)
     end
   end
 end

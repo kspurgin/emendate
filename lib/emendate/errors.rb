@@ -101,6 +101,14 @@ module Emendate
     end
   end
 
+  class QualifierTypeError < TypeError
+    include Emendate::Error
+
+    def initialize
+      super("Qualifer must be an Emendate::Qualifier")
+    end
+  end
+
   class RangeStartOpenError < StandardError
     include Emendate::Error
 

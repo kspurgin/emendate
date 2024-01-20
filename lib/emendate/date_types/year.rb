@@ -14,18 +14,24 @@ module Emendate
         @orig_literal = first_numeric_literal
       end
 
+      # @return [Integer]
       def literal
         return adjusted_literal if era == :ce
 
         adjusted_literal * -1
       end
 
-      # @return [TrueClass]
+      # @return [:year]
+      def granularity_level = :year
+
+      # @return [true]
       def qualifiable? = true
 
-      # @return [TrueClass]
+      # @return [true]
       def validatable? = true
 
+      # @return [Boolean] true if partial indicator or before/after range
+      #   switch present
       def range?
         return false if range_switch == :before &&
           Emendate.options.before_date_treatment == :point
@@ -33,6 +39,7 @@ module Emendate
         true if partial_indicator || range_switch
       end
 
+      # @return [Date]
       def earliest
         return earliest_by_partial unless range_switch
 
@@ -44,6 +51,7 @@ module Emendate
         end
       end
 
+      # @return [String]
       def earliest_at_granularity
         return year_string unless range_switch
 
@@ -53,6 +61,7 @@ module Emendate
         end
       end
 
+      # @return [Date]
       def latest
         return latest_by_partial unless range_switch
 
@@ -64,6 +73,7 @@ module Emendate
         end
       end
 
+      # @return [String]
       def latest_at_granularity
         return year_string unless range_switch
 
