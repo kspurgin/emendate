@@ -11,7 +11,15 @@ RSpec.describe Emendate::Translators::Edtf::Century do
   context "with 19th c." do
     let(:str) { "19th c." }
     it "translates as expected" do
-      expect(value).to eq("[1801..1900]")
+      expect(value).to eq("{1801..1900}")
+      expect(warnings).to eq([])
+    end
+  end
+
+  context "with 19uu" do
+    let(:str) { "19uu" }
+    it "translates as expected" do
+      expect(value).to eq("19XX")
       expect(warnings).to eq([])
     end
   end

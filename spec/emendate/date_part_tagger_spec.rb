@@ -167,6 +167,15 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
+  context "with 1997/98" do
+    let(:string) { "1997/98" }
+
+    it "tags as expected" do
+      expect(result.lexeme).to eq(string)
+      expect(types).to eq(%i[year year])
+    end
+  end
+
   context 'with "Oct. 28, 1964"' do
     let(:string) { "Oct. 28, 1964" }
 

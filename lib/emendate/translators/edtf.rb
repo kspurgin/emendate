@@ -20,8 +20,16 @@ module Emendate
         "#{qualified}%"
       end
 
-      def one_of_set
+      def uncertain
+        "#{qualified}?"
+      end
+
+      def alternate_set
         "[#{qualified}]"
+      end
+
+      def inclusive_set
+        "{#{qualified}}"
       end
     end
   end

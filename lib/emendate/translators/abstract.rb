@@ -61,7 +61,7 @@ module Emendate
         return unless set_type
 
         meth = set_qualification_method(set_type)
-        return unless respond_to?(meth)
+        return unless respond_to?(meth, true)
 
         @qualified = method(meth).call
       end

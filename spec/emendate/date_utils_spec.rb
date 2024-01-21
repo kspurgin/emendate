@@ -13,11 +13,11 @@ RSpec.describe Emendate::DateUtils do
     end
 
     it "expands to match years as expected" do
-      expect(result("2020", "10")).to eq("2010")
-      expect(result("2020", "40")).to eq("2040")
-      expect(result("1845", "8")).to eq("1848")
-      expect(result("1845", "08")).to eq("1808")
-      expect(result("1850", "925")).to eq("1925")
+      expect(result("2020", "10")).to eq(2010)
+      expect(result("2020", "40")).to eq(2040)
+      expect(result("1845", "8")).to eq(1848)
+      expect(result("1845", "08")).to eq(1808)
+      expect(result("1850", "925")).to eq(1925)
     end
   end
 

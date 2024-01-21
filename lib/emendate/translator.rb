@@ -23,7 +23,7 @@ module Emendate
       extend dialect_module.constantize
       @processed = processed
 
-      @translation = Translation.new(orig: processed.orig_string)
+      @translation = Translation.new(pm: processed)
     end
 
     def call

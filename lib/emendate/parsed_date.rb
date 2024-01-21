@@ -68,9 +68,9 @@ module Emendate
 
     # @!macro set_type_attr
     def set_type
-      return unless source.respond_to?(:set_type)
-
       source.set_type
+    rescue
+      nil
     end
 
     def valid_range?

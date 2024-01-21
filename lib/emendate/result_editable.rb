@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Emendate
-  # Methods used by processing step Objects to edit the result they return
-  # This is not the final result
+  # Methods used by {Emendate::PROCESSING_STEPS processing step} Objects to edit
+  # the result they return. This is not the final result.
   # Classes including this module must have a `result` attr_reader
   module ResultEditable
     # rubocop:todo Layout/LineLength
@@ -37,8 +37,8 @@ module Emendate
       replace_segments_with_new(segments: [s1, s2], new: new)
     end
 
-    # @param s1 [{Segment}] first of pair
-    # @param s2 [{Segment}] second of pair
+    # @param s1 [Segment] first of pair
+    # @param s2 [Segment] second of pair
     # @param direction [:forward, :backward]
     def collapse_token_pair(s1, s2, direction)
       case direction
@@ -49,6 +49,30 @@ module Emendate
       else
         raise Emendate::Error, "Direction must be :forward or :backward"
       end
+    end
+
+    # Derive a single segment by collapsing the given segment into an adjacent
+    # segment
+    # @param seg [{Segment}] to collapse
+    # @param dir [:forward, :backward] If :forward, the given segment
+    #   is collapsed into the subsequent segment. The subsequent
+    #   segment's type is retained in the new segment. If :backward,
+    #   the given segment is collapsed into the previous segment. The
+    #   previous segment's type is retained in the new segment.
+    # @raise {Emendate::ImpossibleCollapseError} if you attempt to collapse the
+    #   initial segment backward, or the final segment forward
+    def collapse_segment(seg, dir)
+      test = :"#{dir}_collapsible?"
+      raise Emendate::ImpossibleCollapseError.new(dir) unless send(test, seg)
+
+      target = target_by_direction(seg, dir)
+      sources = case dir
+      when :forward then [seg, target]
+      when :backward then [target, seg]
+      else raise Emendate::Error, "dir must be :forward or :backward"
+      end
+      new = Emendate::Segment.new(type: target.type, sources: sources)
+      replace_segments_with_new(segments: sources, new: new)
     end
 
     # Derives a single token from the first and second tokens in the
@@ -71,37 +95,34 @@ module Emendate
       collapse_last_token
     end
 
-    # @todo do we need to set lexeme and literal like this?
-    def new_date_part(type, sources)
-      Emendate::Segment.new(type: type,
-        lexeme: sources.map(&:lexeme).join,
-        literal: sources[0].literal,
-        sources: sources)
+    # @param old [Array<Symbol>] of segments to replace
+    # @param new [Symbol] for new derived replacement
+    def replace_segtypes_with_new_type(old:, new:)
+      segments = result.extract(old)
+      newsegment = Emendate::Segment.new(type: new, sources: segments)
+      result.insert(ins_pt(segments[0]), newsegment)
+      segments.each { |segment| result.delete(segment) }
     end
 
-    # @param segment_types [Array<Symbol>] of segments to replace
-    # @param type [Symbol] for new derived replacement
-    def replace_segments_with_derived_new_type(segment_types:, type:)
-      segments = result.extract(segment_types)
-      ins_pt = result.find_index(segments[-1]) + 1
-      newsegment = Emendate::Segment.new(type: type, sources: segments)
-      result.insert(ins_pt, newsegment)
-      segments.each { |segment| result.delete(segment) }
+    # @param sources [Array<Emendate::Segment>]
+    # @param date_part_type [Symbol]
+    def replace_segs_with_new_type(segs:, type:)
+      new = Emendate::Segment.new(type: type, sources: segs)
+      result.insert(ins_pt(segs[0]), new)
+      segs.each { |x| result.delete(x) }
     end
 
     # @param sources [Array<Emendate::Segment>] to replace
     # @param new [Emendate::Segment] replacement
     def replace_segments_with_new(segments:, new:)
-      ins_pt = result.find_index(segments[-1]) + 1
-      result.insert(ins_pt, new)
+      result.insert(ins_pt(segments[-1]), new)
       segments.each { |segment| result.delete(segment) }
     end
 
     # @param sources [Array<Emendate::Segment>] to replace
     # @param new [Emendate::SegmentSets::SegmentSet] replacement
     def replace_segments_with_new_segment_set(segments:, new:)
-      ins_pt = result.find_index(segments[-1]) + 1
-      result.insert(ins_pt, *new.segments)
+      result.insert(ins_pt(segments[-1]), *new.segments)
       segments.each { |segment| result.delete(segment) }
       new.warnings.each { |warn| result.add_warning(warn) }
     end
@@ -113,36 +134,53 @@ module Emendate
       replace_x_with_new(x: x, new: newsegment)
     end
 
-    # @param x [Emendate::Segment]
-    # @param new [Emendate::Segment]
+    # @param x [Segment]
+    # @param new [Segment]
     def replace_x_with_new(x:, new:)
-      ins_pt = result.find_index(x) + 1
-      result.insert(ins_pt, new)
+      result.insert(ins_pt(x), new)
       result.delete(x)
-    end
-
-    # @param sources [Array<Emendate::Segment>]
-    # @param date_part_type [Symbol]
-    def replace_multi_with_date_part_type(sources:, date_part_type:)
-      new_date_part = new_date_part(date_part_type, sources)
-      x_ind = result.find_index(sources[0])
-      result.insert(x_ind + 1, new_date_part)
-      sources.each { |x| result.delete(x) }
     end
 
     # @param x [Emendate::Segment]
     # @param date_part_type [Symbol]
     def replace_x_with_date_part_type(x:, date_part_type:)
-      replace_multi_with_date_part_type(
-        sources: [x], date_part_type: date_part_type
-      )
+      replace_segs_with_new_type(segs: [x], type: date_part_type)
     end
 
-    def insert_x_after_segment(x:, segment:)
+    private
+
+    # @param seg [Emendate::Segment]
+    # @param dir [:forward, :backward]
+    # @return [Emendate::Segment]
+    def target_by_direction(seg, dir)
+      targetind = (dir == :forward) ? 1 : -1
+      result[index_of(seg) + targetind]
     end
 
-    def replace_x_with_given_segment(x:, segment:)
-      replace_x_with_new(x: x, new: segment)
+    # @param seg [Emendate::Segment]
+    # @return [Boolean]
+    def backward_collapsible?(seg) = !seg_first?(seg)
+
+    # @param seg [Emendate::Segment]
+    # @return [Boolean]
+    def forward_collapsible?(seg) = !seg_last?(seg)
+
+    # @param seg [Emendate::Segment]
+    # @return [Boolean]
+    def seg_first?(seg) = index_of(seg) == 0
+
+    # @param seg [Emendate::Segment]
+    # @return [Boolean]
+    def seg_last?(seg) = index_of(seg) == (result.length - 1)
+
+    # @param seg [Emendate::Segment]
+    # @return [Integer]
+    def index_of(seg)
+      result.find_index(seg)
     end
+
+    # @param seg [Emendate::Segment]
+    # @return [Integer] index after given segment
+    def ins_pt(seg) = result.find_index(seg) + 1
   end
 end

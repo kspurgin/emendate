@@ -57,7 +57,7 @@ RSpec.describe Emendate::ResultEditable do
     end
   end
 
-  describe "#replace_segments_with_derived_new_type" do
+  describe "#replace_segtypes_with_new_type" do
     it "tags as expected" do
       tokens = Emendate.prepped_for(
         string: "2011 (?)",
@@ -65,8 +65,8 @@ RSpec.describe Emendate::ResultEditable do
       )
       e = Editable.new(tokens)
       segment_types = %i[parenthesis_open question parenthesis_close]
-      e.replace_segments_with_derived_new_type(
-        segment_types: segment_types, type: :question
+      e.replace_segtypes_with_new_type(
+        old: segment_types, new: :question
       )
       expect(e.result.type_string).to eq("number4 space question")
 
