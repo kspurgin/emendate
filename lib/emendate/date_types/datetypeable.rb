@@ -92,6 +92,10 @@ module Emendate
       # Supports expected behavior as member of a {SegmentSets::SegmentSet}
       def date_type? = true
 
+      # @return [false]
+      # Supports expected behavior as member of a {SegmentSets::SegmentSet}
+      def collapsible? = false
+
       # @return [true]
       # Supports ProcessingManager's checking for unprocessed segments while
       # finalizing result

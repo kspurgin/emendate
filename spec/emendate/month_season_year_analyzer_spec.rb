@@ -10,7 +10,8 @@ RSpec.describe Emendate::MonthSeasonYearAnalyzer do
       string: str,
       target: Emendate::DatePartTagger
     )
-    {year: t[0], num: t[2]}
+    # hyphens have been removed
+    {year: t[0], num: t[1]}
   end
 
   let(:result) { analyzer.call }

@@ -10,9 +10,9 @@ module Emendate
 
     def initialize(...)
       super
-      unless type == :month_alpha
+      unless type == :month
         raise Emendate::TokenTypeError,
-          "MonthAlpha must be created with type = :month_alpha"
+          "MonthAlpha must be created with type = :month"
       end
 
       @literal = default_literal if default_literal

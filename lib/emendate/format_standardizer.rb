@@ -35,6 +35,10 @@ module Emendate
         break if function.nil?
 
         function.call
+        TokenCollapser.call(result).either(
+          ->(success) { @result = success },
+          ->(failure) { next }
+        )
       end
       Success(result)
     end
@@ -62,10 +66,6 @@ module Emendate
 
     def full_match_standardizers
       case result.types
-      when %i[number4 hyphen month]
-        proc { remove_post_year_hyphen }
-      when %i[number1or2 hyphen number4]
-        proc { collapse_token_pair_backward(result[0], result[1]) }
       when %i[month number1or2]
         proc do
           yr = ShortYearHandler.call(result[1])
@@ -102,16 +102,6 @@ module Emendate
         proc { pad_3_to_4_digits }
       when /.*single_dot standalone_zero$/
         proc { remove_ending_dot_zero }
-      when /.*month number1or2 comma number4.*/
-        proc do
-          tokens = result.extract(%i[month number1or2 comma number4]).segments
-          collapse_token_pair_backward(tokens[1], tokens[2])
-        end
-      when /.*number4 comma month number1or2.*/
-        proc do
-          tokens = result.extract(%i[number4 comma month number1or2]).segments
-          collapse_token_pair_backward(tokens[0], tokens[1])
-        end
       when /.*number1or2 letter_c.*/
         proc { replace_c_with_century }
       when /.*number4 hyphen number4 era_bce.*/

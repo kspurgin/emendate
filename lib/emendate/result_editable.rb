@@ -51,6 +51,15 @@ module Emendate
       end
     end
 
+    # Finds all segments of the given type and collapses each in the given
+    # direction
+    # @param type [Symbol]
+    # @param direction [:forward, :backward]
+    def collapse_all_matching_type(type:, dir:)
+      result.when_type(type)
+        .reverse_each { |seg| collapse_segment(seg, dir) }
+    end
+
     # Derive a single segment by collapsing the given segment into an adjacent
     # segment
     # @param seg [{Segment}] to collapse
@@ -146,6 +155,10 @@ module Emendate
     def replace_x_with_date_part_type(x:, date_part_type:)
       replace_segs_with_new_type(segs: [x], type: date_part_type)
     end
+
+    # @param seg [Emendate::Segment]
+    # @return [Emendate::Segment, nil]
+    def segment_before(seg) = result[index_of(seg) - 1]
 
     private
 

@@ -62,6 +62,18 @@ module Emendate
 
     def partial_match_collapsers
       case result.type_string
+      when /.*month number1or2 comma number4.*/
+        proc do
+          segs = result.extract(
+            %i[month number1or2 comma number4]
+          ).segments
+          collapse_segment(segs[2], :backward)
+        end
+      when /.*number4 comma month number1or2.*/
+        proc do
+          segs = result.extract(%i[number4 comma month number1or2]).segments
+          collapse_segment(segs[1], :backward)
+        end
       when /.*apostrophe letter_s.*/
         proc { collapse_segments_forward(%i[apostrophe letter_s]) }
       when /.*apostrophe number1or2.*/
@@ -79,16 +91,19 @@ module Emendate
       dateparts = result.date_part_types.sort.join(" ")
 
       matchers = [
-        /^month_alpha number4$/,
-        /^month_alpha number1or2 number4$/,
+        /^month number4$/,
+        /^month number1or2 number4$/,
         /^number1or2 number4$/,
         /^number4 season$/
       ]
 
       if matchers.any? { |matcher| matcher.match(dateparts) }
         types = result.types.uniq
-        collapse_all_commas if types.include?(:comma)
-        collapse_all_slashes if types.include?(:slash)
+        %i[comma hyphen slash].each do |type|
+          next unless types.include?(type)
+
+          collapse_all_matching_type(type: type, dir: :backward)
+        end
       end
     end
 
@@ -109,16 +124,6 @@ module Emendate
         old: matches[1].split(" ").map(&:to_sym),
         new: matches[2].to_sym
       )
-    end
-
-    def collapse_all_commas
-      result.when_type(:comma)
-        .reverse_each { |comma| collapse_segment(comma, :backward) }
-    end
-
-    def collapse_all_slashes
-      result.when_type(:slash)
-        .reverse_each { |slash| collapse_segment(slash, :backward) }
     end
   end
 end

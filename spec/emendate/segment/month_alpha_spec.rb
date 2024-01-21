@@ -5,9 +5,9 @@ require "spec_helper"
 RSpec.describe Emendate::MonthAlpha do
   subject { described_class }
 
-  let(:type) { :month_alpha }
+  let(:type) { :month }
   let(:t) do
-    described_class.new(type: :month_alpha, lexeme: lexeme)
+    described_class.new(type: type, lexeme: lexeme)
   end
 
   describe "#.new" do
@@ -37,7 +37,7 @@ RSpec.describe Emendate::MonthAlpha do
       end
     end
 
-    context "when created with non-month_alpha type" do
+    context "when created with non-month type" do
       let(:lexeme) { "Jan." }
       let(:type) { :notmonthalpha }
 

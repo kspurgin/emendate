@@ -14,9 +14,9 @@ RSpec.describe Emendate::Lexer do
         "c1947" => %i[approximate number4],
         "1919 andor 1950" => %i[number4 space unknown space number4],
         "@" => [:unknown],
-        "Sep. 1" => %i[month_alpha space number1or2],
+        "Sep. 1" => %i[month space number1or2],
         "cat" => [:unknown],
-        "Sep. 19, 1918" => %i[month_alpha space number1or2 comma space
+        "Sep. 19, 1918" => %i[month space number1or2 comma space
           number4],
         "{..1984" => %i[curly_bracket_open double_dot number4],
         "{...1984" => %i[curly_bracket_open unknown number4],
@@ -27,7 +27,7 @@ RSpec.describe Emendate::Lexer do
         "1 22 333 4444" => %i[number1or2 space number1or2 space number3 space
           number4],
         "4444.0" => %i[number4 single_dot standalone_zero],
-        "August Jan" => %i[month_alpha space month_alpha],
+        "August Jan" => %i[month space month],
         "Mon Tuesday" => %i[day_of_week_alpha space day_of_week_alpha],
         "x xx uuu" => %i[uncertainty_digits space uncertainty_digits space
           uncertainty_digits],

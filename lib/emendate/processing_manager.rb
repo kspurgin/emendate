@@ -51,10 +51,6 @@ module Emendate
         state: :tokens_collapsed,
         proc: -> { Emendate::TokenCollapser.call(tokens) }
       )
-      _months_converted = yield handle_step(
-        state: :months_converted,
-        proc: -> { Emendate::AlphaMonthConverter.call(tokens) }
-      )
       _ordinals_translated = yield handle_step(
         state: :ordinals_translated,
         proc: -> { Emendate::OrdinalTranslator.call(tokens) }
