@@ -44,9 +44,9 @@ RSpec.describe Emendate::UnstructuredCertaintyHandler do
 
     it "handles as expected" do
       expect(subject.lexeme).to eq(string)
-      expect(subject.type_string).to eq("number4 comma month")
+      expect(subject.type_string).to eq("number4 month")
 
-      qual = subject[2].qualifiers.first
+      qual = subject[1].qualifiers.first
       expect(qual.type).to eq(:uncertain)
       expect(qual.lexeme).to eq("possibly")
       expect(qual.precision).to eq(:rightward)

@@ -114,7 +114,7 @@ module Emendate
           val.norm
         elsif val.respond_to?(:types)
           "types: #{val.types.inspect}\n  "\
-            "certainty: #{val.certainty.inspect}"
+            "qualifiers: #{val.qualifiers.map(&:type)}"
         end
         puts "  #{outval}" if outval
       end

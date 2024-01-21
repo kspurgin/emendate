@@ -12,9 +12,9 @@ RSpec.describe Emendate::TokenCollapser do
     context "with Jan. 21, 2014" do
       let(:string) { "Jan. 21, 2014" }
 
-      it "collapses spaces after single dot, comma" do
+      it "collapses as expected" do
         expect(subject.lexeme).to eq(string)
-        expect(result).to eq("month_alpha number1or2 comma number4")
+        expect(result).to eq("month_alpha number1or2 number4")
       end
     end
 
@@ -86,6 +86,15 @@ RSpec.describe Emendate::TokenCollapser do
 
       it "collapses as expected" do
         expect(result).to eq("month_alpha number1or2")
+        expect(subject.lexeme).to eq(string)
+      end
+    end
+
+    context "with `2020, possibly March`" do
+      let(:string) { "2020, possibly March" }
+
+      it "collapses as expected" do
+        expect(result).to eq("number4 uncertain month_alpha")
         expect(subject.lexeme).to eq(string)
       end
     end

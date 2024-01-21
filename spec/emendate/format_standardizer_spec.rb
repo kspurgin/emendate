@@ -31,15 +31,6 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
-    context "with 1997/98" do
-      let(:string) { "1997/98" }
-
-      it "replace slash with hyphen" do
-        expect(subject.lexeme).to eq(string)
-        expect(result).to eq(%i[number4 hyphen number1or2])
-      end
-    end
-
     context "with 1968-Mar" do
       let(:string) { "1968-Mar" }
 

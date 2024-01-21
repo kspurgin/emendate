@@ -25,6 +25,7 @@ module Emendate
 
         action.call
       end
+      full_match_date_part_collapsers
       Success(result)
     end
 
@@ -53,23 +54,10 @@ module Emendate
     end
 
     def full_match_collapsers
-      case result.types
-      when %i[number1or2 slash number4]
-        proc { collapse_segments_backward(%i[number1or2 slash]) }
-      when %i[month_alpha comma number4]
-        proc { collapse_segments_backward(%i[month_alpha comma]) }
-      when %i[number4 comma month_alpha]
-        proc { collapse_segments_backward(%i[number4 comma]) }
-      when %i[number4 comma month_alpha number1or2]
-        proc { collapse_segments_backward(%i[number4 comma]) }
-      when %i[number4 comma season]
-        proc { collapse_segments_backward(%i[number4 comma]) }
-      when %i[month_alpha space number1or2 comma number4]
-        proc do
-          collapse_segments_backward(%i[number1or2 comma])
-          collapse_segments_backward(%i[month_alpha comma])
-        end
-      end
+      # case result.types
+      # when %i[number1or2 slash number4]
+      #   proc { collapse_segments_backward(%i[number1or2 slash]) }
+      # end
     end
 
     def partial_match_collapsers
@@ -87,6 +75,23 @@ module Emendate
       end
     end
 
+    def full_match_date_part_collapsers
+      dateparts = result.date_part_types.sort.join(" ")
+
+      matchers = [
+        /^month_alpha number4$/,
+        /^month_alpha number1or2 number4$/,
+        /^number1or2 number4$/,
+        /^number4 season$/
+      ]
+
+      if matchers.any? { |matcher| matcher.match(dateparts) }
+        types = result.types.uniq
+        collapse_all_commas if types.include?(:comma)
+        collapse_all_slashes if types.include?(:slash)
+      end
+    end
+
     def collapse_backward
       to_collapse = result.segments.reverse.find(&:collapsible?)
       prev = result[result.find_index(to_collapse) - 1]
@@ -100,10 +105,20 @@ module Emendate
     def collapse_single_element_parenthetical
       matches = result.type_string
         .match(/.*(parenthesis_open ([^ ]+) parenthesis_close).*/)
-      replace_segments_with_derived_new_type(
-        segment_types: matches[1].split(" ").map(&:to_sym),
-        type: matches[2].to_sym
+      replace_segtypes_with_new_type(
+        old: matches[1].split(" ").map(&:to_sym),
+        new: matches[2].to_sym
       )
+    end
+
+    def collapse_all_commas
+      result.when_type(:comma)
+        .reverse_each { |comma| collapse_segment(comma, :backward) }
+    end
+
+    def collapse_all_slashes
+      result.when_type(:slash)
+        .reverse_each { |slash| collapse_segment(slash, :backward) }
     end
   end
 end

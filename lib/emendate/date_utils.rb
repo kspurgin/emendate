@@ -7,14 +7,14 @@ module Emendate
     # @param year [String] the known full year
     # @param digits [String] the following shorter digit string to be
     #   expanded
-    # @return [String] the shorter digits, expanded to follow the pattern
+    # @return [Integer] the shorter digits, expanded to follow the pattern
     #   of the given `year` value. Examples: returns 2010 for 2020-10; returns
     #   1999 for 1998-9
     def expand_shorter_digits(year, num)
       year_s = year.literal.to_s
       digits = num.literal.to_s.rjust(num.digits, "0")
       diff = year_s.length - digits.length - 1
-      "#{year_s[0..diff]}#{digits}"
+      "#{year_s[0..diff]}#{digits}".to_i
     end
 
     # @param year [Segment] representing known year

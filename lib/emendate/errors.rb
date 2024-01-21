@@ -39,6 +39,14 @@ module Emendate
     end
   end
 
+  class ImpossibleCollapseError < StandardError
+    include Emendate::Error
+    def initialize(dir)
+      adj = (dir == :forward) ? :initial : :final
+      super("Cannot collapse #{adj} segment #{dir}")
+    end
+  end
+
   class InvalidDateError < StandardError
     include Emendate::Error
   end
@@ -135,6 +143,10 @@ module Emendate
   end
 
   class TokenTypeError < StandardError
+    include Emendate::Error
+  end
+
+  class UnexpectedPluralizedYearPatternError < StandardError
     include Emendate::Error
   end
 

@@ -32,50 +32,42 @@ module Emendate
     attr_reader :num, :year
 
     def analyze
+      literal = num.literal
+
       if is_range?(year, num)
-        @result = new_date_part(type: :year, literal: expanded_year)
-      elsif !maybe_range? && valid_month?(num.literal)
-        @result = new_date_part(type: :month, literal: num.literal)
-      elsif !maybe_range? && valid_season?(num.literal)
-        @result = new_date_part(type: :season, literal: num.literal)
+        type = :year
+        literal = expanded_year
+      elsif !maybe_range? && valid_month?(literal)
+        type = :month
+      elsif !maybe_range? && valid_season?(literal)
+        type = :season
       elsif assume_year?
-        @result = new_date_part(type: :year, literal: expanded_year)
+        type = :year
+        literal = expanded_year
         warning = if maybe_range?
           "Ambiguous year + month/season/year treated as_year"
         else
-          # rubocop:todo Layout/LineLength
-          "Ambiguous year + month/season/year treated as_year, but this creates invalid range"
-          # rubocop:enable Layout/LineLength
+          "Ambiguous year + month/season/year treated as_year, but this "\
+            "creates invalid range"
         end
         @warnings << warning
-      elsif valid_month?(num.literal)
-        @result = new_date_part(type: :month, literal: num.literal)
+      elsif valid_month?(literal)
+        type = :month
         @warnings << "Ambiguous year + month/season/year treated as_month"
-      elsif valid_season?(num.literal)
-        @result = new_date_part(type: :season, literal: num.literal)
+      elsif valid_season?(literal)
+        type = :season
         @warnings << "Ambiguous year + month/season/year treated as_season"
       end
-    end
 
-    def assume_year?
-      Emendate.options.ambiguous_month_year == :as_year
-    end
-
-    def new_date_part(type:, literal:)
-      Emendate::Segment.new(
-        type: type,
-        lexeme: num.lexeme,
-        literal: literal.to_i,
-        sources: [num]
+      @result = Emendate::Segment.new(
+        type: type, literal: literal, lexeme: num.lexeme, sources: [num]
       )
     end
 
-    def expanded_year
-      expand_shorter_digits(year, num)
-    end
+    def assume_year? = Emendate.options.ambiguous_month_year == :as_year
 
-    def maybe_range?
-      possible_range?(year, num)
-    end
+    def expanded_year = expand_shorter_digits(year, num)
+
+    def maybe_range? = possible_range?(year, num)
   end
 end

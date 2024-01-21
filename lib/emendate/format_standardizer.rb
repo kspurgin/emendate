@@ -141,64 +141,6 @@ module Emendate
       end
     end
 
-    # def new_datetype(type:, sources:, ind:, whole: true)
-    #   klass = case type
-    #   when :ym
-    #     Emendate::DateTypes::YearMonth
-    #   when :ys
-    #     Emendate::DateTypes::YearSeason
-    #   when :ymd
-    #     Emendate::DateTypes::YearMonthDay
-    #   end
-    #   args = case type
-    #   when :ym
-    #     {year: sources[ind[0]].literal,
-    #      month: sources[ind[1]].literal,
-    #      sources: sources}
-    #   when :ys
-    #     {year: sources[ind[0]].literal,
-    #      season: sources[ind[1]].literal,
-    #      sources: sources}
-    #   when :ymd
-    #     {year: sources[ind[0]].literal,
-    #      month: sources[ind[1]].literal,
-    #      day: sources[ind[2]].literal,
-    #      sources: sources}
-    #   end
-    #   dt = get_new_datetype(klass, args)
-    #   return dt unless whole
-
-    #   result.clear
-    #   result << dt
-    # end
-
-    # def get_new_datetype(klass, args)
-    #   klass.new(**args)
-    # rescue Emendate::InvalidDateError
-    #   Emendate::DateTypes::Error.new(
-    #     sources: args[:sources], error_type: :invalid
-    #   )
-    # end
-
-    # def year_plus_ambiguous_month_season
-    #   year = result[1]
-    #   opt = Emendate.options.ambiguous_month_year.dup
-    #   Emendate.config.options.ambiguous_month_year = :as_month
-
-    #   analyzed = Emendate::MonthSeasonYearAnalyzer.call(
-    #     num: result[0], year: year
-    #   )
-    #   Emendate.config.options.ambiguous_month_year = opt
-
-    #   replace_x_with_derived_new_type(x: year, type: :year)
-    #   replace_x_with_given_segment(x: result[0], segment: analyzed.result)
-    #   type = case analyzed.type
-    #   when :month then :ym
-    #   when :season then :ys
-    #   end
-    #   new_datetype(type: type, sources: result[0..1], ind: [1, 0])
-    # end
-
     def add_century_after_first_number
       century = result[-1].dup
       century.reset_lexeme
