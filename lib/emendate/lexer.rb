@@ -67,7 +67,7 @@ module Emendate
       /^early/i => :early,
       /^(middle|mid)/i => :mid,
       /^late/i => :late,
-      Regexp.new(months, "i") => :month_alpha,
+      Regexp.new(months, "i") => :month,
       /^or/i => :or,
       /^to/i => :range_indicator,
       # If additional alphabetic seasons are added, make sure to
@@ -206,10 +206,10 @@ module Emendate
         add_token(match + addtl, :unknown)
       else
         case ALPHA[pattern]
-        when :month_alpha
+        when :month
           tokens << Emendate::MonthAlpha.new(
             lexeme: match,
-            type: :month_alpha
+            type: :month
           )
         when :season
           tokens << Emendate::SeasonAlpha.new(

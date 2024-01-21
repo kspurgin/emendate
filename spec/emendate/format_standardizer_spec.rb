@@ -84,7 +84,7 @@ RSpec.describe Emendate::FormatStandardizer do
     context "with Feb. 15, 999 - February 20, 2020" do
       let(:string) { "Feb. 15, 999 - February 20, 2020" }
 
-      it "removes commas after dates" do
+      it "pads 3-digit year to number4" do
         expect(subject.lexeme).to eq(string)
         expect(result).to eq(
           %i[month number1or2 number4 hyphen month number1or2 number4]

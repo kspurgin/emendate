@@ -34,7 +34,6 @@ module Emendate
     Emendate::UnprocessableTagger,
     Emendate::KnownUnknownTagger,
     Emendate::TokenCollapser,
-    Emendate::AlphaMonthConverter,
     Emendate::OrdinalTranslator,
     Emendate::EdtfSetHandler,
     Emendate::EdtfQualifier,

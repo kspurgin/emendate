@@ -97,6 +97,10 @@ module Emendate
       @lexeme = val.to_s
     end
 
+    # @param val [String]
+    def reset_literal(val = nil)
+    end
+
     # @return [Boolean]
     def collapsible? = COLLAPSIBLE_TYPES.include?(type)
 
