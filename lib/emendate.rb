@@ -28,23 +28,30 @@ module Emendate
   extend Dry::Configurable
   extend Dry::Monads[:result]
 
-  PROCESSING_STEPS = [
-    Emendate::Lexer,
-    Emendate::UntokenizableTagger,
-    Emendate::UnprocessableTagger,
-    Emendate::KnownUnknownTagger,
-    Emendate::TokenCollapser,
-    Emendate::OrdinalTranslator,
-    Emendate::EdtfSetHandler,
-    Emendate::EdtfQualifier,
-    Emendate::InferredDateHandler,
-    Emendate::UnstructuredCertaintyHandler,
-    Emendate::FormatStandardizer,
-    Emendate::DatePartTagger,
-    Emendate::DateSegmenter,
-    Emendate::RangeIndicator,
-    Emendate::TokenCleaner
-  ]
+  # Steps called by {ProcessingManager}. Key is the step processing
+  # class. Value is the state recorded if the step completes
+  # successfully or used to indicate the step in which processing
+  # failed
+  #
+  # Also used when running tests/examples to convert test strings into
+  # segment sets appropriate for input for a given test.
+  PROCESSING_STEPS = {
+    Emendate::Lexer => :lexed,
+    Emendate::UntokenizableTagger => :untokenizable_tagged,
+    Emendate::UnprocessableTagger => :unprocessable_tagged,
+    Emendate::KnownUnknownTagger => :known_unknown_tagged,
+    Emendate::TokenCollapser => :tokens_collapsed,
+    Emendate::OrdinalTranslator => :ordinals_translated,
+    Emendate::EdtfSetHandler => :edtf_sets_handled,
+    Emendate::EdtfQualifier => :edtf_qualified,
+    Emendate::InferredDateHandler => :inferred_dates_handled,
+    Emendate::UnstructuredCertaintyHandler => :unstructured_certainty_handled,
+    Emendate::FormatStandardizer => :format_standardized,
+    Emendate::DatePartTagger => :date_parts_tagged,
+    Emendate::DateSegmenter => :dates_segmented,
+    Emendate::RangeIndicator => :ranges_indicated,
+    Emendate::TokenCleaner => :cleaned
+  }
 
   setting :basedir, default: Gem.loaded_specs["emendate"].full_gem_path,
     reader: true
@@ -207,7 +214,7 @@ module Emendate
   private
 
   def processing_steps
-    PROCESSING_STEPS.map do |klass|
+    PROCESSING_STEPS.keys.map do |klass|
       [klass, ->(tokens) { klass.send(:call, tokens) }]
     end.to_h
   end

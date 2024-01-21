@@ -31,66 +31,11 @@ module Emendate
     end
 
     def call
-      _lexed = yield handle_step(
-        state: :lexed,
-        proc: -> { Emendate::Lexer.call(tokens) }
-      )
-      _untokenizable_tagged = yield handle_step(
-        state: :untokenizable_tagged,
-        proc: -> { Emendate::UntokenizableTagger.call(tokens) }
-      )
-      _unprocessable_tagged = yield handle_step(
-        state: :unprocessable_tagged,
-        proc: -> { Emendate::UnprocessableTagger.call(tokens) }
-      )
-      _known_unknown_tagged = yield handle_step(
-        state: :known_unknown_tagged,
-        proc: -> { Emendate::KnownUnknownTagger.call(tokens) }
-      )
-      _tokens_collapsed = yield handle_step(
-        state: :tokens_collapsed,
-        proc: -> { Emendate::TokenCollapser.call(tokens) }
-      )
-      _ordinals_translated = yield handle_step(
-        state: :ordinals_translated,
-        proc: -> { Emendate::OrdinalTranslator.call(tokens) }
-      )
-      _edtf_sets_handled = yield handle_step(
-        state: :edtf_sets_handled,
-        proc: -> { Emendate::EdtfSetHandler.call(tokens) }
-      )
-      _edtf_qualified = yield handle_step(
-        state: :edtf_qualified,
-        proc: -> { Emendate::EdtfQualifier.call(tokens) }
-      )
-      _inferred_dates_handled = yield handle_step(
-        state: :inferred_dates_handled,
-        proc: -> { Emendate::InferredDateHandler.call(tokens) }
-      )
-      _unstructured_certainty_handled = yield handle_step(
-        state: :unstructured_certainty_handled,
-        proc: -> { Emendate::UnstructuredCertaintyHandler.call(tokens) }
-      )
-      _format_standardized = yield handle_step(
-        state: :format_standardized,
-        proc: -> { Emendate::FormatStandardizer.call(tokens) }
-      )
-      _date_parts_tagged = yield handle_step(
-        state: :date_parts_tagged,
-        proc: -> { Emendate::DatePartTagger.call(tokens) }
-      )
-      _dates_segmented = yield handle_step(
-        state: :dates_segmented,
-        proc: -> { Emendate::DateSegmenter.call(tokens) }
-      )
-      _ranges_indicated = yield handle_step(
-        state: :ranges_indicated,
-        proc: -> { Emendate::RangeIndicator.call(tokens) }
-      )
-      _cleaned = yield handle_step(
-        state: :tokens_cleaned,
-        proc: -> { Emendate::TokenCleaner.call(tokens) }
-      )
+      Emendate::PROCESSING_STEPS.each do |step, state|
+        yield handle_step(
+          state: state, proc: proc { step.call(tokens) }
+        )
+      end
       _final_checked = yield final_check
 
       @history[:done] = nil
