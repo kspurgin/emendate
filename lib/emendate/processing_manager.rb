@@ -38,12 +38,12 @@ module Emendate
     # @return [String]
     attr_reader :orig_string
     # @return [Hash] keys are step state values from {PROCESSING_STEPS
-    #   processing steps}; values are the {SegmentSets::SegmentSet}s
+    #   processing steps}; values are the {SegmentSet}s
     #   returned for each successfully completed step; informational
     #   message string if state is a failure, or nil for the :done
     #   state; See also {#historical_record}
     attr_reader :history
-    # @return [SegmentSets::SegmentSet]
+    # @return [SegmentSet]
     attr_reader :tokens
     # Reasons why processing could not be completed
     # @return [Array<#backtrace, Symbol>] Ruby error objects or brief error
@@ -62,7 +62,7 @@ module Emendate
       @orig_string = string
       Emendate::Options.new(options) unless options.empty?
       @history = {initialized: orig_string}
-      @tokens = Emendate::SegmentSets::SegmentSet.new(
+      @tokens = Emendate::SegmentSet.new(
         string: orig_string
       )
       @errors = []
@@ -174,7 +174,7 @@ module Emendate
           if add_error?
             errors << failure
           elsif failure.is_a?(
-            Emendate::SegmentSets::SegmentSet
+            Emendate::SegmentSet
           )
             @tokens = failure
           end

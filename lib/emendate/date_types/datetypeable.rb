@@ -30,7 +30,7 @@ module Emendate
     module Datetypeable
       # @return [Array<Symbol>]
       attr_reader :certainty
-      # @return [SegmentSets::SegmentSet]
+      # @return [SegmentSet]
       attr_reader :sources
       # @return [Array<Emendate::Qualifier>]
       attr_reader :qualifiers
@@ -85,15 +85,15 @@ module Emendate
 
       # @return [true]
       # All DateType segments are date parts. Supports expected behavior as
-      # member of a {SegmentSets::SegmentSet}
+      # member of a {SegmentSet}
       def date_part? = true
 
       # @return [true]
-      # Supports expected behavior as member of a {SegmentSets::SegmentSet}
+      # Supports expected behavior as member of a {SegmentSet}
       def date_type? = true
 
       # @return [false]
-      # Supports expected behavior as member of a {SegmentSets::SegmentSet}
+      # Supports expected behavior as member of a {SegmentSet}
       def collapsible? = false
 
       # @return [true]
@@ -103,7 +103,7 @@ module Emendate
         true
       end
 
-      # Makes DateTypes behave as good members of a {SegmentSets::SegmentSet}
+      # Makes DateTypes behave as good members of a {SegmentSet}
       # @return [Symbol]
       def type
         :"#{self.class.name.split("::").last.downcase}_date_type"
@@ -176,11 +176,11 @@ module Emendate
       def set_sources(context)
         srcs = context.local_variable_get(:sources)
         @sources = if srcs.nil?
-          Emendate::SegmentSets::SegmentSet.new
-        elsif srcs.is_a?(Emendate::SegmentSets::SegmentSet)
+          Emendate::SegmentSet.new
+        elsif srcs.is_a?(Emendate::SegmentSet)
           srcs.class.new.copy(srcs)
         else
-          Emendate::SegmentSets::SegmentSet.new(
+          Emendate::SegmentSet.new(
             segments: srcs
           )
         end

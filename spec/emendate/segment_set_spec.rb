@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Emendate::SegmentSets::SegmentSet do
+RSpec.describe Emendate::SegmentSet do
   subject(:set) { described_class }
 
   let(:segments) do

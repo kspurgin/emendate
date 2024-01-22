@@ -12,7 +12,7 @@ module Emendate
       # @return [:plural, :uncertainty_digits]
       attr_reader :millennium_type
 
-      # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
+      # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
       def initialize(sources:)
         common_setup(binding)

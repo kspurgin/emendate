@@ -12,7 +12,7 @@ module Emendate
 
       # @param year [Integer]
       # @param month [Integer]
-      # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
+      # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
       def initialize(sources:, year:, month:)
         @year = year

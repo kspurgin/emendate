@@ -9,10 +9,10 @@ module Emendate
 
       attr_reader :startdate, :enddate
 
-      # @return [SegmentSets::SegmentSet
+      # @return [SegmentSet
       attr_reader :sources
 
-      # @param sources [SegmentSets::SegmentSet, Array<Segment>] The three
+      # @param sources [SegmentSet, Array<Segment>] The three
       #   segments included in the date type: start, range indicator, end
       def initialize(sources:)
         common_setup(binding)

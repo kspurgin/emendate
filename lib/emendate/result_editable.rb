@@ -130,7 +130,7 @@ module Emendate
     end
 
     # @param sources [Array<Emendate::Segment>] to replace
-    # @param new [Emendate::SegmentSets::SegmentSet] replacement
+    # @param new [Emendate::SegmentSet] replacement
     def replace_segments_with_new_segment_set(segments:, new:)
       result.insert(ins_pt(segments[-1]), *new.segments)
       segments.each { |segment| result.delete(segment) }
@@ -167,11 +167,11 @@ module Emendate
 
     # @param pattern [Array<Symbol>]
     # @param sep [Symbol]
-    # @return [SegmentSets::SegmentSet] if resulting pattern matches
+    # @return [SegmentSet] if resulting pattern matches
     # @return [nil] otherwise
     # @example When pattern matches the working result
     #   extract_pattern_separated_by(%i[number1or2 number1or2 number4], :slash)
-    #   #=> #<Emendate::SegmentSets::SegmentSet:6120
+    #   #=> #<Emendate::SegmentSet:6120
     #         segments: [:number1or2, :slash, :number1or2, :slash, :number4]>
     def extract_pattern_separated_by(pattern, sep)
       newset = result.extract(pattern.flat_map { |seg| [seg, sep] }[0..-2])
