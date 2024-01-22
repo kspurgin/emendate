@@ -80,7 +80,7 @@ module Emendate
 
     def map_errors
       pm.errors
-        .reject { |err| err.is_a?(Emendate::SegmentSets::SegmentSet) }
+        .reject { |err| err.is_a?(Emendate::SegmentSet) }
         .map do |err|
         if err.is_a?(String)
           err

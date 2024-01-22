@@ -44,9 +44,9 @@ module Emendate
     attr_reader :literal
     # @return [Array<Emendate::Qualifier>]
     attr_reader :qualifiers
-    # @return [Array<Segment>, Emendate::SegmentSets::SegmentSet, NilClass]
+    # @return [Array<Segment>, Emendate::SegmentSet, NilClass]
     attr_reader :sources
-    # @return [Emendate::SegmentSets::SegmentSet, NilClass]
+    # @return [Emendate::SegmentSet, NilClass]
     attr_reader :subsources
     # @return [Integer, NilClass]
     attr_reader :digits
@@ -71,7 +71,7 @@ module Emendate
     # @param lexeme [String, NilClass]
     # @param literal [Integer, Symbol, NilClass]
     # @param qualifiers [Array<Emendate::Qualifier>]
-    # @param sources [Array<Segment>, Emendate::SegmentSets::SegmentSet,
+    # @param sources [Array<Segment>, Emendate::SegmentSet,
     #   NilClass]
     def initialize(type:, lexeme: nil, literal: nil, qualifiers: [],
       sources: nil)
@@ -148,7 +148,7 @@ module Emendate
     def get_sources(sources)
       return nil if sources.nil? || sources.empty?
 
-      segset = Emendate::SegmentSets::SegmentSet.new
+      segset = Emendate::SegmentSet.new
 
       srcs = if sources.respond_to?(:segments)
         sources.segments
@@ -163,7 +163,7 @@ module Emendate
     def get_subsources
       return nil if sources.nil? || sources.empty?
 
-      segset = Emendate::SegmentSets::SegmentSet.new
+      segset = Emendate::SegmentSet.new
 
       sources.segments.map { |src| subsources_for(src) }
         .flatten

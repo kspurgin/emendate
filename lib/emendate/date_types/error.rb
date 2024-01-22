@@ -19,10 +19,10 @@ module Emendate
     class Error
       include Datetypeable
 
-      # @return [SegmentSets::SegmentSet]
+      # @return [SegmentSet]
       attr_reader :sources
 
-      # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
+      # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
       # @param error_type [:untokenizable, :unprocessable]
       def initialize(sources:, error_type:)

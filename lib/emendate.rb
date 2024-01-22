@@ -117,7 +117,7 @@ module Emendate
   #   @param options [Hash] See
   #     {https://github.com/kspurgin/emendate/blob/main/docs/options.adoc
   #     options documentation}
-  # @return [Emendate::SegmentSets::SegmentSet] for all targets other than
+  # @return [Emendate::SegmentSet] for all targets other than
   #   {Emendate::Lexer}, will return the result of the processing step prior to
   #   the target
   # @return [String] if target is {Emendate::Lexer}
@@ -160,7 +160,7 @@ module Emendate
   end
 
   # @param str [String]
-  # @return [Emendate::SegmentSets::SegmentSet] the initial {Emendate::Segment}s
+  # @return [Emendate::SegmentSet] the initial {Emendate::Segment}s
   #   derived from date string
   def lex(str)
     prepped_for(string: str, target: Emendate::UntokenizableTagger)

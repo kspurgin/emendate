@@ -15,9 +15,9 @@ module Emendate
       def call(tokens) = new(tokens).call
     end
 
-    # @param tokens [SegmentSets::SegmentSet] (or subclasses)
+    # @param tokens [SegmentSet] (or subclasses)
     def initialize(tokens)
-      @result = Emendate::SegmentSets::SegmentSet.new.copy(tokens)
+      @result = Emendate::SegmentSet.new.copy(tokens)
       @numbers = [result[0], result[1], result[2]]
       @opt = Emendate.options.ambiguous_month_day_year
     end

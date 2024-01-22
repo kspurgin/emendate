@@ -84,7 +84,7 @@ module Emendate
     def initialize(tokens)
       if tokens.is_a?(String)
         @scanner = StringScanner.new(tokens)
-        @tokens = Emendate::SegmentSets::SegmentSet.new(string: tokens)
+        @tokens = Emendate::SegmentSet.new(string: tokens)
       else
         @tokens = tokens
         @scanner = StringScanner.new(tokens.orig_string)

@@ -64,7 +64,7 @@ RSpec.describe Emendate::Lexer do
 
       results = examples.keys
         .map do |str|
-        tokens = Emendate::SegmentSets::SegmentSet.new(string: str)
+        tokens = Emendate::SegmentSet.new(string: str)
         [
           str,
           lexer.call(tokens)

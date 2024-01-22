@@ -7,7 +7,7 @@ module Emendate
     class Year
       include Datetypeable
 
-      # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
+      # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
       def initialize(sources:)
         common_setup(binding)

@@ -39,7 +39,7 @@ module Emendate
 
       # @param year [Integer]
       # @param season [Integer]
-      # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
+      # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
       # @param include_prev_year [Boolean] Used for values like
       #   "Winter 2019-2020", to cause the earliest date to include the end of

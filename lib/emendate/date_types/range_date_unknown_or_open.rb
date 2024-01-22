@@ -9,11 +9,11 @@ module Emendate
     class RangeDateUnknownOrOpen
       include Datetypeable
 
-      # @param sources [SegmentSets::SegmentSet] Segments included in
+      # @param sources [SegmentSet] Segments included in
       #   the date type
       attr_reader :sources
 
-      # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
+      # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
       # @param category [:open, :unknown]
       # @param point [:start, :end]
@@ -52,7 +52,7 @@ module Emendate
       # @return [FalseClass]
       def range? = false
 
-      # Makes DateTypes behave as good members of a {SegmentSets::SegmentSet}
+      # Makes DateTypes behave as good members of a {SegmentSet}
       # @return [Symbol]
       def type = :"rangedate#{point}#{category}_date_type"
 

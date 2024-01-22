@@ -14,7 +14,7 @@ module Emendate
       # @macro set_type_attr
       attr_reader :set_type
 
-      # @param sources [SegmentSets::SegmentSet, Array<Segment>] Segments
+      # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
       def initialize(sources:)
         cent = sources.first
