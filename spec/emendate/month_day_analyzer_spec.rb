@@ -10,21 +10,21 @@ RSpec.describe Emendate::MonthDayAnalyzer do
       string: str,
       target: Emendate::DatePartTagger
     )
-    [t[0], t[2], t[4]]
+    [t[0], t[1], t[2]]
   end
 
   describe "#call" do
     let(:result) { analyzer.call }
-    let(:month) { result.month.lexeme }
-    let(:day) { result.day.lexeme }
+    let(:month) { result.month.literal }
+    let(:day) { result.day.literal }
     let(:warnings) { result.warnings }
 
     context "with unambiguous month day - 12-31-2020" do
       let(:str) { "12-31-2020" }
 
       it "returns expected" do
-        expect(month).to eq("12")
-        expect(day).to eq("31")
+        expect(month).to eq(12)
+        expect(day).to eq(31)
         expect(warnings).to be_empty
       end
     end
@@ -33,8 +33,8 @@ RSpec.describe Emendate::MonthDayAnalyzer do
       let(:str) { "31-12-2020" }
 
       it "returns expected" do
-        expect(month).to eq("12")
-        expect(day).to eq("31")
+        expect(month).to eq(12)
+        expect(day).to eq(31)
         expect(warnings).to be_empty
       end
     end
@@ -43,8 +43,8 @@ RSpec.describe Emendate::MonthDayAnalyzer do
       let(:str) { "02-03-2020" }
 
       it "returns expected" do
-        expect(month).to eq("02")
-        expect(day).to eq("03")
+        expect(month).to eq(2)
+        expect(day).to eq(3)
         expect(warnings.length).to eq(1)
       end
 
@@ -52,8 +52,8 @@ RSpec.describe Emendate::MonthDayAnalyzer do
         before { Emendate.options.ambiguous_month_day = :as_day_month }
 
         it "returns expected" do
-          expect(month).to eq("03")
-          expect(day).to eq("02")
+          expect(month).to eq(3)
+          expect(day).to eq(2)
           expect(warnings.length).to eq(1)
         end
       end

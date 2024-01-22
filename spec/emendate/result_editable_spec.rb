@@ -20,10 +20,8 @@ RSpec.describe Emendate::ResultEditable do
         target: Emendate::TokenCollapser
       )
       e = Editable.new(tokens)
-      e.collapse_segments_backward(%i[month_alpha question space])
-      # rubocop:todo Layout/LineLength
-      expect(e.result.type_string).to eq("month_alpha number1or2 comma space number4")
-      # rubocop:enable Layout/LineLength
+      e.collapse_segments_backward(%i[month question space])
+      expect(e.result.type_string).to eq("month number1or2 comma space number4")
       derived = e.result.segments.first
       expect(derived.lexeme).to eq("Oct.? ")
       expect(derived.literal).to eq(10)
@@ -38,7 +36,7 @@ RSpec.describe Emendate::ResultEditable do
       )
       e = Editable.new(tokens)
       e.collapse_token_pair_backward(tokens[0], tokens[1])
-      expect(e.result.type_string).to eq("month_alpha number4")
+      expect(e.result.type_string).to eq("month number4")
       der = e.result[0]
       expect(der.literal).to eq(1)
       expect(der.lexeme).to eq("Jan ")
@@ -80,7 +78,7 @@ RSpec.describe Emendate::ResultEditable do
     it "tags as expected" do
       tokens = Emendate.prepped_for(
         string: "Jan 2021",
-        target: Emendate::AlphaMonthConverter
+        target: Emendate::FormatStandardizer
       )
       e = Editable.new(tokens)
       e.replace_x_with_new(x: tokens[0], new: tokens[1])

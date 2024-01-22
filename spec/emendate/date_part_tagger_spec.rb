@@ -9,7 +9,7 @@ RSpec.describe Emendate::DatePartTagger do
   let(:result) { subject.value! }
   let(:types) { result.types }
 
-  context "with 999" do
+  context "with ###" do
     let(:string) { "999" }
 
     it "tags year" do
@@ -18,7 +18,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 2020" do
+  context "with ####" do
     let(:string) { "2020" }
 
     it "tags year" do
@@ -27,7 +27,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 2020.0" do
+  context "with ####.#" do
     let(:string) { "2020.0" }
 
     it "tags year" do
@@ -36,7 +36,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with March" do
+  context "with MONTH" do
     let(:string) { "March" }
 
     it "tags month" do
@@ -45,7 +45,21 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 0000s 1000s" do
+  context "with [ca. ####s]", :ambiguous_decade_century_millennium do
+    before do
+      Emendate.config.options.pluralized_date_interpretation = :broad
+    end
+
+    let(:string) { "[ca. 2000s]" }
+
+    it "segments as expected" do
+      expect(types).to eq(%i[millennium])
+      expect(result.lexeme).to eq(string)
+      expect(result[0].sources.types).to include(:letter_s)
+    end
+  end
+
+  context "with ####s ####s", :ambiguous_decade_century_millennium do
     let(:string) { "0000s 1000s" }
 
     it "tags decade and warns of ambiguity" do
@@ -71,7 +85,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 1900s" do
+  context "with ####s", :ambiguous_decade_century do
     let(:string) { "1900s" }
 
     it "tags decade" do
@@ -93,7 +107,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 1990s" do
+  context "with ####s", :unambiguous_decade do
     let(:string) { "1990s" }
 
     it "tags decade" do
@@ -102,7 +116,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 19th century" do
+  context "with ##ORD century" do
     let(:string) { "19th century" }
 
     it "tags century" do
@@ -111,7 +125,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 19uu" do
+  context "with ##uu" do
     let(:string) { "19uu" }
 
     it "tags century" do
@@ -120,7 +134,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with February 15, 2020" do
+  context "with MONTH ##, ####" do
     let(:string) { "February 15, 2020" }
 
     it "tags day (month and year are already done at this point)" do
@@ -129,7 +143,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 2020, Feb 15" do
+  context "with ####, MON ##" do
     let(:string) { "2020, Feb 15" }
 
     it "tags as expected" do
@@ -138,7 +152,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 2000 June 3-2001 Jan 20" do
+  context "with #### MONTH #-#### MON ##" do
     let(:string) { "2000 June 3-2001 Jan 20" }
 
     it "tags as expected" do
@@ -149,7 +163,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 15 Feb 2020" do
+  context "with ## MON ####" do
     let(:string) { "15 Feb 2020" }
 
     it "tags as expected" do
@@ -158,7 +172,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 03/2020" do
+  context "with ##/####" do
     let(:string) { "03/2020" }
 
     it "tags as expected" do
@@ -167,16 +181,16 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 1997/98" do
+  context "with ####/##", :unambiguous_range do
     let(:string) { "1997/98" }
 
     it "tags as expected" do
       expect(result.lexeme).to eq(string)
-      expect(types).to eq(%i[year year])
+      expect(types).to eq(%i[year range_indicator year])
     end
   end
 
-  context 'with "Oct. 28, 1964"' do
+  context 'with "MON ##, ####"' do
     let(:string) { "Oct. 28, 1964" }
 
     it "tags as expected" do
@@ -185,22 +199,55 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 2-10-20 and current year is 2020" do
-    before do
-      Emendate.config.options.ambiguous_year_rollback_threshold = 20
-      allow(Date).to receive(:today).and_return Date.new(2020, 2, 3)
+  context "with ##-##-##", :ambiguous_day_month_year do
+    let(:string) { "10-02-06" }
+
+    context "with ambiguous_month_day_year: :month_day_year" do
+      before do
+        Emendate.config.options.ambiguous_month_day_year = :month_day_year
+      end
+
+      it "tags month day year" do
+        expect(types).to eq(%i[month day year])
+        expect(result.lexeme).to eq(string)
+      end
     end
 
-    let(:string) { "2-10-20" }
+    context "with ambiguous_month_day_year: :day_month_year" do
+      before do
+        Emendate.config.options.ambiguous_month_day_year = :day_month_year
+      end
 
-    it "tags month (2), day (10), and short year (1920)" do
-      expect(types).to eq(%i[month day year])
-      expect(result.map(&:literal)).to eq([2, 10, 1920])
-      expect(result.lexeme).to eq(string)
+      it "tags day month year" do
+        expect(types).to eq(%i[day month year])
+        expect(result.lexeme).to eq(string)
+      end
+    end
+
+    context "with ambiguous_month_day_year: :year_month_day" do
+      before do
+        Emendate.config.options.ambiguous_month_day_year = :year_month_day
+      end
+
+      it "tags year month day" do
+        expect(types).to eq(%i[year month day])
+        expect(result.lexeme).to eq(string)
+      end
+    end
+
+    context "with ambiguous_month_day_year: :year_day_month" do
+      before do
+        Emendate.config.options.ambiguous_month_day_year = :year_day_month
+      end
+
+      it "tags year day month" do
+        expect(types).to eq(%i[year day month])
+        expect(result.lexeme).to eq(string)
+      end
     end
   end
 
-  context "with Spring 20, threshold 24, and current century 2000s" do
+  context "with SEASON ##", :short_year do
     before do
       Emendate.config.options.ambiguous_year_rollback_threshold = 24
       allow(Date).to receive(:today).and_return Date.new(2001, 2, 3)
@@ -218,7 +265,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 02-03-2020" do
+  context "with ##-##-####", :ambiguous_day_month do
     let(:string) { "02-03-2020" }
 
     it "tags month day year" do
@@ -237,7 +284,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 2003-04" do
+  context "with ####-##", :ambiguous_month_year do
     let(:string) { "2003-04" }
 
     it "converts hyphen into range_indicator" do
@@ -269,7 +316,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with ca. 1955-60" do
+  context "with ca. ####-##", :unambiguous_year do
     let(:string) { "ca. 1955-60" }
 
     it "tags as expected" do
@@ -279,7 +326,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 1968-Mar" do
+  context "with ####-MON" do
     let(:string) { "1968-Mar" }
 
     it "formats as expected" do
@@ -288,7 +335,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 12-2011" do
+  context "with ##-####", :unambiguous_month_year do
     let(:string) { "12-2011" }
 
     it "returns as expected" do
@@ -297,7 +344,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 2 December 2020, 2020/02/15" do
+  context "with # MONTH ####, ####/##/##" do
     let(:string) { "2 December 2020, 2020/02/15" }
 
     it "tags" do
@@ -306,7 +353,9 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with 2004-06/2006-08" do
+  context "with ####-##/####-##", :unambiguous_month_year do
+    # The fact that the dates are the start/end of a range makes them
+    # unambiguous
     let(:string) { "2004-06/2006-08" }
 
     it "tags" do
@@ -316,7 +365,7 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context "with Mar 19" do
+  context "with MON ##", :short_year do
     let(:string) { "Mar 19" }
 
     it "tags as month year" do
@@ -342,60 +391,6 @@ RSpec.describe Emendate::DatePartTagger do
         expect(result[1].literal).to eq(19)
         expect(result.lexeme).to eq(string)
       end
-    end
-  end
-
-  context "with 10-02-06" do
-    let(:string) { "10-02-06" }
-
-    context "with ambiguous_month_day_year: :month_day_year" do
-      let(:options) { {ambiguous_month_day_year: :month_day_year} }
-
-      it "tags month day year", skip: "not yet implemented" do
-        expect(types).to eq(%i[month day year])
-        expect(result.lexeme).to eq(string)
-      end
-    end
-
-    context "with ambiguous_month_day_year: :day_month_year" do
-      let(:options) { {ambiguous_month_day_year: :day_month_year} }
-
-      it "tags day month year", skip: "not yet implemented" do
-        expect(types).to eq(%i[day month year])
-        expect(result.lexeme).to eq(string)
-      end
-    end
-
-    context "with ambiguous_month_day_year: :year_month_day" do
-      let(:options) { {ambiguous_month_day_year: :year_month_day} }
-
-      it "tags year month day", skip: "not yet implemented" do
-        expect(types).to eq(%i[year month day])
-        expect(result.lexeme).to eq(string)
-      end
-    end
-
-    context "with ambiguous_month_day_year: :year_day_month" do
-      let(:options) { {ambiguous_month_day_year: :year_day_month} }
-
-      it "tags year day month", skip: "not yet implemented" do
-        expect(types).to eq(%i[year day month])
-        expect(result.lexeme).to eq(string)
-      end
-    end
-  end
-
-  context "with [ca. 2000s] treated as millennium" do
-    before do
-      Emendate.config.options.pluralized_date_interpretation = :broad
-    end
-
-    let(:string) { "[ca. 2000s]" }
-
-    it "segments as expected" do
-      expect(types).to eq(%i[millennium])
-      expect(result.lexeme).to eq(string)
-      expect(result[0].sources.types).to include(:letter_s)
     end
   end
 end

@@ -202,7 +202,7 @@ RSpec.describe Emendate::SegmentSets::SegmentSet do
     let(:result) { segset.source_types }
 
     it "lists types" do
-      expect(result).to eq(%i[month_alpha number1or2 comma number4])
+      expect(result).to eq(%i[month space number1or2 comma number4])
     end
   end
 
@@ -217,7 +217,7 @@ RSpec.describe Emendate::SegmentSets::SegmentSet do
     let(:result) { segset.source_type_string }
 
     it "lists types" do
-      expect(result).to eq("month_alpha number1or2 comma number4")
+      expect(result).to eq("month space number1or2 comma number4")
     end
   end
 
@@ -232,7 +232,7 @@ RSpec.describe Emendate::SegmentSets::SegmentSet do
     let(:result) { segset.subsource_types }
 
     it "lists types" do
-      expect(result).to eq(%i[month_alpha space number1or2 comma space number4])
+      expect(result).to eq(%i[month space number1or2 comma space number4])
     end
   end
 
@@ -247,7 +247,7 @@ RSpec.describe Emendate::SegmentSets::SegmentSet do
     let(:result) { segset.subsource_type_string }
 
     it "lists types" do
-      expect(result).to eq("month_alpha space number1or2 comma space number4")
+      expect(result).to eq("month space number1or2 comma space number4")
     end
   end
 end

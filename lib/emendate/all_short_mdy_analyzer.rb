@@ -15,10 +15,10 @@ module Emendate
       def call(tokens) = new(tokens).call
     end
 
-    # @param tokens [Array<Emendate::Segment>] (or subclasses)
+    # @param tokens [SegmentSets::SegmentSet] (or subclasses)
     def initialize(tokens)
       @result = Emendate::SegmentSets::SegmentSet.new.copy(tokens)
-      @numbers = [result[0], result[2], result[4]]
+      @numbers = [result[0], result[1], result[2]]
       @opt = Emendate.options.ambiguous_month_day_year
     end
 
@@ -94,21 +94,11 @@ module Emendate
     end
 
     def transform_part(part, type)
-      collapsed = collapse_hyphen(part)
       if type == :year
-        transform_year(collapsed)
+        transform_year(part)
       else
-        replace_x_with_date_part_type(x: collapsed, date_part_type: type)
+        replace_x_with_date_part_type(x: part, date_part_type: type)
       end
-    end
-
-    def collapse_hyphen(part)
-      return part if result[-1] == part
-
-      ind = result.find_index(part)
-      to_collapse = [result[ind], result[ind + 1]]
-      collapse_token_pair_backward(*to_collapse)
-      result[ind]
     end
 
     def transform_year(part)

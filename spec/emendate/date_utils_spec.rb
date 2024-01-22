@@ -153,7 +153,7 @@ RSpec.describe Emendate::DateUtils do
         target: Emendate::DatePartTagger
       )
     end
-    let(:args) { [tokens[0], tokens[2], tokens[4]] }
+    let(:args) { [tokens[0], tokens[1], tokens[2]] }
     let(:result) { dateutils.valid_date?(*args) }
 
     context "with valid date - 2020-02-29" do

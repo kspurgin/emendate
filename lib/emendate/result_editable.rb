@@ -158,7 +158,18 @@ module Emendate
 
     # @param seg [Emendate::Segment]
     # @return [Emendate::Segment, nil]
-    def segment_before(seg) = result[index_of(seg) - 1]
+    def previous_segment(seg) = result[index_of(seg) - 1]
+
+    # @param seg [Emendate::Segment]
+    # @return [Emendate::Segment, nil]
+    def next_segment(seg) = result[index_of(seg) + 1]
+
+    # @param seg [Emendate::Segment]
+    # @param dummytype [Symbol]
+    def insert_dummy_after_segment(seg, dummytype)
+      newsegment = Emendate::Segment.new(type: dummytype)
+      result.insert(ins_pt(seg), newsegment)
+    end
 
     private
 

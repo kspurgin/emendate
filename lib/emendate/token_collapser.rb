@@ -93,7 +93,10 @@ module Emendate
       matchers = [
         /^month number4$/,
         /^month number1or2 number4$/,
+        /^number1or2 number1or2 number1or2$/,
+        /^number1or2 number1or2 number4$/,
         /^number1or2 number4$/,
+        /^number1or2 season$/,
         /^number4 season$/
       ]
 
