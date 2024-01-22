@@ -126,14 +126,20 @@ module Emendate
 
     # @return [String]
     def to_s
-      "#<#{self.class.name}:#{object_id} "\
+      arr = ["#<#{self.class.name}:#{object_id} "\
         "@type: #{type.inspect}, "\
         "@lexeme: #{lexeme.inspect}, "\
         "@literal: #{literal.inspect}, "\
-        "@digits: #{digits.inspect}, "\
-        "@sources: #{sources.types.inspect}, "\
-        "@subsources: #{subsources.types.inspect}, "\
-        "@qualifiers: #{qualifiers.inspect}>"
+        "@digits: #{digits.inspect}, "]
+      if sources
+        arr << "@sources: #{sources.types.inspect}, "
+        arr << "@subsources: #{subsources.types.inspect}, "
+      else
+        arr << "@sources: #{sources.inspect}, "
+        arr << "@subsources: #{subsources.inspect}, "
+      end
+      arr << "@qualifiers: #{qualifiers.inspect}>"
+      arr.join("")
     end
     alias_method :inspect, :to_s
 

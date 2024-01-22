@@ -25,6 +25,11 @@ module Emendate
     # @return [TrueClass]
     def number? = true
 
+    def to_s
+      super
+    end
+    alias_method :inspect, :to_s
+
     private
 
     # allowable length of number in digits

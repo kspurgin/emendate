@@ -17,7 +17,7 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
     end
     let(:wct) { result.warnings.length }
 
-    context "with 87-04-13 (all unambiguous)" do
+    context "with ##-##-## (all unambiguous)" do
       let(:str) { "87-04-13" }
 
       it "converts to date types" do
@@ -27,7 +27,7 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
       end
     end
 
-    context "with 10-02-06 (all ambiguous)" do
+    context "with ##-##-## (all ambiguous)" do
       let(:str) { "10-02-06" }
 
       it "converts to date types (default order)" do
@@ -63,7 +63,7 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
       end
     end
 
-    context "with 50-02-03 (ambiguous month/day)" do
+    context "with ##-##-## (ambiguous month/day)" do
       let(:str) { "50-02-03" }
 
       it "returns day month year (with default options)" do
@@ -72,7 +72,7 @@ RSpec.describe Emendate::AllShortMdyAnalyzer do
       end
     end
 
-    context "with 90-31-29 (invalid)" do
+    context "with ##-##-## (invalid)" do
       let(:str) { "90-31-29" }
 
       it "raises error" do

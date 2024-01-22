@@ -10,7 +10,7 @@ RSpec.describe Emendate::DateSegmenter do
   let(:types) { result.types }
   let(:warnings) { result.warnings }
 
-  context "with 1932 and 1942 or 1948-1949" do
+  context "with #### and #### or ####-####" do
     let(:string) { "1932 and 1942 or 1948-1949" }
 
     it "fails" do
@@ -18,7 +18,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 2020, Feb 15" do
+  context "with ####, MON ##" do
     let(:string) { "2020, Feb 15" }
 
     it "segments as expected" do
@@ -27,7 +27,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 1997/98" do
+  context "with ####/##", :unambiguous_year_year do
     let(:string) { "1997/98" }
 
     it "segments as expected" do
@@ -36,7 +36,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 1987, around April 13" do
+  context "with ####, around MONTH ##" do
     let(:string) { "1987, around April 13" }
 
     it "segments as expected" do
@@ -45,7 +45,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 1968-Mar" do
+  context "with ####-MON" do
     let(:string) { "1968-Mar" }
 
     it "segments as expected" do
@@ -54,7 +54,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 12-2011" do
+  context "with ##-####", :unambiguous_month_year do
     let(:string) { "12-2011" }
 
     it "segments as expected" do
@@ -63,7 +63,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 2000 May -June" do
+  context "with #### MONTH -MONTH" do
     let(:string) { "2000 May -June" }
 
     it "segments as expected" do
@@ -73,7 +73,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 1932-1942 or 1948-1949" do
+  context "with ####-#### or ####-####" do
     let(:string) { "1932-1942 or 1948-1949" }
 
     it "segments as expected" do
@@ -88,18 +88,36 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with circa 202127" do
+  context "with circa ######", :six_digit, :ambiguous_longyear do
     let(:string) { "circa 202127" }
 
-    it "segments as expected" do
-      expect(types).to eq(%i[year_date_type])
-      expect(warnings.length).to eq(1)
-      expect(result[0].literal).to eq(202127)
-      expect(result.lexeme).to eq(string)
+    context "when max_month_number_handling: :months" do
+      before { Emendate.config.options.max_month_number_handling = :months }
+
+      it "segments as expected" do
+        expect(types).to eq(%i[year_date_type])
+        expect(warnings.length).to eq(1)
+        expect(result[0].literal).to eq(202127)
+        expect(result.lexeme).to eq(string)
+      end
+    end
+
+    context "when max_month_number_handling: :edtf_level_2", skip:
+    "not yet implemented" do
+      before do
+        Emendate.config.options.max_month_number_handling = :edtf_level_2
+      end
+
+      it "segments as expected" do
+        expect(types).to eq(%i[yearseason_date_type])
+        expect(warnings.length).to eq(1)
+        expect(result[0].literal).to eq(202127)
+        expect(result.lexeme).to eq(string)
+      end
     end
   end
 
-  context "with circa 202002" do
+  context "with circa ######", :ambiguous_longyear, :six_digit do
     let(:string) { "circa 202002" }
 
     it "segments as expected" do
@@ -110,7 +128,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with ca. 2002-10" do
+  context "with ca. ####-##", :ambiguous_month_year do
     before { Emendate.config.options.ambiguous_month_year = :as_month }
 
     let(:string) { "ca. 2002-10" }
@@ -123,7 +141,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 2002, summer" do
+  context "with ####, SEASON" do
     let(:string) { "2002, summer" }
 
     it "segments as expected" do
@@ -135,7 +153,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with autumn 2019-2020" do
+  context "with SEASON ####-####" do
     let(:string) { "autumn 2019-2020" }
 
     it "segments as expected" do
@@ -145,7 +163,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with Winter 2019-2020" do
+  context "with SEASON ####-####", :one_winter do
     let(:string) { "Winter 2019-2020" }
 
     it "segments as expected" do
@@ -154,7 +172,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with Winter 2019-2023" do
+  context "with SEASON ####-####", :non_consecutive_years do
     let(:string) { "Winter 2019-2023" }
 
     it "segments as expected" do
@@ -164,7 +182,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 20200229" do
+  context "with ########", :eight_digit, :valid_ymd do
     let(:string) { "20200229" }
 
     it "segments as expected" do
@@ -176,7 +194,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 10000007" do
+  context "with ########", :eight_digit, :invalid_ymd do
     let(:string) { "10000007" }
 
     it "segments as expected" do
@@ -187,7 +205,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 20200229-20200304" do
+  context "with ########-########", :eight_digit, :valid_ymd do
     let(:string) { "20200229-20200304" }
 
     it "segments as expected" do
@@ -197,7 +215,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with after 1815" do
+  context "with after ####" do
     let(:string) { "after 1815" }
 
     it "segments as expected" do
@@ -207,7 +225,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with early 19th c." do
+  context "with early ##ORD c." do
     let(:string) { "early 19th c." }
 
     it "segments as expected" do
@@ -217,7 +235,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with mid-19th century" do
+  context "with mid-##ORD century" do
     let(:string) { "mid-19th century" }
 
     it "segments as expected" do
@@ -227,7 +245,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with before early 19th c." do
+  context "with before early ##ORD c." do
     let(:string) { "before early 19th c." }
 
     it "segments as expected" do
@@ -238,7 +256,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 1950s early" do
+  context "with ####s early" do
     let(:string) { "1950s early" }
 
     it "segments as expected" do
@@ -248,7 +266,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 17th or 18th century" do
+  context "with ##ORD or ##ORD century" do
     let(:string) { "17th or 18th century" }
 
     it "segments as expected" do
@@ -258,7 +276,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with late 19th to early 20th century" do
+  context "with late ##ORD to early ##ORD century" do
     let(:string) { "late 19th to early 20th century" }
 
     it "segments as expected" do
@@ -270,7 +288,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 2-15-20" do
+  context "with #-##-##" do
     let(:string) { "2-15-20" }
 
     it "returns yearmonthday_date_type" do
@@ -279,7 +297,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 1974-present" do
+  context "with ####-present" do
     let(:string) { "1974-present" }
 
     it "segments as expected" do
@@ -290,7 +308,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 231 BCE" do
+  context "with ### ERA_BCE" do
     let(:string) { "231 BCE" }
 
     it "segments as expected" do
@@ -300,7 +318,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with 251 BCE to 231 BCE" do
+  context "with ### ERA_BCE to ### ERA_BCE" do
     let(:string) { "251 BCE to 231 BCE" }
 
     it "segments as expected" do
@@ -311,7 +329,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with [ca. 2000s] treated as millennium" do
+  context "with [ca. ####s]", :ambiguous_decade_century_millennium do
     before do
       Emendate.config.options.pluralized_date_interpretation = :broad
     end
@@ -324,7 +342,7 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
-  context "with Spring 20" do
+  context "with SEASON ##", :short_year do
     before do
       Emendate.config.options.two_digit_year_handling = :coerce
       Emendate.config.options.ambiguous_year_rollback_threshold = 50
