@@ -55,8 +55,9 @@ module Emendate
     # direction
     # @param type [Symbol]
     # @param direction [:forward, :backward]
-    def collapse_all_matching_type(type:, dir:)
-      result.when_type(type)
+    def collapse_all_matching_type(type:, dir:, segs: nil)
+      target = segs ||= result
+      target.when_type(type)
         .reverse_each { |seg| collapse_segment(seg, dir) }
     end
 
@@ -160,9 +161,22 @@ module Emendate
     # @return [Emendate::Segment, nil]
     def previous_segment(seg) = result[index_of(seg) - 1]
 
-    # @param seg [Emendate::Segment]
-    # @return [Emendate::Segment, nil]
+    # @param seg [Segment]
+    # @return [Segment, nil]
     def next_segment(seg) = result[index_of(seg) + 1]
+
+    # @param pattern [Array<Symbol>]
+    # @param sep [Symbol]
+    # @return [SegmentSets::SegmentSet] if resulting pattern matches
+    # @return [nil] otherwise
+    # @example When pattern matches the working result
+    #   extract_pattern_separated_by(%i[number1or2 number1or2 number4], :slash)
+    #   #=> #<Emendate::SegmentSets::SegmentSet:6120
+    #         segments: [:number1or2, :slash, :number1or2, :slash, :number4]>
+    def extract_pattern_separated_by(pattern, sep)
+      newset = result.extract(pattern.flat_map { |seg| [seg, sep] }[0..-2])
+      newset unless newset.empty?
+    end
 
     # @param seg [Emendate::Segment]
     # @param dummytype [Symbol]
@@ -204,7 +218,14 @@ module Emendate
     end
 
     # @param seg [Emendate::Segment]
+    # @param dir [:next, :prev]
     # @return [Integer] index after given segment
-    def ins_pt(seg) = result.find_index(seg) + 1
+    def ins_pt(seg, dir = :next)
+      case dir
+      when :next then result.find_index(seg) + 1
+      when :prev then result.find_index(seg) - 1
+      else raise Emendate::Error, "dir must be :next or :prev"
+      end
+    end
   end
 end

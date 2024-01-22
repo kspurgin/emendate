@@ -365,6 +365,16 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
+  context "with mid ####s to ##/##/####" do
+    let(:string) { "mid 1800s to 2/23/1921" }
+
+    it "tags", skip: "tmp" do
+      expect(types).to eq(%i[year month range_indicator year month])
+      expect(result.lexeme).to eq(string)
+      expect(result.map(&:literal).compact).to eq([2004, 6, 2006, 8])
+    end
+  end
+
   context "with MON ##", :short_year do
     let(:string) { "Mar 19" }
 

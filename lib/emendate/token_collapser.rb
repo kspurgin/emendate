@@ -14,6 +14,8 @@ module Emendate
       end
     end
 
+    DATE_SEPARATORS = %i[hypen slash]
+
     def initialize(tokens)
       @result = Emendate::SegmentSets::SegmentSet.new.copy(tokens)
     end
@@ -62,6 +64,10 @@ module Emendate
 
     def partial_match_collapsers
       case result.type_string
+      when /.*number1or2 (hyphen|slash) number1or2 \1 number4.*/
+        proc do
+          remove_date_separators_in_subset(%i[number1or2 number1or2 number4])
+        end
       when /.*month number1or2 comma number4.*/
         proc do
           segs = result.extract(
@@ -118,6 +124,21 @@ module Emendate
 
     def collapse_forward
       collapse_token_pair_forward(result[0], result[1])
+    end
+
+    def remove_date_separators_in_subset(pattern)
+      segs = DATE_SEPARATORS.map do |sep|
+        extract_pattern_separated_by(pattern, sep)
+      end.compact
+        .first
+      return unless segs
+
+      insertion = ins_pt(segs[0], :prev)
+
+      cleaned = collapse_all_matching_type(
+        type: segs[1].type,
+        dir: :backward
+      )
     end
 
     def collapse_single_element_parenthetical
