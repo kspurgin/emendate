@@ -16,7 +16,8 @@ RSpec.describe Emendate::FormatStandardizer do
       let(:string) { "1984-?" }
 
       it "replaces question with rangedateopen_date_type" do
-        expect(result).to eq(%i[number4 hyphen rangedateendunknown_date_type])
+        expect(result).to eq(%i[number4 range_indicator
+          rangedateendunknown_date_type])
         expect(subject.lexeme).to eq(string)
       end
     end

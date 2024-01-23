@@ -114,17 +114,11 @@ module Emendate
         sources.empty? ? "" : sources.lexeme
       end
 
-      # Override in date types with non-year level of granularity
       # @return [String] representation of earliest year
-      def earliest_at_granularity
-        earliest.year
-      end
+      def earliest_at_granularity = at_granularity(:earliest)
 
-      # Override in date types with non-year level of granularity
       # @return [String] representation of latest year
-      def latest_at_granularity
-        latest.year
-      end
+      def latest_at_granularity = at_granularity(:latest)
 
       # @return [String]
       def orig_string = sources.first.orig_string
@@ -232,6 +226,35 @@ module Emendate
         unless segs.length == 1
           raise Emendate::DateTypeCreationError, "#{self.class}: Expected "\
             "one #{type} date part. Found #{segs.length}"
+        end
+      end
+
+      def at_granularity(point)
+        gl = get_granularity_level(point)
+        return unless gl
+
+        full = send(point)
+        case gl
+        when :year
+          full.year.to_s
+        when :year_month
+          "#{full.year}-#{full.month.to_s.rjust(2, "0")}"
+        when :year_season
+        when :year_month_day
+          "#{full.year}-#{full.month.to_s.rjust(2, "0")}-"\
+            "#{full.day.to_s.rjust(2, "0")}"
+        end
+      end
+
+      def get_granularity_level(point)
+        return unless granularity_level
+        return granularity_level if granularity_level.is_a?(Symbol)
+
+        case point
+        when :earliest
+          granularity_level[0]
+        when :latest
+          granularity_level[1]
         end
       end
     end

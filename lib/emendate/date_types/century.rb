@@ -13,6 +13,8 @@ module Emendate
       attr_reader :literal
       # @macro set_type_attr
       attr_reader :set_type
+      # @return [:year]
+      attr_reader :granularity_level
 
       # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
@@ -22,22 +24,14 @@ module Emendate
         @set_type = get_set_type
         @literal = set_literal(cent)
         common_setup(binding)
+        @granularity_level = :year
       end
-
-      # @return [:year]
-      def granularity_level = :year
 
       # @return [Date]
       def earliest = Date.new(earliest_year, 1, 1)
 
       # @return [Date]
       def latest = Date.new(latest_year, 12, 31)
-
-      # @return [String]
-      def earliest_at_granularity = earliest.year.to_s
-
-      # @return [String]
-      def latest_at_granularity = latest.year.to_s
 
       # @return [true]
       def range? = true

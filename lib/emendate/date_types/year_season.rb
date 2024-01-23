@@ -37,6 +37,9 @@ module Emendate
         semestral2: {start: [:year, 7, 1], end: [:year, 12, 31]}
       }
 
+      # @return [:year_season]
+      attr_reader :granularity_level
+
       # @param year [Integer]
       # @param season [Integer]
       # @param sources [SegmentSet, Array<Segment>] Segments
@@ -52,6 +55,7 @@ module Emendate
         @seasons = self.class.const_get(
           "#{Emendate.config.options.hemisphere}_seasons".upcase.to_sym
         )
+        @granularity_level = :year_season
       end
 
       # @return [TrueClass]

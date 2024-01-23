@@ -10,6 +10,9 @@ module Emendate
       include Datetypeable
       include YearMonthOrSeasonable
 
+      # @return [:year_month]
+      attr_reader :granularity_level
+
       # @param year [Integer]
       # @param month [Integer]
       # @param sources [SegmentSet, Array<Segment>] Segments
@@ -18,6 +21,7 @@ module Emendate
         @year = year
         @month = month
         common_setup(binding)
+        @granularity_level = :year_month
       end
 
       # @return [TrueClass]

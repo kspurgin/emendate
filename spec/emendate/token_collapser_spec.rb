@@ -27,6 +27,27 @@ RSpec.describe Emendate::TokenCollapser do
       end
     end
 
+    context "with ####-## -? (unknown end)" do
+      let(:string) { "1922-03 -?" }
+
+      it "segments as expected" do
+        expect(subject.lexeme).to eq(string)
+        expect(result).to eq(%i[number4 number1or2 range_indicator
+          unknown_date])
+      end
+    end
+
+    context "with #### MONTH #-#### MON ##" do
+      let(:string) { "2000 June 3-2001 Jan 20" }
+
+      it "tags as expected" do
+        expect(result).to eq(
+          %i[number4 month number1or2 hyphen number4 month number1or2]
+        )
+        expect(subject.lexeme).to eq(string)
+      end
+    end
+
     context "with mid ####s / ##/##/####" do
       let(:string) { "mid 1800s / 2/23/1921" }
 

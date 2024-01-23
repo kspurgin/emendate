@@ -16,22 +16,22 @@ module Emendate
         common_setup(binding)
       end
 
-      # @return [NilClass]
+      # @return [nil]
       def earliest
         nil
       end
 
-      # @return [NilClass]
+      # @return [nil]
       def latest
         nil
       end
 
-      # @return [NilClass]
+      # @return [nil]
       def earliest_at_granularity
         nil
       end
 
-      # @return [NilClass]
+      # @return [nil]
       def latest_at_granularity
         nil
       end
@@ -46,7 +46,7 @@ module Emendate
         end
       end
 
-      # @return [NilClass]
+      # @return [nil]
       def literal
         nil
       end

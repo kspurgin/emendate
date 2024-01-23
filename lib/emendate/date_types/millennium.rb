@@ -11,6 +11,8 @@ module Emendate
       attr_reader :literal
       # @return [:plural, :uncertainty_digits]
       attr_reader :millennium_type
+      # @return [:year]
+      attr_reader :granularity_level
 
       # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
@@ -18,6 +20,7 @@ module Emendate
         common_setup(binding)
         @millennium_type = get_millennium_type
         @literal = set_literal
+        @granularity_level = :year
       end
 
       def earliest

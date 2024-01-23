@@ -26,8 +26,8 @@ RSpec.describe Emendate::DateTypes::Millennium do
       expect(subject.literal).to eq(2)
       expect(subject.earliest).to eq(Date.new(2000, 1, 1))
       expect(subject.latest).to eq(Date.new(2999, 12, 31))
-      expect(subject.earliest_at_granularity).to eq(2000)
-      expect(subject.latest_at_granularity).to eq(2999)
+      expect(subject.earliest_at_granularity).to eq("2000")
+      expect(subject.latest_at_granularity).to eq("2999")
     end
   end
 
@@ -42,8 +42,8 @@ RSpec.describe Emendate::DateTypes::Millennium do
       expect(subject.literal).to eq(2)
       expect(subject.earliest).to eq(Date.new(2000, 1, 1))
       expect(subject.latest).to eq(Date.new(2999, 12, 31))
-      expect(subject.earliest_at_granularity).to eq(2000)
-      expect(subject.latest_at_granularity).to eq(2999)
+      expect(subject.earliest_at_granularity).to eq("2000")
+      expect(subject.latest_at_granularity).to eq("2999")
     end
   end
 end

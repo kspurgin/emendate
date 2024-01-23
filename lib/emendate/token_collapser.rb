@@ -12,7 +12,7 @@ module Emendate
       end
     end
 
-    DATE_SEPARATORS = %i[hypen slash]
+    DATE_SEPARATORS = %i[hyphen slash]
 
     def initialize(tokens)
       @result = Emendate::SegmentSet.new.copy(tokens)
@@ -94,6 +94,20 @@ module Emendate
         proc { result.collapse_segments_backward(%i[partial hyphen]) }
       when /.*parenthesis_open [^ ]+ parenthesis_close.*/
         proc { collapse_single_element_parenthetical }
+      when /.*hyphen unknown_date.*/
+        proc do
+          segs = result.extract(%i[hyphen unknown_date])
+          result.replace_x_with_derived_new_type(
+            x: segs[0], type: :range_indicator
+          )
+        end
+      when /.*unknown_date hyphen.*/
+        proc do
+          segs = result.extract(%i[unknown_date hyphen])
+          result.replace_x_with_derived_new_type(
+            x: segs[1], type: :range_indicator
+          )
+        end
       end
     end
 
