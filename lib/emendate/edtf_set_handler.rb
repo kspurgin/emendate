@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
-require "emendate/result_editable"
-
 module Emendate
   class EdtfSetHandler
     include Dry::Monads[:result]
     include Dry::Monads::Do.for(:call)
-    include ResultEditable
 
     class << self
       def call(...)
@@ -56,7 +53,7 @@ module Emendate
       return Failure(:invalid_edtf_set) unless inner_valid?
 
       result.add_set_type(type)
-      collapse_enclosing_tokens
+      result.collapse_enclosing_tokens
       Success()
     end
 

@@ -1,11 +1,8 @@
 # frozen_string_literal: true
 
-require "emendate/result_editable"
-
 module Emendate
   class InferredDateHandler
     include Dry::Monads[:result]
-    include ResultEditable
 
     class << self
       def call(...)
@@ -83,7 +80,7 @@ module Emendate
       result.add_qualifier(
         Emendate::Qualifier.new(type: :inferred, precision: :whole)
       )
-      collapse_enclosing_tokens
+      result.collapse_enclosing_tokens
     end
 
     def process_pair(range)
@@ -95,8 +92,8 @@ module Emendate
           result[ind], :single_segment, [result[open], result[close]]
         )
       end
-      collapse_token_pair_backward(result[wrapped.last], result[close])
-      collapse_token_pair_forward(result[open], result[wrapped.first])
+      result.collapse_token_pair_backward(result[wrapped.last], result[close])
+      result.collapse_token_pair_forward(result[open], result[wrapped.first])
     end
 
     def add_qualifier(segment, precision, sources)
@@ -118,41 +115,19 @@ module Emendate
     end
 
     def absorb_open(segment)
-      if at_end?(segment)
-        absorb_backward(segment)
+      if result.is_last_seg?(segment)
+        result.collapse_segment(segment, :backward)
       else
-        absorb_forward(segment)
+        result.collapse_segment(segment, :forward)
       end
     end
 
     def absorb_close(segment)
-      if at_beginning?(segment)
-        absorb_forward(segment)
+      if result.is_first_seg?(segment)
+        result.collapse_segment(segment, :forward)
       else
-        absorb_backward(segment)
+        result.collapse_segment(segment, :backward)
       end
-    end
-
-    def at_beginning?(segment)
-      ind = result.find_index(segment)
-      ind == 0
-    end
-
-    def at_end?(segment)
-      ind = result.find_index(segment)
-      ind == result.length - 1
-    end
-
-    def absorb_forward(segment)
-      ind = result.find_index(segment)
-      nextind = ind + 1
-      collapse_token_pair_forward(result[ind], result[nextind])
-    end
-
-    def absorb_backward(segment)
-      ind = result.find_index(segment)
-      prevind = ind - 1
-      collapse_token_pair_backward(result[prevind], result[ind])
     end
   end
 end

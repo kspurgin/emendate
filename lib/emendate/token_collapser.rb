@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 require "emendate/date_utils"
-require "emendate/result_editable"
 
 module Emendate
   class TokenCollapser
     include Dry::Monads[:result]
-    include ResultEditable
 
     class << self
       def call(...)
@@ -25,7 +23,9 @@ module Emendate
         action = determine_action
         break if action.nil?
 
+        pre = result.types.dup
         action.call
+        break if result.types == pre
       end
       full_match_date_part_collapsers
       Success(result)
@@ -43,7 +43,7 @@ module Emendate
 
     def determine_action
       actions = if result[0].collapsible?
-        proc { collapse_forward }
+        proc { collapse_segment(result[0], :forward) }
       elsif result.any?(&:collapsible?)
         proc { collapse_backward }
       end
@@ -68,26 +68,30 @@ module Emendate
         proc do
           remove_date_separators_in_subset(%i[number1or2 number1or2 number4])
         end
+      when /.*number4 (hyphen|slash) number1or2 \1 number1or2.*/
+        proc do
+          remove_date_separators_in_subset(%i[number4 number1or2 number1or2])
+        end
       when /.*month number1or2 comma number4.*/
         proc do
           segs = result.extract(
             %i[month number1or2 comma number4]
           ).segments
-          collapse_segment(segs[2], :backward)
+          result.collapse_segment(segs[2], :backward)
         end
       when /.*number4 comma month number1or2.*/
         proc do
           segs = result.extract(%i[number4 comma month number1or2]).segments
-          collapse_segment(segs[1], :backward)
+          result.collapse_segment(segs[1], :backward)
         end
       when /.*apostrophe letter_s.*/
-        proc { collapse_segments_forward(%i[apostrophe letter_s]) }
+        proc { result.collapse_segments_forward(%i[apostrophe letter_s]) }
       when /.*apostrophe number1or2.*/
-        proc { collapse_segments_forward(%i[apostrophe number1or2]) }
+        proc { result.collapse_segments_forward(%i[apostrophe number1or2]) }
       when /.*before hyphen.*/
-        proc { collapse_segments_backward(%i[before hyphen]) }
+        proc { result.collapse_segments_backward(%i[before hyphen]) }
       when /.*partial hyphen.*/
-        proc { collapse_segments_backward(%i[partial hyphen]) }
+        proc { result.collapse_segments_backward(%i[partial hyphen]) }
       when /.*parenthesis_open [^ ]+ parenthesis_close.*/
         proc { collapse_single_element_parenthetical }
       end
@@ -111,40 +115,34 @@ module Emendate
         %i[comma hyphen slash].each do |type|
           next unless types.include?(type)
 
-          collapse_all_matching_type(type: type, dir: :backward)
+          result.collapse_all_matching_type(type: type, dir: :backward)
         end
       end
     end
 
     def collapse_backward
       to_collapse = result.segments.reverse.find(&:collapsible?)
-      prev = result[result.find_index(to_collapse) - 1]
-      collapse_token_pair_backward(prev, to_collapse)
-    end
-
-    def collapse_forward
-      collapse_token_pair_forward(result[0], result[1])
+      result.collapse_segment(to_collapse, :backward)
     end
 
     def remove_date_separators_in_subset(pattern)
-      segs = DATE_SEPARATORS.map do |sep|
-        extract_pattern_separated_by(pattern, sep)
+      range = DATE_SEPARATORS.map do |sep|
+        result.range_matching_separated_pattern(pattern, sep)
       end.compact
         .first
-      return unless segs
+      return unless range
 
-      insertion = ins_pt(segs[0], :prev)
-
-      cleaned = collapse_all_matching_type(
-        type: segs[1].type,
-        dir: :backward
+      result.collapse_all_matching_type(
+        type: result[range.first + 1].type,
+        dir: :backward,
+        range: range
       )
     end
 
     def collapse_single_element_parenthetical
       matches = result.type_string
         .match(/.*(parenthesis_open ([^ ]+) parenthesis_close).*/)
-      replace_segtypes_with_new_type(
+      result.replace_segtypes_with_new_type(
         old: matches[1].split(" ").map(&:to_sym),
         new: matches[2].to_sym
       )

@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
-require_relative "result_editable"
-
 module Emendate
   class DateSegmenter
     include DateUtils
     include Dry::Monads[:result]
-    include Emendate::ResultEditable
 
     class << self
       def call(...)
@@ -202,7 +199,7 @@ module Emendate
       year = result[3 + pos]
 
       [prev_yr, ri].each do |seg|
-        replace_x_with_new(
+        result.replace_x_with_new(
           x: seg, new: Emendate::Segment.new(
             type: :dummy, lexeme: seg.lexeme, sources: [seg]
           )
@@ -210,8 +207,8 @@ module Emendate
       end
 
       orig = result[Range.new(pos, pos + 3)]
-      replace_segments_with_new(
-        segments: orig,
+      result.replace_segments_with_new(
+        segs: orig,
         new: Emendate::DateTypes::YearSeason.new(
           year: year.literal,
           season: season.literal,
@@ -415,7 +412,7 @@ module Emendate
     end
 
     def transform_separator(segment)
-      replace_x_with_derived_new_type(x: segment, type: :date_separator)
+      result.replace_x_with_derived_new_type(x: segment, type: :date_separator)
     end
   end
 end

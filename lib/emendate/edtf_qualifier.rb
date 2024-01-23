@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "emendate/result_editable"
-
 module Emendate
   # As per https://www.loc.gov/standards/datetime/, handles the following when
   #   the `:edtf` option is true:
@@ -24,7 +22,6 @@ module Emendate
   #   it was in June, but know it was the 11th.
   class EdtfQualifier
     include Dry::Monads[:result]
-    include ResultEditable
 
     EDTF_CHARS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
       "?", "~", "%", " ", "-", "X", "/", "."]
@@ -96,7 +93,7 @@ module Emendate
       )
       result << qual_seg
       result << num_seg
-      collapse_token_pair_forward(qual_seg, num_seg)
+      result.collapse_segment(qual_seg, :forward)
     end
 
     def leftward_qualify
@@ -108,7 +105,7 @@ module Emendate
       ))
       result << num_seg
       result << qual_seg
-      collapse_token_pair_backward(num_seg, qual_seg)
+      result.collapse_segment(qual_seg, :backward)
     end
 
     def qualifier_type(seg)

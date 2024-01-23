@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
 require "forwardable"
+require_relative "segment_set_editable"
+require_relative "segment_set_queryable"
 
 module Emendate
   # @todo Get rid of norm
   class SegmentSet
+    include SegmentSetEditable
+    include SegmentSetQueryable
     extend Forwardable
 
     attr_reader :orig_string, :norm, :segments,

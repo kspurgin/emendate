@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative "date_utils"
-require_relative "result_editable"
 
 module Emendate
   # Makes the format of date patterns more consistent.
@@ -17,7 +16,6 @@ module Emendate
   class FormatStandardizer
     include DateUtils
     include Dry::Monads[:result]
-    include ResultEditable
 
     class << self
       def call(...)
@@ -34,11 +32,13 @@ module Emendate
         function = determine_standardizer
         break if function.nil?
 
+        pre = result.types.dup
         function.call
         TokenCollapser.call(result).either(
           ->(success) { @result = success },
           ->(failure) { next }
         )
+        break if result.types == pre
       end
       Success(result)
     end
@@ -69,12 +69,12 @@ module Emendate
       when %i[month number1or2]
         proc do
           yr = ShortYearHandler.call(result[1])
-          replace_segments_with_new(segments: [result[1]], new: yr)
+          result.replace_segments_with_new(segs: [result[1]], new: yr)
         end
       when %i[partial range_indicator partial number1or2 century]
         proc { copy_number_century_after_first_partial }
       when %i[partial range_indicator partial number4 letter_s]
-        proc { copy_number_s_after_first_partial }
+        proc { add_dummy_number_s_after_first_partial }
       end
     end
 
@@ -116,11 +116,11 @@ module Emendate
       when %i[month month number4]
         proc { add_year_after_first_month }
       when %i[month number1or2 month number1or2 number4]
-        proc { add_year_after_first_number1or2 }
+        proc { add_dummy_year_after_first_number1or2 }
       when %i[month number1or2 number1or2 number4]
         proc do
-          add_year_after_first_number1or2
-          add_month_before_second_number1or2
+          add_dummy_year_after_first_number1or2
+          add_dummy_month_before_second_number1or2
         end
       when %i[number4 month month]
         proc do
@@ -135,40 +135,35 @@ module Emendate
       century = result[-1].dup
       century.reset_lexeme
       centuryless = result.find { |t| t.type == :number1or2 }
-      ins_pt = result.find_index(centuryless) + 1
-      result.insert(ins_pt, century)
+      result.insert(result.ins_pt(centuryless), century)
     end
 
-    def add_month_before_second_number1or2
+    def add_dummy_month_before_second_number1or2
       month = result.when_type(:month)[0].dup
       month.reset_lexeme
       day2 = result.when_type(:number1or2)[1]
-      ins_pt = result.find_index(day2)
-      result.insert(ins_pt, month)
+      result.insert(result.ins_pt(day2, :prev), month)
     end
 
     def add_year_after_first_month
       yr = result.when_type(:number4)[0].dup
       yr.reset_lexeme
       month1 = result.when_type(:month)[0]
-      ins_pt = result.find_index(month1) + 1
-      result.insert(ins_pt, yr)
+      result.insert(result.ins_pt(month1), yr)
     end
 
     def add_year_after_second_month
       yr = result.when_type(:year)[0].dup
       yr.reset_lexeme
       month2 = result.when_type(:month)[1]
-      ins_pt = result.find_index(month2) + 1
-      result.insert(ins_pt, yr)
+      result.insert(result.ins_pt(month2), yr)
     end
 
-    def add_year_after_first_number1or2
+    def add_dummy_year_after_first_number1or2
       yr = result.when_type(:number4)[0].dup
       yr.reset_lexeme
       day1 = result.when_type(:number1or2)[0]
-      ins_pt = result.find_index(day1) + 1
-      result.insert(ins_pt, yr)
+      result.insert(result.ins_pt(day1), yr)
     end
 
     def copy_number_century_after_first_partial
@@ -186,21 +181,20 @@ module Emendate
     def copy_era_after_first_year
       n1, _h, _n2, era = result.extract(%i[number4 hyphen number4 era_bce])
         .segments
-      ins_pt = result.find_index(n1) + 1
       newseg = era.dup
       newseg.reset_lexeme
-      result.insert(ins_pt, newseg)
+      result.insert(result.ins_pt(n1), newseg)
     end
 
-    def copy_number_s_after_first_partial
+    def add_dummy_number_s_after_first_partial
       decade = result.extract(%i[number4 letter_s]).segments
       p = result.extract(%i[partial]).segments[0]
-      ins_pt = result.find_index(p) + 1
+      inspt = result.ins_pt(p)
       decade.each do |c|
         newseg = c.dup
         newseg.reset_lexeme
-        result.insert(ins_pt, newseg)
-        ins_pt += 1
+        result.insert(inspt, newseg)
+        inspt += 1
       end
     end
 
@@ -215,7 +209,7 @@ module Emendate
           type: :range_indicator,
           sources: [indicator]
         )
-        replace_x_with_new(x: indicator, new: new_ind)
+        result.replace_x_with_new(x: indicator, new: new_ind)
       end
       result << Emendate::DateTypes::RangeDateUnknownOrOpen.new(
         category: category, point: :end, sources: nil
@@ -237,7 +231,7 @@ module Emendate
     end
 
     def convert_year(segment)
-      replace_x_with_derived_new_type(x: segment, type: :year)
+      result.replace_x_with_derived_new_type(x: segment, type: :year)
     end
 
     # @todo simplify with result_editable methods?
@@ -254,13 +248,13 @@ module Emendate
 
     def remove_post_year_hyphen
       year, hyphen = result.extract(%i[number4 hyphen]).segments
-      collapse_token_pair_backward(year, hyphen)
+      result.collapse_token_pair_backward(year, hyphen)
     end
 
     def remove_time_parts
       t = Emendate::Segment.new(type: :time, sources: time_parts)
-      replace_segments_with_new(segments: time_parts, new: t)
-      collapse_last_token
+      result.replace_segments_with_new(segs: time_parts, new: t)
+      result.collapse_last_token
     end
 
     def time_parts
@@ -294,7 +288,7 @@ module Emendate
       num3 = result.when_type(:number3)[0]
       udigits = result.when_type(:uncertainty_digits)[0]
       decade = Emendate::DateTypes::Decade.new(sources: [num3, udigits])
-      replace_segments_with_new(segments: [num3, udigits], new: decade)
+      result.replace_segments_with_new(segs: [num3, udigits], new: decade)
     end
 
     def open_start
@@ -302,7 +296,7 @@ module Emendate
       openstart = Emendate::DateTypes::RangeDateUnknownOrOpen.new(
         category: :open, point: :start, sources: [firsttoken]
       )
-      replace_x_with_new(x: firsttoken, new: openstart)
+      result.replace_x_with_new(x: firsttoken, new: openstart)
     end
 
     def open_end
@@ -320,29 +314,30 @@ module Emendate
         point: :end,
         sources: [lasttoken]
       )
-      replace_x_with_new(x: lasttoken, new: openend)
+      result.replace_x_with_new(x: lasttoken, new: openend)
     end
 
     def replace_c_with_century
       _yr, c = result.extract(%i[number1or2 letter_c]).segments
-      replace_x_with_derived_new_type(x: c, type: :century)
+      result.replace_x_with_derived_new_type(x: c, type: :century)
     end
 
     def replace_slash_with_hyphen
       slash = result.when_type(:slash)[0]
       ht = Emendate::Segment.new(type: :hyphen, lexeme: slash.lexeme)
-      replace_x_with_new(x: slash, new: ht)
+      result.replace_x_with_new(x: slash, new: ht)
     end
 
     def remove_ending_dot_zero
       zero = result.segments[-1]
       dot = result.segments[-2]
-      previous = result.segments[-3]
+      previous = result.previous_segment(dot)
       derived = Emendate::Segment.new(
         type: previous.type,
         sources: [previous, dot, zero]
       )
-      replace_segments_with_new(segments: [previous, dot, zero], new: derived)
+      result.replace_segments_with_new(segs: [previous, dot, zero],
+        new: derived)
     end
 
     def remove_ce_eras
@@ -353,7 +348,7 @@ module Emendate
           collapse_first_token
         else
           prev = ce_ind - 1
-          collapse_token_pair_backward(result[prev], ce)
+          result.collapse_token_pair_backward(result[prev], ce)
         end
       end
     end
