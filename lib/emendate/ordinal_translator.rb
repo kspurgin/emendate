@@ -3,7 +3,6 @@
 module Emendate
   class OrdinalTranslator
     include Dry::Monads[:result]
-    include Emendate::ResultEditable
 
     class << self
       def call(...)
@@ -19,7 +18,7 @@ module Emendate
       if result[0].type == :ordinal_indicator
         result.warnings << "Ordinal indicator unexpectedly appears at "\
           "beginning of date string"
-        collapse_token_pair_forward(result[0], result[1])
+        result.collapse_segment(result[0], :forward)
       end
 
       ois = result.when_type(:ordinal_indicator)
@@ -28,12 +27,12 @@ module Emendate
       return Success(result) if ois.empty?
 
       ois.each do |oi|
-        prev = previous(oi)
+        prev = result.previous_segment(oi)
         unless prev.type == :number1or2
           result.warnings << "Ordinal indicator expected after :number1or2. "\
             "Found after :#{prev.type}"
         end
-        collapse_token_pair_backward(prev, oi)
+        result.collapse_segment(oi, :backward)
       end
 
       Success(result)
@@ -42,11 +41,5 @@ module Emendate
     private
 
     attr_reader :result
-
-    def previous(ord_ind)
-      oi_ind = result.find_index(ord_ind)
-      prev_ind = oi_ind - 1
-      result[prev_ind]
-    end
   end
 end

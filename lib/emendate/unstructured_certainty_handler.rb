@@ -1,11 +1,8 @@
 # frozen_string_literal: true
 
-require "emendate/result_editable"
-
 module Emendate
   class UnstructuredCertaintyHandler
     include Dry::Monads[:result]
-    include ResultEditable
 
     class << self
       def call(...)
@@ -90,9 +87,9 @@ module Emendate
 
       case dir
       when :forward
-        collapse_token_pair_forward(seg, target)
+        result.collapse_segment(seg, :forward)
       when :backward
-        collapse_token_pair_backward(target, seg)
+        result.collapse_segment(seg, :backward)
       end
     end
 

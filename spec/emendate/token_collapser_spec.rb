@@ -30,7 +30,7 @@ RSpec.describe Emendate::TokenCollapser do
     context "with mid ####s / ##/##/####" do
       let(:string) { "mid 1800s / 2/23/1921" }
 
-      it "removes slashes in second date", skip: "tmp" do
+      it "removes slashes in second date, but keeps range indicating slash" do
         expect(result).to eq(%i[partial number4 letter_s slash
           number1or2 number1or2 number4])
         expect(subject.lexeme).to eq(string)

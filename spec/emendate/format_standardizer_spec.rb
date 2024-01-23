@@ -89,7 +89,7 @@ RSpec.describe Emendate::FormatStandardizer do
     context "with MONTH #- MONTH #, ####" do
       let(:string) { "June 1- July 4, 2000" }
 
-      it "adds year after first month/day" do
+      it "adds dummy year after first month/day" do
         expect(subject.lexeme).to eq(string)
         expect(result).to eq(
           %i[month number1or2 number4 hyphen month number1or2 number4]
@@ -100,7 +100,7 @@ RSpec.describe Emendate::FormatStandardizer do
     context "with MONTH #-##, ####" do
       let(:string) { "June 3-15, 2000" }
 
-      it "adds year after first month/day; adds month before day/year" do
+      it "adds dummy year and month" do
         expect(subject.lexeme).to eq(string)
         expect(result).to eq(
           %i[month number1or2 number4 hyphen month number1or2 number4]

@@ -3,13 +3,11 @@
 require "emendate/date_types/year_month_day"
 require "emendate/date_utils"
 require "emendate/month_day_analyzer"
-require "emendate/result_editable"
 require "emendate/short_year_handler"
 
 module Emendate
   class AllShortMdyAnalyzer
     include DateUtils
-    include ResultEditable
 
     class << self
       def call(tokens) = new(tokens).call
@@ -97,12 +95,12 @@ module Emendate
       if type == :year
         transform_year(part)
       else
-        replace_x_with_date_part_type(x: part, date_part_type: type)
+        result.replace_x_with_date_part_type(x: part, date_part_type: type)
       end
     end
 
     def transform_year(part)
-      replace_x_with_new(
+      result.replace_x_with_new(
         x: part,
         new: Emendate::Segment.new(type: :year, literal: expand_year(part),
           sources: [part])
