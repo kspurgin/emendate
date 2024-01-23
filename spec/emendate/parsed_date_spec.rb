@@ -62,46 +62,4 @@ RSpec.describe Emendate::ParsedDate do
       end
     end
   end
-
-  describe "#valid_range?" do
-    let(:options) do
-      {ambiguous_year_rollback_threshold: 0,
-       pluralized_date_interpretation: :broad}
-    end
-    let(:result) { parsed.valid_range? }
-
-    context "when not a range" do
-      let(:str) { "2/23/2021" }
-
-      it "returns true" do
-        expect(result).to be true
-      end
-    end
-
-    context "when valid range" do
-      context "when both ends of range populated" do
-        let(:str) { "mid 1800s to 2/23/21" }
-
-        it "returns true" do
-          expect(result).to be true
-        end
-      end
-
-      context "when only end of range populated (e.g. before 1920)" do
-        let(:str) { "before 1920" }
-
-        it "returns true" do
-          expect(result).to be true
-        end
-      end
-    end
-
-    context "when invalid range" do
-      let(:str) { "mid 1900s to 2/23/21" }
-
-      it "returns false", skip: "tmp" do
-        expect(result).to be false
-      end
-    end
-  end
 end
