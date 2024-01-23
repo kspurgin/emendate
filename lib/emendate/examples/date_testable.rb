@@ -27,8 +27,12 @@ module Emendate
         case name
         when "date_certainty"
           example.processed.result.dates
-            .map { |date| date.send(:certainty) }
-            .map { |arr| arr.empty? ? "nilValue" : arr.sort.join(";") }
+            .map { |date| date.send(:qualifiers) }
+            .map do |arr|
+            arr.empty? ? "nilValue" : arr.map(&:for_test)
+              .sort
+              .join(";")
+          end
             .join("|")
 
         else

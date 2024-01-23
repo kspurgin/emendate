@@ -17,5 +17,9 @@ module Emendate
         "lexeme=#{lexeme.inspect}>"
     end
     alias_method :inspect, :to_s
+
+    def for_test
+      "#{type}, #{precision}"
+    end
   end
 end

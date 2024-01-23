@@ -13,7 +13,7 @@
 "19th century ?","19th century ?","##ORD century ?","century_granularity;uncertain",,,"0","1801","1900","1801-01-01","1900-12-31","uncertain",,"na","1801?/1900?",
 "19th century [?]","19th century [?]","##ORD century [?]","century_granularity;uncertain",,,"0","1801","1900","1801-01-01","1900-12-31","uncertain",,"na","1801?/1900?",
 "19th century, est.","19th century, est.","##ORD century, est.","century_granularity;approximate","csws",,"0","1801","1900","1801-01-01","1900-12-31","approximate",,"na","1801~/1900~",
-"2002 (?)","2002 (?)","#### (?)","uncertain;four_digit_year;year_granularity","ba;ccp",,"0","2002","2002","2002-01-01","2002-12-31","uncertain",,"na","2002?","2002 (uncertain)"
+"2002 (?)","2002 (?)","#### (?)","uncertain;four_digit_year;year_granularity","ba;ccp",,"0","2002","2002","2002-01-01","2002-12-31","uncertain, whole",,"na","2002?","2002 (uncertain)"
 "2002-2005 (?)","2002-2005 (?)","####-#### (?)","uncertain;four_digit_year;year_granularity;range","ba",,"0","2002","2005","2002-01-01","2005-12-31","uncertain",,"na","2002/2005?","2002 - 2005 (uncertain)"
 "2002?","2002?","####?","edtf;edtf1;uncertain;four_digit_year;year_granularity","ba",,"0","2002","2002","2002-01-01","2002-12-31","uncertain",,"na","2002?","2002 (uncertain)"
 "2004-%06-11","2004-%06-11","####-%##-##","edtf;edtf2;month_uncertain_and_approximate",,,"0","2004-06-11","2004-06-11","2004-06-11","2004-06-11",,,"na","2004-%06-11",
@@ -24,8 +24,8 @@
 "2004-06~-11","2004-06~-11","####-##~-##","edtf;edtf2;year_and_month_approximate",,,"0","2004-06-01","2004-06-01","2004-06-01","2004-06-01",,,"na","2004-06~-11",
 "2004?-06-11","2004?-06-11","####?-##-##","edtf;edtf2;year_uncertain",,,"0","2004-06-01","2004-06-01","2004-06-01","2004-06-01",,,"na","2004?-06-11",
 "2020, possibly March","2020, possibly March","####, possibly MONTH","year_month_granularity;uncertain_month","ccp",,"0","2020-03","2020-03","2020-03-01","2020-03-31",,,"na","2020-?03","2020-03 (month uncertain)"
-"approximately 1895","approximately 1895","approximately ####","approximate","ccp",,"0","1895","1895","1895-01-01","1895-12-31","approximate",,"na","1895~","1895 (approximate)"
-"around 1917","around 1917","around ####","approximate","ccp",,"0","1917","1917","1917-01-01","1917-12-31","approximate",,"na","1917~","1917 (approximate)"
+"approximately 1895","approximately 1895","approximately ####","approximate","ccp",,"0","1895","1895","1895-01-01","1895-12-31","approximate, whole",,"na","1895~","1895 (approximate)"
+"around 1917","around 1917","around ####","approximate","ccp",,"0","1917","1917","1917-01-01","1917-12-31","approximate, whole",,"na","1917~","1917 (approximate)"
 "c 2002","c 2002","c ####","approximate;four_digit_year;year_granularity",,,"0","2002","2002","2002-01-01","2002-12-31","approximate",,"na","2002~",
 "c. 1997-1998","c. 1997-1998","c. ####-####","approximate",,,"0","1997","1998","1997-01-01","1998-12-31","approximate",,"na","1997~/1998",
 "c. 2002","c. 2002","c. ####","approximate;four_digit_year;year_granularity",,,"0","2002","2002","2002-01-01","2002-12-31","approximate",,"na","2002~","2002 (approximate)"
@@ -309,4 +309,4 @@
 "Y170002","Y170002","y######","edtf;edtf1;letter_prefixed_year",,,"0",,,"170002-01-01","170002-12-31",,,"Unprocessable string",,
 "Y171010000S3","Y171010000S3","y#########s#","currently_unparseable;edtf;edtf2;letter_prefixed_year;significant_digits",,,"0","nilValue","nilValue","nilValue","nilValue",,,"Untokenizable sequences: 171010000",,
 "Y3388E2S3","Y3388E2S3","y####e#s#","currently_unparseable;edtf;edtf2;exponential_year;letter_prefixed_year;significant_digits",,,"0","nilValue","nilValue","nilValue","nilValue",,,"Unprocessable string",,
-"1947/ca. 1965","1947/ca. 1965","####/ca. ####","approximate;year_granularity;range","ccp",,"0","1947","1965","1947-01-01","1965-12-31","approximate_end",,"na",,
+"1947/ca. 1965","1947/ca. 1965","####/ca. ####","approximate;year_granularity;range","ccp",,"0","1947","1965","1947-01-01","1965-12-31","approximate, end",,"na",,
