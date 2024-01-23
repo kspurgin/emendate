@@ -368,10 +368,10 @@ RSpec.describe Emendate::DatePartTagger do
   context "with mid ####s to ##/##/####" do
     let(:string) { "mid 1800s to 2/23/1921" }
 
-    it "tags", skip: "tmp" do
-      expect(types).to eq(%i[year month range_indicator year month])
+    it "tags" do
+      expect(types).to eq(%i[partial decade range_indicator month day year])
       expect(result.lexeme).to eq(string)
-      expect(result.map(&:literal).compact).to eq([2004, 6, 2006, 8])
+      expect(result.map(&:literal).compact).to eq([:mid, 1800, 2, 23, 1921])
     end
   end
 
