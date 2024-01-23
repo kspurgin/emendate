@@ -72,8 +72,9 @@ CSV.open(outfile, "a") do |csvout|
     if processor.errors.empty?
       unless processor.result.dates.empty?
         prep[:date_ct] = processor.result.date_count
-        prep[:certainty] =
-          processor.result.compile_date_info(method: :certainty, delim: "; ")
+        prep[:certainty] = processor.result
+          .dates
+          .map { |date| date.qualifiers.map(&:for_test).join(";") }
         prep[:start_full] =
           processor.result.compile_date_info(method: :date_start_full,
             delim: "; ")
