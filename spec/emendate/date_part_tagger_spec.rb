@@ -284,6 +284,27 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
+  context "with ####-##-##", :unambiguous_day_month do
+    let(:string) { "2000-03-29" }
+
+    it "tags parts" do
+      expect(types).to eq(%i[year month day])
+      expect(result.lexeme).to eq(string)
+      expect(result.map(&:literal).compact).to eq([2000, 3, 29])
+    end
+  end
+
+  context "with ####-##-##", :ambiguous_day_month do
+    before { Emendate.config.options.ambiguous_month_day = :as_day_month }
+    let(:string) { "2000-03-02" }
+
+    it "tags as ymd regardless, due to order" do
+      expect(types).to eq(%i[year month day])
+      expect(result.lexeme).to eq(string)
+      expect(result.map(&:literal).compact).to eq([2000, 3, 2])
+    end
+  end
+
   context "with ####-##", :ambiguous_month_year do
     let(:string) { "2003-04" }
 
