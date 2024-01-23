@@ -9,9 +9,7 @@ module Emendate
     class RangeDateUnknownOrOpen
       include Datetypeable
 
-      # @param sources [SegmentSet] Segments included in
-      #   the date type
-      attr_reader :sources
+      attr_reader :granularity_level
 
       # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
@@ -24,7 +22,10 @@ module Emendate
         @use_date = Emendate.options.send(
           :"open_unknown_#{point}_date"
         )
+        @granularity_level = nil
       end
+
+      def set_granularity(val) = (@granularity_level = val)
 
       # @return [Date] if point == :start
       # @return [NilClass] if point == :end
@@ -37,14 +38,6 @@ module Emendate
       def latest
         use_date if point == :end
       end
-
-      # Returns `nil` because the actual granularity used should match the
-      # granularity of the start/end date this one is paired with in a range
-      # @return [NilClass]
-      def earliest_at_granularity = nil
-
-      # (see #earliest_at_granularity)
-      def latest_at_granularity = nil
 
       # @return [Integer]
       def literal = use_date.strftime("%Y%m%d").to_i

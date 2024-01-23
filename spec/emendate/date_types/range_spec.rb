@@ -12,7 +12,15 @@ RSpec.describe Emendate::DateTypes::Range do
     )
   end
 
-  context "with 1900 to 1985" do
+  context "with ####" do
+    let(:str) { "1900" }
+
+    it "raises error" do
+      expect { range }.to raise_error(Emendate::DateTypeCreationError)
+    end
+  end
+
+  context "with #### to ####" do
     let(:str) { "1900 to 1985" }
 
     it "returns as expected" do
@@ -22,7 +30,7 @@ RSpec.describe Emendate::DateTypes::Range do
     end
   end
 
-  context "with 1922-3" do
+  context "with ####-#" do
     let(:str) { "1922-3" }
 
     it "returns as expected" do
@@ -32,13 +40,29 @@ RSpec.describe Emendate::DateTypes::Range do
     end
   end
 
-  context "with 1922-? (unknown end)" do
-    let(:str) { "1922-?" }
+  context "with ####/ca. ####" do
+    let(:str) { "1947/ca. 1965" }
 
     it "returns as expected" do
-      expect(range.earliest).to eq(Date.new(1922, 1, 1))
+      expect(range.earliest).to eq(Date.new(1947, 1, 1))
+      expect(range.latest).to eq(Date.new(1965, 12, 31))
+      expect(range.lexeme).to eq(str)
+      expect(range.qualifiers.map(&:type)).to eq([:approximate])
+      expect(range.qualifiers.map(&:precision)).to eq([:end])
+    end
+  end
+
+  context "with ####-## -? (unknown end)" do
+    let(:str) { "1922-03 -?" }
+
+    it "returns as expected" do
+      expect(range.earliest).to eq(Date.new(1922, 3, 1))
       expect(range.latest).to eq(Date.new(2999, 12, 31))
       expect(range.lexeme).to eq(str)
+      expect(range.start_granularity).to eq(:year_month)
+      expect(range.end_granularity).to eq(range.start_granularity)
+      expect(range.earliest_at_granularity).to eq("1922-03")
+      expect(range.latest_at_granularity).to eq("2999-12")
     end
 
     context "with custom unknown end range" do
@@ -49,7 +73,7 @@ RSpec.describe Emendate::DateTypes::Range do
       after(:context) { Emendate.reset_config }
 
       it "returns as expected" do
-        expect(range.earliest).to eq(Date.new(1922, 1, 1))
+        expect(range.earliest).to eq(Date.new(1922, 3, 1))
         expect(range.latest).to eq(Date.new(2050, 1, 1))
         expect(range.lexeme).to eq(str)
       end

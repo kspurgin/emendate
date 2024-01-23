@@ -13,6 +13,8 @@ module Emendate
       attr_reader :literal
       # @return [SegmentSet]
       attr_reader :sources
+      # @return [:year]
+      attr_reader :granularity_level
 
       # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
@@ -20,6 +22,7 @@ module Emendate
         common_setup(binding)
         @decade_type = get_decade_type
         @literal = set_literal
+        @granularity_level = :year
       end
 
       def earliest

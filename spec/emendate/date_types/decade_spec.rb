@@ -17,6 +17,8 @@ RSpec.describe Emendate::DateTypes::Decade do
       expect(subject.decade_type).to eq(:plural)
       expect(subject.earliest).to eq(Date.new(1990, 1, 1))
       expect(subject.latest).to eq(Date.new(1999, 12, 31))
+      expect(subject.earliest_at_granularity).to eq("1990")
+      expect(subject.latest_at_granularity).to eq("1999")
       expect(subject.lexeme).to eq(str)
       expect(subject.literal).to eq(199)
     end

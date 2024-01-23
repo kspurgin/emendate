@@ -14,6 +14,8 @@ module Emendate
       attr_reader :month
       # @return [Integer]
       attr_reader :day
+      # @return [:year_month_day]
+      attr_reader :granularity_level
 
       # @param year [Integer]
       # @param month [Integer]
@@ -25,6 +27,7 @@ module Emendate
         @month = month.to_i
         @day = day.to_i
         common_setup(binding)
+        @granularity_level = :year_month_day
       end
 
       # @return [TrueClass]
