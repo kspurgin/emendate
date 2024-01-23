@@ -60,7 +60,6 @@ module Emendate
 
     def full_match_tagger
       case result.type_string
-      # The order of the following two
       when /^number1or2 year$/
         proc { tag_numeric_month }
       when /^year number1or2$/
@@ -98,7 +97,18 @@ module Emendate
         proc { tag_year_numeric_month_day }
       # ...this
       when /.*number1or2 number1or2 year.*/
-        proc { tag_numeric_month_day_year }
+        proc do
+          n1, n2, yr = result.extract(%i[number1or2 number1or2 year]).segments
+          tag_numeric_month_day_with_year(n1, n2, yr)
+        end
+      when /.*year number1or2 number1or2.*/
+        proc do
+          keep = Emendate.options.ambiguous_month_day.dup
+          Emendate.config.options.ambiguous_month_day = :as_month_day
+          yr, n1, n2 = result.extract(%i[year number1or2 number1or2]).segments
+          tag_numeric_month_day_with_year(n1, n2, yr)
+          Emendate.config.options.ambiguous_month_day = keep
+        end
       when /.*year hyphen number1or2 hyphen year hyphen number1or2.*/
         proc { tag_year_plus_numeric_month_or_season }
       when /.*year number1or2.*/
@@ -202,10 +212,8 @@ module Emendate
       end
     end
 
-    def tag_numeric_month_day_year
-      num1, num2, yr = result.extract(%i[number1or2 number1or2 year]).segments
-
-      res = Emendate::MonthDayAnalyzer.call(num1, num2, yr)
+    def tag_numeric_month_day_with_year(n1, n2, yr)
+      res = Emendate::MonthDayAnalyzer.call(n1, n2, yr)
       result.replace_x_with_date_part_type(x: res.month, date_part_type: :month)
       result.replace_x_with_date_part_type(x: res.day, date_part_type: :day)
       res.warnings.each { |warn| result.warnings << warn }
