@@ -18,6 +18,17 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
+  context "with early MONTH ##, ####" do
+    let(:string) { "early April 13, 1987" }
+
+    it "fails" do
+      expect(subject.failure).to eq(
+        "Cannot prepend :partial segment to "\
+          "Emendate::DateTypes::YearMonthDay sources"
+      )
+    end
+  end
+
   context "with ####, MON ##" do
     let(:string) { "2020, Feb 15" }
 
