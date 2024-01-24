@@ -27,6 +27,15 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
+  context "with ####, ####" do
+    let(:string) { "1997, 2000" }
+
+    it "segments as expected" do
+      expect(types).to eq(%i[year_date_type date_separator year_date_type])
+      expect(result.lexeme).to eq(string)
+    end
+  end
+
   context "with ####/##", :unambiguous_year_year do
     let(:string) { "1997/98" }
 

@@ -48,7 +48,8 @@ RSpec.describe Emendate::RangeIndicator do
     let(:str) { "1970, 1972 - 1999, 2002" }
 
     it "returns range_date_type" do
-      expect(type_string).to eq("year_date_type comma range_date_type comma "\
+      expect(type_string).to eq("year_date_type date_separator "\
+                                "range_date_type date_separator "\
                                 "year_date_type")
       expect(subject.lexeme).to eq(str)
     end
