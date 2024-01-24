@@ -45,6 +45,7 @@
 "circa 2002?","circa 2002?","circa ####?","approximate;uncertain;four_digit_year;year_granularity","ncm",,"0","2002","2002","2002-01-01","2002-12-31","approximate;uncertain",,"na","2002%","2002 (uncertain and approximate)"
 "circa2002","circa2002","circa####","approximate;four_digit_year;year_granularity","ncm",,"0","2002","2002","2002-01-01","2002-12-31","approximate",,"na","2002~","2002 (approximate)"
 "Possibly circa 1955-1956","Possibly circa 1955-1956","possibly circa ####-####","year_granularity;approximate;uncertain;range","wpl",,"0","1955","1956","1955-01-01","1956-12-31","approximate;uncertain",,"na",,
+"c.55","c.55","c.##","year_granularity;approximate;two_digit_year","ccp",,"0","1955","1955","1955-01-01","1955-12-31","approximate, whole",,"na",,
 "probably 2002","probably 2002","probably ####","year_granularity;uncertain","wpl",,"0","2002","2002","2002-01-01","2002-12-31","uncertain",,"na","2002?","2002 (uncertain)"
 "probably March 2020","probably March 2020","probably MONTH ####","year_month_granularity;uncertain","wpl",,"0","2020-03","2020-03","2020-03-01","2020-03-31","uncertain",,"na","2020-03?","2020-03 (uncertain)"
 "1920 ca","1920 ca","#### ca","approximate","mmm",,"0","1920","1920","1920-01-01","1920-12-31","approximate",,"na","1920~","1920 (approximate)"
@@ -310,3 +311,6 @@
 "Y171010000S3","Y171010000S3","y#########s#","currently_unparseable;edtf;edtf2;letter_prefixed_year;significant_digits",,,"0","nilValue","nilValue","nilValue","nilValue",,,"Untokenizable sequences: 171010000",,
 "Y3388E2S3","Y3388E2S3","y####e#s#","currently_unparseable;edtf;edtf2;exponential_year;letter_prefixed_year;significant_digits",,,"0","nilValue","nilValue","nilValue","nilValue",,,"Unprocessable string",,
 "1947/ca. 1965","1947/ca. 1965","####/ca. ####","approximate;year_granularity;range","ccp",,"0","1947","1965","1947-01-01","1965-12-31","approximate, end",,"na",,
+"1815 or later","1815 or later","#### or later","or_after;year_granularity;after_before","ccp","open_unknown_end_date: '2022-06-01'","0","1815","2022","1815-01-01","2022-06-01",,,,"[1815..]","1815 or a later date"
+"before 11/1750","before 11/1750","before ##/####","after_before;year_month_granularity","ccp","open_unknown_start_date: '1600-02-15'","0","1600-02","1749-10","1600-02-15","1749-10-31",,,"na","[..1750-11]","1749-11 or an earlier date"
+"Sept. 28, 1969","Sept. 28, 1969","MON. ##, ####","year_month_day_granularity","ccp",,"0","1969-09-28","1969-09-28","1969-09-28","1969-09-28",,,,"1969-09-28","1969-09-28"
