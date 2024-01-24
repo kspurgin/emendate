@@ -48,7 +48,7 @@ module Emendate
     end
 
     def translate_failure(_failure)
-      type = "ProcessingError"
+      type = "Error"
       translator = dialect_translator(type)
 
       result = if translator

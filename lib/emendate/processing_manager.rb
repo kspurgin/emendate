@@ -139,15 +139,27 @@ module Emendate
     end
 
     def final_check
-      if !errors.empty? || tokens.any? { |token| !token.processed? }
+      if unprocessed_segments?
         message = "Unhandled segment still present"
         errors << message
-        history[:final_check_failed] = message
+        history[:final_check_failure] = message
+        err = Emendate::DateTypes::Error.new(
+          sources: tokens, error_type: :unprocessable
+        )
+        tokens.replace_segments_with_new(segs: tokens.segments, new: err)
         Failure(self)
       else
         history[:final_check_passed] = nil
         Success()
       end
+    end
+
+    def unprocessed_segments?
+      true unless unprocessed_segments.empty?
+    end
+
+    def unprocessed_segments
+      tokens.reject { |token| token.processed? }
     end
 
     def add_error?

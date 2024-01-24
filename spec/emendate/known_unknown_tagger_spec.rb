@@ -17,7 +17,7 @@ RSpec.describe Emendate::KnownUnknownTagger do
       end
     end
 
-    context "with `n.d.`" do
+    context "with n.d." do
       let(:string) { "n.d." }
 
       it "tags as expected" do
@@ -27,7 +27,7 @@ RSpec.describe Emendate::KnownUnknownTagger do
       end
     end
 
-    context "with `Date Unknown`" do
+    context "with Date Unknown" do
       let(:string) { "Date Unknown" }
 
       it "tags as expected" do
@@ -36,7 +36,7 @@ RSpec.describe Emendate::KnownUnknownTagger do
       end
     end
 
-    context "with `unknown`" do
+    context "with unknown" do
       let(:string) { "unknown" }
 
       it "tags as expected" do
@@ -46,7 +46,18 @@ RSpec.describe Emendate::KnownUnknownTagger do
       end
     end
 
-    context "with `1924-?`" do
+    context "with n.d., before ####", skip: "not yet implemented" do
+      let(:string) { "n.d., before 1955" }
+
+      it "tags as expected" do
+        success = result.value!
+        expect(success.types).to eq(
+          %i[number4 hyphen unknown_date]
+        )
+      end
+    end
+
+    context "with ####-?" do
       let(:string) { "1924-?" }
 
       it "tags as expected" do

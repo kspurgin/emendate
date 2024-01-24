@@ -7,10 +7,7 @@ RSpec.describe Emendate::FormatStandardizer do
 
   describe ".call" do
     let(:tokens) { prepped_for(string: string, target: described_class) }
-    let(:result) do
-      binding.pry if subject.types == tokens.types
-      subject.types
-    end
+    let(:result) { subject.types }
 
     context "with ####-?" do
       let(:string) { "1984-?" }
@@ -245,6 +242,19 @@ RSpec.describe Emendate::FormatStandardizer do
         expect(subject.lexeme).to eq(string)
         expect(result).to eq(%i[month year])
         expect(subject[1].literal).to eq(1973)
+      end
+    end
+
+    context "with MONTH ##-##, #### and MONTH ##, ####" do
+      let(:string) { "July 13-15, 1997 and September 17, 1997" }
+
+      it "segments as expected" do
+        expect(subject.lexeme).to eq(string)
+        expect(result).to eq(%i[month number1or2 number4
+          hyphen
+          month number1or2 number4
+          and
+          month number1or2 number4])
       end
     end
   end

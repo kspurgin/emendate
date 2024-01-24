@@ -104,6 +104,17 @@ module Emendate
         proc { remove_ending_dot_zero }
       when /.*number1or2 letter_c.*/
         proc { replace_c_with_century }
+      when /.*month number1or2 hyphen number1or2 comma number4.*/
+        proc do
+          m, n1, _h, n2, c, y = result.extract(
+            %i[month number1or2 hyphen number1or2 comma number4]
+          ).segments
+          yr = y.dup.reset_lexeme
+          mth = m.dup.reset_lexeme
+          result.insert_segment_after_segment(n1, yr)
+          result.insert_segment_before_segment(n2, mth)
+          result.collapse_segment(c, :backward)
+        end
       when /.*number4 hyphen number4 era_bce.*/
         proc { copy_era_after_first_year }
       end
@@ -117,11 +128,6 @@ module Emendate
         proc { add_year_after_first_month }
       when %i[month number1or2 month number1or2 number4]
         proc { add_dummy_year_after_first_number1or2 }
-      when %i[month number1or2 number1or2 number4]
-        proc do
-          add_dummy_year_after_first_number1or2
-          add_dummy_month_before_second_number1or2
-        end
       when %i[number4 month month]
         proc do
           segs = result.extract_by_date_part(%i[number4 month month])

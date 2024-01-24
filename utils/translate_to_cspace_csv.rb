@@ -8,6 +8,17 @@ require "emendate"
 require "pry"
 
 options = {}
+
+def set_options(o)
+  opts = eval(o).merge({dialect: :collectionspace})
+  Emendate::Options.new(opts)
+rescue
+  puts "Cannot parse options to Hash.\nEnter wrapped in quotes and curly "\
+    "brackets like:\n"\
+    "\"{my_option: option_value}\""
+  exit
+end
+
 OptionParser.new do |opts|
   opts.banner = "Usage: ruby translate_to_cspace_csv.rb -i {input_csv}"
 
@@ -19,22 +30,13 @@ OptionParser.new do |opts|
       exit
     end
   end
+
   opts.on(
     "-o",
     "--optargs OPTARGS",
     "Options hash, in curly brackets, in quotes"
-  ) do |o|
-    optargs = to_h(o)
-    if optargs == :cannot_eval
-      puts "Cannot parse options to Hash.\nEnter wrapped in quotes and curly "\
-        "brackets like:\n"\
-        "\"{my_option: option_value}\""
-      exit
-    else
-      Emendate::Options.new(optargs)
-      options[:optargs] = optargs.merge({dialect: :collectionspace})
-    end
-  end
+  ) { |o| set_options(o) }
+
   opts.on("-h", "--help", "Prints this help") do
     puts opts
     exit

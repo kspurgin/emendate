@@ -35,18 +35,7 @@ module Emendate
       @errors = map_errors
       @warnings = pm.warnings
       @set_type = pm.tokens.set_type
-      @dates = if pm.state == :failed
-        []
-      else
-        pm.tokens.select { |t| t.date_type? }
-          .map do |t|
-            Emendate::ParsedDate.new(
-              date: t,
-              qualifiers: pm.tokens.qualifiers,
-              orig: original_string
-            )
-          end
-      end
+      @dates = create_parsed_dates
     end
 
     # @param method [Symbol] name of {Emendate::ParsedDate} public method
@@ -77,6 +66,17 @@ module Emendate
     end
 
     private
+
+    def create_parsed_dates
+      pm.tokens.select { |t| t.date_type? }
+        .map do |t|
+          Emendate::ParsedDate.new(
+            date: t,
+            qualifiers: pm.tokens.qualifiers,
+            orig: original_string
+          )
+        end
+    end
 
     def map_errors
       pm.errors

@@ -11,13 +11,12 @@ module Emendate
     end
 
     def initialize(tokens)
-      @working = tokens.class.new.copy(tokens)
       @result = tokens.class.new.copy(tokens)
-      result.clear
     end
 
     def call
-      has_range_indicator? ? handle_range : passthrough_all
+      collapse_ranges while has_range_indicator?
+      validate
 
       if collapsible_and_or_date?
         collapse_to_range
@@ -53,6 +52,13 @@ module Emendate
       nxt.type == :range_indicator
     end
 
+    def collapse_ranges
+      @working = result.class.new.copy(result)
+      result.clear
+
+      collapse_range until working.empty?
+    end
+
     def collapse_range
       unless current.date_type?
         passthrough
@@ -69,13 +75,7 @@ module Emendate
         return
       end
 
-      sources = working.class.new.copy(working)
-      sources.clear
-      [current, nxt, nxt(2)].each do |segmt|
-        sources << segmt
-        working.delete(segmt)
-      end
-
+      sources = working.shift(3)
       result << Emendate::DateTypes::Range.new(sources: sources)
     end
 
@@ -83,14 +83,8 @@ module Emendate
       working[0]
     end
 
-    def handle_range
-      collapse_range until working.empty?
-
-      validate
-    end
-
     def has_range_indicator?
-      working.types.include?(:range_indicator)
+      result.types.include?(:range_indicator)
     end
 
     def nxt(n = 1)
