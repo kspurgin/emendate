@@ -16,7 +16,11 @@ RSpec.describe Emendate::Lexer do
         "@" => [:unknown],
         "Sep. 1" => %i[month space number1or2],
         "cat" => [:unknown],
+        "Sept. 19, 1918" => %i[month space number1or2 comma space
+          number4],
         "Sep. 19, 1918" => %i[month space number1or2 comma space
+          number4],
+        "September 19, 1918" => %i[month space number1or2 comma space
           number4],
         "{..1984" => %i[curly_bracket_open double_dot number4],
         "{...1984" => %i[curly_bracket_open unknown number4],
