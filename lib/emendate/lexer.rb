@@ -46,10 +46,9 @@ module Emendate
       .join("|") + ")")
     months = "^(" + ([
       Date::MONTHNAMES.compact,
-      Date::ABBR_MONTHNAMES.compact.map { |val| val + '\.?' },
-      'Sept\.?'
-    ].flatten
-                       .join("|") + ")")
+      'Sept\.?',
+      Date::ABBR_MONTHNAMES.compact.map { |val| val + '\.?' }
+    ].flatten.join("|") + ")")
     ordinals = "^(" + ORDINAL_INDICATORS.join("|") + ")"
 
     ALPHA = {
