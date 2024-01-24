@@ -64,6 +64,11 @@ module Emendate
         proc { tag_numeric_month }
       when /^year number1or2$/
         proc { tag_year_plus_numeric_month_season_or_year }
+      when /^number1or2$/
+        proc do
+          year = Emendate::ShortYearHandler.call(result[0])
+          result.replace_x_with_new(x: result[0], new: year)
+        end
       end
     end
 

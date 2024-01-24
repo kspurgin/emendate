@@ -27,6 +27,16 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
+  context "with c.##" do
+    let(:string) { "c.55" }
+
+    it "segments as expected" do
+      expect(types).to eq(%i[year])
+      expect(result[0].literal).to eq(1955)
+      expect(result.lexeme).to eq(string)
+    end
+  end
+
   context "with ####.#" do
     let(:string) { "2020.0" }
 
