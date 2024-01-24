@@ -26,7 +26,7 @@ module Emendate
         apply_modifiers(mod) until working.empty?
       end
 
-      separators = result.select { |seg| %i[and or].include?(seg.type) }
+      separators = result.select { |seg| %i[and or comma].include?(seg.type) }
       return Success(result) if separators.empty?
 
       if separators.map(&:type).uniq.length > 1
