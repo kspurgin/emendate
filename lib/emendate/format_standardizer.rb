@@ -117,6 +117,16 @@ module Emendate
         end
       when /.*number4 hyphen number4 era_bce.*/
         proc { copy_era_after_first_year }
+      when /.*or after$/
+        proc do
+          oraft = result.extract(%i[or after]).segments
+          result.replace_x_with_derived_new_type(
+            x: oraft[0], type: :range_indicator
+          )
+          result.replace_x_with_derived_new_type(
+            x: oraft[1], type: :unknown_date
+          )
+        end
       end
     end
 

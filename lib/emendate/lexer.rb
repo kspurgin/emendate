@@ -52,7 +52,7 @@ module Emendate
     ordinals = "^(" + ORDINAL_INDICATORS.join("|") + ")"
 
     ALPHA = {
-      /^(after|post)/i => :after,
+      /^(after|later|post)/i => :after,
       /^(&|and)/i => :and,
       /^(about|around|approximate(ly|)|ca\.?|circa|estimated?|est\.?)/i =>
         :approximate,
