@@ -245,6 +245,16 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
+    context "with #### or later" do
+      let(:string) { "1815 or later" }
+
+      it "segments as expected" do
+        expect(subject.lexeme).to eq(string)
+        expect(result).to eq(%i[number4 range_indicator
+          rangedateendunknown_date_type])
+      end
+    end
+
     context "with MONTH ##-##, #### and MONTH ##, ####" do
       let(:string) { "July 13-15, 1997 and September 17, 1997" }
 
