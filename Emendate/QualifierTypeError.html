@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Class: Emendate::DatePart
+  Exception: Emendate::QualifierTypeError
   
     &mdash; Documentation by YARD 0.9.34
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
 <script type="text/javascript">
-  pathId = "Emendate::DatePart";
+  pathId = "Emendate::QualifierTypeError";
   relpath = '../';
 </script>
 
@@ -36,10 +36,10 @@
       <div id="header">
         <div id="menu">
   
-    <a href="../_index.html">Index (D)</a> &raquo;
+    <a href="../_index.html">Index (Q)</a> &raquo;
     <span class='title'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span>
      &raquo; 
-    <span class="title">DatePart</span>
+    <span class="title">QualifierTypeError</span>
   
 </div>
 
@@ -59,7 +59,7 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Class: Emendate::DatePart
+      <div id="content"><h1>Exception: Emendate::QualifierTypeError
   
   
   
@@ -69,14 +69,14 @@
   <dl>
     <dt>Inherits:</dt>
     <dd>
-      <span class="inheritName">Segment</span>
+      <span class="inheritName">TypeError</span>
       
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next">Segment</li>
+            <li class="next">TypeError</li>
           
-            <li class="next">Emendate::DatePart</li>
+            <li class="next">Emendate::QualifierTypeError</li>
           
         </ul>
         <a href="#" class="inheritanceTree">show all</a>
@@ -91,7 +91,7 @@
   
   <dl>
       <dt>Includes:</dt>
-      <dd><span class='object_link'><a href="DerivedSegment.html" title="Emendate::DerivedSegment (module)">DerivedSegment</a></span></dd>
+      <dd>Module.new</dd>
   </dl>
   
   
@@ -101,28 +101,12 @@
   
   <dl>
     <dt>Defined in:</dt>
-    <dd>lib/emendate/segment/date_part.rb</dd>
+    <dd>lib/emendate/errors.rb</dd>
   </dl>
   
 </div>
 
-<h2>Overview</h2><div class="docstring">
-  <div class="discussion">
-    
-<p>A segment that represents part of a date Usage: Emendate::DatePart.new(type: Symbol,</p>
 
-<pre class="code ruby"><code class="ruby">lexeme: String,
-literal: Integer,
-sources: [array of tokens/segments])
-</code></pre>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
 
 
 
@@ -140,12 +124,14 @@ sources: [array of tokens/segments])
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#date_part%3F-instance_method" title="#date_part? (instance method)">#<strong>date_part?</strong>  &#x21d2; Boolean </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>  &#x21d2; QualifierTypeError </a>
     
 
     
   </span>
   
+  
+    <span class="note title constructor">constructor</span>
   
   
   
@@ -155,7 +141,7 @@ sources: [array of tokens/segments])
 
   
     <span class="summary_desc"><div class='inline'>
-<p>rubocop:todo Layout/LineLength allows any subclass of SegmentSet to return a list of segments representing date parts rubocop:enable Layout/LineLength.</p>
+<p>A new instance of QualifierTypeError.</p>
 </div></span>
   
 </li>
@@ -166,26 +152,13 @@ sources: [array of tokens/segments])
 
 
   
+  <div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
   
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
   
-  
-  
-  
-  
-  
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="DerivedSegment.html" title="Emendate::DerivedSegment (module)">DerivedSegment</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="DerivedSegment.html#sources-instance_method" title="Emendate::DerivedSegment#sources (method)">#sources</a></span></p>
-
-  
-
-  <div id="instance_method_details" class="method_details_list">
-    <h2>Instance Method Details</h2>
-
-    
-      <div class="method_details first">
-  <h3 class="signature first" id="date_part?-instance_method">
-  
-    #<strong>date_part?</strong>  &#x21d2; <tt>Boolean</tt> 
+    #<strong>initialize</strong>  &#x21d2; <tt><span class='object_link'><a href="" title="Emendate::QualifierTypeError (class)">QualifierTypeError</a></span></tt> 
   
 
   
@@ -194,26 +167,13 @@ sources: [array of tokens/segments])
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>rubocop:todo Layout/LineLength allows any subclass of SegmentSet to return a list of segments representing date parts rubocop:enable Layout/LineLength</p>
+<p>Returns a new instance of QualifierTypeError.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
 
 </div><table class="source_code">
   <tr>
@@ -221,27 +181,28 @@ sources: [array of tokens/segments])
       <pre class="lines">
 
 
-19
-20
-21</pre>
+115
+116
+117</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment/date_part.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/errors.rb', line 115</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_date_part?'>date_part?</span>
-  <span class='kw'>true</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
+  <span class='kw'>super</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Qualifer must be an Emendate::Qualifier</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
 </div>
-    
-  </div>
+  
+</div>
+
 
 </div>
 
       <div id="footer">
-  Generated on Sat Jan 13 23:41:50 2024 by
+  Generated on Wed Jan 24 00:41:27 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

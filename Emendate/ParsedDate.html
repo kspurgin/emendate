@@ -94,7 +94,7 @@
   
   <dl>
       <dt>Includes:</dt>
-      <dd><span class='object_link'><a href="SegmentSets/CertaintyHelpers.html" title="Emendate::SegmentSets::CertaintyHelpers (module)">SegmentSets::CertaintyHelpers</a></span></dd>
+      <dd>Qualifiable</dd>
   </dl>
   
   
@@ -112,6 +112,14 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
+  <div class="note todo">
+    <strong>TODO:</strong>
+    <div class='inline'>
+<p>Implement index dates (see timetwister)</p>
+</div>
+  </div>
+
+
 <p>Wrapper around a DateType segment, used as part of Result</p>
 
 
@@ -126,35 +134,6 @@
 
   <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
   <ul class="summary">
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#certainty-instance_method" title="#certainty (instance method)">#<strong>certainty</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute certainty.</p>
-</div></span>
-  
-</li>
-
     
       <li class="public ">
   <span class="summary_signature">
@@ -275,7 +254,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#date_type-instance_method" title="#date_type (instance method)">#<strong>date_type</strong>  &#x21d2; Object </a>
+      <a href="#date_type-instance_method" title="#date_type (instance method)">#<strong>date_type</strong>  &#x21d2; String </a>
     
 
     
@@ -294,9 +273,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute date_type.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -304,7 +281,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#inclusive_range-instance_method" title="#inclusive_range (instance method)">#<strong>inclusive_range</strong>  &#x21d2; Object </a>
+      <a href="#inclusive_range-instance_method" title="#inclusive_range (instance method)">#<strong>inclusive_range</strong>  &#x21d2; Boolean </a>
     
 
     
@@ -323,9 +300,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute inclusive_range.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -333,7 +308,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#index_dates-instance_method" title="#index_dates (instance method)">#<strong>index_dates</strong>  &#x21d2; Object </a>
+      <a href="#original_string-instance_method" title="#original_string (instance method)">#<strong>original_string</strong>  &#x21d2; String </a>
     
 
     
@@ -352,9 +327,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute index_dates.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -362,7 +335,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#original_string-instance_method" title="#original_string (instance method)">#<strong>original_string</strong>  &#x21d2; Object </a>
+      <a href="#qualifiers-instance_method" title="#qualifiers (instance method)">#<strong>qualifiers</strong>  &#x21d2; Array&lt;Emendate::Qualifier&gt; </a>
     
 
     
@@ -381,9 +354,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute original_string.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -391,7 +362,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#source-instance_method" title="#source (instance method)">#<strong>source</strong>  &#x21d2; Object </a>
+      <a href="#source-instance_method" title="#source (instance method)">#<strong>source</strong>  &#x21d2; Emendate::DateTypes::DateType </a>
     
 
     
@@ -410,9 +381,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute source.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -433,7 +402,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(date:, orig:, certainty: [])  &#x21d2; ParsedDate </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(date:, orig:, qualifiers: [])  &#x21d2; ParsedDate </a>
     
 
     
@@ -452,6 +421,28 @@
     <span class="summary_desc"><div class='inline'>
 <p>A new instance of ParsedDate.</p>
 </div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#set_type-instance_method" title="#set_type (instance method)">#<strong>set_type</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -481,29 +472,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#to_json-instance_method" title="#to_json (instance method)">#<strong>to_json</strong>(*_args)  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#valid_range%3F-instance_method" title="#valid_range? (instance method)">#<strong>valid_range?</strong>  &#x21d2; Boolean </a>
+      <a href="#to_json-instance_method" title="#to_json (instance method)">#<strong>to_json</strong>  &#x21d2; Object </a>
     
 
     
@@ -527,23 +496,13 @@
 
 
   
-  
-  
-  
-  
-  
-  
-  
-  
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="SegmentSets/CertaintyHelpers.html" title="Emendate::SegmentSets::CertaintyHelpers (module)">SegmentSets::CertaintyHelpers</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="SegmentSets/CertaintyHelpers.html#all_of_set%3F-instance_method" title="Emendate::SegmentSets::CertaintyHelpers#all_of_set? (method)">#all_of_set?</a></span>, <span class='object_link'><a href="SegmentSets/CertaintyHelpers.html#approximate%3F-instance_method" title="Emendate::SegmentSets::CertaintyHelpers#approximate? (method)">#approximate?</a></span>, <span class='object_link'><a href="SegmentSets/CertaintyHelpers.html#approximate_and_uncertain%3F-instance_method" title="Emendate::SegmentSets::CertaintyHelpers#approximate_and_uncertain? (method)">#approximate_and_uncertain?</a></span>, <span class='object_link'><a href="SegmentSets/CertaintyHelpers.html#certain%3F-instance_method" title="Emendate::SegmentSets::CertaintyHelpers#certain? (method)">#certain?</a></span>, <span class='object_link'><a href="SegmentSets/CertaintyHelpers.html#inferred%3F-instance_method" title="Emendate::SegmentSets::CertaintyHelpers#inferred? (method)">#inferred?</a></span>, <span class='object_link'><a href="SegmentSets/CertaintyHelpers.html#one_of_set%3F-instance_method" title="Emendate::SegmentSets::CertaintyHelpers#one_of_set? (method)">#one_of_set?</a></span>, <span class='object_link'><a href="SegmentSets/CertaintyHelpers.html#uncertain%3F-instance_method" title="Emendate::SegmentSets::CertaintyHelpers#uncertain? (method)">#uncertain?</a></span></p>
-<div id="constructor_details" class="method_details_list">
+  <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(date:, orig:, certainty: [])  &#x21d2; <tt><span class='object_link'><a href="" title="Emendate::ParsedDate (class)">ParsedDate</a></span></tt> 
+    #<strong>initialize</strong>(date:, orig:, qualifiers: [])  &#x21d2; <tt><span class='object_link'><a href="" title="Emendate::ParsedDate (class)">ParsedDate</a></span></tt> 
   
 
   
@@ -585,10 +544,10 @@
   
     <li>
       
-        <span class='name'>certainty</span>
+        <span class='name'>qualifiers</span>
       
       
-        <span class='type'>(<tt>Array&lt;Symbol&gt;</tt>)</span>
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="../Emendate.html#Qualifier-constant" title="Emendate::Qualifier (constant)">Emendate::Qualifier</a></span>&gt;</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>[]</tt>)</em>
@@ -618,35 +577,33 @@
       <pre class="lines">
 
 
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
 40
 41
-42</pre>
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 29</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 40</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='label'>date:</span><span class='comma'>,</span> <span class='label'>orig:</span><span class='comma'>,</span> <span class='label'>certainty:</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='label'>date:</span><span class='comma'>,</span> <span class='label'>orig:</span><span class='comma'>,</span> <span class='label'>qualifiers:</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="NonDateTypeError.html" title="Emendate::NonDateTypeError (class)">NonDateTypeError</a></span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_date_type?'>date_type?</span>
 
   <span class='ivar'>@original_string</span> <span class='op'>=</span> <span class='id identifier rubyid_get_original_string'>get_original_string</span><span class='lparen'>(</span><span class='id identifier rubyid_date'>date</span><span class='comma'>,</span> <span class='id identifier rubyid_orig'>orig</span><span class='rparen'>)</span>
-  <span class='ivar'>@index_dates</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
   <span class='ivar'>@date_start</span> <span class='op'>=</span> <span class='kw'>nil</span>
   <span class='ivar'>@date_end</span> <span class='op'>=</span> <span class='kw'>nil</span>
   <span class='ivar'>@date_start_full</span> <span class='op'>=</span> <span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_earliest'>earliest</span><span class='op'>&amp;.</span><span class='id identifier rubyid_iso8601'>iso8601</span>
   <span class='ivar'>@date_end_full</span> <span class='op'>=</span> <span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_latest'>latest</span><span class='op'>&amp;.</span><span class='id identifier rubyid_iso8601'>iso8601</span>
-  <span class='ivar'>@inclusive_range</span> <span class='op'>=</span> <span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_range?'>range?</span> <span class='op'>?</span> <span class='kw'>true</span> <span class='op'>:</span> <span class='kw'>nil</span>
-  <span class='ivar'>@certainty</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_certainty'>certainty</span> <span class='op'>+</span> <span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_certainty'>certainty</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span><span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span>
+  <span class='ivar'>@inclusive_range</span> <span class='op'>=</span> <span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_range?'>range?</span> <span class='op'>?</span> <span class='kw'>true</span> <span class='op'>:</span> <span class='kw'>false</span>
+  <span class='ivar'>@qualifiers</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_qualifiers'>qualifiers</span> <span class='op'>+</span> <span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_qualifiers'>qualifiers</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span><span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span>
   <span class='ivar'>@date_type</span> <span class='op'>=</span> <span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>::</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span>
   <span class='ivar'>@source</span> <span class='op'>=</span> <span class='id identifier rubyid_date'>date</span>
 <span class='kw'>end</span></pre>
@@ -663,50 +620,7 @@
       
       <span id=""></span>
       <div class="method_details first">
-  <h3 class="signature first" id="certainty-instance_method">
-  
-    #<strong>certainty</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the value of attribute certainty.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-14
-15
-16</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 14</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_certainty'>certainty</span>
-  <span class='ivar'>@certainty</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="date_end-instance_method">
+  <h3 class="signature first" id="date_end-instance_method">
   
     #<strong>date_end</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
   
@@ -731,12 +645,12 @@
       <pre class="lines">
 
 
-14
-15
-16</pre>
+19
+20
+21</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 14</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 19</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_date_end'>date_end</span>
   <span class='ivar'>@date_end</span>
@@ -774,12 +688,12 @@
       <pre class="lines">
 
 
-14
-15
-16</pre>
+21
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 14</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 21</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_date_end_full'>date_end_full</span>
   <span class='ivar'>@date_end_full</span>
@@ -817,12 +731,12 @@
       <pre class="lines">
 
 
-14
-15
-16</pre>
+18
+19
+20</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 14</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_date_start'>date_start</span>
   <span class='ivar'>@date_start</span>
@@ -860,12 +774,12 @@
       <pre class="lines">
 
 
-14
-15
-16</pre>
+20
+21
+22</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 14</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_date_start_full'>date_start_full</span>
   <span class='ivar'>@date_start_full</span>
@@ -880,7 +794,7 @@
       <div class="method_details ">
   <h3 class="signature " id="date_type-instance_method">
   
-    #<strong>date_type</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
+    #<strong>date_type</strong>  &#x21d2; <tt>String</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -889,13 +803,24 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the value of attribute date_type.</p>
-
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -903,12 +828,12 @@
       <pre class="lines">
 
 
-14
-15
-16</pre>
+27
+28
+29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 14</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_date_type'>date_type</span>
   <span class='ivar'>@date_type</span>
@@ -923,258 +848,7 @@
       <div class="method_details ">
   <h3 class="signature " id="inclusive_range-instance_method">
   
-    #<strong>inclusive_range</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the value of attribute inclusive_range.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-14
-15
-16</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 14</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_inclusive_range'>inclusive_range</span>
-  <span class='ivar'>@inclusive_range</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="index_dates-instance_method">
-  
-    #<strong>index_dates</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the value of attribute index_dates.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-14
-15
-16</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 14</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_index_dates'>index_dates</span>
-  <span class='ivar'>@index_dates</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="original_string-instance_method">
-  
-    #<strong>original_string</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the value of attribute original_string.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-14
-15
-16</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 14</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_original_string'>original_string</span>
-  <span class='ivar'>@original_string</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="source-instance_method">
-  
-    #<strong>source</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the value of attribute source.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-14
-15
-16</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 14</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_source'>source</span>
-  <span class='ivar'>@source</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-  </div>
-
-
-  <div id="instance_method_details" class="method_details_list">
-    <h2>Instance Method Details</h2>
-
-    
-      <div class="method_details first">
-  <h3 class="signature first" id="to_h-instance_method">
-  
-    #<strong>to_h</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 44</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_to_h'>to_h</span>
-  <span class='id identifier rubyid_hashable_variables'>hashable_variables</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_var'>var</span><span class='op'>|</span>
-    <span class='id identifier rubyid_varsym'>varsym</span> <span class='op'>=</span> <span class='id identifier rubyid_var'>var</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_sub'>sub</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>@</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
-    <span class='lbracket'>[</span><span class='id identifier rubyid_varsym'>varsym</span><span class='comma'>,</span> <span class='id identifier rubyid_instance_variable_get'>instance_variable_get</span><span class='lparen'>(</span><span class='id identifier rubyid_var'>var</span><span class='rparen'>)</span><span class='rbracket'>]</span>
-  <span class='kw'>end</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span>
-    <span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='lbrace'>{</span>
-      <span class='label'>range_switch:</span> <span class='id identifier rubyid_range_switch'>range_switch</span><span class='comma'>,</span>
-      <span class='label'>era:</span> <span class='id identifier rubyid_era'>era</span>
-    <span class='rbrace'>}</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="to_json-instance_method">
-  
-    #<strong>to_json</strong>(*_args)  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-55
-56
-57</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 55</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_to_json'>to_json</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid__args'>_args</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_to_h'>to_h</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="valid_range?-instance_method">
-  
-    #<strong>valid_range?</strong>  &#x21d2; <tt>Boolean</tt> 
+    #<strong>inclusive_range</strong>  &#x21d2; <tt>Boolean</tt>  <span class="extras">(readonly)</span>
   
 
   
@@ -1208,25 +882,292 @@
       <pre class="lines">
 
 
+23
+24
+25</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 23</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_inclusive_range'>inclusive_range</span>
+  <span class='ivar'>@inclusive_range</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="original_string-instance_method">
+  
+    #<strong>original_string</strong>  &#x21d2; <tt>String</tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+17
+18
+19</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 17</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_original_string'>original_string</span>
+  <span class='ivar'>@original_string</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="qualifiers-instance_method">
+  
+    #<strong>qualifiers</strong>  &#x21d2; <tt>Array&lt;<span class='object_link'><a href="../Emendate.html#Qualifier-constant" title="Emendate::Qualifier (constant)">Emendate::Qualifier</a></span>&gt;</tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="../Emendate.html#Qualifier-constant" title="Emendate::Qualifier (constant)">Emendate::Qualifier</a></span>&gt;</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+25
+26
+27</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 25</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_qualifiers'>qualifiers</span>
+  <span class='ivar'>@qualifiers</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="source-instance_method">
+  
+    #<strong>source</strong>  &#x21d2; <tt>Emendate::DateTypes::DateType</tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Emendate::DateTypes::DateType</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+29
+30
+31</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 29</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_source'>source</span>
+  <span class='ivar'>@source</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="set_type-instance_method">
+  
+    #<strong>set_type</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+70
+71
+72
+73
+74</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 70</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_set_type'>set_type</span>
+  <span class='id identifier rubyid_source'>source</span><span class='period'>.</span><span class='id identifier rubyid_set_type'>set_type</span>
+<span class='kw'>rescue</span>
+  <span class='kw'>nil</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="to_h-instance_method">
+  
+    #<strong>to_h</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+54
+55
+56
+57
+58
 59
 60
 61
 62
-63
-64
-65
-66</pre>
+63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 59</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 54</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_valid_range?'>valid_range?</span>
-  <span class='kw'>return</span> <span class='kw'>true</span> <span class='kw'>unless</span> <span class='ivar'>@inclusive_range</span>
-  <span class='kw'>return</span> <span class='kw'>true</span> <span class='kw'>if</span> <span class='ivar'>@date_start_full</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='ivar'>@date_end_full</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_to_h'>to_h</span>
+  <span class='id identifier rubyid_hashable_variables'>hashable_variables</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_var'>var</span><span class='op'>|</span>
+    <span class='id identifier rubyid_varsym'>varsym</span> <span class='op'>=</span> <span class='id identifier rubyid_var'>var</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_sub'>sub</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>@</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
+    <span class='lbracket'>[</span><span class='id identifier rubyid_varsym'>varsym</span><span class='comma'>,</span> <span class='id identifier rubyid_instance_variable_get'>instance_variable_get</span><span class='lparen'>(</span><span class='id identifier rubyid_var'>var</span><span class='rparen'>)</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span>
+    <span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='lbrace'>{</span>
+      <span class='label'>range_switch:</span> <span class='id identifier rubyid_range_switch'>range_switch</span><span class='comma'>,</span>
+      <span class='label'>era:</span> <span class='id identifier rubyid_era'>era</span>
+    <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="to_json-instance_method">
+  
+    #<strong>to_json</strong>  &#x21d2; <tt>Object</tt> 
+  
 
-  <span class='id identifier rubyid_sd'>sd</span> <span class='op'>=</span> <span class='const'>Date</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='ivar'>@date_start_full</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_ed'>ed</span> <span class='op'>=</span> <span class='const'>Date</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='ivar'>@date_end_full</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_sd'>sd</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_ed'>ed</span>
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+65
+66
+67</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/emendate/parsed_date.rb', line 65</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='id identifier rubyid_to_h'>to_h</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1238,7 +1179,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jan 13 23:41:49 2024 by
+  Generated on Wed Jan 24 00:41:27 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

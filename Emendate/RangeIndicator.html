@@ -227,17 +227,13 @@
 
 13
 14
-15
-16
-17</pre>
+15</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/emendate/range_indicator.rb', line 13</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
-  <span class='ivar'>@working</span> <span class='op'>=</span> <span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
   <span class='ivar'>@result</span> <span class='op'>=</span> <span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -302,20 +298,22 @@
       <pre class="lines">
 
 
+17
+18
 19
 20
 21
 22
 23
 24
-25
-26</pre>
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/range_indicator.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/range_indicator.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span>
-  <span class='id identifier rubyid_has_range_indicator?'>has_range_indicator?</span> <span class='op'>?</span> <span class='id identifier rubyid_handle_range'>handle_range</span> <span class='op'>:</span> <span class='id identifier rubyid_passthrough_all'>passthrough_all</span>
+  <span class='id identifier rubyid_collapse_ranges'>collapse_ranges</span> <span class='kw'>while</span> <span class='id identifier rubyid_has_range_indicator?'>has_range_indicator?</span>
+  <span class='id identifier rubyid_validate'>validate</span>
 
   <span class='kw'>if</span> <span class='id identifier rubyid_collapsible_and_or_date?'>collapsible_and_or_date?</span>
     <span class='id identifier rubyid_collapse_to_range'>collapse_to_range</span>
@@ -332,7 +330,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jan 13 23:41:50 2024 by
+  Generated on Wed Jan 24 00:41:27 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

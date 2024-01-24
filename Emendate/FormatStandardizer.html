@@ -89,7 +89,7 @@
   
   <dl>
       <dt>Includes:</dt>
-      <dd><span class='object_link'><a href="DateUtils.html" title="Emendate::DateUtils (module)">DateUtils</a></span>, <span class='object_link'><a href="ResultEditable.html" title="Emendate::ResultEditable (module)">ResultEditable</a></span></dd>
+      <dd><span class='object_link'><a href="DateUtils.html" title="Emendate::DateUtils (module)">DateUtils</a></span></dd>
   </dl>
   
   
@@ -107,24 +107,19 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
+  <div class="note todo">
+    <strong>TODO:</strong>
+    <div class='inline'>
+<p>Clean all date part tagging and date segmentation (i.e. creation of date type objects) from this step</p>
+</div>
+  </div>
+
+
 <p>Makes the format of date patterns more consistent.</p>
 
 <p>Collapses some segments (e.g. comma in “Jan 1, 2000”).</p>
 
 <p>Adds blank-lexeme segments (e.g. changing “Jan 2-5 2000” to “Jan 2 2000 - Jan 5 2000). These add the necessary type and literal information without changing the lexeme value.</p>
-
-<p>The next processing step (<span class='object_link'><a href="DatePartTagger.html" title="Emendate::DatePartTagger (class)">DatePartTagger</a></span>) assumes date parts will be in orders:</p>
-<ul><li>
-<p>month day year</p>
-</li><li>
-<p>season year</p>
-</li><li>
-<p>month year</p>
-</li><li>
-<p>number century</p>
-</li></ul>
-
-<p>When segments are in different orders, this class directly converts them to date type segments. Changing the order of segments messes up the lexeme value, so we simplify later processing by converting directly to date type segments when we can.</p>
 
 
   </div>
@@ -238,17 +233,6 @@
   
   
   
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="ResultEditable.html" title="Emendate::ResultEditable (module)">ResultEditable</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="ResultEditable.html#collapse_enclosing_tokens-instance_method" title="Emendate::ResultEditable#collapse_enclosing_tokens (method)">#collapse_enclosing_tokens</a></span>, <span class='object_link'><a href="ResultEditable.html#collapse_first_token-instance_method" title="Emendate::ResultEditable#collapse_first_token (method)">#collapse_first_token</a></span>, <span class='object_link'><a href="ResultEditable.html#collapse_last_token-instance_method" title="Emendate::ResultEditable#collapse_last_token (method)">#collapse_last_token</a></span>, <span class='object_link'><a href="ResultEditable.html#collapse_segments_backward-instance_method" title="Emendate::ResultEditable#collapse_segments_backward (method)">#collapse_segments_backward</a></span>, <span class='object_link'><a href="ResultEditable.html#collapse_segments_forward-instance_method" title="Emendate::ResultEditable#collapse_segments_forward (method)">#collapse_segments_forward</a></span>, <span class='object_link'><a href="ResultEditable.html#collapse_token_pair-instance_method" title="Emendate::ResultEditable#collapse_token_pair (method)">#collapse_token_pair</a></span>, <span class='object_link'><a href="ResultEditable.html#collapse_token_pair_backward-instance_method" title="Emendate::ResultEditable#collapse_token_pair_backward (method)">#collapse_token_pair_backward</a></span>, <span class='object_link'><a href="ResultEditable.html#collapse_token_pair_forward-instance_method" title="Emendate::ResultEditable#collapse_token_pair_forward (method)">#collapse_token_pair_forward</a></span>, <span class='object_link'><a href="ResultEditable.html#new_date_part-instance_method" title="Emendate::ResultEditable#new_date_part (method)">#new_date_part</a></span>, <span class='object_link'><a href="ResultEditable.html#replace_multi_with_date_part_type-instance_method" title="Emendate::ResultEditable#replace_multi_with_date_part_type (method)">#replace_multi_with_date_part_type</a></span>, <span class='object_link'><a href="ResultEditable.html#replace_segments_with_derived_new_type-instance_method" title="Emendate::ResultEditable#replace_segments_with_derived_new_type (method)">#replace_segments_with_derived_new_type</a></span>, <span class='object_link'><a href="ResultEditable.html#replace_segments_with_new-instance_method" title="Emendate::ResultEditable#replace_segments_with_new (method)">#replace_segments_with_new</a></span>, <span class='object_link'><a href="ResultEditable.html#replace_x_with_date_part_type-instance_method" title="Emendate::ResultEditable#replace_x_with_date_part_type (method)">#replace_x_with_date_part_type</a></span>, <span class='object_link'><a href="ResultEditable.html#replace_x_with_derived_new_type-instance_method" title="Emendate::ResultEditable#replace_x_with_derived_new_type (method)">#replace_x_with_derived_new_type</a></span>, <span class='object_link'><a href="ResultEditable.html#replace_x_with_given_segment-instance_method" title="Emendate::ResultEditable#replace_x_with_given_segment (method)">#replace_x_with_given_segment</a></span>, <span class='object_link'><a href="ResultEditable.html#replace_x_with_new-instance_method" title="Emendate::ResultEditable#replace_x_with_new (method)">#replace_x_with_new</a></span></p>
-
-  
-  
-  
-  
-  
-  
-  
-  
   <h3 class="inherited">Methods included from <span class='object_link'><a href="DateUtils.html" title="Emendate::DateUtils (module)">DateUtils</a></span></h3>
   <p class="inherited"><span class='object_link'><a href="DateUtils.html#expand_shorter_digits-instance_method" title="Emendate::DateUtils#expand_shorter_digits (method)">#expand_shorter_digits</a></span>, <span class='object_link'><a href="DateUtils.html#is_range%3F-instance_method" title="Emendate::DateUtils#is_range? (method)">#is_range?</a></span>, <span class='object_link'><a href="DateUtils.html#max_season-instance_method" title="Emendate::DateUtils#max_season (method)">#max_season</a></span>, <span class='object_link'><a href="DateUtils.html#min_season-instance_method" title="Emendate::DateUtils#min_season (method)">#min_season</a></span>, <span class='object_link'><a href="DateUtils.html#month_abbr_literal-instance_method" title="Emendate::DateUtils#month_abbr_literal (method)">#month_abbr_literal</a></span>, <span class='object_link'><a href="DateUtils.html#month_literal-instance_method" title="Emendate::DateUtils#month_literal (method)">#month_literal</a></span>, <span class='object_link'><a href="DateUtils.html#possible_range%3F-instance_method" title="Emendate::DateUtils#possible_range? (method)">#possible_range?</a></span>, <span class='object_link'><a href="DateUtils.html#valid_date%3F-instance_method" title="Emendate::DateUtils#valid_date? (method)">#valid_date?</a></span>, <span class='object_link'><a href="DateUtils.html#valid_day%3F-instance_method" title="Emendate::DateUtils#valid_day? (method)">#valid_day?</a></span>, <span class='object_link'><a href="DateUtils.html#valid_month%3F-instance_method" title="Emendate::DateUtils#valid_month? (method)">#valid_month?</a></span>, <span class='object_link'><a href="DateUtils.html#valid_month_or_season%3F-instance_method" title="Emendate::DateUtils#valid_month_or_season? (method)">#valid_month_or_season?</a></span>, <span class='object_link'><a href="DateUtils.html#valid_season%3F-instance_method" title="Emendate::DateUtils#valid_season? (method)">#valid_season?</a></span>, <span class='object_link'><a href="DateUtils.html#valid_year%3F-instance_method" title="Emendate::DateUtils#valid_year? (method)">#valid_year?</a></span></p>
 <div id="constructor_details" class="method_details_list">
@@ -280,15 +264,15 @@
       <pre class="lines">
 
 
-38
-39
-40</pre>
+26
+27
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/format_standardizer.rb', line 38</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/format_standardizer.rb', line 26</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
-  <span class='ivar'>@result</span> <span class='op'>=</span> <span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
+  <span class='ivar'>@result</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'>SegmentSet</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -317,12 +301,12 @@
       <pre class="lines">
 
 
-33
-34
-35</pre>
+21
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/format_standardizer.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/format_standardizer.rb', line 21</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='op'>...</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>...</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
@@ -353,25 +337,37 @@
       <pre class="lines">
 
 
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
 42
 43
-44
-45
-46
-47
-48
-49
-50</pre>
+44</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/format_standardizer.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/format_standardizer.rb', line 30</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span>
   <span class='kw'>while</span> <span class='id identifier rubyid_standardizable'>standardizable</span>
     <span class='id identifier rubyid_function'>function</span> <span class='op'>=</span> <span class='id identifier rubyid_determine_standardizer'>determine_standardizer</span>
     <span class='kw'>break</span> <span class='kw'>if</span> <span class='id identifier rubyid_function'>function</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
 
+    <span class='id identifier rubyid_pre'>pre</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_types'>types</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span>
     <span class='id identifier rubyid_function'>function</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
+    <span class='const'><span class='object_link'><a href="TokenCollapser.html" title="Emendate::TokenCollapser (class)">TokenCollapser</a></span></span><span class='period'>.</span><span class='id identifier rubyid_call'><span class='object_link'><a href="TokenCollapser.html#call-class_method" title="Emendate::TokenCollapser.call (method)">call</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_either'>either</span><span class='lparen'>(</span>
+      <span class='tlambda'>-&gt;</span><span class='lparen'>(</span><span class='id identifier rubyid_success'>success</span><span class='rparen'>)</span> <span class='tlambeg'>{</span> <span class='ivar'>@result</span> <span class='op'>=</span> <span class='id identifier rubyid_success'>success</span> <span class='rbrace'>}</span><span class='comma'>,</span>
+      <span class='tlambda'>-&gt;</span><span class='lparen'>(</span><span class='id identifier rubyid_failure'>failure</span><span class='rparen'>)</span> <span class='tlambeg'>{</span> <span class='kw'>next</span> <span class='rbrace'>}</span>
+    <span class='rparen'>)</span>
+    <span class='kw'>break</span> <span class='kw'>if</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_types'>types</span> <span class='op'>==</span> <span class='id identifier rubyid_pre'>pre</span>
   <span class='kw'>end</span>
   <span class='const'>Success</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -385,7 +381,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jan 13 23:41:50 2024 by
+  Generated on Wed Jan 24 00:41:27 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

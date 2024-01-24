@@ -99,7 +99,18 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a single DateTypes::Error with error type :untokenizble if date string matches a known unsupported pattern</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
 
@@ -225,12 +236,12 @@
       <pre class="lines">
 
 
-13
-14
-15</pre>
+15
+16
+17</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/untokenizable_tagger.rb', line 13</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/untokenizable_tagger.rb', line 15</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
   <span class='ivar'>@tokens</span> <span class='op'>=</span> <span class='id identifier rubyid_tokens'>tokens</span>
@@ -262,12 +273,12 @@
       <pre class="lines">
 
 
-8
-9
-10</pre>
+10
+11
+12</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/untokenizable_tagger.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/untokenizable_tagger.rb', line 10</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='op'>...</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>...</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
@@ -298,8 +309,6 @@
       <pre class="lines">
 
 
-17
-18
 19
 20
 21
@@ -310,10 +319,12 @@
 26
 27
 28
-29</pre>
+29
+30
+31</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/untokenizable_tagger.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/untokenizable_tagger.rb', line 19</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span>
   <span class='kw'>return</span> <span class='const'>Success</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_untokenizable?'>untokenizable?</span>
@@ -338,7 +349,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jan 13 23:41:50 2024 by
+  Generated on Wed Jan 24 00:41:27 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

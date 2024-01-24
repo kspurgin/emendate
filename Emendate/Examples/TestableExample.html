@@ -1516,19 +1516,17 @@
 113
 114
 115
-116
-117</pre>
+116</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/emendate/examples/testable_example.rb', line 111</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_type_pattern'>type_pattern</span><span class='lparen'>(</span><span class='label'>date_only:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>stage:</span> <span class='symbol'>:tokens</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='lbracket'>[</span><span class='symbol'>:date_string_not_processed</span><span class='rbracket'>]</span> <span class='kw'>unless</span> <span class='id identifier rubyid_testable?'>testable?</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_processed'>processed</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_stage'>stage</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_date_part_types'>date_part_types</span> <span class='kw'>if</span> <span class='id identifier rubyid_date_only'>date_only</span>
 
-  <span class='comment'># rubocop:todo Layout/LineLength
-</span>  <span class='id identifier rubyid_date_only'>date_only</span> <span class='op'>?</span> <span class='id identifier rubyid_processed'>processed</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_stage'>stage</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_date_part_types'>date_part_types</span> <span class='op'>:</span> <span class='id identifier rubyid_processed'>processed</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_stage'>stage</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_types'>types</span>
-  <span class='comment'># rubocop:enable Layout/LineLength
-</span><span class='kw'>end</span></pre>
+  <span class='id identifier rubyid_processed'>processed</span><span class='period'>.</span><span class='id identifier rubyid_send'>send</span><span class='lparen'>(</span><span class='id identifier rubyid_stage'>stage</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_types'>types</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -1539,7 +1537,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jan 13 23:41:50 2024 by
+  Generated on Wed Jan 24 00:41:28 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>

@@ -87,11 +87,6 @@
   
   
   
-  <dl>
-      <dt>Includes:</dt>
-      <dd><span class='object_link'><a href="ResultEditable.html" title="Emendate::ResultEditable (module)">ResultEditable</a></span></dd>
-  </dl>
-  
   
 
   
@@ -104,6 +99,22 @@
   
 </div>
 
+
+  
+    <h2>
+      Constant Summary
+      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
+    </h2>
+
+    <dl class="constants">
+      
+        <dt id="DATE_SEPARATORS-constant" class="">DATE_SEPARATORS =
+          
+        </dt>
+        <dd><pre class="code"><span class='qsymbols_beg'>%i[</span><span class='tstring_content'>hyphen</span><span class='words_sep'> </span><span class='tstring_content'>slash</span><span class='tstring_end'>]</span></span></pre></dd>
+      
+    </dl>
+  
 
 
 
@@ -201,17 +212,6 @@
     </ul>
   
 
-
-  
-  
-  
-  
-  
-  
-  
-  
-  <h3 class="inherited">Methods included from <span class='object_link'><a href="ResultEditable.html" title="Emendate::ResultEditable (module)">ResultEditable</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="ResultEditable.html#collapse_enclosing_tokens-instance_method" title="Emendate::ResultEditable#collapse_enclosing_tokens (method)">#collapse_enclosing_tokens</a></span>, <span class='object_link'><a href="ResultEditable.html#collapse_first_token-instance_method" title="Emendate::ResultEditable#collapse_first_token (method)">#collapse_first_token</a></span>, <span class='object_link'><a href="ResultEditable.html#collapse_last_token-instance_method" title="Emendate::ResultEditable#collapse_last_token (method)">#collapse_last_token</a></span>, <span class='object_link'><a href="ResultEditable.html#collapse_segments_backward-instance_method" title="Emendate::ResultEditable#collapse_segments_backward (method)">#collapse_segments_backward</a></span>, <span class='object_link'><a href="ResultEditable.html#collapse_segments_forward-instance_method" title="Emendate::ResultEditable#collapse_segments_forward (method)">#collapse_segments_forward</a></span>, <span class='object_link'><a href="ResultEditable.html#collapse_token_pair-instance_method" title="Emendate::ResultEditable#collapse_token_pair (method)">#collapse_token_pair</a></span>, <span class='object_link'><a href="ResultEditable.html#collapse_token_pair_backward-instance_method" title="Emendate::ResultEditable#collapse_token_pair_backward (method)">#collapse_token_pair_backward</a></span>, <span class='object_link'><a href="ResultEditable.html#collapse_token_pair_forward-instance_method" title="Emendate::ResultEditable#collapse_token_pair_forward (method)">#collapse_token_pair_forward</a></span>, <span class='object_link'><a href="ResultEditable.html#new_date_part-instance_method" title="Emendate::ResultEditable#new_date_part (method)">#new_date_part</a></span>, <span class='object_link'><a href="ResultEditable.html#replace_multi_with_date_part_type-instance_method" title="Emendate::ResultEditable#replace_multi_with_date_part_type (method)">#replace_multi_with_date_part_type</a></span>, <span class='object_link'><a href="ResultEditable.html#replace_segments_with_derived_new_type-instance_method" title="Emendate::ResultEditable#replace_segments_with_derived_new_type (method)">#replace_segments_with_derived_new_type</a></span>, <span class='object_link'><a href="ResultEditable.html#replace_segments_with_new-instance_method" title="Emendate::ResultEditable#replace_segments_with_new (method)">#replace_segments_with_new</a></span>, <span class='object_link'><a href="ResultEditable.html#replace_x_with_date_part_type-instance_method" title="Emendate::ResultEditable#replace_x_with_date_part_type (method)">#replace_x_with_date_part_type</a></span>, <span class='object_link'><a href="ResultEditable.html#replace_x_with_derived_new_type-instance_method" title="Emendate::ResultEditable#replace_x_with_derived_new_type (method)">#replace_x_with_derived_new_type</a></span>, <span class='object_link'><a href="ResultEditable.html#replace_x_with_given_segment-instance_method" title="Emendate::ResultEditable#replace_x_with_given_segment (method)">#replace_x_with_given_segment</a></span>, <span class='object_link'><a href="ResultEditable.html#replace_x_with_new-instance_method" title="Emendate::ResultEditable#replace_x_with_new (method)">#replace_x_with_new</a></span></p>
 <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -249,7 +249,7 @@
       <pre class="code"><span class="info file"># File 'lib/emendate/token_collapser.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
-  <span class='ivar'>@result</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SegmentSets.html" title="Emendate::SegmentSets (module)">SegmentSets</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SegmentSets/TokenSet.html" title="Emendate::SegmentSets::TokenSet (class)">TokenSet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
+  <span class='ivar'>@result</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'>SegmentSet</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -278,12 +278,12 @@
       <pre class="lines">
 
 
-12
-13
-14</pre>
+10
+11
+12</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/token_collapser.rb', line 12</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/token_collapser.rb', line 10</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='op'>...</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='op'>...</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
@@ -322,7 +322,10 @@
 26
 27
 28
-29</pre>
+29
+30
+31
+32</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/emendate/token_collapser.rb', line 21</span>
@@ -332,8 +335,11 @@
     <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid_determine_action'>determine_action</span>
     <span class='kw'>break</span> <span class='kw'>if</span> <span class='id identifier rubyid_action'>action</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
 
+    <span class='id identifier rubyid_pre'>pre</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_types'>types</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span>
     <span class='id identifier rubyid_action'>action</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
+    <span class='kw'>break</span> <span class='kw'>if</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_types'>types</span> <span class='op'>==</span> <span class='id identifier rubyid_pre'>pre</span>
   <span class='kw'>end</span>
+  <span class='id identifier rubyid_full_match_date_part_collapsers'>full_match_date_part_collapsers</span>
   <span class='const'>Success</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -346,7 +352,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jan 13 23:41:50 2024 by
+  Generated on Wed Jan 24 00:41:27 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>
