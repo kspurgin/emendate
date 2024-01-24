@@ -4,13 +4,30 @@ module Emendate
   # Methods returning information about segments in a {SegmentSet},
   # mainly for use in manipulating the set
   module SegmentSetQueryable
-    # @param seg [Emendate::Segment]
-    # @return [Emendate::Segment, nil] the {Segment} before given seg, if any
-    def previous_segment(seg) = segments[index_of(seg) - 1]
+    # @param seg [Segment]
+    # @return [Segment, nil] the {Segment} before given seg, if any
+    def previous_segment(seg)
+      return nil if is_first_seg?(seg)
+
+      segments[index_of(seg) - 1]
+    end
 
     # @param seg [Segment]
     # @return [Segment, nil] the {Segment} after given seg, if any
     def next_segment(seg) = segments[index_of(seg) + 1]
+
+    # @param seg [Segment]
+    # @return [SegmentSet] all {Segment}s before given seg, if any
+    def segments_before(seg)
+      Emendate::SegmentSet.new(segments: first(index_of(seg)))
+    end
+
+    # @param seg [Segment]
+    # @return [SegmentSet] all {Segment}s before given seg, if any
+    def segments_after(seg)
+      segs = segments[(index_of(seg) + 1)..-1]
+      Emendate::SegmentSet.new(segments: segs)
+    end
 
     # Retrieve the first series of {Segment}s matching the given
     # pattern, with the given sep inserted between each element of the
@@ -29,6 +46,12 @@ module Emendate
       matching unless matching.empty?
     end
 
+    # Behaves the same as {#segments_by_separated_pattern}, but returns the
+    #   Range representing the matching segments
+    # @param pattern [Array<Symbol>]
+    # @param sep [Symbol]
+    # @return [Range] if resulting pattern matches
+    # @return [nil] otherwise
     def range_matching_separated_pattern(pattern, sep)
       matches = segments_by_separated_pattern(pattern, sep)
       return unless matches
@@ -36,12 +59,16 @@ module Emendate
       Range.new(index_of(matches[0]), index_of(matches[-1]))
     end
 
+    # @param seg [Emendate::Segment]
+    # @param range [Range]
+    # @return [Boolean]
     def not_in_range?(seg, range)
       !(range === index_of(seg))
     end
 
     # @param seg [Emendate::Segment]
     # @return [Boolean] whether given {Segment} can be collapsed backward
+
     def backward_collapsible?(seg) = !is_first_seg?(seg)
 
     # @param seg [Emendate::Segment]

@@ -95,11 +95,12 @@ module Emendate
     # @param val [String]
     def reset_lexeme(val = nil)
       @lexeme = val.to_s
+      self
     end
 
-    # @param val [String]
-    def reset_literal(val = nil)
-    end
+    # # @param val [String]
+    # def reset_literal(val = nil)
+    # end
 
     # @return [Boolean]
     def collapsible? = COLLAPSIBLE_TYPES.include?(type)

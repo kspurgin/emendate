@@ -74,7 +74,7 @@ module Emendate
       #   update the mapping to literals in Segments::SeasonAlpha
       /^(winter|spring|summer|fall|autumn)/i => :season,
       /^(date\sunknown|unknown\sdate|no\sdate|not\sdated|undated|
-      unknown|unk|n\.?\s?d\.?)$/ix => :unknown_date,
+      unknown|unk|n\.?\s?d\.?)/ix => :unknown_date,
       Regexp.new(ordinals, "i") => :ordinal_indicator,
       /^(u+|x+)/i => :uncertainty_digits
     }

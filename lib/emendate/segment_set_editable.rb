@@ -161,10 +161,22 @@ module Emendate
     end
 
     # @param seg [Emendate::Segment]
+    # @param newseg [Emendate::Segment]
+    def insert_segment_after_segment(seg, newseg)
+      insert(ins_pt(seg), newseg)
+    end
+
+    # @param seg [Emendate::Segment]
+    # @param newseg [Emendate::Segment]
+    def insert_segment_before_segment(seg, newseg)
+      insert(ins_pt(seg, :prev), newseg)
+    end
+
+    # @param seg [Emendate::Segment]
     # @param dummytype [Symbol]
     def insert_dummy_after_segment(seg, dummytype)
       newsegment = Emendate::Segment.new(type: dummytype)
-      insert(ins_pt(seg), newsegment)
+      insert_segment_after_segment(seg, newsegment)
     end
 
     private

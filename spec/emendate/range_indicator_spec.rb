@@ -36,6 +36,14 @@ RSpec.describe Emendate::RangeIndicator do
     end
   end
 
+  context "with ca. ####-####/####" do
+    let(:str) { "ca. 1885-1895/1970" }
+    it "returns range_date_type" do
+      expect(type_string).to eq("range_date_type")
+      expect(subject.lexeme).to eq(str)
+    end
+  end
+
   context "with mixed range and non-range (1970, 1972 - 1999, 2002)" do
     let(:str) { "1970, 1972 - 1999, 2002" }
 

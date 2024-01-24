@@ -7,11 +7,11 @@ module Emendate
     # Represents a date string that cannot be processed. The type value
     # assigned indicates the problem:
     #
-    # invalid:: string follows parseable date pattern, but results in an invalid
-    # date value
-    # untokenizable:: string cannot be successfully tokenized
-    # unprocessable:: string was successfully tokenized and identified as a
-    # pattern that the application cannot currently process
+    # * invalid: string follows parseable date pattern, but results in an
+    #   invalid date value
+    # * untokenizable: string cannot be successfully tokenized
+    # * unprocessable: string was successfully tokenized and identified as a
+    #   pattern that the application cannot currently process
     #
     # The purpose of creating an error date type is to fail fast, gracefully,
     # and informatively, with a result that can be processed consistently
@@ -48,7 +48,8 @@ module Emendate
       # @return [NilClass]
       def range? = false
 
-      # @return [:unprocessable_date_type, :untokenizable_date_type]
+      # @return [:invalid_date_type, :unprocessable_date_type,
+      #   :untokenizable_date_type]
       def type = :"#{error_type}_date_type"
 
       private
