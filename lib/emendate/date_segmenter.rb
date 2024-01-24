@@ -34,7 +34,9 @@ module Emendate
       else
         transform_separators(separators)
       end
-
+    rescue Emendate::ForbiddenSegmentAdditionError => e
+      Failure(e.to_s)
+    else
       Success(result)
     end
 
@@ -113,26 +115,15 @@ module Emendate
         modifier = working[1]
       end
 
-      addable = datetype.addable?(type)
-
       case direction
       when :forward
-        if addable
-          datetype.prepend_source_token(modifier)
-        else
-          add_as_unprocessable(modifier)
-        end
+        datetype.prepend_source_token(modifier)
         result << datetype
         working.shift(2)
       when :backward
-        if addable
-          datetype.append_source_token(modifier)
-          result << datetype
-          working.shift(2)
-        else
-          result << datetype
-          working.shift
-        end
+        datetype.append_source_token(modifier)
+        result << datetype
+        working.shift(2)
       end
 
       apply_modifiers(type)
@@ -140,7 +131,7 @@ module Emendate
 
     def add_as_unprocessable(modifier)
       result << Emendate::Segment.new(
-        type: "unprocessable_#{modifier_type}", sources: [modifier]
+        type: "forbidden_#{modifier.type}", sources: [modifier]
       )
     end
 

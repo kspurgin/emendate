@@ -28,7 +28,7 @@ module Emendate
     end
   end
 
-  class DisallowedTokenAdditionError < StandardError
+  class ForbiddenSegmentAdditionError < StandardError
     include Emendate::Error
 
     def initialize(token, meth, klass)

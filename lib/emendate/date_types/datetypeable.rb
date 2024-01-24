@@ -42,7 +42,7 @@ module Emendate
       # @todo Rename to :prepend_source_segment
       def prepend_source_token(segment)
         unless addable?(segment.type)
-          raise Emendate::DisallowedTokenAdditionError.new(
+          fail Emendate::ForbiddenSegmentAdditionError.new(
             segment, __method__, self.class
           )
         end
@@ -57,7 +57,7 @@ module Emendate
       # @param token [{Segment}] or subclasses of {Segment}
       def append_source_token(token)
         unless addable_token_types.include?(token.type)
-          raise Emendate::DisallowedTokenAdditionError.new(
+          fail Emendate::ForbiddenSegmentAdditionError.new(
             token, __method__, self.class
           )
         end
