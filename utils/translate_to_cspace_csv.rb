@@ -82,6 +82,7 @@ end
 CSV.open(outfile, "a") do |csvout|
   Emendate.batch_translate(strings, optargs) do |translation|
     translation.values.each_with_index do |translated, idx|
+      puts translation.orig
       row = create_row(translated, translation, idx)
       csvout << row.values_at(*HEADERS)
     end
