@@ -22,7 +22,7 @@ RSpec.describe Emendate::DateTypes::YearMonth do
     end
   end
 
-  context "with `Feb. 2020`" do
+  context "with Feb. 2020" do
     let(:string) { "Feb. 2020" }
 
     it "returns as expected" do
@@ -34,7 +34,55 @@ RSpec.describe Emendate::DateTypes::YearMonth do
     end
   end
 
-  context "with `[Feb. 2020]`" do
+  context "with before Feb. 2020" do
+    let(:string) { "before Feb. 2020" }
+
+    context "when before date treated as range" do
+      before do
+        Emendate.config.options.before_date_treatment = :range
+        Emendate.config.options.open_unknown_start_date = "1600-02-15"
+      end
+
+      it "returns as expected" do
+        expect(subject.type).to eq(:yearmonth_date_type)
+        expect(subject.earliest).to eq(Date.new(1600, 2, 15))
+        expect(subject.latest).to eq(Date.new(2020, 1, 31))
+        expect(subject.lexeme).to eq(string)
+      end
+    end
+
+    context "when before date treated as point" do
+      before do
+        Emendate.config.options.before_date_treatment = :point
+      end
+
+      it "returns as expected" do
+        expect(subject.latest).to eq(Date.new(2020, 1, 31))
+        expect(subject.earliest).to eq(subject.latest)
+      end
+    end
+  end
+
+  context "with after Feb. 2020" do
+    before { allow(Date).to receive(:today).and_return Date.new(2023, 6, 21) }
+    let(:string) { "after Feb. 2020" }
+
+    it "returns as expected" do
+      expect(subject.earliest).to eq(Date.new(2020, 3, 1))
+      expect(subject.latest).to eq(Date.new(2023, 6, 21))
+    end
+  end
+
+  context "with mid Feb. 2020" do
+    let(:string) { "mid Feb. 2020" }
+
+    it "returns as expected" do
+      expect(subject.earliest).to eq(Date.new(2020, 2, 11))
+      expect(subject.latest).to eq(Date.new(2020, 2, 20))
+    end
+  end
+
+  context "with [Feb. 2020]" do
     let(:string) { "[Feb. 2020]" }
 
     it "returns as expected" do
@@ -42,7 +90,7 @@ RSpec.describe Emendate::DateTypes::YearMonth do
     end
   end
 
-  context "with `possibly 2020 February`" do
+  context "with possibly 2020 February" do
     let(:string) { "possibly 2020 February" }
 
     it "returns as expected" do
@@ -51,7 +99,7 @@ RSpec.describe Emendate::DateTypes::YearMonth do
     end
   end
 
-  context "with `2020, possibly February`" do
+  context "with 2020, possibly February" do
     let(:string) { "2020, possibly February" }
 
     it "returns as expected" do
@@ -59,7 +107,7 @@ RSpec.describe Emendate::DateTypes::YearMonth do
     end
   end
 
-  context "with `2020, February, possibly`" do
+  context "with 2020, February, possibly" do
     let(:string) { "2020, February, possibly" }
 
     it "returns as expected" do
@@ -68,7 +116,7 @@ RSpec.describe Emendate::DateTypes::YearMonth do
     end
   end
 
-  context "with `2020-?02`" do
+  context "with 2020-?02" do
     let(:string) { "2020-?02" }
 
     it "returns as expected" do

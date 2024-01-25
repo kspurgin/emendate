@@ -11,9 +11,19 @@ module Emendate
     # Classes including this module should define the following instance
     # methods:
     #
-    # * earliest (Date)
-    # * latest (Date)
-    # * range? (Boolean)
+    # * range? (Boolean, public)
+    # * addable_token_types(override, Array<Symbol>, private)
+    #
+    # For date types that return partial or before/after (range switch) date
+    # values, the following must be defined in order for the default, shared
+    # :earliest and :latest methods to work:
+    #
+    # * granularity_level (Symbol, public, options: :year, :year_month,
+    #   :year_season, :year_month_day)
+    # * earliest_detail (Date, private)
+    # * latest_detail (Date, private)
+    #
+    # See {Year} for an fully implemented example.
     #
     # Validatable date types run specified checks on initialization and
     # raise a {Emendate::DateTypeCreationError} if any checks fail. Validatable
@@ -112,6 +122,30 @@ module Emendate
       # @return [String]
       def lexeme
         sources.empty? ? "" : sources.lexeme
+      end
+
+      # @return [Date]
+      def earliest
+        return earliest_detail unless range_switch
+
+        case range_switch
+        when :before
+          earliest_for_before
+        when :after
+          latest_detail.next
+        end
+      end
+
+      # @return [Date]
+      def latest
+        return latest_detail unless range_switch
+
+        case range_switch
+        when :before
+          earliest_detail.prev_day
+        when :after
+          Date.today
+        end
       end
 
       # @return [String] representation of earliest year
@@ -229,6 +263,15 @@ module Emendate
         end
       end
 
+      # @return [Date]
+      def earliest_for_before
+        if Emendate.options.before_date_treatment == :point
+          latest
+        else
+          Emendate.options.open_unknown_start_date
+        end
+      end
+
       def at_granularity(point)
         gl = get_granularity_level(point)
         return unless gl
@@ -240,6 +283,7 @@ module Emendate
         when :year_month
           "#{full.year}-#{full.month.to_s.rjust(2, "0")}"
         when :year_season
+          "#{full.year}-#{full.month.to_s.rjust(2, "0")}"
         when :year_month_day
           "#{full.year}-#{full.month.to_s.rjust(2, "0")}-"\
             "#{full.day.to_s.rjust(2, "0")}"

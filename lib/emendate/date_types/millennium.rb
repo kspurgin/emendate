@@ -23,16 +23,6 @@ module Emendate
         @granularity_level = :year
       end
 
-      def earliest
-        yr = "#{literal}000".to_i
-        Date.new(yr, 1, 1)
-      end
-
-      def latest
-        yr = "#{literal}999".to_i
-        Date.new(yr, 12, 31)
-      end
-
       def range?
         true
       end
@@ -60,6 +50,36 @@ module Emendate
           datepart.literal
         end
       end
+
+      def earliest_detail
+        year = case partial_indicator
+        when nil
+          start_year
+        when :early
+          start_year
+        when :mid
+          start_year + 333
+        when :late
+          start_year + 666
+        end
+        Date.new(year, 1, 1)
+      end
+
+      def latest_detail
+        year = case partial_indicator
+        when nil
+          start_year + 999
+        when :early
+          start_year + 333
+        when :mid
+          start_year + 666
+        when :late
+          start_year + 999
+        end
+        Date.new(year, -1, -1)
+      end
+
+      def start_year = (literal.to_s + "000").to_i
     end
   end
 end

@@ -151,9 +151,9 @@ RSpec.describe Emendate::DateTypes::Year do
       expect(yr.literal).to eq(231)
       expect(yr.range?).to be_falsey
       expect(yr.earliest).to eq(Date.new(231, 1, 1))
-      expect(yr.earliest_at_granularity).to eq("0231")
+      expect(yr.earliest_at_granularity).to eq("231")
       expect(yr.latest).to eq(Date.new(231, 12, 31))
-      expect(yr.latest_at_granularity).to eq("0231")
+      expect(yr.latest_at_granularity).to eq("231")
     end
 
     context "with bce set" do
@@ -168,9 +168,9 @@ RSpec.describe Emendate::DateTypes::Year do
           expect(yr.literal).to eq(-230)
           expect(yr.range?).to be_falsey
           expect(yr.earliest).to eq(Date.new(-230, 1, 1))
-          expect(yr.earliest_at_granularity).to eq("-0230")
+          expect(yr.earliest_at_granularity).to eq("-230")
           expect(yr.latest).to eq(Date.new(-230, 12, 31))
-          expect(yr.latest_at_granularity).to eq("-0230")
+          expect(yr.latest_at_granularity).to eq("-230")
         end
       end
 
@@ -183,9 +183,9 @@ RSpec.describe Emendate::DateTypes::Year do
           expect(yr.literal).to eq(-231)
           expect(yr.range?).to be_falsey
           expect(yr.earliest).to eq(Date.new(-231, 1, 1))
-          expect(yr.earliest_at_granularity).to eq("-0231")
+          expect(yr.earliest_at_granularity).to eq("-231")
           expect(yr.latest).to eq(Date.new(-231, 12, 31))
-          expect(yr.latest_at_granularity).to eq("-0231")
+          expect(yr.latest_at_granularity).to eq("-231")
         end
       end
     end

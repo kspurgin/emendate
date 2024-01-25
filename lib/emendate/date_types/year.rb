@@ -7,11 +7,15 @@ module Emendate
     class Year
       include Datetypeable
 
+      # @return [:year]
+      attr_reader :granularity_level
+
       # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
       def initialize(sources:)
         common_setup(binding)
         @orig_literal = first_numeric_literal
+        @granularity_level = :year
       end
 
       # @return [Integer]
@@ -20,9 +24,6 @@ module Emendate
 
         adjusted_literal * -1
       end
-
-      # @return [:year]
-      def granularity_level = :year
 
       # @return [true]
       def qualifiable? = true
@@ -39,53 +40,11 @@ module Emendate
         true if partial_indicator || range_switch
       end
 
-      # @return [Date]
-      def earliest
-        return earliest_by_partial unless range_switch
-
-        case range_switch
-        when :before
-          earliest_for_before
-        when :after
-          latest_by_partial.next
-        end
-      end
-
-      # @return [String]
-      def earliest_at_granularity
-        return year_string unless range_switch
-
-        case range_switch
-        when :before
-          year_string(earliest.year)
-        end
-      end
-
-      # @return [Date]
-      def latest
-        return latest_by_partial unless range_switch
-
-        case range_switch
-        when :before
-          earliest_by_partial.prev_day
-        when :after
-          Date.today
-        end
-      end
-
-      # @return [String]
-      def latest_at_granularity
-        return year_string unless range_switch
-
-        case range_switch
-        when :before
-          year_string(latest.year)
-        end
-      end
-
       private
 
       attr_reader :orig_literal
+
+      def addable_token_types = %i[partial before after era_bce]
 
       def validate
         parts = sources.date_part_types
@@ -115,18 +74,7 @@ module Emendate
         end
       end
 
-      def year_string(val = literal)
-        if val >= 0
-          val.to_s.rjust(4, "0")
-        else
-          base = val.to_s
-            .delete_prefix("-")
-            .rjust(4, "0")
-          "-#{base}"
-        end
-      end
-
-      def earliest_by_partial
+      def earliest_detail
         case partial_indicator
         when nil
           Date.new(literal, 1, 1)
@@ -139,15 +87,7 @@ module Emendate
         end
       end
 
-      def earliest_for_before
-        if Emendate.options.before_date_treatment == :point
-          latest
-        else
-          Emendate.options.open_unknown_start_date
-        end
-      end
-
-      def latest_by_partial
+      def latest_detail
         case partial_indicator
         when nil
           Date.new(literal, 12, -1)
@@ -159,8 +99,6 @@ module Emendate
           Date.new(literal, 12, 31)
         end
       end
-
-      def addable_token_types = %i[partial before after era_bce]
     end
   end
 end

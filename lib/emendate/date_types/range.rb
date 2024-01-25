@@ -41,12 +41,6 @@ module Emendate
       # @return [Date]
       def latest = enddate.latest
 
-      # @return [Date]
-      def earliest = startdate.earliest
-
-      # @return [Date]
-      def latest = enddate.latest
-
       # @return [true]
       def range? = true
 

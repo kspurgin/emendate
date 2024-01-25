@@ -30,12 +30,6 @@ module Emendate
       # @return [TrueClass]
       def validatable? = true
 
-      # @return [Date]
-      def earliest = Date.new(year, month, 1)
-
-      # @return [Date]
-      def latest = Date.new(year, month, -1)
-
       # @return [FalseClass] if no partial indicator or range switch is present,
       #   OR if range_switch is :before and the before_date_treatment setting
       #   is :point
@@ -62,6 +56,32 @@ module Emendate
         add_source_segment_set_qualifiers
         begin_and_end_qualifiers.each { |qual| add_qualifier_as_whole(qual) }
         segment_qualifier_processing(:year, :month)
+      end
+
+      def earliest_detail
+        case partial_indicator
+        when nil
+          Date.new(year, month, 1)
+        when :early
+          Date.new(year, month, 1)
+        when :mid
+          Date.new(year, month, 11)
+        when :late
+          Date.new(year, month, 21)
+        end
+      end
+
+      def latest_detail
+        case partial_indicator
+        when nil
+          Date.new(year, month, -1)
+        when :early
+          Date.new(year, month, 10)
+        when :mid
+          Date.new(year, month, 20)
+        when :late
+          Date.new(year, month, -1)
+        end
       end
     end
   end

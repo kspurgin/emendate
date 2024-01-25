@@ -27,12 +27,6 @@ module Emendate
         @granularity_level = :year
       end
 
-      # @return [Date]
-      def earliest = Date.new(earliest_year, 1, 1)
-
-      # @return [Date]
-      def latest = Date.new(latest_year, 12, 31)
-
       # @return [true]
       def range? = true
 
@@ -67,37 +61,39 @@ module Emendate
         end
       end
 
-      def earliest_year
-        year = start_year
-        case partial_indicator
+      def earliest_detail
+        year = case partial_indicator
         when nil
-          year
+          start_year
         when :early
-          year
+          start_year
         when :mid
-          year + 33
+          start_year + 33
         when :late
-          year + 66
+          start_year + 66
         end
+        Date.new(year, 1, 1)
       end
 
-      def latest_year
-        year = start_year
-        case partial_indicator
+      def latest_detail
+        year = case partial_indicator
         when nil
-          year + 99
+          start_year + 99
         when :early
-          year + 33
+          start_year + 33
         when :mid
-          year + 66
+          start_year + 66
         when :late
-          year + 99
+          start_year + 99
         end
+        Date.new(year, -1, -1)
       end
 
       def start_year
         base = (literal.to_s + "00").to_i
-        (century_type == :name) ? base + 1 : base
+        return base unless century_type == :name
+
+        base + 1
       end
     end
   end
