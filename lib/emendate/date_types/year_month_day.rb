@@ -36,14 +36,6 @@ module Emendate
       # @return [TrueClass]
       def validatable? = true
 
-      def earliest
-        Date.new(year, month, day)
-      end
-
-      def latest
-        earliest
-      end
-
       def literal = "#{year}"\
         "#{month.to_s.rjust(2, "0")}"\
         "#{day.to_s.rjust(2, "0")}"
@@ -62,6 +54,8 @@ module Emendate
       end
 
       private
+
+      def addable_token_types = %i[before after]
 
       def validate
         check_date_validity
@@ -85,6 +79,11 @@ module Emendate
       else
         self
       end
+
+      def earliest_detail
+        Date.new(year, month, day)
+      end
+      alias_method :latest_detail, :earliest_detail
     end
   end
 end

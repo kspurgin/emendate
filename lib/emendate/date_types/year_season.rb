@@ -64,24 +64,6 @@ module Emendate
       # @return [TrueClass]
       def validatable? = true
 
-      def earliest
-        return get_date(:start) unless include_prev_year
-
-        Date.new(year - 1, 12, 1)
-      end
-
-      def latest
-        get_date(:end)
-      end
-
-      def earliest_at_granularity
-        "#{earliest.year}-#{earliest.month.to_s.rjust(2, "0")}"
-      end
-
-      def latest_at_granularity
-        "#{latest.year}-#{latest.month.to_s.rjust(2, "0")}"
-      end
-
       def range?
         !(partial_indicator.nil? && range_switch.nil?)
       end
@@ -89,6 +71,8 @@ module Emendate
       private
 
       attr_reader :year, :season, :seasons, :include_prev_year
+
+      def addable_token_types = %i[before after]
 
       def validate
         has_x_date_parts(2)
@@ -100,6 +84,16 @@ module Emendate
         add_source_segment_set_qualifiers
         begin_and_end_qualifiers.each { |qual| add_qualifier_as_whole(qual) }
         segment_qualifier_processing(:year, :season)
+      end
+
+      def earliest_detail
+        return get_date(:start) unless include_prev_year
+
+        Date.new(year - 1, 12, 1)
+      end
+
+      def latest_detail
+        get_date(:end)
       end
 
       # @param type [:start, :end]
