@@ -37,6 +37,15 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
+  context "with before ##/####" do
+    let(:string) { "before 11/1950" }
+
+    it "segments as expected" do
+      expect(types).to eq(%i[before month year])
+      expect(result.lexeme).to eq(string)
+    end
+  end
+
   context "with ####.#" do
     let(:string) { "2020.0" }
 

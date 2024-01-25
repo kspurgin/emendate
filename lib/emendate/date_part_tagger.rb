@@ -73,8 +73,10 @@ module Emendate
     end
 
     def full_match_date_part_tagger
-      # case result.date_part_types.sort.join(" ")
-      # end
+      case result.date_part_types.join(" ")
+      when "number1or2 year"
+        proc { tag_numeric_month }
+      end
     end
 
     def partial_match_tagger

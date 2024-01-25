@@ -312,5 +312,5 @@
 "Y3388E2S3","Y3388E2S3","y####e#s#","currently_unparseable;edtf;edtf2;exponential_year;letter_prefixed_year;significant_digits",,,"0","nilValue","nilValue","nilValue","nilValue",,,"Unprocessable string",,
 "1947/ca. 1965","1947/ca. 1965","####/ca. ####","approximate;year_granularity;range","ccp",,"0","1947","1965","1947-01-01","1965-12-31","approximate, end",,"na",,
 "1815 or later","1815 or later","#### or later","or_after;year_granularity;after_before","ccp","open_unknown_end_date: '2022-06-01'","0","1815","2022","1815-01-01","2022-06-01",,,,"[1815..]","1815 or a later date"
-"before 11/1750","before 11/1750","before ##/####","after_before;year_month_granularity","ccp","open_unknown_start_date: '1600-02-15'","0","1600-02","1749-10","1600-02-15","1749-10-31",,,"na","[..1750-11]","1749-11 or an earlier date"
+"before 11/1750","before 11/1750","before ##/####","after_before;year_month_granularity","ccp","open_unknown_start_date: '1600-02-15'","0","1600-02","1750-10","1600-02-15","1750-10-31",,,"na","[..1750-11]","1750-11 or an earlier date"
 "Sept. 28, 1969","Sept. 28, 1969","MON. ##, ####","year_month_day_granularity","ccp",,"0","1969-09-28","1969-09-28","1969-09-28","1969-09-28",,,,"1969-09-28","1969-09-28"
