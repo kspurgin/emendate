@@ -337,7 +337,9 @@
 36
 37
 38
-39</pre>
+39
+40
+41</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/emendate/date_segmenter.rb', line 20</span>
@@ -359,7 +361,9 @@
   <span class='kw'>else</span>
     <span class='id identifier rubyid_transform_separators'>transform_separators</span><span class='lparen'>(</span><span class='id identifier rubyid_separators'>separators</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
-
+<span class='kw'>rescue</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="ForbiddenSegmentAdditionError.html" title="Emendate::ForbiddenSegmentAdditionError (class)">ForbiddenSegmentAdditionError</a></span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+  <span class='const'>Failure</span><span class='lparen'>(</span><span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
+<span class='kw'>else</span>
   <span class='const'>Success</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -372,7 +376,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Jan 24 00:41:27 2024 by
+  Generated on Thu Jan 25 00:40:35 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-2.7.8).
 </div>
