@@ -11,7 +11,12 @@ module Emendate
       end
     end
 
+    # Segment types to be treated as date separators after initial date
+    # segmentation and application of modifiers
+    SEPTYPES = %i[and or comma pipe]
+
     def initialize(tokens)
+      @origtokens = tokens
       @working = tokens.class.new.copy(tokens)
       @result = tokens.class.new.copy(tokens)
       result.clear
@@ -26,23 +31,37 @@ module Emendate
         apply_modifiers(mod) until working.empty?
       end
 
-      separators = result.select { |seg| %i[and or comma].include?(seg.type) }
+      separators = result.select { |seg| SEPTYPES.include?(seg.type) }
       return Success(result) if separators.empty?
 
       if separators.map(&:type).uniq.length > 1
-        return Failure(:multiple_date_separator_types)
+        return Failure(Emendate::SegmentSet.new(segments: [
+          Emendate::DateTypes::Error.new(
+            sources: result, error_type: :unprocessable,
+            message: "Multiple date separator types"
+          )
+        ]))
       else
         transform_separators(separators)
       end
+    rescue Emendate::InvalidDateError => e
+      Failure(Emendate::SegmentSet.new(segments: [
+        Emendate::DateTypes::Error.new(
+          sources: result, error_type: :invalid, exception: e
+        )
+      ]))
     rescue Emendate::ForbiddenSegmentAdditionError => e
-      Failure(e.to_s)
+      result << Emendate::DateTypes::Error.new(
+        sources: origtokens, error_type: :unprocessable, exception: e
+      )
+      Failure(result)
     else
       Success(result)
     end
 
     private
 
-    attr_reader :working, :result
+    attr_reader :origtokens, :working, :result
 
     def recursive_parse
       return if working.empty?

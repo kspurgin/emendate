@@ -107,6 +107,60 @@ module Emendate
       reader: true
   end
 
+  # @!group Common use commands for individual strings
+
+  # Use this command to get a {Result}: parsed date data in a
+  # structured format you can do useful stuff with. The intent of this
+  # command is to mirror the behavior of the
+  # {https://github.com/alexduryee/timetwister Timetwister} parse
+  # command. It's not fully there yet, but returns something similar.
+  # @param str [String]
+  # @!macro optionsparam
+  # @return [Emendate::Result]
+  def parse(str, options = {})
+    Emendate::Options.new(options) unless options.empty?
+    process(str).result
+  end
+
+  # Use this command to parse a date string and convert the result into an
+  # expression of the date in a given dialect.
+  # @param str [String] to translate
+  # @param options [Hash] of {Emendate::Options}; Indication of the dialect is
+  #   required
+  # @return [Emendate::Translation]
+  def translate(str, options = {})
+    Emendate::Options.new(options) unless options.empty?
+    Emendate::Translator.call(process(str))
+  end
+
+  # @!endgroup
+
+  # @!group Dev/debugging commands for individual strings
+
+  # Use this command to explore how a given date string is processed, in
+  # detail. Primarily used for development and debugging
+  # @param str [String]
+  # @!macro optionsparam
+  # @return [Emendate::ProcessingManager]
+  def process(str, options = {})
+    Emendate::Options.new(options) unless options.empty?
+    Emendate::ProcessingManager.call(str)
+      .either(->(success) { success }, ->(failure) { failure })
+  end
+
+  # Use this command to quickly determine whether the date string can
+  # be lexed (broken into its meaningful segments) for processing.
+  # This is generally the first thing to try when adding handling for
+  # a new date pattern
+  # @param str [String]
+  # @return [Emendate::SegmentSet] the initial {Emendate::Segment}s
+  #   derived from date string
+  def lex(str)
+    prepped_for(string: str, target: Emendate::UntokenizableTagger)
+  end
+
+  # Get the input segments for the given target. Runs all steps prior to the
+  # target.
   # @param string [String] original date string
   # @!macro [new] targetparam
   #   @param target [Class] the {Emendate::PROCESSING_STEPS processing step}
@@ -142,45 +196,19 @@ module Emendate
     tokens
   end
 
+  # A quick representation of the segment types produced by the lex command
   # @param str [String]
-  # @!macro optionsparam
-  # @return [Emendate::Result]
-  def parse(str, options = {})
-    Emendate::Options.new(options) unless options.empty?
-    process(str).result
-  end
-
-  # @param str [String]
-  # @!macro optionsparam
-  # @return [Emendate::ProcessingManager]
-  def process(str, options = {})
-    Emendate::Options.new(options) unless options.empty?
-    Emendate::ProcessingManager.call(str)
-      .either(->(success) { success }, ->(failure) { failure })
-  end
-
-  # @param str [String]
-  # @return [Emendate::SegmentSet] the initial {Emendate::Segment}s
-  #   derived from date string
-  def lex(str)
-    prepped_for(string: str, target: Emendate::UntokenizableTagger)
-  end
-
-  # @param str [String]
+  # @macro optionsparam
   # @return [String] orig string, delim value, comma-separated list of the
   #   types returned by calling {#lex} on str
-  def lex_inspect(str)
+  def lex_inspect(str, opts = nil)
     tokens = lex(str).map(&:type)
     "#{str}\t\t#{tokens.inspect}"
   end
 
-  # @param str [String] to translate
-  # @param options [Hash] of {Emendate::Options}
-  # @return [Emendate::Translation]
-  def translate(str, options = {})
-    Emendate::Options.new(options) unless options.empty?
-    Emendate::Translator.call(process(str))
-  end
+  # @!endgroup
+
+  # @!group Batch processing commands, for use in scripts
 
   # @param strings [Array<String>]
   # @param options [Hash]
@@ -210,6 +238,8 @@ module Emendate
       yield translator.call
     end
   end
+
+  # @!endgroup
 
   private
 

@@ -209,12 +209,41 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
-  context 'with "MON ##, ####"' do
+  context "with #### ## MONTH" do
+    let(:string) { "1995 27 May" }
+
+    it "tags as expected" do
+      expect(types).to eq(%i[year day month])
+      expect(result.lexeme).to eq(string)
+    end
+  end
+
+  context "with MON ##, ####" do
     let(:string) { "Oct. 28, 1964" }
 
     it "tags as expected" do
       expect(types).to eq(%i[month day year])
       expect(result.lexeme).to eq(string)
+    end
+  end
+
+  context "with ##-MON-##", :unambiguous_day_year do
+    let(:string) { "16-Mar-51" }
+
+    it "collapses as expected" do
+      expect(result.lexeme).to eq(string)
+      expect(types).to eq(%i[day month year])
+      expect(result[2].literal).to eq(1951)
+    end
+  end
+
+  context "with ##-MON-##", :ambiguous_day_year do
+    let(:string) { "10-Mar-11" }
+
+    it "collapses as expected" do
+      expect(result.lexeme).to eq(string)
+      expect(types).to eq(%i[day month year])
+      expect(result[2].literal).to eq(2011)
     end
   end
 

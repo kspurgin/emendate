@@ -64,7 +64,10 @@ RSpec.describe Emendate::Lexer do
           number1or2],
         "early 19th c." => %i[partial space number1or2 ordinal_indicator space
           letter_c single_dot],
-        "n.d., before 1955" => %i[unknown_date comma space before space number4]
+        "n.d., before 1955" => %i[unknown_date comma space before space
+          number4],
+        "1979｜1980 Jan" => %i[number4 pipe number4 space month],
+        "1979|1980 Jan" => %i[number4 pipe number4 space month]
       }
 
       results = examples.keys

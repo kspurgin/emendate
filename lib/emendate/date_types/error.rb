@@ -21,13 +21,25 @@ module Emendate
 
       # @return [SegmentSet]
       attr_reader :sources
+      # @return [#backtrace, nil]
+      attr_reader :exception
+      # @return [String, nil]
+      attr_reader :message
 
       # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
       # @param error_type [:untokenizable, :unprocessable]
-      def initialize(sources:, error_type:)
+      # @param exception [#backtrace] associated Exception object
+      # @param message [String]
+      def initialize(sources:, error_type:, exception: nil, message: nil)
         common_setup(binding)
         @error_type = error_type
+        @exception = exception
+        @message = if message
+          message
+        elsif exception
+          exception.message
+        end
       end
 
       # @return [NilClass]

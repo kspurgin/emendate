@@ -18,12 +18,32 @@ RSpec.describe Emendate::TokenCollapser do
       end
     end
 
+    context "with ##-MON-##" do
+      let(:string) { "16-Mar-51" }
+
+      it "collapses as expected" do
+        expect(subject.lexeme).to eq(string)
+        expect(result).to eq(%i[number1or2 month number1or2])
+      end
+    end
+
     context "with ##-##-####" do
       let(:string) { "02-10-2000" }
 
       it "collapses as expected" do
         expect(subject.lexeme).to eq(string)
         expect(result).to eq(%i[number1or2 number1or2 number4])
+      end
+    end
+
+    context "with ####-##-## - ####-##-##" do
+      let(:string) { "1974-11-23 - 1974-11-24" }
+
+      it "collapses as expected" do
+        expect(subject.lexeme).to eq(string)
+        expect(result).to eq(%i[number4 number1or2 number1or2
+          hyphen
+          number4 number1or2 number1or2])
       end
     end
 

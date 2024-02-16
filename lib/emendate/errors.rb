@@ -68,7 +68,7 @@ module Emendate
     include Emendate::Error
     def initialize(n1, n2, y)
       m = "Cannot determine valid month/date assignment for "\
-          "#{n1.lexeme}-#{n2.lexeme}-#{y.lexeme}"
+          "#{n1.literal} and #{n2.literal} with year: #{y.lexeme}"
       super(m)
     end
   end

@@ -20,7 +20,7 @@ RSpec.describe Emendate::DateTypes::Year do
     end
   end
 
-  context "with `[2021?]`" do
+  context "with [2021?]" do
     let(:string) { "[2021?]" }
     let(:tokens) do
       Emendate.prepped_for(
@@ -42,7 +42,7 @@ RSpec.describe Emendate::DateTypes::Year do
     end
   end
 
-  context "with `early 2021`" do
+  context "with early 2021" do
     let(:tokens) do
       [
         Emendate::Segment.new(type: :partial, lexeme: "early ",
@@ -63,7 +63,7 @@ RSpec.describe Emendate::DateTypes::Year do
     end
   end
 
-  context "with `mid 2021`" do
+  context "with mid 2021" do
     let(:tokens) do
       [
         Emendate::Segment.new(type: :partial, lexeme: "mid ", literal: :mid),
@@ -83,7 +83,7 @@ RSpec.describe Emendate::DateTypes::Year do
     end
   end
 
-  context "with `late 2021`" do
+  context "with late 2021" do
     let(:tokens) do
       [
         Emendate::Segment.new(type: :partial, lexeme: "late ", literal: :late),
@@ -103,7 +103,7 @@ RSpec.describe Emendate::DateTypes::Year do
     end
   end
 
-  context "with `before 2021`" do
+  context "with before 2021" do
     let(:tokens) do
       [
         Emendate::Segment.new(type: :before, lexeme: "before "),
@@ -111,7 +111,7 @@ RSpec.describe Emendate::DateTypes::Year do
       ]
     end
 
-    context "when `before_date_treatment: :point`" do
+    context "when before_date_treatment: :point" do
       before { Emendate.config.options.before_date_treatment = :point }
 
       it "returns as expected" do
@@ -126,7 +126,7 @@ RSpec.describe Emendate::DateTypes::Year do
       end
     end
 
-    context "when `before_date_treatment: :range`" do
+    context "when before_date_treatment: :range" do
       before { Emendate.config.options.before_date_treatment = :range }
 
       it "returns as expected" do
@@ -139,7 +139,7 @@ RSpec.describe Emendate::DateTypes::Year do
     end
   end
 
-  context "with `231`" do
+  context "with 231" do
     let(:tokens) do
       [
         Emendate::Number.new(lexeme: "231")
@@ -191,7 +191,7 @@ RSpec.describe Emendate::DateTypes::Year do
     end
   end
 
-  context "with `after 2021`" do
+  context "with after 2021" do
     before { allow(Date).to receive(:today).and_return Date.new(2023, 6, 21) }
 
     let(:tokens) do
@@ -207,7 +207,7 @@ RSpec.describe Emendate::DateTypes::Year do
     end
   end
 
-  context "with `after early 2021`" do
+  context "with after early 2021" do
     before { allow(Date).to receive(:today).and_return Date.new(2023, 6, 21) }
 
     let(:tokens) do
@@ -225,7 +225,7 @@ RSpec.describe Emendate::DateTypes::Year do
     end
   end
 
-  context "with `before mid 2021`" do
+  context "with before mid 2021" do
     before { allow(Date).to receive(:today).and_return Date.new(2023, 6, 21) }
 
     let(:tokens) do
