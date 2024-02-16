@@ -17,8 +17,10 @@ module Emendate
     def call
       return Success(result) unless indicators?
 
-      result.select { |seg| indicator?(seg) }
-        .reverse_each { |seg| handle_indicator(seg) }
+      while indicators?
+        seg = result.select { |seg| indicator?(seg) }.segments.first
+        handle_indicator(seg)
+      end
 
       if result[0].type == :letter_c
         handle_indicator(result[0])
@@ -36,7 +38,7 @@ module Emendate
     def indicators? = result.any? { |seg| indicator?(seg) }
 
     def handle_indicator(seg)
-      segidx = result.find_index(seg)
+      segidx = result.index_of(seg)
       dir = determine_direction(seg, segidx)
       collapse(dir, seg, segidx)
     end
@@ -77,7 +79,7 @@ module Emendate
     end
 
     def adjacent_not_collapsible?(segidx, dir)
-      !adjacent_collapsible(segidx, dir)
+      !adjacent_collapsible?(segidx, dir)
     end
 
     def collapse(dir, seg, idx)

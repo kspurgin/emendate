@@ -145,23 +145,18 @@ RSpec.describe Emendate::Segment do
       end
 
       context "with multiple levels of derivation" do
-        it "foo" do
-          sub_a_srcs = [
-            Emendate::Number.new(lexeme: "2"),
-            Emendate::Segment.new(type: :hyphen, lexeme: "/")
-          ]
-          sub_a = described_class.new(type: :sub_a, sources: sub_a_srcs)
+        let(:segset) do
+          Emendate.prepped_for(
+            string: "[c. 2020-03]", target: Emendate::FormatStandardizer
+          )
+        end
 
-          sub_b_srcs = [
-            Emendate::Segment.new(type: :question, lexeme: "?"),
-            Emendate::Segment.new(type: :space, lexeme: " ")
-          ]
-          sub_b = described_class.new(type: :sub_b, sources: sub_b_srcs)
-
-          parent = described_class.new(type: :nested, sources: [sub_a, sub_b])
-          expect(parent.type).to eq(:nested)
-          expect(parent.sources.length).to eq(2)
-          expect(parent.subsources.length).to eq(4)
+        it "sets sources and subsources as expected" do
+          seg = segset[0]
+          expect(seg.type).to eq(:letter_c)
+          expect(seg.sources.types).to eq(%i[square_bracket_open letter_c])
+          expect(seg.subsources.types).to eq(%i[square_bracket_open letter_c
+            single_dot space])
         end
       end
     end

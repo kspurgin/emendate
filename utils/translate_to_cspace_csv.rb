@@ -60,6 +60,7 @@ CSV.open(outfile, "wb") do |csvout|
 end
 
 strings = CSV.foreach(options[:input]).map { |row| row.first.strip }
+strings.shift if strings[0] == "date_value"
 optargs = options[:optargs] ||= {dialect: :collectionspace}
 
 # @param row [Hash]
@@ -81,6 +82,7 @@ end
 
 CSV.open(outfile, "a") do |csvout|
   Emendate.batch_translate(strings, optargs) do |translation|
+    # binding.pry if translation.values.empty?
     translation.values.each_with_index do |translated, idx|
       puts translation.orig
       row = create_row(translated, translation, idx)

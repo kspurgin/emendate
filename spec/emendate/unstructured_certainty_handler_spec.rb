@@ -25,6 +25,25 @@ RSpec.describe Emendate::UnstructuredCertaintyHandler do
     end
   end
 
+  context "with #### ca (?)" do
+    let(:string) { "1986 ca (?)" }
+
+    it "handles as expected" do
+      expect(subject.type_string).to eq("number4")
+      expect(subject.lexeme).to eq(string)
+
+      qual = subject[0].qualifiers.first
+      expect(qual.type).to eq(:approximate)
+      expect(qual.lexeme).to eq("circa")
+      expect(qual.precision).to eq(:leftward)
+
+      q2 = subject[0].qualifiers[1]
+      expect(q2.type).to eq(:uncertain)
+      expect(q2.lexeme).to eq("")
+      expect(q2.precision).to eq(:end)
+    end
+  end
+
   context "with 1920 ca" do
     let(:string) { "1920 ca" }
 
@@ -75,9 +94,9 @@ RSpec.describe Emendate::UnstructuredCertaintyHandler do
       expect(subject.type_string).to eq("number4")
 
       quals = subject[0].qualifiers
-      expect(quals.map(&:type)).to eq(%i[uncertain approximate])
-      expect(quals.map(&:lexeme)).to eq(["", "circa"])
-      expect(quals.map(&:precision)).to eq(%i[end beginning])
+      expect(quals.map(&:type)).to eq(%i[approximate uncertain])
+      expect(quals.map(&:lexeme)).to eq(["circa", ""])
+      expect(quals.map(&:precision)).to eq(%i[beginning end])
     end
   end
 

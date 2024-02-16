@@ -32,9 +32,8 @@ module Emendate
     attr_reader :n1, :n2, :y, :opt
 
     def add_warning
-      # rubocop:todo Layout/LineLength
-      @warnings << "Ambiguous month/day treated #{Emendate.options.ambiguous_month_day}"
-      # rubocop:enable Layout/LineLength
+      @warnings << "Ambiguous month/day treated "\
+        "#{Emendate.options.ambiguous_month_day}"
     end
 
     def analyze

@@ -50,6 +50,9 @@ RSpec.describe Emendate::DateTypes::YearMonthDay do
         expect(subject.earliest).to eq(Date.new(1600, 2, 15))
         expect(subject.latest).to eq(Date.new(1987, 4, 12))
         expect(subject.lexeme).to eq(string)
+        expect(subject.subsources.types).to eq(
+          %i[before space month space number1or2 comma space number4]
+        )
       end
     end
 

@@ -24,6 +24,8 @@ module Emendate
       "}" => :curly_bracket_close,
       "(" => :parenthesis_open,
       ")" => :parenthesis_close,
+      "|" => :pipe,
+      "\u{FF5C}" => :pipe,
       "%" => :percent,
       "+" => :plus,
       "?" => :question,
@@ -175,8 +177,15 @@ module Emendate
       true
     end
 
+    def safe_peek(len = 1)
+      tmp = StringScanner.new(scanner.rest)
+      acc = []
+      len.times { acc << tmp.getch }
+      acc.join
+    end
+
     def ordinal_val_match?(str)
-      chk = scanner.peek(str.length).downcase
+      chk = safe_peek(str.length).downcase
       str.downcase == chk
     end
 
@@ -200,7 +209,7 @@ module Emendate
 
     def tokenize_alpha_pattern(pattern)
       match = scanner.scan(pattern)
-      if alpha?(scanner.peek(1))
+      if alpha?(safe_peek(1))
         addtl = scanner.scan(/[a-z]+/i)
         add_token(match + addtl, :unknown)
       else

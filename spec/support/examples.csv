@@ -297,6 +297,7 @@
 "undated","undated","undated","indicates_no_date",,,"0","nilValue","nilValue","nilValue","nilValue","known_unknown",,"na","XXXX","not dated"
 "unk","unk","unk","indicates_no_date","ncm",,"0","nilValue","nilValue","nilValue","nilValue","known_unknown",,"na","XXXX","not dated"
 "unk.","unk.","unk.","indicates_no_date","ncm",,"0","nilValue","nilValue","nilValue","nilValue","known_unknown",,"na","XXXX","not dated"
+"?","?","?","indicates_unknown_date","ccp",,"0","nilValue","nilValue","nilValue","nilValue","known_unknown",,"na","XXXX","not dated"
 "unkn","unkn","unkn","indicates_no_date","ncm",,"0","nilValue","nilValue","nilValue","nilValue","known_unknown",,"na","XXXX","not dated"
 "unknown","unknown","unknown","indicates_no_date","ncm",,"0","nilValue","nilValue","nilValue","nilValue","known_unknown",,"na","XXXX","not dated"
 "VIII.XIV.MMXX","VIII.XIV.MMXX","VIII.XIV.MMXX","unprocessable",,,"0","nilValue","nilValue","nilValue","nilValue",,,"Untokenizable sequences: viii; xiv; mmxx",,
@@ -314,3 +315,12 @@
 "1815 or later","1815 or later","#### or later","or_after;year_granularity;after_before","ccp","open_unknown_end_date: '2022-06-01'","0","1815","2022","1815-01-01","2022-06-01",,,,"[1815..]","1815 or a later date"
 "before 11/1750","before 11/1750","before ##/####","after_before;year_month_granularity","ccp","open_unknown_start_date: '1600-02-15'","0","1600-02","1750-10","1600-02-15","1750-10-31",,,"na","[..1750-11]","1750-11 or an earlier date"
 "Sept. 28, 1969","Sept. 28, 1969","MON. ##, ####","year_month_day_granularity","ccp",,"0","1969-09-28","1969-09-28","1969-09-28","1969-09-28",,,,"1969-09-28","1969-09-28"
+"1979｜1980 Jan","1979｜1980 Jan","####｜#### MON","full_width_vertical_line;multi_dates",,,"0","1979","1979","1979-01-01","1979-12-31",,,,,
+"1979｜1980 Jan","1979｜1980 Jan","####｜#### MON","full_width_vertical_line;multi_dates",,,"1","1980-01","1980-01","1980-01-01","1980-01-31",,,,,
+"1979｜1980 Jan","1979｜1980 Jan","####｜#### MON","full_width_vertical_line;multi_dates","ccp","and_or_date_handling: :single_range","0","1979","1980-01","1979-01-01","1980-01-31",,,,,
+"1979|1980 Jan","1979|1980 Jan","####|#### MON","vertical_line_pipe;multi_dates",,,"0","1979","1979","1979-01-01","1979-12-31",,,,,
+"1979|1980 Jan","1979|1980 Jan","####|#### MON","vertical_line_pipe;multi_dates",,,"1","1980-01","1980-01","1980-01-01","1980-01-31",,,,,
+"1979|1980 Jan","1979|1980 Jan","####|#### MON","vertical_line_pipe;multi_dates",,"and_or_date_handling: :single_range","0","1979","1980-01","1979-01-01","1980-01-31",,,,,
+"16-Mar-51","16-Mar-51","##-MON-##","year_month_day_granularity;unambiguous_year_day","ccp",,"0","1951-03-16","1951-03-16","1951-03-16","1951-03-16",,,,"1951-03-16","1951-03-16"
+"10-Mar-11","10-Mar-11","##-MON-##","year_month_day_granularity;ambiguous_year_day",,,"0","2011-03-10","2011-03-10","2011-03-10","2011-03-10",,,,"2011-03-10","2011-03-10"
+"1995 27 May","1995 27 May","#### ## MONTH","year_month_day_granularity","ccp",,"0","1995-05-27","1995-05-27","1995-05-27","1995-05-27",,,,"1995-05-27","1995-05-27"
