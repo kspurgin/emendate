@@ -3,12 +3,14 @@
 require "forwardable"
 require_relative "segment_set_editable"
 require_relative "segment_set_queryable"
+require_relative "subsourceable"
 
 module Emendate
   # @todo Get rid of norm
   class SegmentSet
     include SegmentSetEditable
     include SegmentSetQueryable
+    include Subsourceable
     extend Forwardable
 
     attr_reader :orig_string, :norm, :segments,
@@ -211,10 +213,7 @@ module Emendate
     # have occurred.
     # @return [Array<Symbol>]
     def subsource_types
-      segments
-        .map { |seg| seg.subsources || seg }
-        .map { |obj| obj.respond_to?(:types) ? obj.types : obj.type }
-        .flatten
+      subsources.types
     end
 
     # Subsource types, as described in {#subsource_types}, as a string

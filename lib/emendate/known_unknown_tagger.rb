@@ -30,7 +30,8 @@ module Emendate
     attr_reader :tokens, :result
 
     def known_unknown?
-      tokens.types == [:unknown_date]
+      tokens.types == [:unknown_date] ||
+        tokens.types == [:question]
     end
 
     def end_of_range_unknown?

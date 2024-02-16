@@ -49,6 +49,9 @@ RSpec.describe Emendate::DateTypes::Range do
       expect(range.lexeme).to eq(str)
       expect(range.qualifiers.map(&:type)).to eq([:approximate])
       expect(range.qualifiers.map(&:precision)).to eq([:end])
+      expect(range.subsources.types).to eq(
+        %i[number4 hyphen approximate space number4]
+      )
     end
   end
 

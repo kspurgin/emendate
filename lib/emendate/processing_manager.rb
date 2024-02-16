@@ -143,14 +143,15 @@ module Emendate
         message = "Unhandled segment still present"
         errors << message
         history[:final_check_failure] = message
-        err = Emendate::DateTypes::Error.new(
-          sources: tokens, error_type: :unprocessable
+        @tokens = Emendate::SegmentSet.new(
+          segments: [Emendate::DateTypes::Error.new(
+            sources: tokens, error_type: :unprocessable
+          )]
         )
-        tokens.replace_segments_with_new(segs: tokens.segments, new: err)
         Failure(self)
       else
         history[:final_check_passed] = nil
-        Success()
+        Success(self)
       end
     end
 
@@ -183,17 +184,26 @@ module Emendate
         lambda do |failure|
           @history[:"#{state}_failure"] = "Call :errors method on "\
             "ProcessingManager object for details"
-          if add_error?
-            errors << failure
-          elsif failure.is_a?(
-            Emendate::SegmentSet
-          )
-            @tokens = failure
-          end
+
+          @tokens = failure if failure.is_a?(Emendate::SegmentSet)
+          get_errors(failure).each { |f| errors << f } if add_error?
           add_warnings(failure.warnings) if failure.respond_to?(:warnings)
           Failure(self)
         end
       )
+    end
+
+    def get_errors(failure)
+      return segset_errors(failure) if failure.is_a?(Emendate::SegmentSet)
+
+      [failure]
+    end
+
+    def segset_errors(failure)
+      segs = failure.select { |seg| seg.respond_to?(:error_type) }
+      return segs.segments if segs.respond_to?(:segments)
+
+      segs
     end
 
     def add_warnings(new_warnings)

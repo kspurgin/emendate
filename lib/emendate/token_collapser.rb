@@ -64,13 +64,17 @@ module Emendate
 
     def partial_match_collapsers
       case result.type_string
+      when /.*number4 (hyphen|slash) number1or2 \1 number1or2.*/
+        proc do
+          remove_date_separators_in_subset(%i[number4 number1or2 number1or2])
+        end
       when /.*number1or2 (hyphen|slash) number1or2 \1 number4.*/
         proc do
           remove_date_separators_in_subset(%i[number1or2 number1or2 number4])
         end
-      when /.*number4 (hyphen|slash) number1or2 \1 number1or2.*/
+      when /.*number1or2 (hyphen|slash) month \1 number1or2.*/
         proc do
-          remove_date_separators_in_subset(%i[number4 number1or2 number1or2])
+          remove_date_separators_in_subset(%i[number1or2 month number1or2])
         end
       when /.*month number1or2 comma number4.*/
         proc do

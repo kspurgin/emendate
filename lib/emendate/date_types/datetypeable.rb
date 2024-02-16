@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../qualifiable"
+require_relative "../subsourceable"
 
 module Emendate
   module DateTypes
@@ -38,6 +39,7 @@ module Emendate
     # * override :qualifiable? method to true
     # * define :process_qualifiers method
     module Datetypeable
+      include Subsourceable
       # @return [Array<Symbol>]
       attr_reader :certainty
       # @return [SegmentSet]
@@ -112,6 +114,17 @@ module Emendate
       def processed?
         true
       end
+
+      # def subsources
+      #   segset = Emendate::SegmentSet.new
+
+      #   sources.map(&:subsources)
+      #     .flatten
+      #     .map(&:segments)
+      #     .flatten
+      #     .each { |seg| segset << seg }
+      #   segset
+      # end
 
       # Makes DateTypes behave as good members of a {SegmentSet}
       # @return [Symbol]
