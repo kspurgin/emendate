@@ -27,7 +27,7 @@ module Emendate
     end
 
     def call
-      if processed.state == :final_check_failed
+      if processed.state == :final_check_failure
         return translate_failure(processed)
       end
 
@@ -47,7 +47,8 @@ module Emendate
       "Emendate::Translators::#{dialect.to_s.camelize}"
     end
 
-    def translate_failure(_failure)
+    # @todo unused?
+    def translate_failure(failure)
       type = "Error"
       translator = dialect_translator(type)
 

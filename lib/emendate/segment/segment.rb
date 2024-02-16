@@ -36,6 +36,8 @@ module Emendate
   #
   # The literal should be the numeric representation of the lexeme/type.
   class Segment
+    include Subsourceable
+
     # @return [Symbol]
     attr_reader :type
     # @return [String, NilClass]
@@ -44,10 +46,8 @@ module Emendate
     attr_reader :literal
     # @return [Array<Emendate::Qualifier>]
     attr_reader :qualifiers
-    # @return [Array<Segment>, Emendate::SegmentSet, NilClass]
-    attr_reader :sources
     # @return [Emendate::SegmentSet, NilClass]
-    attr_reader :subsources
+    attr_reader :sources
     # @return [Integer, NilClass]
     attr_reader :digits
 
@@ -80,7 +80,6 @@ module Emendate
       @literal = literal
       @qualifiers = qualifiers
       @sources = get_sources(sources)
-      @subsources = get_subsources
       @digits = nil
       derive_values if @sources
     end
@@ -97,10 +96,6 @@ module Emendate
       @lexeme = val.to_s
       self
     end
-
-    # # @param val [String]
-    # def reset_literal(val = nil)
-    # end
 
     # @return [Boolean]
     def collapsible? = COLLAPSIBLE_TYPES.include?(type)
@@ -125,6 +120,8 @@ module Emendate
       true if date_type? || type == :or || type == :and
     end
 
+    def segment? = true
+
     # @return [String]
     def to_s
       arr = ["#<#{self.class.name}:#{object_id} "\
@@ -132,12 +129,10 @@ module Emendate
         "@lexeme: #{lexeme.inspect}, "\
         "@literal: #{literal.inspect}, "\
         "@digits: #{digits.inspect}, "]
-      if sources
-        arr << "@sources: #{sources.types.inspect}, "
-        arr << "@subsources: #{subsources.types.inspect}, "
+      arr << if sources
+        "@sources: #{sources.types.inspect}, "
       else
-        arr << "@sources: #{sources.inspect}, "
-        arr << "@subsources: #{subsources.inspect}, "
+        "@sources: #{sources.inspect}, "
       end
       arr << "@qualifiers: #{qualifiers.inspect}>"
       arr.join("")
@@ -159,23 +154,6 @@ module Emendate
 
       srcs.each { |src| segset << src }
       segset
-    end
-
-    def get_subsources
-      return nil if sources.nil? || sources.empty?
-
-      segset = Emendate::SegmentSet.new
-
-      sources.segments.map { |src| subsources_for(src) }
-        .flatten
-        .each { |t| segset << t }
-      segset
-    end
-
-    def subsources_for(src)
-      return src unless src.sources
-
-      src.sources.segments
     end
 
     def derive_values

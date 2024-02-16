@@ -106,15 +106,7 @@ module Emendate
         })
       end
 
-      def approximate_term
-        lexeme = pdate.approximate_qualifiers
-          .map(&:lexeme)
-          .reject(&:empty?)
-          .first
-        return lexeme.capitalize if lexeme
-
-        "Approximate"
-      end
+      def approximate_term = qualifier_term(:approximate)
 
       def approximate
         term = approximate_term
@@ -125,7 +117,8 @@ module Emendate
       end
 
       def approximate_and_uncertain
-        term = "#{approximate_term} and #{uncertain_term}"
+        terms = [approximate_term, uncertain_term].sort
+        term = "#{terms[0]}, #{terms[1].downcase}"
         qualified.merge({
           dateEarliestSingleCertainty: term,
           dateLatestCertainty: term
@@ -145,14 +138,34 @@ module Emendate
         qualified.merge({dateNote: "Alternate date"})
       end
 
-      def uncertain_term
-        lexeme = pdate.uncertain_qualifiers
-          .map(&:lexeme)
-          .reject(&:empty?)
-          .first
-        return lexeme.capitalize if lexeme
+      def uncertain_term = qualifier_term(:uncertain)
 
-        "Uncertain"
+      def qualifier_term(type)
+        terms = pdate.sources
+          .map(&:subsources)
+          .map(&:segments)
+          .flatten
+          .select { |seg| seg.type == type }
+          .map(&:lexeme)
+          .map(&:strip)
+          .compact
+          .uniq
+        return type.to_s.capitalize if terms.empty?
+
+        terms.map { |term| remap_special_qualifiers(term) }
+          .join(", ")
+          .capitalize
+      end
+
+      def remap_special_qualifiers(term)
+        case term
+        when /^c\.?$/i
+          "circa"
+        when /^c\.?a\.?$/i
+          "circa"
+        else
+          term
+        end
       end
 
       def uncertain

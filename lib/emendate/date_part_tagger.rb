@@ -40,8 +40,12 @@ module Emendate
         t.call
         break if result.types == pre
       end
-    rescue Emendate::Error => e
-      Failure(e)
+    rescue Emendate::MonthDayError => e
+      Failure(Emendate::SegmentSet.new(segments: [
+        Emendate::DateTypes::Error.new(
+          sources: result, error_type: :invalid, exception: e
+        )
+      ]))
     else
       Success()
     end
@@ -60,6 +64,10 @@ module Emendate
 
     def full_match_tagger
       case result.type_string
+      when /^year number1or2 month$/
+        proc do
+          result.replace_x_with_derived_new_type(x: result[1], type: :day)
+        end
       when /^number1or2 year$/
         proc { tag_numeric_month }
       when /^year number1or2$/

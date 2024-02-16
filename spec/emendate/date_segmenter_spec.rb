@@ -14,7 +14,7 @@ RSpec.describe Emendate::DateSegmenter do
     let(:string) { "1932 and 1942 or 1948-1949" }
 
     it "fails" do
-      expect(subject.failure).to eq(:multiple_date_separator_types)
+      expect(subject.failure[0].message).to eq("Multiple date separator types")
     end
   end
 
@@ -22,7 +22,7 @@ RSpec.describe Emendate::DateSegmenter do
     let(:string) { "early April 13, 1987" }
 
     it "fails" do
-      expect(subject.failure).to eq(
+      expect(subject.failure[0].message).to eq(
         "Cannot prepend :partial segment to "\
           "Emendate::DateTypes::YearMonthDay sources"
       )
@@ -52,6 +52,15 @@ RSpec.describe Emendate::DateSegmenter do
 
     it "segments as expected" do
       expect(types).to eq(%i[year_date_type date_separator year_date_type])
+      expect(result.lexeme).to eq(string)
+    end
+  end
+
+  context "with ####｜#### MON" do
+    let(:string) { "1979｜1980 Jan" }
+
+    it "segments as expected" do
+      expect(types).to eq(%i[year_date_type date_separator yearmonth_date_type])
       expect(result.lexeme).to eq(string)
     end
   end

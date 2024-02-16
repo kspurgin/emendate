@@ -27,6 +27,16 @@ RSpec.describe Emendate::KnownUnknownTagger do
       end
     end
 
+    context "with ?" do
+      let(:string) { "?" }
+
+      it "tags as expected" do
+        expect(result).to be_a(Dry::Monads::Failure)
+        failure = result.failure
+        expect(failure.types).to eq(%i[knownunknown_date_type])
+      end
+    end
+
     context "with Date Unknown" do
       let(:string) { "Date Unknown" }
 
@@ -52,7 +62,7 @@ RSpec.describe Emendate::KnownUnknownTagger do
       it "tags as expected" do
         success = result.value!
         expect(success.types).to eq(
-          %i[number4 hyphen unknown_date]
+          %i[unknown_date comma before number4]
         )
       end
     end
