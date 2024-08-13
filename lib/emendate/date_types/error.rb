@@ -25,6 +25,8 @@ module Emendate
       attr_reader :exception
       # @return [String, nil]
       attr_reader :message
+      # @return [Symbol]
+      attr_reader :error_type
 
       # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
@@ -65,8 +67,6 @@ module Emendate
       def type = :"#{error_type}_date_type"
 
       private
-
-      attr_reader :error_type
 
       def addable_token_types = []
     end
