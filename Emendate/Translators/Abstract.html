@@ -232,13 +232,13 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_translate'>translate</span><span class='lparen'>(</span><span class='id identifier rubyid_processed'>processed</span><span class='comma'>,</span> <span class='id identifier rubyid_pdate'>pdate</span><span class='rparen'>)</span>
   <span class='ivar'>@processed</span> <span class='op'>=</span> <span class='id identifier rubyid_processed'>processed</span>
   <span class='ivar'>@pdate</span> <span class='op'>=</span> <span class='id identifier rubyid_pdate'>pdate</span>
-  <span class='ivar'>@warnings</span> <span class='op'>=</span> <span class='id identifier rubyid_processed'>processed</span><span class='period'>.</span><span class='id identifier rubyid_warnings'>warnings</span>
+  <span class='ivar'>@warnings</span> <span class='op'>=</span> <span class='id identifier rubyid_processed'>processed</span><span class='period'>.</span><span class='id identifier rubyid_warnings'>warnings</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span><span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span>
   <span class='ivar'>@base</span> <span class='op'>=</span> <span class='kw'>nil</span>
   <span class='ivar'>@qualified</span> <span class='op'>=</span> <span class='kw'>nil</span>
   <span class='id identifier rubyid_preprocess'>preprocess</span> <span class='kw'>if</span> <span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:preprocess</span><span class='rparen'>)</span>
 
   <span class='id identifier rubyid_translate_value'>translate_value</span>
-  <span class='const'><span class='object_link'><a href="../TranslatedDate.html" title="Emendate::TranslatedDate (class)">TranslatedDate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="../TranslatedDate.html#initialize-instance_method" title="Emendate::TranslatedDate#initialize (method)">new</a></span></span><span class='lparen'>(</span>
+  <span class='const'>TranslatedDate</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
     <span class='label'>orig:</span> <span class='id identifier rubyid_processed'>processed</span><span class='period'>.</span><span class='id identifier rubyid_orig_string'>orig_string</span><span class='comma'>,</span>
     <span class='label'>value:</span> <span class='id identifier rubyid_qualified'>qualified</span> <span class='op'>||</span> <span class='id identifier rubyid_base'>base</span><span class='comma'>,</span>
     <span class='label'>warnings:</span> <span class='id identifier rubyid_warnings'>warnings</span>
@@ -254,7 +254,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Aug 13 01:02:50 2024 by
+  Generated on Tue Aug 13 01:39:29 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.36 (ruby-2.7.8).
 </div>

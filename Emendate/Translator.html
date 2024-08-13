@@ -264,7 +264,7 @@
   <span class='id identifier rubyid_extend'>extend</span> <span class='id identifier rubyid_dialect_module'>dialect_module</span><span class='period'>.</span><span class='id identifier rubyid_constantize'>constantize</span>
   <span class='ivar'>@processed</span> <span class='op'>=</span> <span class='id identifier rubyid_processed'>processed</span>
 
-  <span class='ivar'>@translation</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Translation.html" title="Emendate::Translation (class)">Translation</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Translation.html#initialize-instance_method" title="Emendate::Translation#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='label'>pm:</span> <span class='id identifier rubyid_processed'>processed</span><span class='rparen'>)</span>
+  <span class='ivar'>@translation</span> <span class='op'>=</span> <span class='const'>Translation</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>pm:</span> <span class='id identifier rubyid_processed'>processed</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -346,7 +346,7 @@
       <pre class="code"><span class="info file"># File 'lib/emendate/translator.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_processed'>processed</span><span class='period'>.</span><span class='id identifier rubyid_state'>state</span> <span class='op'>==</span> <span class='symbol'>:final_check_failed</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_processed'>processed</span><span class='period'>.</span><span class='id identifier rubyid_state'>state</span> <span class='op'>==</span> <span class='symbol'>:final_check_failure</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_translate_failure'>translate_failure</span><span class='lparen'>(</span><span class='id identifier rubyid_processed'>processed</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 
@@ -367,7 +367,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Aug 13 01:02:50 2024 by
+  Generated on Tue Aug 13 01:39:29 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.36 (ruby-2.7.8).
 </div>

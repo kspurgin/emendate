@@ -130,7 +130,9 @@
   <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d{2}xx-\d{2}-\d{2}</span><span class='regexp_end'>/</span></span><span class='comma'>,</span>
   <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d{3}x-\d{2}-\d{2}</span><span class='regexp_end'>/</span></span><span class='comma'>,</span>
   <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\d{3,4}S\d+$</span><span class='regexp_end'>/</span></span><span class='comma'>,</span>
-  <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d{4}-\d{2}-xx</span><span class='regexp_end'>/</span></span>
+  <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\d{4}-\d{2}-xx</span><span class='regexp_end'>/</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^Unknown-\d{1,2}-Unknown$</span><span class='regexp_end'>/i</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\d{1,2}\/\d\(\d\)\/\d{4}$</span><span class='regexp_end'>/</span></span>
 <span class='rbracket'>]</span></pre></dd>
       
         <dt id="Re-constant" class="">Re =
@@ -266,13 +268,13 @@
       <pre class="lines">
 
 
-27
-28
 29
-30</pre>
+30
+31
+32</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/unprocessable_tagger.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/unprocessable_tagger.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
   <span class='ivar'>@tokens</span> <span class='op'>=</span> <span class='id identifier rubyid_tokens'>tokens</span>
@@ -341,8 +343,6 @@
       <pre class="lines">
 
 
-32
-33
 34
 35
 36
@@ -352,10 +352,12 @@
 40
 41
 42
-43</pre>
+43
+44
+45</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/unprocessable_tagger.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/unprocessable_tagger.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span>
   <span class='kw'>return</span><span class='lparen'>(</span><span class='const'>Success</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_match?'>match?</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="#Re-constant" title="Emendate::UnprocessableTagger::Re (constant)">Re</a></span></span><span class='rparen'>)</span>
@@ -379,7 +381,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Aug 13 01:02:50 2024 by
+  Generated on Tue Aug 13 01:39:29 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.36 (ruby-2.7.8).
 </div>

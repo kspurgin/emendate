@@ -105,6 +105,33 @@
 </div>
 
 
+  
+    <h2>
+      Constant Summary
+      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
+    </h2>
+
+    <dl class="constants">
+      
+        <dt id="SEPTYPES-constant" class="">SEPTYPES =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Segment types to be treated as date separators after initial date segmentation and application of modifiers</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='qsymbols_beg'>%i[</span><span class='tstring_content'>and</span><span class='words_sep'> </span><span class='tstring_content'>or</span><span class='words_sep'> </span><span class='tstring_content'>comma</span><span class='words_sep'> </span><span class='tstring_content'>pipe</span><span class='tstring_end'>]</span></span></pre></dd>
+      
+    </dl>
+  
+
 
 
 
@@ -241,16 +268,18 @@
       <pre class="lines">
 
 
-14
-15
-16
-17
-18</pre>
+18
+19
+20
+21
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_segmenter.rb', line 14</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_segmenter.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
+  <span class='ivar'>@origtokens</span> <span class='op'>=</span> <span class='id identifier rubyid_tokens'>tokens</span>
   <span class='ivar'>@working</span> <span class='op'>=</span> <span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
   <span class='ivar'>@result</span> <span class='op'>=</span> <span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_clear'>clear</span>
@@ -318,11 +347,6 @@
       <pre class="lines">
 
 
-20
-21
-22
-23
-24
 25
 26
 27
@@ -339,10 +363,29 @@
 38
 39
 40
-41</pre>
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/date_segmenter.rb', line 20</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/date_segmenter.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span>
   <span class='id identifier rubyid_recursive_parse'>recursive_parse</span> <span class='kw'>until</span> <span class='id identifier rubyid_working'>working</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
@@ -353,16 +396,30 @@
     <span class='id identifier rubyid_apply_modifiers'>apply_modifiers</span><span class='lparen'>(</span><span class='id identifier rubyid_mod'>mod</span><span class='rparen'>)</span> <span class='kw'>until</span> <span class='id identifier rubyid_working'>working</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
   <span class='kw'>end</span>
 
-  <span class='id identifier rubyid_separators'>separators</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_seg'>seg</span><span class='op'>|</span> <span class='qsymbols_beg'>%i[</span><span class='tstring_content'>and</span><span class='words_sep'> </span><span class='tstring_content'>or</span><span class='words_sep'> </span><span class='tstring_content'>comma</span><span class='tstring_end'>]</span></span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_seg'>seg</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_separators'>separators</span> <span class='op'>=</span> <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_seg'>seg</span><span class='op'>|</span> <span class='const'><span class='object_link'><a href="#SEPTYPES-constant" title="Emendate::DateSegmenter::SEPTYPES (constant)">SEPTYPES</a></span></span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_seg'>seg</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
   <span class='kw'>return</span> <span class='const'>Success</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_separators'>separators</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
 
   <span class='kw'>if</span> <span class='id identifier rubyid_separators'>separators</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:type</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>1</span>
-    <span class='kw'>return</span> <span class='const'>Failure</span><span class='lparen'>(</span><span class='symbol'>:multiple_date_separator_types</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='const'>Failure</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'>SegmentSet</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>segments:</span> <span class='lbracket'>[</span>
+      <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'>DateTypes</span><span class='op'>::</span><span class='const'>Error</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
+        <span class='label'>sources:</span> <span class='id identifier rubyid_result'>result</span><span class='comma'>,</span> <span class='label'>error_type:</span> <span class='symbol'>:unprocessable</span><span class='comma'>,</span>
+        <span class='label'>message:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Multiple date separator types</span><span class='tstring_end'>&quot;</span></span>
+      <span class='rparen'>)</span>
+    <span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span>
   <span class='kw'>else</span>
     <span class='id identifier rubyid_transform_separators'>transform_separators</span><span class='lparen'>(</span><span class='id identifier rubyid_separators'>separators</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
+<span class='kw'>rescue</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="InvalidDateError.html" title="Emendate::InvalidDateError (class)">InvalidDateError</a></span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+  <span class='const'>Failure</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'>SegmentSet</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>segments:</span> <span class='lbracket'>[</span>
+    <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'>DateTypes</span><span class='op'>::</span><span class='const'>Error</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
+      <span class='label'>sources:</span> <span class='id identifier rubyid_result'>result</span><span class='comma'>,</span> <span class='label'>error_type:</span> <span class='symbol'>:invalid</span><span class='comma'>,</span> <span class='label'>exception:</span> <span class='id identifier rubyid_e'>e</span>
+    <span class='rparen'>)</span>
+  <span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span>
 <span class='kw'>rescue</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="ForbiddenSegmentAdditionError.html" title="Emendate::ForbiddenSegmentAdditionError (class)">ForbiddenSegmentAdditionError</a></span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
-  <span class='const'>Failure</span><span class='lparen'>(</span><span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_result'>result</span> <span class='op'>&lt;&lt;</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'>DateTypes</span><span class='op'>::</span><span class='const'>Error</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
+    <span class='label'>sources:</span> <span class='id identifier rubyid_origtokens'>origtokens</span><span class='comma'>,</span> <span class='label'>error_type:</span> <span class='symbol'>:unprocessable</span><span class='comma'>,</span> <span class='label'>exception:</span> <span class='id identifier rubyid_e'>e</span>
+  <span class='rparen'>)</span>
+  <span class='const'>Failure</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
 <span class='kw'>else</span>
   <span class='const'>Success</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -376,7 +433,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Aug 13 01:02:50 2024 by
+  Generated on Tue Aug 13 01:39:29 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.36 (ruby-2.7.8).
 </div>
