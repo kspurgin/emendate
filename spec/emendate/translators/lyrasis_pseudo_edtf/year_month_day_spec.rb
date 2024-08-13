@@ -8,7 +8,7 @@ RSpec.describe Emendate::Translators::LyrasisPseudoEdtf::YearMonthDay do
   end
   let(:translation) { Emendate.translate(str, options) }
   let(:value) { translation.values[0] }
-  let(:warnings) { translation.warnings[0] }
+  let(:warnings) { translation.warnings }
 
   context "with 2020, Feb 15" do
     let(:str) { "2020, Feb 15" }

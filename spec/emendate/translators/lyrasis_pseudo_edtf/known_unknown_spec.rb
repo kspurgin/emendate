@@ -5,7 +5,7 @@ require "spec_helper"
 RSpec.describe Emendate::Translators::LyrasisPseudoEdtf::KnownUnknown do
   let(:translation) { Emendate.translate(str, **options) }
   let(:value) { translation.values[0] }
-  let(:warnings) { translation.warnings[0] }
+  let(:warnings) { translation.warnings }
 
   context "with orig unknown date output" do
     let(:str) { "n.d." }

@@ -6,7 +6,7 @@ RSpec.describe Emendate::Translators::Edtf::Year do
   let(:options) { {dialect: :edtf} }
   let(:translation) { Emendate.translate(str, options) }
   let(:value) { translation.values[0] }
-  let(:warnings) { translation.warnings[0] }
+  let(:warnings) { translation.warnings }
 
   context "with 2002" do
     let(:str) { "2002" }

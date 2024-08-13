@@ -6,7 +6,7 @@ RSpec.describe Emendate::Translators::Collectionspace::Range do
   let(:options) { {dialect: :collectionspace} }
   let(:translation) { Emendate.translate(str, options) }
   let(:value) { translation.values[0] }
-  let(:warnings) { translation.warnings[0] }
+  let(:warnings) { translation.warnings }
   let(:base) do
     {
       dateDisplayDate: str,
