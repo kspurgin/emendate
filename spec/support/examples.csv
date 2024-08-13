@@ -9,7 +9,7 @@
 "[ca. 2002]","[ca. 2002]","[ca. ####]","approximate;inferred;four_digit_year;year_granularity","ba",,"0","2002","2002","2002-01-01","2002-12-31","approximate;inferred",,"na","2002~","2002 (approximate)"
 "[circa 2002?]","[circa 2002?]","[circa ####?]","approximate;inferred;uncertain;four_digit_year;year_granularity",,,"0","2002","2002","2002-01-01","2002-12-31","approximate;inferred;uncertain",,"na","2002%","2002 (approximate and uncertain)"
 "[circa 2002]","[circa 2002]","[circa ####]","approximate;inferred;four_digit_year;year_granularity","ncm","square_bracket_interpretation: :inferred_date","0","2002","2002","2002-01-01","2002-12-31","approximate;inferred",,"na","2002~","2002 (approximate)"
-"19--?","19--?","##--?","uncertainty_digits;century_granularity;uncertain","wpl",,"0","1900","1999","1900-01-01","1999-12-31","uncertain",,,"19XX",
+"19--?","19--?","##--?","uncertainty_digits;century_granularity;uncertain","wpl",,"0","1900","1999","1900-01-01","1999-12-31","uncertain, whole",,"na","19XX",
 "19th century ?","19th century ?","##ORD century ?","century_granularity;uncertain",,,"0","1801","1900","1801-01-01","1900-12-31","uncertain",,"na","1801?/1900?",
 "19th century [?]","19th century [?]","##ORD century [?]","century_granularity;uncertain",,,"0","1801","1900","1801-01-01","1900-12-31","uncertain",,"na","1801?/1900?",
 "19th century, est.","19th century, est.","##ORD century, est.","century_granularity;approximate","csws",,"0","1801","1900","1801-01-01","1900-12-31","approximate",,"na","1801~/1900~",
@@ -50,7 +50,9 @@
 "probably March 2020","probably March 2020","probably MONTH ####","year_month_granularity;uncertain","wpl",,"0","2020-03","2020-03","2020-03-01","2020-03-31","uncertain",,"na","2020-03?","2020-03 (uncertain)"
 "1920 ca","1920 ca","#### ca","approximate","mmm",,"0","1920","1920","1920-01-01","1920-12-31","approximate",,"na","1920~","1920 (approximate)"
 "about 2002","about 2002","about ####","approximate;four_digit_year;year_granularity","csws",,"0","2002","2002","2002-01-01","2002-12-31","approximate",,"na",,
-"-2002","-2002","-####","edtf;edtf1;four_digit_year;year_granularity",,,"0","-2002","-2002","-2002-01-01","-2002-12-31",,,"na",,
+"-2002","-2002","-####","edtf;edtf1;four_digit_year;year_granularity",,"beginning_hyphen: :edtf","0","-2002","-2002","-2002-01-01","-2002-12-31",,,"na",,
+"-2002","-2002","-####","after_before;open_start","ksu","beginning_hyphen: :unknown","0","1583","2002","1583-01-01","2002-12-31",,,"na","../2002",
+"-[2002]","-[2002]","-[####]","after_before;open_start;inferred","ksu","beginning_hyphen: :unknown, square_bracket_interpretation: :inferred_date","0","1583","2002","1583-01-01","2002-12-31","inferred, end",,"na","../2002",
 "../1985","../1985","../####","after_before;open_start",,,"0","1583","1985","1583-01-01","1985-12-31",,,"na",,
 "../1985-04","../1985-04","../####-##","after_before;open_start",,,"0","1583-01","1985-04","1583-01-01","1985-04-30",,,"na",,
 "../1985-04-12","../1985-04-12","../####-@@-@@","after_before;open_start",,,"0","1583-01-01","1985-04-12","1583-01-01","1985-04-12",,,"na",,
@@ -178,7 +180,8 @@
 "199u","199u","###u","decade_granularity;uncertainty_digits",,,"0","1990","1999","1990-01-01","1999-12-31","one_of_set",,"na",,
 "199X","199X","###x","decade_granularity;uncertainty_digits;edtf;edtf1",,,"0","1990","1999","1990-01-01","1999-12-31","one_of_set",,"na",,
 "19th c.","19th c.","##ORD c.","century_granularity;ordinal","ba",,"0","1801","1900","1801-01-01","1900-12-31",,,"na","[1801..1900]","1801 - 1900 (exact year unspecified)"
-"19th century","19th century","##ORD century","century_granularity",,,"0","1801","1900","1801-01-01","1900-12-31",,,"na",,
+"19c","19c","##c","century_granularity",,,"0","1801","1900","1801-01-01","1900-12-31",,,"na","[1801..1900]","1801 - 1900 (exact year unspecified)"
+"19th century","19th century","##ORD century","century_granularity;ordinal",,,"0","1801","1900","1801-01-01","1900-12-31",,,"na",,
 "19th-20th century","19th-20th century","[##ORD-##ORD century]","century_granularity","ba",,"0","1801","2000","1801-01-01","2000-12-31",,,"na","[1801..2000]","1801 - 2000 (exact year unspecified)"
 "19uu-06-11","19uu-06-11","##uu-##-##","currently_unparseable","wpl",,"0","nilValue","nilValue","nilValue","nilValue",,,"Unprocessable string",,
 "1uuu","1uuu","#uuu","millennium_granularity;uncertainty_digits",,,"0","1000","1999","1000-01-01","1999-12-31",,,"na",,
@@ -324,3 +327,4 @@
 "16-Mar-51","16-Mar-51","##-MON-##","year_month_day_granularity;unambiguous_year_day","ccp",,"0","1951-03-16","1951-03-16","1951-03-16","1951-03-16",,,,"1951-03-16","1951-03-16"
 "10-Mar-11","10-Mar-11","##-MON-##","year_month_day_granularity;ambiguous_year_day",,,"0","2011-03-10","2011-03-10","2011-03-10","2011-03-10",,,,"2011-03-10","2011-03-10"
 "1995 27 May","1995 27 May","#### ## MONTH","year_month_day_granularity","ccp",,"0","1995-05-27","1995-05-27","1995-05-27","1995-05-27",,,,"1995-05-27","1995-05-27"
+"-[c2002]","-[c2002]","-[c####]",,"ksu","c_before_date: :copyright,beginning_hyphen: :unknown,open_unknown_start_date: '1600-02-15'","0","1600","2002","1600-02-15","2002-12-31","inferred, end;supplied, start",,,,
