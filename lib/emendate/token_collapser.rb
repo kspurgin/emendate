@@ -57,8 +57,8 @@ module Emendate
 
     def full_match_collapsers
       # case result.types
-      # when %i[number1or2 slash number4]
-      #   proc { collapse_segments_backward(%i[number1or2 slash]) }
+      # when %i[after hyphen number4]
+      #   proc { collapse_segments_backward(%i[after hyphen]) }
       # end
     end
 
@@ -92,6 +92,8 @@ module Emendate
         proc { result.collapse_segments_forward(%i[apostrophe letter_s]) }
       when /.*apostrophe number1or2.*/
         proc { result.collapse_segments_forward(%i[apostrophe number1or2]) }
+      when /.*after hyphen.*/
+        proc { result.collapse_segments_backward(%i[after hyphen]) }
       when /.*before hyphen.*/
         proc { result.collapse_segments_backward(%i[before hyphen]) }
       when /.*partial hyphen.*/
