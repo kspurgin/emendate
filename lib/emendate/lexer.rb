@@ -170,13 +170,13 @@ module Emendate
       case match.length
       when 1
         if preceded_by_3_digit_number? && !followed_by_number?
-          add_token(match, :uncertainty_digits)
+          tokens << UncertaintyDigits.new(lexeme: match)
         else
           add_token(match, :hyphen)
         end
       when 2
         if preceded_by_2_digit_number? && !followed_by_number?
-          add_token(match, :uncertainty_digits)
+          tokens << UncertaintyDigits.new(lexeme: match)
         elsif preceded_by_number?
           add_uncertainty_digits_followed_by_hyphen(match)
         else
@@ -184,7 +184,7 @@ module Emendate
         end
       when 3
         if preceded_by_1_digit_number? && !followed_by_number?
-          add_token(match, :uncertainty_digits)
+          tokens << UncertaintyDigits.new(lexeme: match)
         elsif preceded_by_number?
           add_uncertainty_digits_followed_by_hyphen(match)
         else
@@ -199,7 +199,7 @@ module Emendate
     end
 
     def add_uncertainty_digits_followed_by_hyphen(match)
-      add_token(match[0..-2], :uncertainty_digits)
+      tokens << UncertaintyDigits.new(lexeme: match[0..-2])
       add_token(match[-1], :hyphen)
     end
 
@@ -297,6 +297,8 @@ module Emendate
             literal: :late,
             type: :partial
           )
+        when :uncertainty_digits
+          tokens << UncertaintyDigits.new(lexeme: match)
         else
           add_token(match, ALPHA[pattern])
         end
