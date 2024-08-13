@@ -20,7 +20,9 @@ module Emendate
       /\d{2}xx-\d{2}-\d{2}/,
       /\d{3}x-\d{2}-\d{2}/,
       /^\d{3,4}S\d+$/,
-      /\d{4}-\d{2}-xx/
+      /\d{4}-\d{2}-xx/,
+      /^Unknown-\d{1,2}-Unknown$/i,
+      /^\d{1,2}\/\d\(\d\)\/\d{4}$/
     ]
     Re = Regexp.union(PATTERNS)
 
