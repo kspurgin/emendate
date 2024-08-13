@@ -30,7 +30,21 @@ module Emendate
       # @return [true]
       def range? = true
 
+      # @return [true]
+      def qualifiable? = true
+
       private
+
+      def process_qualifiers
+        add_source_segment_set_qualifiers
+        sources.date_parts.first.qualifiers.each do |qual|
+          add_qualifier(Emendate::Qualifier.new(
+            type: qual.type,
+            precision: :whole,
+            lexeme: qual.lexeme
+          ))
+        end
+      end
 
       def set_literal(datepart)
         case century_type

@@ -33,6 +33,25 @@ RSpec.describe Emendate::Translators::Collectionspace::Century do
     end
   end
 
+  context "with 19--?" do
+    let(:str) { "19--?" }
+    let(:expected) do
+      base.merge({
+        dateEarliestScalarValue: "1900-01-01T00:00:00.000Z",
+        dateEarliestSingleYear: "1900",
+        dateLatestScalarValue: "1999-12-31T00:00:00.000Z",
+        dateLatestYear: "1999",
+        dateEarliestSingleCertainty: "Uncertain",
+        dateLatestCertainty: "Uncertain"
+      })
+    end
+
+    it "translates as expected" do
+      expect(value).to eq(expected)
+      expect(warnings).to be_empty
+    end
+  end
+
   context "with early 19th Century" do
     let(:str) { "early 19th Century" }
     let(:expected) do

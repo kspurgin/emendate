@@ -44,6 +44,19 @@ RSpec.describe Emendate::UnstructuredCertaintyHandler do
     end
   end
 
+  context "with ##--?" do
+    let(:string) { "19--?" }
+
+    it "handles as expected" do
+      expect(subject.type_string).to eq("number1or2 uncertainty_digits")
+      expect(subject.lexeme).to eq(string)
+      qual = subject[1].qualifiers.first
+      expect(qual.type).to eq(:uncertain)
+      expect(qual.lexeme).to eq("")
+      expect(qual.precision).to eq(:end)
+    end
+  end
+
   context "with 1920 ca" do
     let(:string) { "1920 ca" }
 
