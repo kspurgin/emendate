@@ -12,7 +12,7 @@ RSpec.describe Emendate::Translators::Edtf::KnownUnknown do
   end
   let(:translation) { Emendate.translate(str, options) }
   let(:value) { translation.values[0] }
-  let(:warnings) { translation.warnings[0] }
+  let(:warnings) { translation.warnings }
 
   context "with unknown" do
     let(:str) { "unknown" }

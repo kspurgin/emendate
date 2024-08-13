@@ -8,7 +8,7 @@ RSpec.describe Emendate::Translators::LyrasisPseudoEdtf::YearMonth do
   end
   let(:translation) { Emendate.translate(str, options) }
   let(:value) { translation.values[0] }
-  let(:warnings) { translation.warnings[0] }
+  let(:warnings) { translation.warnings }
 
   context "with 2002-10" do
     let(:str) { "2002-10" }

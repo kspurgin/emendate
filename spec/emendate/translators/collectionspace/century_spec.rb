@@ -22,7 +22,7 @@ RSpec.describe Emendate::Translators::Collectionspace::Century do
       dateLatestEra: "CE"
     }
   end
-  let(:warnings) { translation.warnings[0] }
+  let(:warnings) { translation.warnings }
 
   context "with 19th Century" do
     let(:str) { "19th Century" }

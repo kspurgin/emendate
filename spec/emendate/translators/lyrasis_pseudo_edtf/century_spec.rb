@@ -6,7 +6,7 @@ RSpec.describe Emendate::Translators::LyrasisPseudoEdtf::Century do
   let(:options) { {dialect: :lyrasis_pseudo_edtf} }
   let(:translation) { Emendate.translate(str, options) }
   let(:value) { translation.values[0] }
-  let(:warnings) { translation.warnings[0] }
+  let(:warnings) { translation.warnings }
 
   context "with 19th c." do
     let(:str) { "19th c." }

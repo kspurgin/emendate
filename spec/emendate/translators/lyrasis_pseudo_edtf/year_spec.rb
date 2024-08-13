@@ -6,7 +6,7 @@ RSpec.describe Emendate::Translators::LyrasisPseudoEdtf::Year do
   let(:options) { {dialect: :lyrasis_pseudo_edtf} }
   let(:translation) { Emendate.translate(str, options) }
   let(:value) { translation.values[0] }
-  let(:warnings) { translation.warnings[0] }
+  let(:warnings) { translation.warnings }
 
   context "with 2002" do
     let(:str) { "2002" }

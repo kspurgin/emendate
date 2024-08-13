@@ -10,7 +10,7 @@ RSpec.describe Emendate::Translators::Collectionspace::YearMonth do
   end
   let(:translation) { Emendate.translate(str, options) }
   let(:value) { translation.values[0] }
-  let(:warnings) { translation.warnings[0] }
+  let(:warnings) { translation.warnings }
 
   context "with January 1984" do
     let(:str) { "January 1984" }

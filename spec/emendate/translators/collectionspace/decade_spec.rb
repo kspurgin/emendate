@@ -10,7 +10,7 @@ RSpec.describe Emendate::Translators::Collectionspace::Decade do
   end
   let(:translation) { Emendate.translate(str, options) }
   let(:value) { translation.values[0] }
-  let(:warnings) { translation.warnings[0] }
+  let(:warnings) { translation.warnings }
 
   context "with 1800s" do
     let(:str) { "1800s" }

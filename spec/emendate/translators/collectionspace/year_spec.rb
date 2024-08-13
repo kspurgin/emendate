@@ -35,7 +35,7 @@ RSpec.describe Emendate::Translators::Collectionspace::Year do
       dateLatestCertainty: "Before"
     }
   end
-  let(:warnings) { translation.warnings[0] }
+  let(:warnings) { translation.warnings }
 
   context "with 2012" do
     let(:str) { year }
