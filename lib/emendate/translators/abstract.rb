@@ -10,7 +10,7 @@ module Emendate
       def translate(processed, pdate)
         @processed = processed
         @pdate = pdate
-        @warnings = processed.warnings
+        @warnings = processed.warnings.flatten.uniq
         @base = nil
         @qualified = nil
         preprocess if respond_to?(:preprocess)
