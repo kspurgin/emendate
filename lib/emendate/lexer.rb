@@ -35,10 +35,10 @@ module Emendate
       "]" => :square_bracket_close,
       "~" => :tilde
     }
-    ["\u002D", "\u2010", "\u2011", "\u2012", "\u2013", "\u2014", "\u2015",
-      "\u2043"].each { |val| SINGLES[val] = :hyphen }
     SINGLES.freeze
 
+    HYPHENS = ["\u002D", "\u2010", "\u2011", "\u2012", "\u2013", "\u2014",
+      "\u2015", "\u2043"].freeze
     ORDINAL_INDICATORS = %w[st nd rd th d].freeze
 
     days = "^(" + ([
@@ -119,6 +119,8 @@ module Emendate
         tokenize_single
       elsif nextchar == "."
         tokenize_dots
+      elsif HYPHENS.include?(nextchar)
+        tokenize_hyphens
       elsif digit?(nextchar)
         tokenize_number
       elsif alpha?(nextchar)
@@ -160,6 +162,59 @@ module Emendate
       add_token(match, type)
       true
     end
+
+    def tokenize_hyphens
+      hyphens = (HYPHENS - ["-"]).join
+      pattern = Regexp.new("[-#{hyphens}]+")
+      match = scanner.scan(pattern)
+      case match.length
+      when 1
+        if preceded_by_3_digit_number? && !followed_by_number?
+          add_token(match, :uncertainty_digits)
+        else
+          add_token(match, :hyphen)
+        end
+      when 2
+        if preceded_by_2_digit_number? && !followed_by_number?
+          add_token(match, :uncertainty_digits)
+        elsif preceded_by_number?
+          add_uncertainty_digits_followed_by_hyphen(match)
+        else
+          add_multiple_hyphens(match)
+        end
+      when 3
+        if preceded_by_1_digit_number? && !followed_by_number?
+          add_token(match, :uncertainty_digits)
+        elsif preceded_by_number?
+          add_uncertainty_digits_followed_by_hyphen(match)
+        else
+          add_multiple_hyphens(match)
+        end
+      end
+      true
+    end
+
+    def add_multiple_hyphens(match)
+      match.chars.each { |char| add_token(char, :hyphen) }
+    end
+
+    def add_uncertainty_digits_followed_by_hyphen(match)
+      add_token(match[0..-2], :uncertainty_digits)
+      add_token(match[-1], :hyphen)
+    end
+
+    def followed_by_number? = scanner.rest.match?(/^\d/)
+
+    def preceded_by_1_digit_number? = preceded_by_number? &&
+      tokens.last.digits == 1
+
+    def preceded_by_2_digit_number? = preceded_by_number? &&
+      tokens.last.digits == 2
+
+    def preceded_by_3_digit_number? = preceded_by_number? &&
+      tokens.last.digits == 3
+
+    def preceded_by_number? = tokens.last&.number?
 
     def tokenize_number
       match = scanner.scan(/\d+/)
