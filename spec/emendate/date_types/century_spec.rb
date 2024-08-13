@@ -104,4 +104,20 @@ RSpec.describe Emendate::DateTypes::Century do
       expect(subject.latest).to eq(Date.new(1999, 12, 31))
     end
   end
+
+  context "with qualified :uncertainty_digits type" do
+    let(:str) { "19--?" }
+
+    it "returns expected values" do
+      expect(subject.type).to eq(:century_date_type)
+      expect(subject.century_type).to eq(:uncertainty_digits)
+      expect(subject.lexeme).to eq(str)
+      expect(subject.literal).to eq(19)
+      expect(subject.earliest).to eq(Date.new(1900, 1, 1))
+      expect(subject.latest).to eq(Date.new(1999, 12, 31))
+      qual = subject.qualifiers[0]
+      expect(qual.type).to eq(:uncertain)
+      expect(qual.precision).to eq(:whole)
+    end
+  end
 end

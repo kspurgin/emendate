@@ -23,4 +23,12 @@ RSpec.describe Emendate::Translators::Edtf::Century do
       expect(warnings).to eq([])
     end
   end
+
+  context "with 19--?" do
+    let(:str) { "19--?" }
+    it "translates as expected" do
+      expect(value).to eq("19XX")
+      expect(warnings).to eq([])
+    end
+  end
 end
