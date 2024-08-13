@@ -214,7 +214,7 @@ module Emendate
     def tag_with_uncertainty_digits
       ud = result.extract(%i[uncertainty_digits]).segments[0]
       prev = result[result.find_index(ud) - 1]
-      case ud.lexeme.length
+      case ud.digits
       when 1
         collapse_pair([prev.type, :uncertainty_digits], :decade)
       when 2
