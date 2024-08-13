@@ -4,7 +4,7 @@ module Emendate
   # Composite result class to compile translations of individual parsed
   #   dates for a string
   class Translation
-    attr_reader :pm, :orig, :parsed, :values, :warnings
+    attr_reader :pm, :orig, :parsed, :values
 
     # @param pm [Emendate::ProcessingManager] to support debugging
     def initialize(pm:)
@@ -21,6 +21,8 @@ module Emendate
       @values << value.value
       @warnings << value.warnings
     end
+
+    def warnings = @warnings.flatten.uniq
 
     private
 
