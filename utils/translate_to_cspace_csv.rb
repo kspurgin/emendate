@@ -71,21 +71,19 @@ end
 
 # @param translated [Hash] single values element from translation
 # @param translation [Emendate::Translation]
-# @param idx [Integer]
-def create_row(translated, translation, idx)
+def create_row(translated, translation)
   row = {orig: translation.orig}.merge(translated)
-  unless translation.warnings[idx].empty?
+  unless translation.warnings.empty?
     row[:warnings] = translation.warnings.join("; ")
   end
   pad_row(row)
 end
 
 CSV.open(outfile, "a") do |csvout|
-  Emendate.batch_translate(strings, optargs) do |translation|
+  Emendate.batch_translate(strings, true, optargs) do |translation|
     # binding.pry if translation.values.empty?
-    translation.values.each_with_index do |translated, idx|
-      puts translation.orig
-      row = create_row(translated, translation, idx)
+    translation.values.each do |translated|
+      row = create_row(translated, translation)
       csvout << row.values_at(*HEADERS)
     end
   end

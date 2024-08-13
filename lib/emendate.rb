@@ -229,11 +229,16 @@ module Emendate
   # @param options [Hash]
   # @yield [Emendate::Translation]
   # @return [Array<String>] original strings
-  def batch_translate(strings, options = {})
+  def batch_translate(strings, verbose = false, options = {})
     Emendate::Options.new(options) unless options.empty?
     strings.each do |str|
+      if verbose
+        puts str
+        puts "  Processing..."
+      end
       pm = Emendate::ProcessingManager.call(str)
       processed = pm.success? ? pm.value! : pm.failure
+      puts "  Translating..." if verbose
       translator = Emendate::Translator.new(processed)
       yield translator.call
     end
