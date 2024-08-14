@@ -23,6 +23,9 @@ module Emendate
           :"open_unknown_#{point}_date"
         )
         @granularity_level = nil
+        @qualifiers = [Qualifier.new(
+          type: :supplied, precision: :whole, lexeme: ""
+        )]
       end
 
       def set_granularity(val) = (@granularity_level = val)

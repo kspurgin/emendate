@@ -128,7 +128,8 @@ RSpec.describe Emendate::Translators::Collectionspace::Range do
         dateLatestScalarValue: "2999-12-31T00:00:00.000Z",
         dateLatestYear: "2999",
         dateLatestMonth: "12",
-        dateLatestDay: "31"
+        dateLatestDay: "31",
+        dateLatestCertainty: "Supplied"
       })
     end
 
