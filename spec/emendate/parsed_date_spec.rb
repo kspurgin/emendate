@@ -27,6 +27,19 @@ RSpec.describe Emendate::ParsedDate do
     end
   end
 
+  describe "#qualifiers" do
+    let(:result) { parsed.qualifiers }
+
+    context "with `possibly c. 1921`" do
+      let(:str) { "possibly c. 1921" }
+
+      it "returns expected" do
+        expect(result.map(&:type)).to eq(%i[uncertain approximate])
+        expect(result.map(&:lexeme)).to eq(%w[possibly circa])
+      end
+    end
+  end
+
   describe "#original_string" do
     let(:result) { parsed.original_string }
 

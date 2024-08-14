@@ -19,6 +19,17 @@ RSpec.describe Emendate::FormatStandardizer do
       end
     end
 
+    context "with -####" do
+      before { Emendate.config.options.beginning_hyphen = :unknown }
+      let(:string) { "-2002" }
+
+      it "replaces question with rangedateopen_date_type" do
+        expect(result).to eq(%i[rangedatestartunknown_date_type range_indicator
+          number4])
+        expect(subject.lexeme).to eq(string)
+      end
+    end
+
     context "with mid to late ####s" do
       let(:string) { "mid to late 1980s" }
 
