@@ -14,9 +14,16 @@ module Emendate
       }
       SUFFIX = "T00:00:00.000Z"
 
-      def date
-        pdate
-      end
+      QUALIFIER_TERMS = {
+        all_of_set: "inclusive date",
+        approximate: "approximate",
+        inferred: "inferred",
+        one_of_set: "alternate date",
+        supplied: "supplied",
+        uncertain: "uncertain"
+      }.freeze
+
+      def date = pdate
 
       def preprocess
         set_bce_to_dummy if date.era == :bce
@@ -29,13 +36,9 @@ module Emendate
         }
       end
 
-      def nil_value
-        base_value
-      end
+      def nil_value = base_value
 
-      def empty_value
-        base_value
-      end
+      def empty_value = base_value
 
       def unknown_value
         base_value.merge({dateEarliestSingleCertainty: "no date"})
@@ -106,55 +109,28 @@ module Emendate
         })
       end
 
-      def approximate_term = qualifier_term(:approximate)
+      def qualify_qualifiers
+        return if pdate.certain?
 
-      def approximate
-        term = approximate_term
-        qualified.merge({
-          dateEarliestSingleCertainty: term,
-          dateLatestCertainty: term
-        })
-      end
-
-      def approximate_and_uncertain
-        terms = [approximate_term, uncertain_term].sort
-        term = "#{terms[0]}, #{terms[1].downcase}"
-        qualified.merge({
-          dateEarliestSingleCertainty: term,
-          dateLatestCertainty: term
-        })
-      end
-
-      def one_of_range_set
-        raise NotImplementedError,
-          "#{self.class} has not implemented method '#{__method__}'"
-      end
-
-      def all_of_set
-        qualified.merge({dateNote: "Inclusive date"})
-      end
-
-      def one_of_set
-        qualified.merge({dateNote: "Alternate date"})
-      end
-
-      def uncertain_term = qualifier_term(:uncertain)
-
-      def qualifier_term(type)
-        terms = pdate.sources
-          .map(&:subsources)
-          .map(&:segments)
-          .flatten
-          .select { |seg| seg.type == type }
-          .map(&:lexeme)
-          .map(&:strip)
+        vals = pdate.qualifiers
+          .dup
+          .map { |qual| qualifier_term(qual) }
           .compact
           .uniq
-        return type.to_s.capitalize if terms.empty?
-
-        terms.map { |term| remap_special_qualifiers(term) }
+          .sort
           .join(", ")
           .capitalize
+        @qualified = @qualified.merge({
+          dateEarliestSingleCertainty: vals,
+          dateLatestCertainty: vals
+        })
+      end
+
+      # @param qualifier [Emendate::Qualifier]
+      def qualifier_term(qualifier)
+        return QUALIFIER_TERMS[qualifier.type] if qualifier.lexeme.empty?
+
+        remap_special_qualifiers(qualifier.lexeme)
       end
 
       def remap_special_qualifiers(term)
@@ -168,13 +144,22 @@ module Emendate
         end
       end
 
-      def uncertain
-        term = uncertain_term
-        qualified.merge({
-          dateEarliestSingleCertainty: term,
-          dateLatestCertainty: term
-        })
-      end
+      # def qualifier_term(type)
+      #   terms = pdate.sources
+      #     .map(&:subsources)
+      #     .map(&:segments)
+      #     .flatten
+      #     .select { |seg| seg.type == type }
+      #     .map(&:lexeme)
+      #     .map(&:strip)
+      #     .compact
+      #     .uniq
+      #   return type.to_s.capitalize if terms.empty?
+
+      #   terms.map { |term| remap_special_qualifiers(term) }
+      #     .join(", ")
+      #     .capitalize
+      # end
 
       private
 
