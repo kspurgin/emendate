@@ -87,6 +87,7 @@ module Emendate
     # @param qual [Emendate::Qualifier]
     def add_qualifier(qual)
       qualifiers << qual
+      @qualifiers = qualifiers.uniq
     end
 
     # Mainly used to clear the lexeme in dummy Segments used to standardize
