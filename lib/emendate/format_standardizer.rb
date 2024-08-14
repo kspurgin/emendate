@@ -84,6 +84,8 @@ module Emendate
         proc { open_start }
       when /.*double_dot$/
         proc { open_end }
+      when /^hyphen.*/
+        proc { handle_beginning_hyphen }
       when /.*hyphen$/
         proc { handle_ending_hyphen }
       when /.*slash$/
@@ -217,9 +219,12 @@ module Emendate
     # @param indicator [#segment?] to be converted to range indicator type if
     #   not already that type
     # @param category [:open, :unknown]
-    def convert_range_indicator_and_append_open_or_unknown_end_date(
-      indicator:, category:
+    # @param point [:begin, :end]
+    def convert_range_indicator_and_append_open_or_unknown_date(
+      indicator:, category:, point:
     )
+      return if point == :start && category == :edtf
+
       unless indicator.type == :range_indicator
         new_ind = Emendate::Segment.new(
           type: :range_indicator,
@@ -227,22 +232,39 @@ module Emendate
         )
         result.replace_x_with_new(x: indicator, new: new_ind)
       end
-      result << Emendate::DateTypes::RangeDateUnknownOrOpen.new(
-        category: category, point: :end, sources: nil
+
+      unknown = Emendate::DateTypes::RangeDateUnknownOrOpen.new(
+        category: category, point: point, sources: nil
+      )
+      case point
+      when :start
+        result.unshift(unknown)
+      when :end
+        result << unknown
+      end
+    end
+
+    def handle_beginning_hyphen
+      convert_range_indicator_and_append_open_or_unknown_date(
+        indicator: result[0],
+        category: Emendate.config.options.beginning_hyphen,
+        point: :start
       )
     end
 
     def handle_ending_hyphen
-      convert_range_indicator_and_append_open_or_unknown_end_date(
+      convert_range_indicator_and_append_open_or_unknown_date(
         indicator: result[-1],
-        category: Emendate.config.options.ending_hyphen
+        category: Emendate.config.options.ending_hyphen,
+        point: :end
       )
     end
 
     def handle_ending_slash
-      convert_range_indicator_and_append_open_or_unknown_end_date(
+      convert_range_indicator_and_append_open_or_unknown_date(
         indicator: result[-1],
-        category: Emendate.config.options.ending_slash
+        category: Emendate.config.options.ending_slash,
+        point: :end
       )
     end
 

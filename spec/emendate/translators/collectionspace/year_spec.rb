@@ -65,8 +65,8 @@ RSpec.describe Emendate::Translators::Collectionspace::Year do
     let(:str) { "possibly c. #{year}" }
     let(:expected) do
       base.merge({
-        dateEarliestSingleCertainty: "Approximate, possibly",
-        dateLatestCertainty: "Approximate, possibly"
+        dateEarliestSingleCertainty: "Circa, possibly",
+        dateLatestCertainty: "Circa, possibly"
       })
     end
 

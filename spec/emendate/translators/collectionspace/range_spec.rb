@@ -138,4 +138,26 @@ RSpec.describe Emendate::Translators::Collectionspace::Range do
       expect(warnings.flatten).to be_empty
     end
   end
+
+  context "with -[####]" do
+    let(:str) { "-[2002]" }
+    let(:expected) do
+      base.merge({
+        dateEarliestScalarValue: "1583-01-01T00:00:00.000Z",
+        dateEarliestSingleYear: "1583",
+        dateEarliestSingleMonth: "1",
+        dateEarliestSingleDay: "1",
+        dateLatestScalarValue: "2002-12-31T00:00:00.000Z",
+        dateLatestYear: "2002",
+        dateLatestMonth: "12",
+        dateLatestDay: "31",
+        dateLatestCertainty: "Inferred",
+        dateEarliestSingleCertainty: "Supplied"
+      })
+    end
+    it "translates as expected" do
+      expect(value).to eq(expected)
+      expect(warnings).to be_empty
+    end
+  end
 end
