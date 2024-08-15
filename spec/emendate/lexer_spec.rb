@@ -10,6 +10,9 @@ RSpec.describe Emendate::Lexer do
       examples = {
         "c." => [:approximate],
         "c 1947" => %i[approximate number4],
+        "© 1947" => %i[copyright space number4],
+        "(C) 1947" => %i[parenthesis_open letter_c parenthesis_close space
+          number4],
         "2nd" => %i[number1or2 ordinal_indicator],
         "c1947" => %i[approximate number4],
         "1919 andor 1950" => %i[number4 space unknown space number4],
@@ -80,16 +83,45 @@ RSpec.describe Emendate::Lexer do
 
       results = examples.keys
         .map do |str|
-        tokens = Emendate::SegmentSet.new(string: str)
-        [
-          str,
-          lexer.call(tokens)
-            .either(->(s) { s }, ->(f) { f })
-            .map(&:type)
-        ]
-      end
+          tokens = Emendate::SegmentSet.new(string: str)
+          [
+            str,
+            lexer.call(tokens)
+              .either(->(s) { s }, ->(f) { f })
+              .map(&:type)
+          ]
+        end
         .to_h
       expect(results).to eq examples
+    end
+
+    context "with c_before_date = copyright" do
+      before do
+        Emendate.config.options.c_before_date = :copyright
+      end
+
+      it "returns expected tokens" do
+        examples = {
+          "c." => [:copyright],
+          "c 1947" => %i[copyright number4],
+          "c1947" => %i[copyright number4],
+          "early 19th c." => %i[partial space number1or2 ordinal_indicator space
+            letter_c single_dot]
+        }
+
+        results = examples.keys
+          .map do |str|
+            tokens = Emendate::SegmentSet.new(string: str)
+            [
+              str,
+              lexer.call(tokens)
+                .either(->(s) { s }, ->(f) { f })
+                .map(&:type)
+            ]
+          end
+          .to_h
+        expect(results).to eq examples
+      end
     end
   end
 end

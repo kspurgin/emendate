@@ -15,6 +15,7 @@ module Emendate
       optional(:bce_handling).value(:symbol)
       optional(:before_date_treatment).value(:symbol)
       optional(:beginning_hyphen).value(:symbol)
+      optional(:c_before_date).value(:symbol)
       optional(:edtf).value(:bool)
       optional(:ending_hyphen).value(:symbol)
       optional(:ending_slash).value(:symbol)
@@ -93,6 +94,14 @@ module Emendate
       if key?
         allowed = %i[unknown edtf open]
         val = values[:beginning_hyphen]
+        key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
+      end
+    end
+
+    rule(:c_before_date) do
+      if key?
+        allowed = %i[circa copyright]
+        val = values[:c_before_date]
         key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
       end
     end

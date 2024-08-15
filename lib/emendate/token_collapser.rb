@@ -43,7 +43,7 @@ module Emendate
 
     def determine_action
       actions = if result[0].collapsible?
-        proc { collapse_segment(result[0], :forward) }
+        proc { result.collapse_first_token }
       elsif result.any?(&:collapsible?)
         proc { collapse_backward }
       end
@@ -64,6 +64,11 @@ module Emendate
 
     def partial_match_collapsers
       case result.type_string
+      when /.*parenthesis_open letter_c parenthesis_close.*/
+        proc do
+          segs = result.extract(%i[parenthesis_open letter_c parenthesis_close])
+          result.replace_segs_with_new_type(segs: segs, type: :copyright)
+        end
       when /.*number4 (hyphen|slash) number1or2 \1 number1or2.*/
         proc do
           remove_date_separators_in_subset(%i[number4 number1or2 number1or2])

@@ -67,6 +67,7 @@ module Emendate
     setting :bce_handling, default: :precise, reader: true
     setting :before_date_treatment, default: :point, reader: true
     setting :beginning_hyphen, default: :unknown, reader: true
+    setting :c_before_date, default: :circa, reader: true
     setting :edtf, default: false, reader: true
     setting :ending_hyphen, default: :open, reader: true
     setting :ending_slash, default: :open, reader: true

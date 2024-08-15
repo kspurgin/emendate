@@ -33,7 +33,8 @@ module Emendate
       " " => :space,
       "[" => :square_bracket_open,
       "]" => :square_bracket_close,
-      "~" => :tilde
+      "~" => :tilde,
+      "©" => :copyright
     }
     SINGLES.freeze
 
@@ -134,13 +135,17 @@ module Emendate
 
     def tokenize_anchored_start
       case scanner.string
-      when /^c\.? ?[^a-z]/i then tokenize_starting_circa
+      when /^c\.? ?[^a-z]/i then tokenize_starting_c
       end
     end
 
-    def tokenize_starting_circa
+    def tokenize_starting_c
       match = scanner.scan(/^c\.? ?/i)
-      add_token(match, :approximate)
+      type = case Emendate.options.c_before_date
+      when :circa then :approximate
+      when :copyright then :copyright
+      end
+      add_token(match, type)
     end
 
     def tokenize_single
