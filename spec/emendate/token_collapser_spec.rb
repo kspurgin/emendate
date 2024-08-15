@@ -9,6 +9,24 @@ RSpec.describe Emendate::TokenCollapser do
     let(:tokens) { prepped_for(string: string, target: described_class) }
     let(:result) { subject.types }
 
+    context "with (C) ####" do
+      let(:string) { "(C) 1947" }
+
+      it "collapses as expected" do
+        expect(subject.lexeme).to eq(string)
+        expect(result).to eq(%i[number4])
+      end
+    end
+
+    context "with ####, (c)####" do
+      let(:string) { "1984, (c)1985" }
+
+      it "collapses as expected" do
+        expect(subject.lexeme).to eq(string)
+        expect(result).to eq(%i[number4 comma number4])
+      end
+    end
+
     context "with ##-##-##" do
       let(:string) { "02-10-20" }
 

@@ -53,7 +53,7 @@ module Emendate
 
     # Segment types that can be collapsed without considering possible
     # meaning in the pattern.
-    COLLAPSIBLE_TYPES = %i[space single_dot standalone_zero]
+    COLLAPSIBLE_TYPES = %i[copyright space single_dot standalone_zero]
 
     # List of initial/most granular types of segments that should be considered
     # potentially part of an actual date value (e.g. not a date qualifier,

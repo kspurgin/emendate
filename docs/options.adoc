@@ -116,6 +116,12 @@ Default value:: `:unknown` ("beginning of range is unknown but was some point be
 
 Default is set to `:unknown` because I cannot actually imagine a case where the literal meaning of `:open` would be needed in a GLAM context, and needing to record BCE dates is comparatively rare. It is much more common to use this to mean "unknown beginning of range"
 
+== c_before_date
+
+What is this?:: How to treat a letter c occurring at beginning of date (e.g. `c. 1918`, `c1918`)
+Default value:: `:circa`
+Alternate value:: `:copyright`
+
 == dialect
 
 What is this?:: date expression to return when you `translate` a date string
