@@ -123,6 +123,8 @@ module Emendate
 
     def segment? = true
 
+    def eql?(other) = self.class == other.class && self == other
+
     # @return [String]
     def to_s
       arr = ["#<#{self.class.name}:#{object_id} "\
@@ -139,6 +141,14 @@ module Emendate
       arr.join("")
     end
     alias_method :inspect, :to_s
+
+    def signature
+      [type, lexeme, literal, digits, qualifiers.map(&:hash)].flatten
+        .map { |val| val.nil? ? "nil" : val }
+        .join("|")
+    end
+
+    def hash = signature.hash
 
     private
 
