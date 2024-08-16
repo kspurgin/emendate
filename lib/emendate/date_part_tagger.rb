@@ -130,6 +130,8 @@ module Emendate
         proc { tag_year_plus_numeric_month_season_or_year }
       when /.* hyphen .*/
         proc { tag_hyphen_as_range_indicator }
+      when /.*year range_indicator number1or2.*/
+        proc { tag_end_of_range }
       end
     end
 
@@ -307,6 +309,18 @@ module Emendate
     def tag_hyphen_as_range_indicator
       h = result.extract(%i[hyphen]).segments[0]
       hyphen_to_range_indicator(source: h)
+    end
+
+    def tag_end_of_range
+      y, _ri, n = result.extract(%i[year range_indicator number1or2]).segments
+      nxt = result.next_segment(n)
+      return if nxt.date_part?
+
+      analyzed = Emendate::MonthSeasonYearAnalyzer.call(year: y, num: n)
+      return unless analyzed.type == :year
+
+      result.replace_x_with_new(x: n, new: analyzed.result)
+      analyzed.warnings.each { |warn| result.warnings << warn }
     end
 
     def tag_years

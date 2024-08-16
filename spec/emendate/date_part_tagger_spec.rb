@@ -444,6 +444,30 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
+  context "with ####-## [v. #, ####]" do
+    let(:string) { "1845-74 [v. 1, 1874]" }
+
+    it "tags" do
+      expect(types).to eq(
+        %i[year range_indicator year letter_v number1or2 comma year]
+      )
+      expect(result.lexeme).to eq(string)
+      expect(result.map(&:literal).compact).to eq([1845, 1874, 1, 1874])
+    end
+  end
+
+  context "with ####-#### [v. #, ####]" do
+    let(:string) { "1845-1874 [v. 1, 1874]" }
+
+    it "tags" do
+      expect(types).to eq(
+        %i[year range_indicator year letter_v number1or2 comma year]
+      )
+      expect(result.lexeme).to eq(string)
+      expect(result.map(&:literal).compact).to eq([1845, 1874, 1, 1874])
+    end
+  end
+
   context "with MON ##", :short_year do
     let(:string) { "Mar 19" }
 
