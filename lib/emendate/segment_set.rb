@@ -8,6 +8,7 @@ require_relative "subsourceable"
 module Emendate
   # @todo Get rid of norm
   class SegmentSet
+    include Comparable
     include SegmentSetEditable
     include SegmentSetQueryable
     include Subsourceable
@@ -181,6 +182,20 @@ module Emendate
       OBJ
     end
     alias_method :inspect, :to_s
+
+    def <=>(other)
+      return unless other.is_a?(self.class)
+
+      signature <=> other.signature
+    end
+
+    def eql?(other) = self.class == other.class && self == other
+
+    def signature
+      segments.map(&:hash).flatten.join("|")
+    end
+
+    def hash = signature.hash
 
     # The types of the segments currently in the segment set
     # @return [Array<Symbol>]
