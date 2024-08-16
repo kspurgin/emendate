@@ -125,13 +125,14 @@ module Emendate
 
         processor = Emendate.process(test_string, validated_opt)
         processor.result
-        Emendate::Options.new
       rescue => err
         add_error(:process, Emendate::ErrorUtil.msg(err))
         add_test_result(:process, :failure)
+        Emendate.reset_config
         false
       else
         @processed = processor
+        Emendate.reset_config
         true
       end
 
