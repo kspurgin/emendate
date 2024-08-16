@@ -22,10 +22,6 @@ module Emendate
         handle_indicator(seg)
       end
 
-      if result[0].type == :letter_c
-        handle_indicator(result[0])
-      end
-
       Success(result)
     end
 
@@ -119,8 +115,6 @@ module Emendate
       case seg.type
       when :question
         :uncertain
-      when :letter_c
-        :approximate
       else
         seg.type
       end
@@ -129,8 +123,6 @@ module Emendate
     def qual_lexeme(seg)
       if seg.type == :question
         ""
-      elsif seg.type == :letter_c
-        "circa"
       elsif seg.type == :approximate && seg.lexeme.match?(/^ca?\.?\s?$/i)
         "circa"
       else

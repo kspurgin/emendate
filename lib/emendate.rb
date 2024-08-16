@@ -47,6 +47,7 @@ module Emendate
     Emendate::InferredDateHandler => :inferred_dates_handled,
     Emendate::UnstructuredCertaintyHandler => :unstructured_certainty_handled,
     Emendate::FormatStandardizer => :format_standardized,
+    Emendate::LetterCTagger => :letter_c_tagged,
     Emendate::DatePartTagger => :date_parts_tagged,
     Emendate::DateSegmenter => :dates_segmented,
     Emendate::RangeIndicator => :ranges_indicated,

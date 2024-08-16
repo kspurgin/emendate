@@ -65,6 +65,19 @@ RSpec.describe Emendate::RangeIndicator do
     end
   end
 
+  context "with ####-<####>, ©####-<c####> and copyright treatment" do
+    before { Emendate.config.options.c_before_date = :copyright }
+
+    let(:str) { "1982-<1983>, ©1981-<c1982>" }
+
+    it "segments as expected" do
+      expect(subject.lexeme).to eq(str)
+      expect(type_string).to eq(
+        "range_date_type date_separator range_date_type"
+      )
+    end
+  end
+
   context "with `1930s or 1940s`" do
     let(:str) { "1930s or 1940s" }
 
