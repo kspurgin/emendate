@@ -12,6 +12,10 @@ RSpec.describe Emendate::UnstructuredCertaintyHandler do
   let(:tokens) { prepped_for(string: string, target: described_class) }
 
   context "with c. 2002" do
+    before do
+      Emendate.config.options.c_before_date = :circa
+    end
+
     let(:string) { "c. 2002" }
 
     it "handles as expected" do
@@ -90,12 +94,12 @@ RSpec.describe Emendate::UnstructuredCertaintyHandler do
 
     it "handles as expected" do
       expect(subject.lexeme).to eq(string)
-      expect(subject.type_string).to eq("number4")
+      expect(subject.type_string).to eq("letter_c number4")
 
       quals = subject[0].qualifiers
-      expect(quals.map(&:type)).to eq(%i[uncertain approximate])
-      expect(quals.map(&:lexeme)).to eq(["probably", "circa"])
-      expect(quals.map(&:precision)).to eq(%i[beginning beginning])
+      expect(quals.map(&:type)).to eq(%i[uncertain])
+      expect(quals.map(&:lexeme)).to eq(["probably"])
+      expect(quals.map(&:precision)).to eq(%i[beginning])
     end
   end
 
