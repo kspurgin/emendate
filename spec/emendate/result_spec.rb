@@ -7,6 +7,39 @@ RSpec.describe Emendate::Result do
 
   let(:pm) { Emendate.process(str) }
 
+  describe "#dates" do
+    let(:result) { klass.dates }
+
+    context "with date having unhandled segments (1815-74 [v. 1, 1874])" do
+      let(:str) { "1815-74 [v. 1, 1874]" }
+
+      context "with final_check_failure_handling: :collapse_unhandled" do
+        before do
+          Emendate.config.options.final_check_failure_handling =
+            :collapse_unhandled
+        end
+
+        it "returns as expected" do
+          expect(result.length).to eq(2)
+          expect(klass.warnings.length).to eq(1)
+        end
+      end
+
+      context "with final_check_failure_handling: "\
+        ":collapse_unhandled_first_date" do
+        before do
+          Emendate.config.options.final_check_failure_handling =
+            :collapse_unhandled_first_date
+        end
+
+        it "returns as expected" do
+          expect(result.length).to eq(1)
+          expect(klass.warnings.length).to eq(2)
+        end
+      end
+    end
+  end
+
   describe "#to_h" do
     let(:result) { klass.to_h }
     let(:str) { "mid 1800s to 2/23/1921" }

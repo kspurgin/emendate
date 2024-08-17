@@ -170,6 +170,25 @@ Default value:: `:open` ("known to have occurred from 2002 until now, and occurr
 
 Default value is `:open` because this form is frequently used to record the ongoing (still currenting happening, and expected to continue happening) publication of continuing resources.
 
+== final_check_failure_handling
+
+What is this?:: The final check ensures all tokens/segments have been successfully processed into date types. This setting controls how a failure of this check is handled.
+Default value:: `:failure`
+
+**Alternate values**
+* `:collapse_unhandled`
+* `:collapse_unhandled_first_date`
+
+If `:failure`, `Emendate.process` fails with a `final_check_failure` type and "Unhandled segment still present" message.
+
+If `:collapse_unhandled`, any unhandled segments will be collapsed forward into the next date type segment, unless they appear after the last date type segment, in which case they will be collapsed backward. This setting is much more forgiving if you have messier date data that contains unparseable patterns such as:
+
+* undated [1959?]
+* MDCCLXXIII [1773]
+* 1815-74 [v. 1, 1874] (two date types would be returned: the range 1815-1874, and a year 1874)
+
+If `:collapse_unhandled_first_date`, collapsing of unhandled segments is handled as before but only the first date type segment is returned as the result. So, for "1815-74 [v. 1, 1874]", only the range 1815-1874 would be returned.
+
 == hemisphere
 
 What is this?:: Used to map location-independent EDTF season values (21-24) to hemisphere-appropriate date ranges

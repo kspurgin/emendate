@@ -28,4 +28,38 @@ RSpec.describe Emendate::TokenCleaner do
       expect(subject.lexeme).to eq("1972 1975")
     end
   end
+
+  context "when unknown segments present" do
+    before do
+      Emendate.config.options.final_check_failure_handling = :collapse_unhandled
+    end
+
+    let(:str) { "MDCCLXXIII [1773]" }
+
+    it "returns cleaned" do
+      expect(type_string).to eq(
+        "year_date_type"
+      )
+      expect(subject.lexeme).to eq("[1773]")
+    end
+  end
+
+  context "when collapsing unhandled segments" do
+    before do
+      Emendate.config.options.final_check_failure_handling = :collapse_unhandled
+    end
+
+    let(:str) { "1815-74 [v. 1]" }
+
+    it "returns cleaned" do
+      expect(type_string).to eq(
+        "range_date_type"
+      )
+      expect(subject.lexeme).to eq("1815-74 ")
+      expect(subject.orig_string).to eq(str)
+      expect(subject.warnings.any? do |w|
+               w.start_with?("Unhandled segments still present: ")
+             end).to be true
+    end
+  end
 end

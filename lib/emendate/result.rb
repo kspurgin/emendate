@@ -68,14 +68,31 @@ module Emendate
     private
 
     def create_parsed_dates
-      pm.tokens.select { |t| t.date_type? }
-        .map do |t|
+      datetypes = pm.tokens.select { |t| t.date_type? }
+
+      if pm.any_unhandled? && datetypes.length > 1 &&
+          Emendate.options.final_check_failure_handling ==
+              :collapse_unhandled_first_date
+        truncated_parsed_dates(datetypes)
+      else
+        datetypes.map do |t|
           Emendate::ParsedDate.new(
             date: t,
             qualifiers: pm.tokens.qualifiers,
             orig: original_string
           )
         end
+      end
+    end
+
+    def truncated_parsed_dates(datetypes)
+      warnings << "Only first of multiple dates returned when unhandled "\
+        "segments present"
+      [Emendate::ParsedDate.new(
+        date: datetypes.first,
+        qualifiers: pm.tokens.qualifiers,
+        orig: original_string
+      )]
     end
 
     def map_errors

@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module Emendate
-  # Final handling tokens that are not part of actual date types.
+  # Final handling of tokens that are not part of actual date types.
   #
-  # Initially, this only includes :date_separator tokens. If the whole lexeme
-  # is needed at this stage, it should be accessed from :orig_string on the
-  # result segment set. The lexeme of each date type should contain only the
-  # orig_string part that expresses that date.
+  # If the whole lexeme is needed at this stage, it should be accessed
+  # from :orig_string on the result segment set. The lexeme of each
+  # date type should contain only the orig_string part that expresses
+  # that date.
   class TokenCleaner
     include Dry::Monads[:result]
 
@@ -17,50 +17,47 @@ module Emendate
     end
 
     def initialize(tokens)
-      @working = tokens.class.new.copy(tokens)
       @result = tokens.class.new.copy(tokens)
-      result.clear
+      @unhandled_mode = Emendate.set_unhandled_mode
     end
 
     def call
-      has_date_separator? ? handle_separator : passthrough_all
+      return Success(result) unless cleaning_needed?
+
+      handle_separator if has_date_separator?
+      handle_unknown if has_unknown?
+      return Success(result) unless unhandled_mode == :collapse_unhandled
+
+      handle_unprocessed if result.any_unprocessed?
       Success(result)
     end
 
     private
 
-    attr_reader :result, :working
+    attr_reader :result, :unhandled_mode
 
-    def delete_separator
-      if current.type == :date_separator
-        working.shift
-      else
-        passthrough
-      end
+    def cleaning_needed?
+      return true if has_date_separator? || has_unknown?
+      return true if unhandled_mode == :collapse_unhandled &&
+        result.any_unprocessed?
+
+      false
     end
 
-    def current
-      working[0]
-    end
+    def has_date_separator? = result.types.include?(:date_separator)
 
-    def handle_separator
-      delete_separator until working.empty?
-    end
+    def handle_separator = result.reject! { |seg| seg.type == :date_separator }
 
-    def has_date_separator?
-      working.types.include?(:date_separator)
-    end
+    def has_unknown? = result.types.include?(:unknown)
 
-    def nxt(n = 1)
-      working[n]
-    end
+    def handle_unknown = result.reject! { |seg| seg.type == :unknown }
 
-    def passthrough
-      result << working.shift
-    end
-
-    def passthrough_all
-      passthrough until working.empty?
+    def handle_unprocessed
+      details = result.unprocessed
+        .map { |seg| "#{seg.type.inspect} (#{seg.lexeme})" }
+        .join("; ")
+      result.add_warning("Unhandled segments still present: #{details}")
+      result.reject! { |seg| !seg.processed? }
     end
   end
 end
