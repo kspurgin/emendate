@@ -21,12 +21,36 @@ RSpec.describe Emendate::UntokenizableTagger do
     context "when untokenizable" do
       let(:string) { "Sometime in 1985" }
 
-      it "returns untokenizable" do
-        expect(result).to be_a(Dry::Monads::Failure)
-        res = result.failure
-        expect(res.types).to eq([:untokenizable_date_type])
-        warnings = ["Untokenizable sequences: Sometime; in"]
-        expect(res.warnings).to eq(warnings)
+      context "with final_check_failure_handling = :failure" do
+        before do
+          Emendate.config.options.final_check_failure_handling = :failure
+        end
+
+        it "returns untokenizable" do
+          expect(result).to be_a(Dry::Monads::Failure)
+          res = result.failure
+          expect(res.types).to eq([:untokenizable_date_type])
+          warnings = ["Untokenizable sequences: Sometime; in"]
+          expect(res.warnings).to eq(warnings)
+        end
+      end
+
+      context "with final_check_failure_handling = "\
+        ":collapse_unhandled_first_date" do
+        before do
+          Emendate.config.options.final_check_failure_handling =
+            :collapse_unhandled_first_date
+        end
+
+        it "returns untokenizable" do
+          expect(result).to be_a(Dry::Monads::Success)
+          res = result.value!
+          expect(res.types).to eq(
+            %i[unknown space unknown space number4]
+          )
+          warnings = ["Untokenizable sequences: Sometime; in"]
+          expect(res.warnings).to eq(warnings)
+        end
       end
     end
   end

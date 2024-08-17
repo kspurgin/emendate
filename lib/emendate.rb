@@ -72,6 +72,7 @@ module Emendate
     setting :edtf, default: false, reader: true
     setting :ending_hyphen, default: :open, reader: true
     setting :ending_slash, default: :open, reader: true
+    setting :final_check_failure_handling, default: :failure, reader: true
     setting :hemisphere, default: :northern, reader: true
     setting :max_output_dates, default: 999, reader: true
     setting :max_month_number_handling, default: :months, reader: true
@@ -248,6 +249,13 @@ module Emendate
   end
 
   # @!endgroup
+
+  def set_unhandled_mode
+    mode = Emendate.options.final_check_failure_handling
+    return :collapse_unhandled if mode == :collapse_unhandled_first_date
+
+    mode
+  end
 
   private
 

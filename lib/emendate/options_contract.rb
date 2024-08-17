@@ -19,6 +19,7 @@ module Emendate
       optional(:edtf).value(:bool)
       optional(:ending_hyphen).value(:symbol)
       optional(:ending_slash).value(:symbol)
+      optional(:final_check_failure_handling).value(:symbol)
       optional(:hemisphere).value(:symbol)
       optional(:initial_c_handling).value(:symbol)
       optional(:max_output_dates).value(:integer)
@@ -119,6 +120,14 @@ module Emendate
       if key?
         allowed = %i[open unknown]
         val = values[:ending_slash]
+        key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
+      end
+    end
+
+    rule(:final_check_failure_handling) do
+      if key?
+        allowed = %i[failure collapse_unhandled collapse_unhandled_first_date]
+        val = values[:final_check_failure_handling]
         key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
       end
     end

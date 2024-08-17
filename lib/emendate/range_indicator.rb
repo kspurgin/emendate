@@ -12,9 +12,12 @@ module Emendate
 
     def initialize(tokens)
       @result = tokens.class.new.copy(tokens)
+      @unhandled_mode = Emendate.set_unhandled_mode
     end
 
     def call
+      kill_unhandled_range_indicators if has_range_indicator? &&
+        unhandled_mode == :collapse_unhandled
       collapse_ranges while has_range_indicator?
       validate
 
@@ -26,7 +29,17 @@ module Emendate
 
     private
 
-    attr_reader :result, :working
+    attr_reader :result, :working, :unhandled_mode
+
+    def kill_unhandled_range_indicators
+      result.select { |seg| seg.type == :range_indicator }
+        .each do |ri|
+          next unless result.previous_segment(ri)&.type == :unknown ||
+            result.next_segment(ri)&.type == :unknown
+
+          result.replace_x_with_derived_new_type(x: ri, type: :unknown)
+        end
+    end
 
     def collapsible_and_or_date?
       Emendate.options.and_or_date_handling == :single_range &&

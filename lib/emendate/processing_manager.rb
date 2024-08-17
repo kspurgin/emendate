@@ -110,6 +110,12 @@ module Emendate
     end
     alias_method :hr, :historical_record
 
+    # @return [Boolean]
+    def any_unhandled?
+      [warnings, errors.map(&:to_s)].flatten
+        .any? { |val| val.start_with?("Unhandled segments still present") }
+    end
+
     # @return [String] representation of {ProcessingManager}
     def to_s
       <<~OBJ

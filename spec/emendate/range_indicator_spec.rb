@@ -18,6 +18,19 @@ RSpec.describe Emendate::RangeIndicator do
     end
   end
 
+  context "with collapsing unhandled segments (MDCCCXX-MDCCCXXV [1820-1826])" do
+    before do
+      Emendate.config.options.final_check_failure_handling = :collapse_unhandled
+    end
+
+    let(:str) { "MDCCCXX-MDCCCXXV [1820-1826]" }
+
+    it "returns original" do
+      expect(type_string).to eq("unknown unknown unknown range_date_type")
+      expect(subject.lexeme).to eq(str)
+    end
+  end
+
   context "with range present (1972 - 1999)" do
     let(:str) { "1972 - 1999" }
 
