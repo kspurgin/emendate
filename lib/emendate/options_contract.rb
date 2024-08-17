@@ -32,6 +32,7 @@ module Emendate
       optional(:two_digit_year_handling).value(:symbol)
       optional(:unknown_date_output).value(:symbol)
       optional(:unknown_date_output_string).value(:string)
+      optional(:verbose).value(:bool)
     end
 
     rule(:ambiguous_month_day) do

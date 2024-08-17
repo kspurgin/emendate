@@ -283,3 +283,9 @@ Alternate value:: any String value, which may be useful if you are trying to sta
 ====
 This setting is not used if `unknown_date_output: :orig`
 ====
+
+== verbose
+
+What is this?::  Whether to output information about each processing step to STDOUT
+Default value:: `false`
+Alternate value:: `true`

@@ -67,6 +67,7 @@ module Emendate
       )
       @errors = []
       @warnings = []
+      @verbose = Emendate.options.verbose
     end
 
     # Runs the {PROCESSING_STEPS processing steps}
@@ -126,6 +127,8 @@ module Emendate
 
     private
 
+    attr_reader :verbose
+
     def state_for_inspect
       return state unless state.to_s.end_with?("failure")
 
@@ -178,6 +181,7 @@ module Emendate
         lambda do |success|
           @tokens = success
           @history[state] = success
+          puts state if verbose
           add_warnings(success.warnings) if success.respond_to?(:warnings)
           Success()
         end,

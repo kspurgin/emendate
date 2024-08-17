@@ -91,6 +91,7 @@ module Emendate
     setting :two_digit_year_handling, default: :coerce, reader: true
     setting :unknown_date_output, default: :orig, reader: true
     setting :unknown_date_output_string, default: "", reader: true
+    setting :verbose, default: false, reader: true
   end
 
   setting :examples, reader: true do
