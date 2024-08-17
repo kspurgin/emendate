@@ -12,6 +12,7 @@ module Emendate
       optional(:ambiguous_month_year).value(:symbol)
       optional(:ambiguous_year_rollback_threshold).value(:integer)
       optional(:and_or_date_handling).value(:symbol)
+      optional(:angle_bracket_interpretation).value(:symbol)
       optional(:bce_handling).value(:symbol)
       optional(:before_date_treatment).value(:symbol)
       optional(:beginning_hyphen).value(:symbol)
@@ -72,6 +73,14 @@ module Emendate
       if key?
         allowed = %i[multi single_range]
         val = values[:and_or_date_handling]
+        key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
+      end
+    end
+
+    rule(:angle_bracket_interpretation) do
+      if key?
+        allowed = %i[ignore temporary]
+        val = values[:angle_bracket_interpretation]
         key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
       end
     end

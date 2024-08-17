@@ -51,10 +51,6 @@ module Emendate
     # @return [Integer, NilClass]
     attr_reader :digits
 
-    # Segment types that can be collapsed without considering possible
-    # meaning in the pattern.
-    COLLAPSIBLE_TYPES = %i[copyright space single_dot standalone_zero]
-
     # List of initial/most granular types of segments that should be considered
     # potentially part of an actual date value (e.g. not a date qualifier,
     # date separator, partial indicator, era, punctuation, etc.)
@@ -82,6 +78,11 @@ module Emendate
       @sources = get_sources(sources)
       @digits = nil
       derive_values if @sources
+      @collapsible_types = %i[copyright space single_dot standalone_zero]
+      if Emendate.options.angle_bracket_interpretation == :ignore
+        @collapsible_types << :angle_bracket_open
+        @collapsible_types << :angle_bracket_close
+      end
     end
 
     # @param qual [Emendate::Qualifier]
@@ -99,7 +100,7 @@ module Emendate
     end
 
     # @return [Boolean]
-    def collapsible? = COLLAPSIBLE_TYPES.include?(type)
+    def collapsible? = collapsible_types.include?(type)
 
     # @return [TrueClass, NilClass]
     def date_part?
@@ -153,6 +154,8 @@ module Emendate
     def hash = signature.hash
 
     private
+
+    attr_reader :collapsible_types
 
     def get_sources(sources)
       return nil if sources.nil? || sources.empty?
