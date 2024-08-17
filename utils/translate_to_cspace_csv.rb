@@ -35,7 +35,10 @@ OptionParser.new do |opts|
     "-o",
     "--optargs OPTARGS",
     "Options hash, in curly brackets, in quotes"
-  ) { |o| set_options(o) }
+  ) do |o|
+    options[:optargs] = eval(o).merge({dialect: :collectionspace})
+    set_options(o)
+  end
 
   opts.on("-h", "--help", "Prints this help") do
     puts opts
