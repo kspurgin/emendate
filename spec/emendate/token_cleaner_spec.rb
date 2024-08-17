@@ -6,7 +6,6 @@ RSpec.describe Emendate::TokenCleaner do
   subject(:step) { described_class.call(tokens).value! }
 
   let(:tokens) { prepped_for(string: str, target: described_class) }
-
   let(:type_string) { subject.type_string }
 
   context "when no cleanup needed" do
