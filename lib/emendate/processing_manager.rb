@@ -158,13 +158,7 @@ module Emendate
       end
     end
 
-    def unprocessed_segments?
-      true unless unprocessed_segments.empty?
-    end
-
-    def unprocessed_segments
-      tokens.reject { |token| token.processed? }
-    end
+    def unprocessed_segments? = tokens.any_unprocessed?
 
     def add_error?
       no_error_states = %i[

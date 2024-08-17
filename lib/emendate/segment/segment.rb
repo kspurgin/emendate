@@ -118,7 +118,9 @@ module Emendate
     # @return [TrueClass] when segment is a DateType or has type :and or :or
     # @return [FalseClass] otherwise
     def processed?
-      true if date_type? || type == :or || type == :and
+      return true if date_type? || type == :or || type == :and
+
+      false
     end
 
     def segment? = true

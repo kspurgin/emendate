@@ -61,6 +61,14 @@ module Emendate
       warnings << warning
     end
 
+    # @return [Boolean]
+    def any_unprocessed? = segments.map(&:processed?).include?(false)
+
+    # @return [Array<Emendate::Segment>]
+    def unprocessed
+      segments.select { |seg| !seg.processed? }
+    end
+
     # @param other_set [Emendate::SegmentSet]
     def copy(other_set)
       @orig_string = other_set.orig_string
