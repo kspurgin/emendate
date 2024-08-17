@@ -17,6 +17,8 @@ module Emendate
     end
 
     SINGLES = {
+      "<" => :angle_bracket_open,
+      ">" => :angle_bracket_close,
       "'" => :apostrophe,
       ":" => :colon,
       "," => :comma,

@@ -84,6 +84,14 @@ Default value:: `:multi` ("1970, 1972 - 1999, and 2002" will be parsed into 3 da
 
 When `dialect: :collectionspace`, this is automatically set to `:single_range`, because CollectionSpace's structured date fields do not provide a graceful way to express multiple dates.
 
+== angle_bracket_interpretation
+
+What is this?:: Should angle brackets around a date string be interpreted as a temporary date qualification, or ignored?
+Default value:: `:ignore`
+Alternate value:: `:temporary`
+
+Dates in MARC cataloging that are likely to change are frequently wrapped in angle brackets. If it's important to capture that as a qualifier, set this to :temporary.
+
 == bce_handling
 
 What is this?:: Controls how `Emendate::DateType::Year` sets its attributes when `:era == :bce`.
