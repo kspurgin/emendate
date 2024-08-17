@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "date_utils"
-
 module Emendate
   # Makes the format of date patterns more consistent.
   #
