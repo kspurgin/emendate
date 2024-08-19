@@ -2,11 +2,12 @@
 
 require "spec_helper"
 
-RSpec.describe Emendate::InferredDateHandler do
+RSpec.describe Emendate::BracketPairHandler do
   subject { described_class.call(tokens) }
 
   before do
     Emendate.config.options.square_bracket_interpretation = :inferred_date
+    Emendate.config.options.angle_bracket_interpretation = :temporary
   end
 
   let(:tokens) { prepped_for(string: string, target: described_class) }
@@ -25,7 +26,7 @@ RSpec.describe Emendate::InferredDateHandler do
     end
   end
 
-  context "with non-matching bracket inside matching pair" do
+  context "with non-matching square bracket inside matching pair" do
     let(:string) { "[1997-[1998]" }
 
     context "when mismatched_bracket_handling == :absorb" do

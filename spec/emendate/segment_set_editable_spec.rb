@@ -66,7 +66,7 @@ RSpec.describe Emendate::SegmentSetEditable do
 
   describe "#collapse_first_token" do
     let(:string) { "[Jan. 21]" }
-    let(:target) { Emendate::InferredDateHandler }
+    let(:target) { Emendate::BracketPairHandler }
 
     it "tags as expected" do
       segset.collapse_first_token
@@ -79,7 +79,7 @@ RSpec.describe Emendate::SegmentSetEditable do
 
   describe "#collapse_last_token" do
     let(:string) { "[Jan. 21]" }
-    let(:target) { Emendate::InferredDateHandler }
+    let(:target) { Emendate::BracketPairHandler }
 
     it "tags as expected" do
       segset.collapse_last_token
@@ -90,7 +90,7 @@ RSpec.describe Emendate::SegmentSetEditable do
 
   describe "#collapse_enclosing_tokens" do
     let(:string) { "[Jan. 21]" }
-    let(:target) { Emendate::InferredDateHandler }
+    let(:target) { Emendate::BracketPairHandler }
 
     it "tags as expected" do
       segset.collapse_enclosing_tokens
