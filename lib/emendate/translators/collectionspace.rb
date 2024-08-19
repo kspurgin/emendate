@@ -10,7 +10,8 @@ module Emendate
       DIALECT_OPTIONS = {
         and_or_date_handling: :single_range,
         bce_handling: :naive,
-        before_date_treatment: :point
+        before_date_treatment: :point,
+        max_output_dates: 1
       }
       SUFFIX = "T00:00:00.000Z"
 

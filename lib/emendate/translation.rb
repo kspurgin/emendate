@@ -24,6 +24,8 @@ module Emendate
 
     def warnings = @warnings.flatten.uniq
 
+    def add_warning(value) = @warnings << value
+
     private
 
     def set_initial_warnings

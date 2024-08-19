@@ -31,8 +31,7 @@ module Emendate
         return translate_failure(processed)
       end
 
-      processed.result
-        .dates
+      dates_to_map(processed.result.dates)
         .map { |pdate| translate_date(pdate) }
         .each { |result| translation.add_value(result) }
 
@@ -43,13 +42,20 @@ module Emendate
 
     attr_reader :dialect, :processed, :date_type, :tokens, :translation
 
+    def dates_to_map(dates)
+      max = Emendate.options.max_output_dates
+      return dates if max == :all
+
+      if dates.length > max
+        translation.add_warning("#{dates.length} dates parsed from string. "\
+                                "Only #{max} date(s) translated")
+      end
+      dates.first(max)
+    end
+
     def dialect_module
       "Emendate::Translators::#{dialect.to_s.camelize}"
     end
-
-      end
-    end
-
 
     # @param pdate [Emendate::ParsedDate]
     def translate_date(pdate)
