@@ -42,7 +42,7 @@ module Emendate
 
     HYPHENS = ["\u002D", "\u2010", "\u2011", "\u2012", "\u2013", "\u2014",
       "\u2015", "\u2043"].freeze
-    ORDINAL_INDICATORS = %w[st nd rd th d].freeze
+    ORDINAL_INDICATORS = %w[st nd rd th].freeze
 
     days = "^(" + ([
       Date::DAYNAMES.compact,
@@ -83,7 +83,7 @@ module Emendate
       /^(u+|x+)/i => :uncertainty_digits
     }
 
-    SINGLE_ALPHA = /^[cestyz]$/i
+    SINGLE_ALPHA = /^[cdestyz]$/i
 
     def initialize(tokens)
       if tokens.is_a?(String)

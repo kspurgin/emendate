@@ -7,16 +7,22 @@ RSpec.describe Emendate::OrdinalTranslator do
 
   describe ".call" do
     let(:tokens) { prepped_for(string: string, target: step) }
-    let(:result) do
-      step.call(tokens)
-        .value!
-    end
+    let(:result) { step.call(tokens).value! }
 
     context "with no ordinal indicator" do
       let(:string) { "2000" }
 
       it "returns original token set" do
         expect(result.type_string).to eq("number4")
+      end
+    end
+
+    context "with d as ordinal indicator" do
+      let(:string) { "23d June M.D." }
+
+      it "returns as expected" do
+        expect(result.type_string).to eq("number1or2 month letter_m letter_d")
+        expect(result.warnings).to be_empty
       end
     end
 
