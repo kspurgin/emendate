@@ -44,7 +44,7 @@ module Emendate
     Emendate::TokenCollapser => :tokens_collapsed,
     Emendate::OrdinalTranslator => :ordinals_translated,
     Emendate::EdtfSetHandler => :edtf_sets_handled,
-    Emendate::InferredDateHandler => :inferred_dates_handled,
+    Emendate::BracketPairHandler => :bracket_pairs_handled,
     Emendate::UnstructuredCertaintyHandler => :unstructured_certainty_handled,
     Emendate::FormatStandardizer => :format_standardized,
     Emendate::LetterCTagger => :letter_c_tagged,

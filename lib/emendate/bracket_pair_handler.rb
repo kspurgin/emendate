@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Emendate
-  class InferredDateHandler
+  class BracketPairHandler
     include Dry::Monads[:result]
 
     class << self
