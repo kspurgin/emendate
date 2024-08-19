@@ -60,6 +60,17 @@ RSpec.describe Emendate::Options do
       end
     end
 
+    context "with dialect: :collectionspace" do
+      let(:opthash) { {dialect: :collectionspace} }
+      it "sets other options as expected" do
+        call_options
+        expect(Emendate.options.and_or_date_handling).to eq(:single_range)
+        expect(Emendate.options.bce_handling).to eq(:naive)
+        expect(Emendate.options.before_date_treatment).to eq(:point)
+        expect(Emendate.options.max_output_dates).to eq(1)
+      end
+    end
+
     context "with open_unknown_start_date: '1600-02-15'" do
       let(:opthash) { {open_unknown_start_date: "1600-02-15"} }
       it "converts to date" do
