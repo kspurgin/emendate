@@ -47,31 +47,9 @@ module Emendate
       "Emendate::Translators::#{dialect.to_s.camelize}"
     end
 
-    # @todo unused?
-    def translate_failure(failure)
-      type = "Error"
-      translator = dialect_translator(type)
-
-      result = if translator
-        do_translation(translator, nil)
-      else
-        no_translation(type)
       end
-      translation.add_value(result)
-      translation
     end
 
-    # def truncate_tokens
-    #   existing = processed.tokens
-    #   max = Emendate.options.max_output_dates
-    #   return existing if max == :all
-
-    #   tokens = existing.class.new.copy(existing)
-    #   until tokens.length == max
-    #     tokens.pop
-    #   end
-    #   tokens
-    # end
 
     # @param pdate [Emendate::ParsedDate]
     def translate_date(pdate)
