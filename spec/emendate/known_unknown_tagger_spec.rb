@@ -53,17 +53,7 @@ RSpec.describe Emendate::KnownUnknownTagger do
         failure = result.failure
 
         expect(failure.types).to eq(%i[knownunknown_date_type])
-      end
-    end
-
-    context "with n.d., before ####", skip: "not yet implemented" do
-      let(:string) { "n.d., before 1955" }
-
-      it "tags as expected" do
-        success = result.value!
-        expect(success.types).to eq(
-          %i[unknown_date comma before number4]
-        )
+        expect(failure[0].category).to eq(:unknown_date)
       end
     end
 
