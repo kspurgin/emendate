@@ -37,7 +37,7 @@ module Emendate
 
     private
 
-    attr_reader :result, :working
+    attr_reader :result
 
     def indicators?
       result.types.any? { |type| indicators.include?(type) }
