@@ -34,13 +34,14 @@ module Emendate
     end
 
     def set_warnings_from_pm_errors
-      pm.errors.each do |err|
-        @warnings << if err.respond_to?(:backtrace)
-          err.message
-        else
-          err
-        end
-      end
+      pm.errors.each { |err| @warnings << err_string(err) }
+    end
+
+    def err_string(err)
+      prefix = "DATE PARSE ERROR: "
+      return "#{prefix}#{err}" unless err.respond_to?(:backtrace)
+
+      "#{prefix}#{err.message}: #{err.backtrace[0]}"
     end
 
     def set_warnings_from_pm_warnings
