@@ -14,6 +14,7 @@ RSpec.describe Emendate::Lexer do
         "(C) 1947" => %i[parenthesis_open letter_c parenthesis_close space
           number4],
         "2nd" => %i[number1or2 ordinal_indicator],
+        "3d" => %i[number1or2 letter_d],
         "c1947" => %i[approximate number4],
         "1919 andor 1950" => %i[number4 space unknown space number4],
         "@" => [:unknown],
