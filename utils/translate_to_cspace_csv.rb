@@ -90,4 +90,12 @@ CSV.open(outfile, "a") do |csvout|
       csvout << row.values_at(*HEADERS)
     end
   end
+
+  puts ""
+  puts "Run with options:"
+  Emendate.options.values
+    .sort_by { |key, value| key.to_s }
+    .each do |key, value|
+    puts "  #{key}: #{value.inspect}"
+  end
 end
