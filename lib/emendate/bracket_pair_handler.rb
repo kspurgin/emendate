@@ -3,6 +3,7 @@
 module Emendate
   class BracketPairHandler
     include Dry::Monads[:result]
+    include Dry::Monads::Do.for(:call)
 
     class << self
       def call(...)
@@ -15,9 +16,27 @@ module Emendate
     end
 
     def call
+      %i[square angle].each { |type| yield handle_bracket_type(type) }
+
+      Success(result)
+    end
+
+    private
+
+    attr_reader :result, :bracket_type
+
+    def handle_bracket_type(type)
+      return Success(result) if type == :square &&
+        !Emendate.options.square_bracket_interpretation == :inferred_date
+      return Success(result) if type == :angle &&
+        !Emendate.options.square_bracket_interpretation == :temporary
+
+      @open_bracket = nil
+      @close_bracket = nil
+      @bracket_type = type
       return Success(result) unless indicators?
 
-      if whole_string_inferred?
+      if whole_string_wrapped?
         process_whole_string
       else
         process_pair(pairs.first) until pairs.empty?
@@ -35,19 +54,19 @@ module Emendate
       Success(result)
     end
 
-    private
+    def open_bracket = @open_bracket ||= :"#{bracket_type}_bracket_open"
 
-    attr_reader :result
+    def close_bracket = @close_bracket ||= :"#{bracket_type}_bracket_close"
 
     def indicators?
       result.types.any? { |type| indicators.include?(type) }
     end
 
-    def indicators = %i[square_bracket_open square_bracket_close]
+    def indicators = [open_bracket, close_bracket]
 
-    def whole_string_inferred?
-      result[0].type == :square_bracket_open &&
-        result[-1].type == :square_bracket_close &&
+    def whole_string_wrapped?
+      result[0].type == open_bracket &&
+        result[-1].type == close_bracket &&
         no_inner_brackets?
     end
 
@@ -60,14 +79,14 @@ module Emendate
     def indicator?(seg) = indicators.include?(seg.type)
 
     def pairs
-      result.when_type(:square_bracket_open)
+      result.when_type(open_bracket)
         .map { |open| get_pair_for(open) }
         .compact
     end
 
     def get_pair_for(open)
       open_ind = result.find_index(open)
-      close_ind = result.when_type(:square_bracket_close)
+      close_ind = result.when_type(close_bracket)
         .map { |seg| result.find_index(seg) }
         .reject { |ind| ind < open_ind }
         .first
@@ -76,9 +95,16 @@ module Emendate
       Range.new(open_ind, close_ind)
     end
 
+    def qual_type
+      case bracket_type
+      when :square then :inferred
+      when :angle then :temporary
+      end
+    end
+
     def process_whole_string
       result.add_qualifier(
-        Emendate::Qualifier.new(type: :inferred, precision: :whole)
+        Emendate::Qualifier.new(type: qual_type, precision: :whole)
       )
       result.collapse_enclosing_tokens
     end
@@ -98,7 +124,7 @@ module Emendate
 
     def add_qualifier(segment, precision, sources)
       segment.add_qualifier(
-        Emendate::Qualifier.new(type: :inferred, precision: precision)
+        Emendate::Qualifier.new(type: qual_type, precision: precision)
       )
     end
 
@@ -109,7 +135,7 @@ module Emendate
 
     def absorb(segment)
       case segment.type
-      when :square_bracket_open then absorb_open(segment)
+      when open_bracket then absorb_open(segment)
       else absorb_close(segment)
       end
     end
