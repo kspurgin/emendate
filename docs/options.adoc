@@ -210,7 +210,7 @@ Default is northern hemisphere because that is where the original code author an
 == max_output_dates
 
 What is this?:: Some strings will get parsed into multiple dates (`2002, 2004`). By default each individual date found will be returned. Some applications can only handle a single date, so you may want to limit the number of dates included in the output.
-Default value:: `:all` ("known to have occurred from 2002 until now, and occurrence is ongoing")
+Default value:: `:all`
 Alternate value:: any Integer
 
 == max_month_number_handling
