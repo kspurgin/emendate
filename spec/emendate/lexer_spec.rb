@@ -55,6 +55,8 @@ RSpec.describe Emendate::Lexer do
         "approximately estimated" => %i[approximate space approximate],
         "c ca approximate" => %i[approximate approximate space approximate],
         "unknown" => [:unknown_date],
+        "unkn" => [:unknown_date],
+        "unk." => %i[unknown_date single_dot],
         "n.d." => [:no_date],
         "n. d." => [:no_date],
         "or" => [:or],

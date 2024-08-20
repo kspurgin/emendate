@@ -59,6 +59,26 @@ RSpec.describe Emendate::KnownUnknownTagger do
       end
     end
 
+    context "with unk." do
+      let(:string) { "unk." }
+
+      it "tags as expected" do
+        failure = result.failure
+        expect(failure.types).to eq(%i[knownunknown_date_type])
+        expect(failure[0].category).to eq(:unknown_date)
+      end
+    end
+
+    context "with uuuu" do
+      let(:string) { "uuuu" }
+
+      it "tags as expected" do
+        failure = result.failure
+        expect(failure.types).to eq(%i[knownunknown_date_type])
+        expect(failure[0].category).to eq(:unknown_date)
+      end
+    end
+
     context "with ####-?" do
       let(:string) { "1924-?" }
 
