@@ -110,7 +110,7 @@ module Emendate
         proc { tag_numeric_month_day_short_year }
       when /.*year hyphen number1or2 hyphen number1or2.*/
         proc { tag_year_numeric_month_day }
-      # ...this
+        # ...this
       when /.*number1or2 number1or2 year.*/
         proc do
           n1, n2, yr = result.extract(%i[number1or2 number1or2 year]).segments
