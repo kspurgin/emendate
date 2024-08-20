@@ -55,11 +55,16 @@ module Emendate
     #   range will be collapsed
     def collapse_all_matching_type(type:, dir:, range: nil)
       when_type(type)
-        .select
         .reverse_each do |seg|
           next if range && not_in_range?(seg, range)
 
-          collapse_segment(seg, dir)
+          if is_first_seg?(seg)
+            collapse_first_token if type == :comma
+          elsif is_last_seg?(seg)
+            collapse_last_token if type == :comma
+          else
+            collapse_segment(seg, dir)
+          end
         end
       self
     end
