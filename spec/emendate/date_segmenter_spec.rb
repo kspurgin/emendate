@@ -294,6 +294,34 @@ RSpec.describe Emendate::DateSegmenter do
     end
   end
 
+  context "with before ####" do
+    let(:string) { "before 1950" }
+
+    context "with before_date_treatment: :point" do
+      before { Emendate.config.options.before_date_treatment = :point }
+
+      it "segments as expected" do
+        expect(types).to eq(%i[year_date_type])
+        expect(result[0].partial_indicator).to be_nil
+        expect(result[0].range_switch).to eq(:before)
+        expect(result.lexeme).to eq(string)
+      end
+    end
+
+    context "with before_date_treatment: :range" do
+      before { Emendate.config.options.before_date_treatment = :range }
+
+      it "segments as expected" do
+        expect(types).to eq(%i[rangedatestartopen_date_type range_indicator
+          year_date_type])
+        expect(result[0].partial_indicator).to be_nil
+        expect(result[0].range_switch).to be_nil
+        expect(result[2].range_switch).to eq(:before)
+        expect(result.lexeme).to eq(string)
+      end
+    end
+  end
+
   context "with ####s early" do
     let(:string) { "1950s early" }
 
