@@ -7,13 +7,17 @@ module Emendate
     class KnownUnknown
       include Datetypeable
 
-      # @return [SegmentSet
+      # @return [Emendate::SegmentSet]
       attr_reader :sources
+      # @return [:no_date, :unknown_date]
+      attr_reader :category
 
       # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
-      def initialize(sources:)
+      # @param category [:no_date, :unknown_date]
+      def initialize(sources:, category:)
         common_setup(binding)
+        @category = category
       end
 
       # @return [nil]

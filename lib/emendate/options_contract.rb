@@ -26,6 +26,8 @@ module Emendate
       optional(:max_output_dates).value(:integer)
       optional(:max_month_number_handling).value(:symbol)
       optional(:mismatched_bracket_handling).value(:symbol)
+      optional(:no_date_output).value(:symbol)
+      optional(:no_date_output_string).value(:string)
       optional(:open_unknown_end_date).value(:string)
       optional(:open_unknown_start_date).value(:string)
       optional(:pluralized_date_interpretation).value(:symbol)
@@ -205,6 +207,14 @@ module Emendate
         allowed = %i[orig custom]
         val = values[:unknown_date_output]
         key.failure(unknown_val_msg(val, allowed)) unless allowed.any?(val)
+      end
+    end
+
+    rule(:no_date_output) do
+      if key?
+        allowed = %i[orig custom]
+        val = values[:no_date_output]
+        key.failure(no_val_msg(val, allowed)) unless allowed.any?(val)
       end
     end
 

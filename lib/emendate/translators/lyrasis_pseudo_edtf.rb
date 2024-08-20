@@ -6,6 +6,13 @@ module Emendate
   module Translators
     # namespace for LYRASIS pseudo EDTF translators
     module LyrasisPseudoEdtf
+      DIALECT_OPTIONS = {
+        no_date_output: :custom,
+        no_date_output_string: "no date",
+        unknown_date_output: :custom,
+        unknown_date_output_string: "unknown date"
+      }
+
       def date
         pdate
       end

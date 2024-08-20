@@ -57,6 +57,8 @@ module Emendate
     ordinals = "^(" + ORDINAL_INDICATORS.join("|") + ")"
 
     ALPHA = {
+      /^(no\sdate|not\sdated|undated|n\.?\s?d\.?|
+      date\sof\spublication\snot\sidentified)/ix => :no_date,
       /^(after|later|post)/i => :after,
       /^(&|and)/i => :and,
       /^(about|around|approximate(ly|)|ca\.?|circa|estimated?|est\.?)/i =>
@@ -77,8 +79,7 @@ module Emendate
       # If additional alphabetic seasons are added, make sure to
       #   update the mapping to literals in Segments::SeasonAlpha
       /^(winter|spring|summer|fall|autumn)/i => :season,
-      /^(date\sunknown|unknown\sdate|no\sdate|not\sdated|undated|
-      unknown|unk|n\.?\s?d\.?)/ix => :unknown_date,
+      /^(date\sunknown|unknown\sdate|unknown|unk)/ix => :unknown_date,
       Regexp.new(ordinals, "i") => :ordinal_indicator,
       /^(u+|x+)/i => :uncertainty_digits
     }

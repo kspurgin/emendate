@@ -16,9 +16,9 @@ module Emendate
     end
 
     def call
-      if known_unknown?
+      if whole_known_unknown?
         return_unknown_date_type
-      elsif end_of_range_unknown?
+      elsif question_at_end_of_string?
         replace_question_with_unknown
       else
         Success(tokens)
@@ -29,20 +29,26 @@ module Emendate
 
     attr_reader :tokens, :result
 
-    def known_unknown?
-      tokens.types == [:unknown_date] ||
+    def whole_known_unknown?
+      tokens.types == [:no_date] ||
+        tokens.types == [:unknown_date] ||
         tokens.types == [:question]
     end
 
-    def end_of_range_unknown?
+    def question_at_end_of_string?
       tokens.type_string
         .match?(/(?:range_indicator|hyphen) question$/)
     end
 
     def return_unknown_date_type
       result.clear
+      category = if tokens[0].type == :question
+        :unknown_date
+      else
+        tokens[0].type
+      end
       result << Emendate::DateTypes::KnownUnknown.new(
-        sources: tokens
+        sources: tokens, category: category
       )
       Failure(result)
     end
@@ -50,8 +56,7 @@ module Emendate
     def replace_question_with_unknown
       question = result.pop
       result << Emendate::Segment.new(
-        type: :unknown_date,
-        sources: [question]
+        sources: [question], type: :unknown_date
       )
       Success(result)
     end

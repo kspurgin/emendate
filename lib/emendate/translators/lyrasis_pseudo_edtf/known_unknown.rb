@@ -9,11 +9,11 @@ module Emendate
         private
 
         def translate_value
-          @base = case Emendate.options.unknown_date_output
-          when :custom
+          @base = case date.source.category
+          when :no_date
+            Emendate.options.no_date_output_string
+          when :unknown_date
             Emendate.options.unknown_date_output_string
-          else
-            date.original_string
           end
         end
       end
