@@ -61,7 +61,7 @@ module Emendate
       date\sof\spublication\snot\sidentified)/ix => :no_date,
       /^(after|later|post)/i => :after,
       /^(&|and)/i => :and,
-      /^(about|around|approximate(ly|)|ca\.?|circa|estimated?|est\.?)/i =>
+      /^(about|around|approx(imate(ly|)|)|ca\.?|circa|estimated?|est\.?)/i =>
         :approximate,
       /^(probably|probable|prob\.|possibly|possible|poss\.)/i => :uncertain,
       /^present/i => :present,
