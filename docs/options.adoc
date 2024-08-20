@@ -234,6 +234,28 @@ Default value:: `:absorb` - merge the mismatched bracket segment into the neares
 
 * `:failure` - Date processing will fail with a mismatched bracket error
 
+== no_date_output
+
+What is this?::  When a parsed string is determined to represent a known-to-be no date, what string should be output?
+Default value:: `:orig`, the original date string will be returned
+Alternate value:: `:custom`, indicates that you are providing a string to be used in outputting all ``KnownUnknownDateType``s with `category = :no_date`
+
+[IMPORTANT]
+====
+If you set this to `:custom`, and do not provide a custom value for `no_date_output_string`, a blank string will be output.
+====
+
+== no_date_output_string
+
+What is this?::  The string used for outputting ``KnownUnknownDateType``s with `category = :no_date` if you have set `no_date_output: :custom`
+Default value:: `''`, blank String
+Alternate value:: any String value, which may be useful if you are trying to standardize "n.d.", "undated", and "no date" all to be output as "not dated"
+
+[TIP]
+====
+This setting is not used if `no_date_output: :orig`
+====
+
 == open_unknown_end_date
 
 Date ranges may have open or unknown end dates.
@@ -293,7 +315,7 @@ If you are using the default option (`:coerce`), also pay attention to the `ambi
 
 What is this?::  When a parsed string is determined to represent a known-to-be unknown date, what string should be output?
 Default value:: `:orig`, the original date string will be returned
-Alternate value:: `:custom`, indicates that you are providing a string to be used in outputting all ``KnownUnknownDateType``s
+Alternate value:: `:custom`, indicates that you are providing a string to be used in outputting all ``KnownUnknownDateType``s with `category == :unknown_date`
 
 [IMPORTANT]
 ====
@@ -302,7 +324,7 @@ If you set this to `:custom`, and do not provide a custom value for `unknown_dat
 
 == unknown_date_output_string
 
-What is this?::  The string used for outputting ``KnownUnknownDateType``s if you have set `unknown_date_output: :custom`
+What is this?::  The string used for outputting ``KnownUnknownDateType``s with `category == :unknown_date` if you have set `unknown_date_output: :custom`
 Default value:: `''`, blank String
 Alternate value:: any String value, which may be useful if you are trying to standardize "n.d.", "undated", and "no date" all to be output as "not dated"
 

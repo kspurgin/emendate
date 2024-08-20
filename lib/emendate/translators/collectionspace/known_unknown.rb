@@ -9,7 +9,12 @@ module Emendate
         private
 
         def translate_value
-          @base = unknown_value
+          category = case date.source.category
+          when :unknown_date then "Unknown"
+          when :no_date then "No date"
+          end
+
+          @base = base_value.merge({dateEarliestSingleCertainty: category})
         end
       end
     end

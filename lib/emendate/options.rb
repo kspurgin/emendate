@@ -27,6 +27,9 @@ module Emendate
         set_options
         handle_edtf_shortcut if Emendate.options.edtf
         handle_collectionspace if Emendate.options.dialect == :collectionspace
+        if Emendate.options.dialect == :lyrasis_pseudo_edtf
+          handle_lyrasis_pseudo_edtf
+        end
       else
         report_errors_and_exit(validation_errs)
       end
@@ -67,6 +70,10 @@ module Emendate
 
     def handle_collectionspace
       set_options(Emendate::Translators::Collectionspace::DIALECT_OPTIONS)
+    end
+
+    def handle_lyrasis_pseudo_edtf
+      set_options(Emendate::Translators::LyrasisPseudoEdtf::DIALECT_OPTIONS)
     end
 
     def handle_edtf_shortcut

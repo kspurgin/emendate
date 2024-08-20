@@ -3,7 +3,7 @@
 require "spec_helper"
 
 RSpec.describe Emendate::DateTypes::KnownUnknown do
-  subject { described_class.new(sources: sources) }
+  subject { described_class.new(sources: sources, category: category) }
 
   let(:sources) do
     Emendate.prepped_for(
@@ -14,13 +14,21 @@ RSpec.describe Emendate::DateTypes::KnownUnknown do
 
   context "with n.d." do
     let(:str) { "n.d." }
+    let(:category) { :no_date }
 
-    it "returns expected values" do
-      expect(subject.earliest).to be_nil
-      expect(subject.latest).to be_nil
-      expect(subject.lexeme).to eq(str)
-      expect(subject.literal).to be_nil
-      expect(subject.range?).to be false
+    context "with custom output string" do
+      before(:context) do
+        Emendate.config.options.unknown_date_output = :orig
+      end
+
+      it "returns expected values" do
+        expect(subject.earliest).to be_nil
+        expect(subject.latest).to be_nil
+        expect(subject.lexeme).to eq(str)
+        expect(subject.literal).to be_nil
+        expect(subject.range?).to be false
+        expect(subject.category).to eq(:no_date)
+      end
     end
 
     context "with custom output string" do

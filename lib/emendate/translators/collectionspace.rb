@@ -42,7 +42,7 @@ module Emendate
       def empty_value = base_value
 
       def unknown_value
-        base_value.merge({dateEarliestSingleCertainty: "no date"})
+        base_value.merge({dateEarliestSingleCertainty: "No date"})
       end
 
       def computed
