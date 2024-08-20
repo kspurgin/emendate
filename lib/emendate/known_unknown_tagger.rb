@@ -30,15 +30,17 @@ module Emendate
     attr_reader :tokens, :result
 
     def whole_known_unknown?
-      tokens.types == [:no_date] ||
-        tokens.types == [:unknown_date] ||
-        tokens.types == [:question]
+      unknowns.length == 1 && tokens.length == 1
     end
 
     def question_at_end_of_string?
       tokens.type_string
         .match?(/(?:range_indicator|hyphen) question$/)
     end
+
+    def unknown_types = %i[no_date unknown_date question]
+
+    def unknowns = tokens.select { |seg| unknown_types.include?(seg.type) }
 
     def return_unknown_date_type
       result.clear

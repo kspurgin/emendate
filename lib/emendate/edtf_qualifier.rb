@@ -60,10 +60,7 @@ module Emendate
 
     def indicator?(seg) = indicators.include?(seg.type)
 
-    def edtf?
-      chk = result.orig_string.chars.uniq - EDTF_CHARS
-      chk.empty?
-    end
+    def edtf? = (result.orig_string.chars.uniq - EDTF_CHARS).empty?
 
     def process_working
       return nil if working.empty?
