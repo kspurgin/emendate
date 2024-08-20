@@ -91,6 +91,17 @@ RSpec.describe Emendate::RangeIndicator do
     end
   end
 
+  context "with ../####-@@" do
+    let(:str) { "../2002-04" }
+
+    it "segments as expected" do
+      expect(subject.lexeme).to eq(str)
+      expect(type_string).to eq(
+        "range_date_type"
+      )
+    end
+  end
+
   context "with `1930s or 1940s`" do
     let(:str) { "1930s or 1940s" }
 

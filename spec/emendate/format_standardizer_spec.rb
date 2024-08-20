@@ -176,7 +176,19 @@ RSpec.describe Emendate::FormatStandardizer do
 
       it "replace double dot with open start date type" do
         expect(subject.lexeme).to eq(string)
-        expect(result).to eq(%i[rangedatestartopen_date_type hyphen number4])
+        expect(result).to eq(
+          %i[rangedatestartopen_date_type range_indicator number4]
+        )
+      end
+    end
+
+    context "with ../####-@@" do
+      let(:string) { "../2002-04" }
+
+      it "segments as expected" do
+        expect(result).to eq(%i[rangedatestartopen_date_type range_indicator
+          number4 number1or2])
+        expect(subject.lexeme).to eq(string)
       end
     end
 
@@ -185,7 +197,9 @@ RSpec.describe Emendate::FormatStandardizer do
 
       it "replace double dot with open end date type" do
         expect(subject.lexeme).to eq(string)
-        expect(result).to eq(%i[number4 hyphen rangedateendopen_date_type])
+        expect(result).to eq(
+          %i[number4 range_indicator rangedateendopen_date_type]
+        )
       end
     end
 

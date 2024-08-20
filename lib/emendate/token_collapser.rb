@@ -42,17 +42,20 @@ module Emendate
     end
 
     def determine_action
-      actions = if result[0].collapsible?
-        proc { result.collapse_first_token }
-      elsif result.any?(&:collapsible?)
-        proc { collapse_backward }
-      end
-      return actions unless actions.nil?
-
       actions = full_match_collapsers
       return actions unless actions.nil?
 
-      partial_match_collapsers
+      actions = partial_match_collapsers
+      return actions unless actions.nil?
+
+      actions = if result[0].collapsible?
+        proc { result.collapse_first_token }
+      end
+      return actions unless actions.nil?
+
+      if result.any?(&:collapsible?)
+        proc { collapse_backward }
+      end
     end
 
     def full_match_collapsers
@@ -119,6 +122,20 @@ module Emendate
             x: segs[1], type: :range_indicator
           )
         end
+      when /^double_dot slash.*/
+        proc do
+          segs = result.extract(%i[double_dot slash])
+          result.replace_x_with_derived_new_type(
+            x: segs[1], type: :range_indicator
+          )
+        end
+      when /.*slash double_dot$/
+        proc do
+          segs = result.extract(%i[slash double_dot])
+          result.replace_x_with_derived_new_type(
+            x: segs[0], type: :range_indicator
+          )
+        end
       end
     end
 
@@ -136,14 +153,19 @@ module Emendate
       ]
 
       if matchers.any? { |matcher| matcher.match(dateparts) }
-        types = result.types.uniq
         %i[comma hyphen slash].each do |type|
-          next unless types.include?(type)
-
           result.collapse_all_matching_type(type: type, dir: :backward)
         end
       end
     end
+
+    # def collapse_all_of_type(type)
+    #   segs = result.when_type(type)
+    #   return if segs.empty?
+
+    #   if type == :comma
+
+    # end
 
     def collapse_backward
       to_collapse = result.segments.reverse.find(&:collapsible?)
