@@ -9,6 +9,34 @@ RSpec.describe Emendate::TokenCollapser do
     let(:tokens) { prepped_for(string: string, target: described_class) }
     let(:result) { subject.types }
 
+    context "with ../####-@@" do
+      let(:string) { "../2002-04" }
+
+      it "collapses as expected" do
+        expect(result).to eq(%i[double_dot range_indicator
+          number4 number1or2])
+        expect(subject.lexeme).to eq(string)
+      end
+    end
+
+    context "with /####-@@" do
+      let(:string) { "/2002-04" }
+
+      it "collapses as expected" do
+        expect(result).to eq(%i[slash number4 number1or2])
+        expect(subject.lexeme).to eq(string)
+      end
+    end
+
+    context "with ,####-@@" do
+      let(:string) { ",2002-04" }
+
+      it "collapses as expected" do
+        expect(result).to eq(%i[number4 number1or2])
+        expect(subject.lexeme).to eq(string)
+      end
+    end
+
     context "with <####> and angle_bracket_interpretation: :ignore" do
       before { Emendate.config.options.angle_bracket_interpretation = :ignore }
 
