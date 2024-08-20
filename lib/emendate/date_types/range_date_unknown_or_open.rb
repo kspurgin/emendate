@@ -9,7 +9,7 @@ module Emendate
     class RangeDateUnknownOrOpen
       include Datetypeable
 
-      attr_reader :granularity_level
+      attr_reader :category, :granularity_level
 
       # @param sources [SegmentSet, Array<Segment>] Segments
       #   included in the date type
@@ -54,7 +54,7 @@ module Emendate
 
       private
 
-      attr_reader :use_date, :category, :point
+      attr_reader :use_date, :point
     end
   end
 end

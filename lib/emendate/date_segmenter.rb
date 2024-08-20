@@ -134,6 +134,17 @@ module Emendate
         modifier = working[1]
       end
 
+      if type == :before &&
+          Emendate.options.before_date_treatment == :range
+        modify_as_range(modifier, datetype, direction)
+      else
+        modify_as_point(modifier, datetype, direction)
+      end
+
+      apply_modifiers(type)
+    end
+
+    def modify_as_point(modifier, datetype, direction)
       case direction
       when :forward
         datetype.prepend_source_token(modifier)
@@ -144,8 +155,18 @@ module Emendate
         result << datetype
         working.shift(2)
       end
+    end
 
-      apply_modifiers(type)
+    def modify_as_range(modifier, datetype, direction)
+      startdate = Emendate::DateTypes::RangeDateUnknownOrOpen.new(
+        sources: [], category: :open, point: :start
+      )
+      result << startdate
+      result.insert_dummy_after_segment(startdate, :range_indicator)
+      working.delete(modifier)
+      datetype.prepend_source_token(modifier)
+      result << datetype
+      working.delete(datetype)
     end
 
     def add_as_unprocessable(modifier)
