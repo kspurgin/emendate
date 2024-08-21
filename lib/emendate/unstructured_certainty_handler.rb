@@ -17,6 +17,10 @@ module Emendate
     def call
       return Success(result) unless indicators?
 
+      if question_as_uncertainty_digit?
+        collapse_questions_to_uncertainty_digits
+      end
+
       while indicators?
         seg = result.select { |seg| indicator?(seg) }.segments.first
         handle_indicator(seg)
@@ -32,6 +36,19 @@ module Emendate
     def indicator?(seg) = %i[approximate uncertain question].include?(seg.type)
 
     def indicators? = result.any? { |seg| indicator?(seg) }
+
+    def question_as_uncertainty_digit?
+      !result.consecutive_of_type(:question).empty?
+    end
+
+    def collapse_questions_to_uncertainty_digits
+      questions = result.consecutive_of_type(:question)
+      uncertainty = Emendate::UncertaintyDigits.new(
+        sources: questions, lexeme: Array.new(questions.length, "?").join
+      )
+      result.replace_segments_with_new(segs: questions.segments,
+        new: uncertainty)
+    end
 
     def handle_indicator(seg)
       segidx = result.index_of(seg)

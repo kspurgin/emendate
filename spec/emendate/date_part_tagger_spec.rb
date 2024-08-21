@@ -27,6 +27,14 @@ RSpec.describe Emendate::DatePartTagger do
     end
   end
 
+  context "with [????]" do
+    let(:string) { "[????]" }
+
+    it "tags as expected" do
+      expect(types).to eq(%i[knownunknown_date_type])
+    end
+  end
+
   context "with c.##" do
     let(:string) { "c.55" }
 
