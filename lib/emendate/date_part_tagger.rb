@@ -77,6 +77,13 @@ module Emendate
           year = Emendate::ShortYearHandler.call(result[0])
           result.replace_x_with_new(x: result[0], new: year)
         end
+      when /^uncertainty_digits$/
+        proc do
+          unknown = Emendate::DateTypes::KnownUnknown.new(
+            sources: result, category: :unknown_date
+          )
+          result.replace_x_with_new(x: result[0], new: unknown)
+        end
       end
     end
 

@@ -9,9 +9,9 @@ module Emendate
 
     # @param lexeme [String] of numerals reflecting how number
     #    originally appeared in string (with leading zeroes, etc.)
-    def initialize(lexeme:)
-      super(type: :uncertainty_digits, lexeme: lexeme)
-      unless lexeme.match?(/^[\-xu]+$/i)
+    def initialize(lexeme:, sources: nil)
+      super(type: :uncertainty_digits, lexeme: lexeme, sources: sources)
+      unless lexeme.match?(/^[\-xu?]+$/i)
         raise Emendate::TokenLexemeError,
           "UncertaintyDigits segments must be created with lexemes containing "\
           "only characters allowed as uncertainty digits"
