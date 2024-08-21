@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# This script is used in very constrained circumstances where no one is going to
+#   use `eval` maliciously
+# rubocop:disable Security/Eval
 require "csv"
 require "optparse"
 
@@ -107,3 +110,4 @@ CSV.open(outfile, "a") do |csvout|
     puts "  #{key}: #{value.inspect}"
   end
 end
+# rubocop:enable Security/Eval
