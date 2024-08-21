@@ -59,7 +59,7 @@ module Emendate
       # @return [NilClass]
       def latest_at_granularity = nil
 
-      # @return [NilClass]
+      # @return [FalseClass]
       def range? = false
 
       # @return [:invalid_date_type, :unprocessable_date_type,
