@@ -74,20 +74,28 @@ end
 
 # @param translated [Hash] single values element from translation
 # @param translation [Emendate::Translation]
-def create_row(translated, translation)
+def create_row(translation:, translated: {})
   row = {orig: translation.orig}.merge(translated)
   unless translation.warnings.empty?
     row[:warnings] = translation.warnings.join("; ")
+  end
+  if translated.empty?
+    row[:dateDisplayDate] = translation.orig
+    row[:dateNote] = "No date data could be extracted"
   end
   pad_row(row)
 end
 
 CSV.open(outfile, "a") do |csvout|
   Emendate.batch_translate(strings, true, optargs) do |translation|
-    # binding.pry if translation.values.empty?
-    translation.values.each do |translated|
-      row = create_row(translated, translation)
+    if translation.values.empty?
+      row = create_row(translation: translation)
       csvout << row.values_at(*HEADERS)
+    else
+      translation.values.each do |translated|
+        row = create_row(translated: translated, translation: translation)
+        csvout << row.values_at(*HEADERS)
+      end
     end
   end
 
