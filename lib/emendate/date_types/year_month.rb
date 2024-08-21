@@ -38,8 +38,9 @@ module Emendate
       def range?
         return false if range_switch == :before &&
           Emendate.options.before_date_treatment == :point
+        return true if partial_indicator || range_switch
 
-        true if partial_indicator || range_switch
+        false
       end
 
       private
