@@ -83,6 +83,22 @@ module Emendate
     # @return [Boolean]
     def is_last_seg?(seg) = index_of(seg) == (segments.length - 1)
 
+    # @param type [Symbol] segment type to extract consecutive instances of
+    # @return [Emendate::SegmentSet] whose segments are the first sequence of
+    #   segments having the given type
+    def consecutive_of_type(type)
+      consec = []
+      segments.each_cons(2) do |arr|
+        same_type = arr.map(&:type).uniq == [type]
+        break if !consec.empty? && !same_type
+
+        consec << arr if same_type
+      end
+      return self.class.new if consec.empty?
+
+      self.class.new(segments: consec.flatten!.uniq!)
+    end
+
     # @param seg [Emendate::Segment]
     # @return [Integer]
     def index_of(seg)
