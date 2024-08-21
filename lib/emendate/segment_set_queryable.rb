@@ -25,7 +25,7 @@ module Emendate
     # @param seg [Segment]
     # @return [SegmentSet] all {Segment}s before given seg, if any
     def segments_after(seg)
-      segs = segments[(index_of(seg) + 1)..-1]
+      segs = segments[(index_of(seg) + 1)..]
       Emendate::SegmentSet.new(segments: segs)
     end
 

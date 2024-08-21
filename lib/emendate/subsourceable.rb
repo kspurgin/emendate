@@ -24,7 +24,7 @@ module Emendate
     def subsource_segments
       if respond_to?(:segments)
         subsource_segments_for_segment_set
-      elsif self.class == Emendate::DateTypes::Range
+      elsif instance_of?(Emendate::DateTypes::Range)
         subsource_segments_for_range
       elsif date_type?
         sources.subsources(as: :arr)

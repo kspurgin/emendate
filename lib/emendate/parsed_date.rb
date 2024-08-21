@@ -45,7 +45,7 @@ module Emendate
       @date_end = nil
       @date_start_full = date.earliest&.iso8601
       @date_end_full = date.latest&.iso8601
-      @inclusive_range = date.range? ? true : false
+      @inclusive_range = date.range?
       @qualifiers = (qualifiers + date.qualifiers).flatten.uniq
       @date_type = date.class.name.split("::")[-1]
       @source = date
