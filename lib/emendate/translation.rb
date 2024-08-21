@@ -22,7 +22,10 @@ module Emendate
       @warnings << value.warnings
     end
 
-    def warnings = @warnings.flatten.uniq
+    def warnings
+      @warnings.unshift("No dates parsed from string") if values.empty?
+      @warnings.flatten.uniq
+    end
 
     def add_warning(value) = @warnings << value
 
