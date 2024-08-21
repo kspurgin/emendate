@@ -655,18 +655,28 @@
 62
 63
 64
-65</pre>
+65
+66
+67
+68
+69
+70</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 56</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_collapse_all_matching_type'>collapse_all_matching_type</span><span class='lparen'>(</span><span class='label'>type:</span><span class='comma'>,</span> <span class='label'>dir:</span><span class='comma'>,</span> <span class='label'>range:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_when_type'>when_type</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span>
-    <span class='period'>.</span><span class='id identifier rubyid_select'>select</span>
     <span class='period'>.</span><span class='id identifier rubyid_reverse_each'>reverse_each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_seg'>seg</span><span class='op'>|</span>
       <span class='kw'>next</span> <span class='kw'>if</span> <span class='id identifier rubyid_range'>range</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_not_in_range?'>not_in_range?</span><span class='lparen'>(</span><span class='id identifier rubyid_seg'>seg</span><span class='comma'>,</span> <span class='id identifier rubyid_range'>range</span><span class='rparen'>)</span>
 
-      <span class='id identifier rubyid_collapse_segment'>collapse_segment</span><span class='lparen'>(</span><span class='id identifier rubyid_seg'>seg</span><span class='comma'>,</span> <span class='id identifier rubyid_dir'>dir</span><span class='rparen'>)</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_is_first_seg?'>is_first_seg?</span><span class='lparen'>(</span><span class='id identifier rubyid_seg'>seg</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_collapse_first_token'>collapse_first_token</span> <span class='kw'>if</span> <span class='id identifier rubyid_type'>type</span> <span class='op'>==</span> <span class='symbol'>:comma</span>
+      <span class='kw'>elsif</span> <span class='id identifier rubyid_is_last_seg?'>is_last_seg?</span><span class='lparen'>(</span><span class='id identifier rubyid_seg'>seg</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_collapse_last_token'>collapse_last_token</span> <span class='kw'>if</span> <span class='id identifier rubyid_type'>type</span> <span class='op'>==</span> <span class='symbol'>:comma</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_collapse_segment'>collapse_segment</span><span class='lparen'>(</span><span class='id identifier rubyid_seg'>seg</span><span class='comma'>,</span> <span class='id identifier rubyid_dir'>dir</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
     <span class='kw'>end</span>
   <span class='kw'>self</span>
 <span class='kw'>end</span></pre>
@@ -701,13 +711,13 @@
       <pre class="lines">
 
 
-106
-107
-108
-109</pre>
+111
+112
+113
+114</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 106</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 111</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_collapse_enclosing_tokens'>collapse_enclosing_tokens</span>
   <span class='id identifier rubyid_collapse_first_token'>collapse_first_token</span>
@@ -744,12 +754,12 @@
       <pre class="lines">
 
 
-93
-94
-95</pre>
+98
+99
+100</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 93</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 98</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_collapse_first_token'>collapse_first_token</span>
   <span class='id identifier rubyid_collapse_token_pair_forward'>collapse_token_pair_forward</span><span class='lparen'>(</span><span class='id identifier rubyid_segments'>segments</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_segments'>segments</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -785,12 +795,12 @@
       <pre class="lines">
 
 
-99
-100
-101</pre>
+104
+105
+106</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 104</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_collapse_last_token'>collapse_last_token</span>
   <span class='id identifier rubyid_collapse_token_pair_backward'>collapse_token_pair_backward</span><span class='lparen'>(</span><span class='id identifier rubyid_segments'>segments</span><span class='lbracket'>[</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_segments'>segments</span><span class='lbracket'>[</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -880,11 +890,6 @@
       <pre class="lines">
 
 
-77
-78
-79
-80
-81
 82
 83
 84
@@ -892,10 +897,15 @@
 86
 87
 88
-89</pre>
+89
+90
+91
+92
+93
+94</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 82</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_collapse_segment'>collapse_segment</span><span class='lparen'>(</span><span class='id identifier rubyid_seg'>seg</span><span class='comma'>,</span> <span class='id identifier rubyid_dir'>dir</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_test'>test</span> <span class='op'>=</span> <span class='symbol'>:&quot;#{</span><span class='id identifier rubyid_dir'>dir</span><span class='embexpr_end'>}</span><span class='tstring_content'>_collapsible?</span><span class='tstring_end'>&quot;</span></span>
@@ -1271,13 +1281,13 @@
       <pre class="lines">
 
 
-177
-178
-179
-180</pre>
+182
+183
+184
+185</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 177</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 182</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_insert_dummy_after_segment'>insert_dummy_after_segment</span><span class='lparen'>(</span><span class='id identifier rubyid_seg'>seg</span><span class='comma'>,</span> <span class='id identifier rubyid_dummytype'>dummytype</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_newsegment'>newsegment</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'>Segment</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>type:</span> <span class='id identifier rubyid_dummytype'>dummytype</span><span class='rparen'>)</span>
@@ -1338,12 +1348,12 @@
       <pre class="lines">
 
 
-165
-166
-167</pre>
+170
+171
+172</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 165</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 170</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_insert_segment_after_segment'>insert_segment_after_segment</span><span class='lparen'>(</span><span class='id identifier rubyid_seg'>seg</span><span class='comma'>,</span> <span class='id identifier rubyid_newseg'>newseg</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_insert'>insert</span><span class='lparen'>(</span><span class='id identifier rubyid_ins_pt'>ins_pt</span><span class='lparen'>(</span><span class='id identifier rubyid_seg'>seg</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_newseg'>newseg</span><span class='rparen'>)</span>
@@ -1403,12 +1413,12 @@
       <pre class="lines">
 
 
-171
-172
-173</pre>
+176
+177
+178</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 171</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 176</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_insert_segment_before_segment'>insert_segment_before_segment</span><span class='lparen'>(</span><span class='id identifier rubyid_seg'>seg</span><span class='comma'>,</span> <span class='id identifier rubyid_newseg'>newseg</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_insert'>insert</span><span class='lparen'>(</span><span class='id identifier rubyid_ins_pt'>ins_pt</span><span class='lparen'>(</span><span class='id identifier rubyid_seg'>seg</span><span class='comma'>,</span> <span class='symbol'>:prev</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_newseg'>newseg</span><span class='rparen'>)</span>
@@ -1478,13 +1488,13 @@
       <pre class="lines">
 
 
-130
-131
-132
-133</pre>
+135
+136
+137
+138</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 130</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 135</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_replace_segments_with_new'>replace_segments_with_new</span><span class='lparen'>(</span><span class='label'>segs:</span><span class='comma'>,</span> <span class='label'>new:</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_insert'>insert</span><span class='lparen'>(</span><span class='id identifier rubyid_ins_pt'>ins_pt</span><span class='lparen'>(</span><span class='id identifier rubyid_segs'>segs</span><span class='lbracket'>[</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_new'>new</span><span class='rparen'>)</span>
@@ -1555,14 +1565,14 @@
       <pre class="lines">
 
 
-137
-138
-139
-140
-141</pre>
+142
+143
+144
+145
+146</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 137</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 142</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_replace_segments_with_new_segment_set'>replace_segments_with_new_segment_set</span><span class='lparen'>(</span><span class='label'>segs:</span><span class='comma'>,</span> <span class='label'>new:</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_insert'>insert</span><span class='lparen'>(</span><span class='id identifier rubyid_ins_pt'>ins_pt</span><span class='lparen'>(</span><span class='id identifier rubyid_segs'>segs</span><span class='lbracket'>[</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='op'>*</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_segments'>segments</span><span class='rparen'>)</span>
@@ -1595,7 +1605,7 @@
   
     <li>
       
-        <span class='name'>segss</span>
+        <span class='name'>segs</span>
       
       
         <span class='type'>(<tt>Array&lt;Emendate::Segment&gt;</tt>)</span>
@@ -1624,14 +1634,14 @@
       <pre class="lines">
 
 
-122
-123
-124
-125
-126</pre>
+127
+128
+129
+130
+131</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 122</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 127</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_replace_segs_with_new_type'>replace_segs_with_new_type</span><span class='lparen'>(</span><span class='label'>segs:</span><span class='comma'>,</span> <span class='label'>type:</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new'>new</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'>Segment</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>type:</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='label'>sources:</span> <span class='id identifier rubyid_segs'>segs</span><span class='rparen'>)</span>
@@ -1703,15 +1713,15 @@
       <pre class="lines">
 
 
-113
-114
-115
-116
-117
-118</pre>
+118
+119
+120
+121
+122
+123</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 113</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 118</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_replace_segtypes_with_new_type'>replace_segtypes_with_new_type</span><span class='lparen'>(</span><span class='label'>old:</span><span class='comma'>,</span> <span class='label'>new:</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_segs'>segs</span> <span class='op'>=</span> <span class='id identifier rubyid_extract'>extract</span><span class='lparen'>(</span><span class='id identifier rubyid_old'>old</span><span class='rparen'>)</span>
@@ -1774,12 +1784,12 @@
       <pre class="lines">
 
 
-159
-160
-161</pre>
+164
+165
+166</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 159</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 164</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_replace_x_with_date_part_type'>replace_x_with_date_part_type</span><span class='lparen'>(</span><span class='label'>x:</span><span class='comma'>,</span> <span class='label'>date_part_type:</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_replace_segs_with_new_type'>replace_segs_with_new_type</span><span class='lparen'>(</span><span class='label'>segs:</span> <span class='lbracket'>[</span><span class='id identifier rubyid_x'>x</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='id identifier rubyid_date_part_type'>date_part_type</span><span class='rparen'>)</span>
@@ -1849,13 +1859,13 @@
       <pre class="lines">
 
 
-145
-146
-147
-148</pre>
+150
+151
+152
+153</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 145</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 150</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_replace_x_with_derived_new_type'>replace_x_with_derived_new_type</span><span class='lparen'>(</span><span class='label'>x:</span><span class='comma'>,</span> <span class='label'>type:</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_newsegment'>newsegment</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='op'>::</span><span class='const'>Segment</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>type:</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='label'>sources:</span> <span class='lbracket'>[</span><span class='id identifier rubyid_x'>x</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -1916,13 +1926,13 @@
       <pre class="lines">
 
 
-152
-153
-154
-155</pre>
+157
+158
+159
+160</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 152</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/segment_set_editable.rb', line 157</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_replace_x_with_new'>replace_x_with_new</span><span class='lparen'>(</span><span class='label'>x:</span><span class='comma'>,</span> <span class='label'>new:</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_insert'>insert</span><span class='lparen'>(</span><span class='id identifier rubyid_ins_pt'>ins_pt</span><span class='lparen'>(</span><span class='id identifier rubyid_x'>x</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_new'>new</span><span class='rparen'>)</span>
@@ -1938,7 +1948,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Aug 13 01:39:29 2024 by
+  Generated on Wed Aug 21 21:17:39 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.36 (ruby-2.7.8).
 </div>

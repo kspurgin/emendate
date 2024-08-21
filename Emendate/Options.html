@@ -292,7 +292,10 @@
 30
 31
 32
-33</pre>
+33
+34
+35
+36</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/emendate/options.rb', line 18</span>
@@ -309,6 +312,9 @@
     <span class='id identifier rubyid_set_options'>set_options</span>
     <span class='id identifier rubyid_handle_edtf_shortcut'>handle_edtf_shortcut</span> <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_edtf'>edtf</span>
     <span class='id identifier rubyid_handle_collectionspace'>handle_collectionspace</span> <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_dialect'>dialect</span> <span class='op'>==</span> <span class='symbol'>:collectionspace</span>
+    <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_dialect'>dialect</span> <span class='op'>==</span> <span class='symbol'>:lyrasis_pseudo_edtf</span>
+      <span class='id identifier rubyid_handle_lyrasis_pseudo_edtf'>handle_lyrasis_pseudo_edtf</span>
+    <span class='kw'>end</span>
   <span class='kw'>else</span>
     <span class='id identifier rubyid_report_errors_and_exit'>report_errors_and_exit</span><span class='lparen'>(</span><span class='id identifier rubyid_validation_errs'>validation_errs</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
@@ -424,13 +430,13 @@
       <pre class="lines">
 
 
-35
-36
-37
-38</pre>
+38
+39
+40
+41</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/options.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/options.rb', line 38</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_opthash'>opthash</span><span class='rparen'>)</span>
   <span class='ivar'>@options</span> <span class='op'>=</span> <span class='id identifier rubyid_options'>options</span><span class='period'>.</span><span class='id identifier rubyid_merge'>merge</span><span class='lparen'>(</span><span class='id identifier rubyid_opthash'>opthash</span><span class='rparen'>)</span>
@@ -446,7 +452,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Aug 13 01:39:29 2024 by
+  Generated on Wed Aug 21 21:17:39 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.36 (ruby-2.7.8).
 </div>

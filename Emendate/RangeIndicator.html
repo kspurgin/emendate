@@ -227,13 +227,15 @@
 
 13
 14
-15</pre>
+15
+16</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/emendate/range_indicator.rb', line 13</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
   <span class='ivar'>@result</span> <span class='op'>=</span> <span class='id identifier rubyid_tokens'>tokens</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_copy'>copy</span><span class='lparen'>(</span><span class='id identifier rubyid_tokens'>tokens</span><span class='rparen'>)</span>
+  <span class='ivar'>@unhandled_mode</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../Emendate.html" title="Emendate (module)">Emendate</a></span></span><span class='period'>.</span><span class='id identifier rubyid_set_unhandled_mode'><span class='object_link'><a href="../Emendate.html#set_unhandled_mode-instance_method" title="Emendate#set_unhandled_mode (method)">set_unhandled_mode</a></span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -298,7 +300,6 @@
       <pre class="lines">
 
 
-17
 18
 19
 20
@@ -306,12 +307,17 @@
 22
 23
 24
-25</pre>
+25
+26
+27
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/emendate/range_indicator.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'lib/emendate/range_indicator.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span>
+  <span class='id identifier rubyid_kill_unhandled_range_indicators'>kill_unhandled_range_indicators</span> <span class='kw'>if</span> <span class='id identifier rubyid_has_range_indicator?'>has_range_indicator?</span> <span class='op'>&amp;&amp;</span>
+    <span class='id identifier rubyid_unhandled_mode'>unhandled_mode</span> <span class='op'>==</span> <span class='symbol'>:collapse_unhandled</span>
   <span class='id identifier rubyid_collapse_ranges'>collapse_ranges</span> <span class='kw'>while</span> <span class='id identifier rubyid_has_range_indicator?'>has_range_indicator?</span>
   <span class='id identifier rubyid_validate'>validate</span>
 
@@ -330,7 +336,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Aug 13 01:39:29 2024 by
+  Generated on Wed Aug 21 21:17:39 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.36 (ruby-2.7.8).
 </div>
