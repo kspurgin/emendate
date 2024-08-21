@@ -122,7 +122,7 @@ module Emendate
       segs.each { |segment| delete(segment) }
     end
 
-    # @param segss [Array<Emendate::Segment>]
+    # @param segs [Array<Emendate::Segment>]
     # @param date_part_type [Symbol]
     def replace_segs_with_new_type(segs:, type:)
       new = Emendate::Segment.new(type: type, sources: segs)
